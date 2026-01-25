@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, useScroll, useTransform, Variants } from "framer-motion";
 import { ArrowRight, Leaf, Wallet, Activity, Wind, ShieldCheck, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WaitlistDialog } from "@/components/waitlist-dialog";
 
 // Animation variants for smooth entry
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -18,40 +18,78 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
 export default function Home() {
   const [waitlistOpen, setWaitlistOpen] = useState(false);
+  const { scrollY } = useScroll();
+
+  // Scroll Animations for Navbar
+  // At top (0px): Wide, transparent, simple
+  // Scrolled (>100px): Compact pill, glass, border, shadow
+  const navWidth = useTransform(scrollY, [0, 100], ["100%", "90%"]); // shrink width
+  const navY = useTransform(scrollY, [0, 100], [0, 24]); // move down slightly
+  const navRadius = useTransform(scrollY, [0, 100], [0, 50]); // rectangle -> pill
+  const navBg = useTransform(scrollY, [0, 100], ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.7)"]); // transparent -> glass
+  const navBorder = useTransform(scrollY, [0, 100], ["rgba(0, 0, 0, 0)", "rgba(255, 255, 255, 0.2)"]); // no border -> border
+  const navShadow = useTransform(scrollY, [0, 100], ["none", "0 4px 6px -1px rgb(0 0 0 / 0.05)"]); // no shadow -> shadow
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden selection:bg-primary/20">
       {/* Waitlist Dialog */}
       <WaitlistDialog open={waitlistOpen} onOpenChange={setWaitlistOpen} />
 
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border/40">
-        {/* Hybrid Layout: 6xl for laptops, 7xl for big monitors */}
-        <div className="max-w-6xl 2xl:max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      {/* Navigation - Dynamic Scroll Transition */}
+      <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none">
+        <motion.nav
+          style={{
+            width: navWidth,
+            y: navY,
+            borderRadius: navRadius,
+            backgroundColor: navBg,
+            borderColor: navBorder,
+            boxShadow: navShadow,
+            backdropFilter: "blur(12px)"
+          }}
+          className="pointer-events-auto max-w-5xl 2xl:max-w-6xl h-14 flex items-center justify-between px-6 border border-transparent transition-all"
+        >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-              <Leaf className="w-6 h-6 text-primary-foreground" />
+            <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+              <Leaf className="w-4 h-4 text-primary" />
             </div>
-            <span className="font-serif font-bold text-2xl tracking-tight">Breath.</span>
+            <span className="font-serif font-bold text-lg tracking-tight text-foreground/90">Breath.</span>
           </div>
           <Button
             variant="ghost"
-            className="text-muted-foreground hover:text-primary text-base"
+            size="sm"
+            className="rounded-full hover:bg-primary/5 hover:text-primary text-muted-foreground font-medium px-5 text-sm h-9"
             onClick={() => setWaitlistOpen(true)}
           >
             Sign In
           </Button>
-        </div>
-      </nav>
+        </motion.nav>
+      </div>
 
-      <main className="pt-40 pb-32 px-6">
+      <main className="pt-40 pb-32 px-6 relative z-0">
+        {/* Breathing Orb Background */}
+        <div className="absolute top-[40px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] pointer-events-none -z-10">
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.5, 0.8, 0.5],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="w-full h-full bg-primary/15 rounded-full blur-[100px]"
+          />
+        </div>
+
         <motion.div
           variants={containerVariants}
           initial="hidden"
