@@ -51,7 +51,23 @@ export default function Home() {
         </div>
       </nav>
 
-      <main className="pt-40 pb-32 px-6">
+      <main className="pt-40 pb-32 px-6 relative z-0">
+        {/* Breathing Orb Background */}
+        <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] pointer-events-none -z-10">
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.5, 0.8, 0.5],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="w-full h-full bg-primary/15 rounded-full blur-[100px]"
+          />
+        </div>
+
         <motion.div
           variants={containerVariants}
           initial="hidden"
