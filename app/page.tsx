@@ -33,16 +33,17 @@ export default function Home() {
 
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border/40">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Leaf className="w-5 h-5 text-primary-foreground" />
+        {/* Hybrid Layout: 6xl for laptops, 7xl for big monitors */}
+        <div className="max-w-6xl 2xl:max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
+              <Leaf className="w-6 h-6 text-primary-foreground" />
             </div>
-            <span className="font-serif font-bold text-xl tracking-tight">Breath.</span>
+            <span className="font-serif font-bold text-2xl tracking-tight">Breath.</span>
           </div>
           <Button
             variant="ghost"
-            className="text-muted-foreground hover:text-primary"
+            className="text-muted-foreground hover:text-primary text-base"
             onClick={() => setWaitlistOpen(true)}
           >
             Sign In
@@ -50,12 +51,12 @@ export default function Home() {
         </div>
       </nav>
 
-      <main className="pt-32 pb-20 px-6">
+      <main className="pt-40 pb-32 px-6">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="max-w-4xl mx-auto text-center space-y-8"
+          className="max-w-5xl 2xl:max-w-6xl mx-auto text-center space-y-10"
         >
           {/* Beta Badge */}
           <motion.div variants={itemVariants} className="flex justify-center">
@@ -69,26 +70,26 @@ export default function Home() {
           </motion.div>
 
           {/* Hero Headline */}
-          <motion.div variants={itemVariants} className="space-y-4">
-            <h1 className="text-5xl md:text-7xl font-serif font-medium text-foreground leading-[1.1]">
+          <motion.div variants={itemVariants} className="space-y-6">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl 2xl:text-9xl font-serif font-medium text-foreground leading-[1.1] tracking-tight">
               Reclaim your <span className="italic text-primary">clarity</span>.
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto font-light leading-relaxed">
               A disciplined, premium companion for your journey to a smoke-free life.
               Track progress, health recovery, and savings with elegance.
             </p>
           </motion.div>
 
           {/* CTAs */}
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-5 justify-center pt-6">
             <Button
               size="lg"
-              className="h-12 px-8 text-base rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all"
+              className="h-14 px-10 text-lg rounded-full shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all hover:scale-105 active:scale-95"
               onClick={() => setWaitlistOpen(true)}
             >
               Join the Waitlist
             </Button>
-            <Button size="lg" variant="outline" className="h-12 px-8 text-base rounded-full border-border bg-transparent hover:bg-secondary/50">
+            <Button size="lg" variant="outline" className="h-14 px-10 text-lg rounded-full border-border bg-transparent hover:bg-secondary/50">
               View Demo
             </Button>
           </motion.div>
@@ -96,17 +97,17 @@ export default function Home() {
           {/* App Preview Container */}
           <motion.div
             variants={itemVariants}
-            className="mt-24"
+            className="mt-32"
           >
             {/* Preview Label */}
-            <div className="flex justify-center mb-8">
-              <span className="text-sm font-mono text-muted-foreground uppercase tracking-widest flex items-center gap-2 px-3 py-1 bg-secondary/50 rounded-full border border-border/50">
-                <Lock className="w-3 h-3" /> Preview Experience
+            <div className="flex justify-center mb-10">
+              <span className="text-sm font-mono text-muted-foreground uppercase tracking-widest flex items-center gap-2 px-4 py-1.5 bg-secondary/50 rounded-full border border-border/50">
+                <Lock className="w-3.5 h-3.5" /> Preview Experience
               </span>
             </div>
 
             {/* Bento Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 text-left max-w-6xl 2xl:max-w-7xl mx-auto">
               {/* Main Tracker Card (Large) */}
               <div className="md:col-span-2 bg-card border border-border/50 p-8 rounded-[2rem] shadow-sm relative overflow-hidden group hover:border-primary/20 transition-all hover:shadow-md">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16 transition-all group-hover:bg-primary/10"></div>
@@ -192,11 +193,11 @@ export default function Home() {
         </motion.div>
       </main>
 
-      <footer className="border-t border-border/40 py-12 bg-secondary/20">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2">
-            <Leaf className="w-5 h-5 text-muted-foreground" />
-            <span className="font-serif text-lg text-muted-foreground">Breath.</span>
+      <footer className="border-t border-border/40 py-16 bg-secondary/20">
+        <div className="max-w-6xl 2xl:max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex items-center gap-3">
+            <Leaf className="w-6 h-6 text-muted-foreground" />
+            <span className="font-serif text-xl text-muted-foreground">Breath.</span>
           </div>
           <p className="text-sm text-muted-foreground">
             © 2026 Breath Tracker. Designed for clarity.
