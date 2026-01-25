@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, Variants } from "framer-motion";
 import { ArrowRight, Leaf, Wallet, Activity, Wind, ShieldCheck, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WaitlistDialog } from "@/components/waitlist-dialog";
 
 // Animation variants for smooth entry
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -18,7 +18,7 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
@@ -44,18 +44,18 @@ export default function Home() {
 
       {/* Navigation - Dynamic Scroll Transition */}
       <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none">
-         <motion.nav
-           style={{
-             width: navWidth,
-             y: navY,
-             borderRadius: navRadius,
-             backgroundColor: navBg,
-             borderColor: navBorder,
-             boxShadow: navShadow,
-             backdropFilter: "blur(12px)"
-           }}
-           className="pointer-events-auto max-w-5xl 2xl:max-w-6xl h-14 flex items-center justify-between px-6 border border-transparent transition-all"
-         >
+        <motion.nav
+          style={{
+            width: navWidth,
+            y: navY,
+            borderRadius: navRadius,
+            backgroundColor: navBg,
+            borderColor: navBorder,
+            boxShadow: navShadow,
+            backdropFilter: "blur(12px)"
+          }}
+          className="pointer-events-auto max-w-5xl 2xl:max-w-6xl h-14 flex items-center justify-between px-6 border border-transparent transition-all"
+        >
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
               <Leaf className="w-4 h-4 text-primary" />
