@@ -60,7 +60,7 @@ export default function Home() {
             <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
               <Leaf className="w-4 h-4 text-primary" />
             </div>
-            <span className="font-serif font-bold text-lg tracking-tight text-foreground/90">Breath.</span>
+            <span className="font-serif font-bold text-lg tracking-tight text-foreground/90">Recovery Compass</span>
           </div>
           <Button
             variant="ghost"
@@ -235,10 +235,10 @@ export default function Home() {
         <div className="max-w-6xl 2xl:max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-3">
             <Leaf className="w-6 h-6 text-muted-foreground" />
-            <span className="font-serif text-xl text-muted-foreground">Breath.</span>
+            <span className="font-serif text-xl text-muted-foreground">Recovery Compass</span>
           </div>
           <p className="text-sm text-muted-foreground">
-            © 2026 Breath Tracker. Designed for clarity.
+            © 2026 Recovery Compass. Designed for clarity.
           </p>
         </div>
       </footer>

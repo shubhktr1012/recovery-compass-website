@@ -17,7 +17,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Quit Smoking Tracker - Reclaim Your Breath",
+  title: "Recovery Compass - Reclaim Your Clarity",
   description: "A premium companion for your journey to a smoke-free life. Track progress, health recovery, and savings with clarity.",
 };
 
