@@ -75,18 +75,18 @@ export default function Home() {
 
       <main className="pt-40 pb-32 px-6 relative z-0">
         {/* Breathing Orb Background */}
-        <div className="absolute top-[40px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] pointer-events-none -z-10">
+        <div className="absolute top-[-300px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] pointer-events-none -z-10">
           <motion.div
             animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.5, 0.8, 0.5],
+              scale: [1, 1.25, 1],
+              opacity: [0.6, 0.9, 0.6],
             }}
             transition={{
               duration: 8,
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="w-full h-full bg-primary/15 rounded-full blur-[100px]"
+            className="w-full h-full bg-gradient-to-br from-primary/30 to-accent/30 rounded-full blur-[90px]"
           />
         </div>
 
