@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Gelasio, Inter } from "next/font/google";
+import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 import "./globals.css";
 
-// "New Luxury" Serif for Headings
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+// Elegant Serif for Headings
+const gelasio = Gelasio({
+  variable: "--font-serif",
   subsets: ["latin"],
   display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 // Clean Sans for Body/Data
@@ -29,9 +31,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${playfair.variable} ${inter.variable} font-sans antialiased`}
+        className={`${gelasio.variable} ${inter.variable} font-sans antialiased`}
       >
-        {children}
+        <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
     </html>
   );
