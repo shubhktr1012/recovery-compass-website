@@ -8,26 +8,40 @@ interface HeroSectionProps {
 
 export function HeroSection({ onPrimaryClick, onSecondaryClick }: HeroSectionProps) {
     return (
-        <section className="min-h-[90vh] flex items-center justify-center px-6 md:px-12 lg:px-20 pt-24 pb-16">
-            <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <section className="relative min-h-screen flex items-end justify-center px-8 pt-24 pb-20 overflow-hidden">
 
-                {/* Left: Content */}
-                <div className="space-y-8 text-center lg:text-left">
+            {/* Background Image */}
+            <div className="absolute inset-0 z-0 bg-neutral-100">
+                <Image
+                    src="/hero.jpeg"
+                    alt="Background"
+                    fill
+                    className="object-cover"
+                    priority
+                />
+            </div>
+
+            {/* Content Overlay - Gradient removed as per request */}
+            {/* <div className="absolute inset-0 z-10 bg-gradient-to-r from-neutral-50 via-neutral-50/80 to-transparent w-full md:w-3/4 lg:w-2/3" /> */}
+
+            {/* Content Container */}
+            <div className="relative z-20 w-full max-w-[1200px]">
+                <div className="w-full md:max-w-[50%] space-y-8 text-center md:text-left">
                     {/* Headline */}
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[1.1]">
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-normal tracking-tight leading-[1.1] text-white">
                         A smarter way to navigate quitting.
                     </h1>
 
                     {/* Subheadline */}
-                    <p className="text-lg md:text-xl text-neutral-600 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                        Navigate urges, calm your body, and build steady change — one day at a time.
+                    <p className="text-lg md:text-xl text-neutral-200 max-w-xl mx-auto md:mx-0 leading-relaxed font-medium">
+                        Navigate urges, calm your body, and build steady change - one day at a time.
                     </p>
 
                     {/* CTAs */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-4">
                         <Button
                             size="lg"
-                            className="rounded-full px-8 py-6 text-base font-semibold bg-neutral-900 hover:bg-neutral-800 text-white"
+                            className="rounded-full px-8 py-6 text-base font-semibold bg-white hover:bg-neutral-100 text-neutral-900 shadow-lg shadow-black/20"
                             onClick={onPrimaryClick}
                         >
                             Join the Waitlist
@@ -35,25 +49,13 @@ export function HeroSection({ onPrimaryClick, onSecondaryClick }: HeroSectionPro
                         <Button
                             size="lg"
                             variant="outline"
-                            className="rounded-full px-8 py-6 text-base font-semibold border-neutral-300 hover:bg-neutral-100"
+                            className="rounded-full px-8 py-6 text-base font-semibold border-neutral-300/50 bg-transparent text-white hover:bg-white/10"
                             onClick={onSecondaryClick}
                         >
-                            Learn More
+                            Explore Programs
                         </Button>
                     </div>
                 </div>
-
-                {/* Right: Image */}
-                <div className="relative">
-                    <div className="aspect-[4/3] bg-neutral-100 rounded-3xl flex items-center justify-center border border-neutral-200 overflow-hidden">
-                        <div className="text-center p-8">
-                            <div className="w-16 h-16 bg-neutral-200 rounded-2xl mx-auto mb-4" />
-                            <span className="text-neutral-400 text-sm">Hero Image</span>
-                            <p className="text-neutral-300 text-xs mt-1">Recommended: 800×600</p>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </section>
     );

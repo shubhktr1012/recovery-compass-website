@@ -7,8 +7,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
-  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
 
   --color-primary: var(--primary);
@@ -166,6 +165,6 @@
   h4,
   h5,
   h6 {
-    @apply font-serif tracking-tight;
+    @apply font-sans font-medium tracking-tight;
   }
 }

@@ -1,20 +1,28 @@
 import type { Metadata } from "next";
-import { Gelasio, Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 import "./globals.css";
 
-// Elegant Serif for Headings
-const gelasio = Gelasio({
-  variable: "--font-serif",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
-});
-
-// Clean Sans for Body/Data
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
+// Local Satoshi Font
+const satoshi = localFont({
+  src: [
+    {
+      path: "../public/fonts/Satoshi-Regular.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Satoshi-Medium.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Satoshi-Bold.otf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-sans",
   display: "swap",
 });
 
@@ -31,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${gelasio.variable} ${inter.variable} font-sans antialiased`}
+        className={`${satoshi.variable} font-sans antialiased`}
       >
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
