@@ -8,6 +8,7 @@ import {
   ProblemSection,
   SolutionSection,
   JourneySection,
+  ExploreProgramsSection,
   FAQSection,
   FooterSection,
 } from "@/components/sections";
@@ -44,6 +45,8 @@ export default function Home() {
         <ProblemSection />
 
         <SolutionSection />
+
+        <ExploreProgramsSection />
 
         <JourneySection />
 
