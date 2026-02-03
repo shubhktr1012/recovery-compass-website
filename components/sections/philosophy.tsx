@@ -11,12 +11,12 @@ export function PhilosophySection() {
                 </Badge>
 
                 {/* Headline */}
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal tracking-tight leading-tight text-foreground">
                     Clarity starts in silence.
                 </h2>
 
                 {/* Body */}
-                <p className="text-lg md:text-xl text-neutral-500 leading-relaxed">
+                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
                     Fighting urges doesn't work. Recovery Compass offers regulation instead —
                     a calm, structured approach that works with your body, not against it.
                 </p>

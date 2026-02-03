@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Navbar } from "@/components/navbar";
+import { NavbarSticky } from "@/components/navbar-sticky";
 import {
-  HeroSection,
+  HeroOmega,
   PhilosophySection,
   ProblemSection,
   SolutionSection,
@@ -29,11 +29,11 @@ export default function Home() {
       <WaitlistDialog open={waitlistOpen} onOpenChange={setWaitlistOpen} />
 
       {/* Navigation */}
-      <Navbar onCtaClick={openWaitlist} />
+      <NavbarSticky onCtaClick={openWaitlist} />
 
       {/* Page Sections */}
       <main>
-        <HeroSection
+        <HeroOmega
           onPrimaryClick={openWaitlist}
           onSecondaryClick={scrollToPhilosophy}
         />

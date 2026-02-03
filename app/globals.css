@@ -4,10 +4,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
+  --font-erode: 'Erode', serif;
   --font-mono: var(--font-geist-mono);
 
   --color-primary: var(--primary);
@@ -41,97 +42,107 @@
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
+
+  --breakpoint-md: 810px;
+  --breakpoint-lg: 1200px;
+}
+
+@layer utilities {
+  .font-erode {
+    font-family: 'Erode', serif;
+  }
 }
 
 :root {
-  /* Warm Luxury Palette */
+  /* Minimal Triad Palette */
   --radius: 0.75rem;
-  /* Softer, friendlier corners */
 
-  /* Background: Warm Off-White / Paper (#FBFBF9) */
-  --background: oklch(0.98 0.01 100);
+  /* 1. Canvas White */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.2547 0.0545 124.54);
+  /* Deep Moss */
 
-  /* Foreground: Deep Charcoal/Brown-Grey (Not harsh black) */
-  --foreground: oklch(0.25 0.02 50);
+  /* 2. Deep Moss (Primary Brand) */
+  --primary: oklch(0.2547 0.0545 124.54);
+  --primary-foreground: oklch(1 0 0);
+  /* White */
 
-  /* Card: Slightly warmer white */
-  --card: oklch(0.995 0.005 100);
-  --card-foreground: oklch(0.25 0.02 50);
+  /* 3. Sage Mist (Secondary/Surface) */
+  --secondary: oklch(0.887 0.0349 123.26);
+  --secondary-foreground: oklch(0.2547 0.0545 124.54);
+  /* Deep Moss */
 
-  /* Popover */
-  --popover: oklch(0.995 0.005 100);
-  --popover-foreground: oklch(0.25 0.02 50);
+  /* Derived Utility Shades (Strictly from Moss Hue ~124) */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2547 0.0545 124.54);
 
-  /* Primary: Deep Forest Green / Sage */
-  --primary: oklch(0.45 0.1 140);
-  --primary-foreground: oklch(0.99 0.02 100);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2547 0.0545 124.54);
 
-  /* Secondary: Soft Sand/Beige */
-  --secondary: oklch(0.95 0.04 95);
-  --secondary-foreground: oklch(0.35 0.05 140);
+  /* Muted: Very light mist for backgrounds */
+  --muted: oklch(0.96 0.01 124);
+  --muted-foreground: oklch(0.55 0.04 124);
 
-  /* Muted: Warm Grey */
-  --muted: oklch(0.96 0.01 100);
-  --muted-foreground: oklch(0.55 0.02 80);
+  /* Accent: Sage Mist */
+  --accent: oklch(0.887 0.0349 123.26);
+  --accent-foreground: oklch(0.2547 0.0545 124.54);
 
-  /* Accent: Soft Green Tea */
-  --accent: oklch(0.94 0.05 130);
-  --accent-foreground: oklch(0.30 0.05 140);
-
-  /* Destructive: Muted Earthy Red */
+  /* Destructive: Keep accessible red, but muted */
   --destructive: oklch(0.6 0.15 25);
   --destructive-foreground: oklch(0.98 0 0);
 
-  /* Border: Subtle Warm Grey */
-  --border: oklch(0.92 0.02 95);
-  --input: oklch(0.92 0.02 95);
-  --ring: oklch(0.45 0.1 140);
-  /* Matches Primary */
+  /* Borders: Light Moss */
+  --border: oklch(0.92 0.02 124);
+  --input: oklch(0.92 0.02 124);
+  --ring: oklch(0.2547 0.0545 124.54);
+  /* Focus Ring = Primary */
 
-  /* Charts (Nature Tones) */
-  --chart-1: oklch(0.45 0.1 140);
-  /* Forest */
-  --chart-2: oklch(0.60 0.15 110);
-  /* Leaf */
-  --chart-3: oklch(0.75 0.15 85);
-  /* Earth */
-  --chart-4: oklch(0.70 0.10 160);
-  /* Sage */
-  --chart-5: oklch(0.85 0.10 90);
-  /* Sand */
+  /* Charts (Monochromatic Green Scale) */
+  --chart-1: oklch(0.2547 0.0545 124.54);
+  /* Deep Moss */
+  --chart-2: oklch(0.40 0.05 124);
+  --chart-3: oklch(0.55 0.05 124);
+  --chart-4: oklch(0.70 0.04 124);
+  --chart-5: oklch(0.887 0.0349 123.26);
+  /* Sage Mist */
 }
 
-/* Dark Mode: "Deep Night Forest" instead of "Cyber Black" */
+/* Dark Mode: Deep Moss Background */
 .dark {
-  --background: oklch(0.18 0.03 140);
-  /* Deep dark green-grey */
-  --foreground: oklch(0.98 0.01 100);
+  --background: oklch(0.2547 0.0545 124.54);
+  /* Deep Moss */
+  --foreground: oklch(1 0 0);
+  /* White */
 
-  --card: oklch(0.20 0.03 140);
-  --card-foreground: oklch(0.98 0.01 100);
+  --card: oklch(0.22 0.05 124);
+  /* Slightly darker moss */
+  --card-foreground: oklch(1 0 0);
 
-  --popover: oklch(0.20 0.03 140);
-  --popover-foreground: oklch(0.98 0.01 100);
+  --popover: oklch(0.22 0.05 124);
+  --popover-foreground: oklch(1 0 0);
 
-  --primary: oklch(0.65 0.12 140);
-  /* Brighter sage for dark mode */
-  --primary-foreground: oklch(0.18 0.03 140);
+  --primary: oklch(1 0 0);
+  /* White in dark mode */
+  --primary-foreground: oklch(0.2547 0.0545 124.54);
+  /* Moss Text */
 
-  --secondary: oklch(0.25 0.04 140);
-  --secondary-foreground: oklch(0.98 0.01 100);
+  --secondary: oklch(0.35 0.05 124);
+  /* Mid-tone moss */
+  --secondary-foreground: oklch(1 0 0);
 
-  --muted: oklch(0.25 0.03 140);
-  --muted-foreground: oklch(0.70 0.03 140);
+  --muted: oklch(0.30 0.04 124);
+  --muted-foreground: oklch(0.70 0.02 124);
 
-  --accent: oklch(0.28 0.05 140);
-  --accent-foreground: oklch(0.98 0.01 100);
+  --accent: oklch(0.35 0.05 124);
+  --accent-foreground: oklch(1 0 0);
 
   --destructive: oklch(0.6 0.15 25);
-  --destructive-foreground: oklch(0.98 0 0);
+  --destructive-foreground: oklch(1 0 0);
 
-  --border: oklch(0.30 0.03 140);
-  --input: oklch(0.30 0.03 140);
-  --ring: oklch(0.65 0.12 140);
+  --border: oklch(0.35 0.04 124);
+  --input: oklch(0.35 0.04 124);
+  --ring: oklch(0.887 0.0349 123.26);
+  /* Sage Ring */
 }
 
 @layer base {
