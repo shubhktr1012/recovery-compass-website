@@ -45,6 +45,29 @@
 
   --breakpoint-md: 810px;
   --breakpoint-lg: 1200px;
+
+  --animate-accordion-down: accordion-down 0.5s ease-out;
+  --animate-accordion-up: accordion-up 0.5s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0
+    }
+
+    to {
+      height: var(--radix-accordion-content-height)
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height)
+    }
+
+    to {
+      height: 0
+    }
+  }
 }
 
 @layer utilities {
@@ -63,7 +86,7 @@
   /* Deep Moss */
 
   /* 2. Deep Moss (Primary Brand) */
-  --primary: oklch(0.2547 0.0545 124.54);
+  --primary: oklch(0.2475 0.0661 146.79);
   --primary-foreground: oklch(1 0 0);
   /* White */
 

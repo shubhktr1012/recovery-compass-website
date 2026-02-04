@@ -21,7 +21,7 @@ const features = [
 
 export function SolutionSection() {
     return (
-        <section className="py-24 md:py-32 px-6 md:px-16 lg:px-24">
+        <section className="py-12 px-6 md:px-16 lg:px-24">
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-16 space-y-4">

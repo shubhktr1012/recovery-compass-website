@@ -6,7 +6,7 @@ interface HeroSectionProps {
     onSecondaryClick?: () => void;
 }
 
-export function HeroSection({ onPrimaryClick, onSecondaryClick }: HeroSectionProps) {
+export function HeroVariantTrust({ onPrimaryClick, onSecondaryClick }: HeroSectionProps) {
     return (
         <section className="relative min-h-screen flex items-end justify-center px-6 md:px-16 lg:px-24 pt-24 pb-15 overflow-hidden">
 
@@ -62,7 +62,7 @@ export function HeroSection({ onPrimaryClick, onSecondaryClick }: HeroSectionPro
                                         key={i}
                                         src={src}
                                         alt="Community member"
-                                        className="relative w-8 h-8 lg:w-10 lg:h-10 rounded-full border-2 border-[#1D2706] object-cover transition-transform duration-300 hover:-translate-y-1"
+                                        className="relative w-8 h-8 lg:w-10 lg:h-10 rounded-full border-2 border-[oklch(0.2475_0.0661_146.79)] object-cover transition-transform duration-300 hover:-translate-y-1"
                                     />
                                 ))}
                             </div>

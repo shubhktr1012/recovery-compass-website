@@ -26,7 +26,7 @@ const steps = [
 
 export function JourneySection() {
     return (
-        <section className="py-24 md:py-32 px-6 md:px-16 lg:px-24 bg-white overflow-hidden">
+        <section className="py-12 px-6 md:px-16 lg:px-24 bg-white overflow-hidden">
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-16 space-y-4">

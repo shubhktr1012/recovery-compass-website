@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Compass } from "lucide-react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -18,10 +18,14 @@ export function NavbarSticky({ onCtaClick }: NavbarStickyProps) {
             <div className="flex items-center justify-between px-6 md:px-12 py-4 max-w-[1200px] mx-auto">
 
                 {/* Brand */}
-                <div className="flex items-center gap-2 text-[#1C2706]">
-                    <div className="flex size-8 items-center justify-center rounded-full bg-[#1C2706]/5">
-                        <Compass className="size-5 text-[#1C2706]" strokeWidth={1.5} />
-                    </div>
+                <div className="flex items-center gap-2 text-[oklch(0.2475_0.0661_146.79)]">
+                    <Image
+                        src="/rc-logo-black.svg"
+                        alt="Recovery Compass"
+                        width={32}
+                        height={32}
+                        className="size-8"
+                    />
                     <span className="font-erode text-xl font-semibold tracking-tighter text-black">
                         Recovery Compass
                     </span>
@@ -35,7 +39,7 @@ export function NavbarSticky({ onCtaClick }: NavbarStickyProps) {
                             <a
                                 key={link}
                                 href={`#${link.toLowerCase().replace(" ", "-").replace("?", "")}`}
-                                className="text-base font-medium text-[#1C2706] hover:text-[#1C2706]/70 transition-colors"
+                                className="text-base font-medium text-[oklch(0.2475_0.0661_146.79)] hover:text-[oklch(0.2475_0.0661_146.79)]/70 transition-colors"
                             >
                                 {link}
                             </a>
@@ -47,7 +51,7 @@ export function NavbarSticky({ onCtaClick }: NavbarStickyProps) {
                         onClick={onCtaClick}
                         className={cn(
                             "hidden md:inline-flex rounded-full px-6 text-base font-medium transition-transform active:scale-95",
-                            "bg-[#1C2706] text-white hover:bg-[#1C2706]/90",
+                            "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90",
                             "border-none shadow-none h-11"
                         )}
                     >
@@ -64,13 +68,13 @@ export function NavbarSticky({ onCtaClick }: NavbarStickyProps) {
                         <motion.span
                             animate={isOpen ? { rotate: 45, y: 4 } : { rotate: 0, y: 0 }}
                             transition={{ duration: 0.6, ease: "easeInOut" }}
-                            className="w-5 h-0.5 bg-[#1C2706] block origin-center rounded-full"
+                            className="w-5 h-0.5 bg-[oklch(0.2475_0.0661_146.79)] block origin-center rounded-full"
                         />
                         {/* Bottom Line */}
                         <motion.span
                             animate={isOpen ? { rotate: -45, y: -4 } : { rotate: 0, y: 0 }}
                             transition={{ duration: 0.6, ease: "easeInOut" }}
-                            className="w-5 h-0.5 bg-[#1C2706] block origin-center rounded-full"
+                            className="w-5 h-0.5 bg-[oklch(0.2475_0.0661_146.79)] block origin-center rounded-full"
                         />
                     </button>
                 </div>
@@ -84,14 +88,14 @@ export function NavbarSticky({ onCtaClick }: NavbarStickyProps) {
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                        className="md:hidden absolute top-full left-0 w-full bg-white border-b border-[#1C2706]/5 shadow-lg overflow-hidden"
+                        className="md:hidden absolute top-full left-0 w-full bg-white border-b border-[oklch(0.2475_0.0661_146.79)]/5 shadow-lg overflow-hidden"
                     >
                         <nav className="flex flex-col gap-6 px-6 py-6 items-start">
                             {["Why Us?", "Programs", "Testimonials"].map((link, i) => (
                                 <motion.a
                                     key={link}
                                     href={`#${link.toLowerCase().replace(" ", "-").replace("?", "")}`}
-                                    className="text-base font-medium text-[#1C2706]"
+                                    className="text-base font-medium text-[oklch(0.2475_0.0661_146.79)]"
                                     onClick={() => setIsOpen(false)}
                                     initial={{ opacity: 0, y: -10 }}
                                     animate={{ opacity: 1, y: 0 }}
@@ -114,7 +118,7 @@ export function NavbarSticky({ onCtaClick }: NavbarStickyProps) {
                                     }}
                                     className={cn(
                                         "w-auto rounded-full px-6 py-3 text-base font-medium",
-                                        "bg-[#1C2706] text-white hover:bg-[#1C2706]/90",
+                                        "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90",
                                         "h-auto"
                                     )}
                                 >

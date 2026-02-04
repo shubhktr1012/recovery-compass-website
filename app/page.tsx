@@ -7,10 +7,10 @@ import {
   PhilosophySection,
   ProblemSection,
   SolutionSection,
-  JourneySection,
   ExploreProgramsSection,
+  CTASection,
   FAQSection,
-  FooterSection,
+  FooterVariantTwo,
 } from "@/components/sections";
 import { WaitlistDialog } from "@/components/waitlist-dialog";
 
@@ -38,6 +38,8 @@ export default function Home() {
           onSecondaryClick={scrollToPhilosophy}
         />
 
+
+
         <div id="philosophy">
           <PhilosophySection />
         </div>
@@ -48,11 +50,11 @@ export default function Home() {
 
         <ExploreProgramsSection />
 
-        <JourneySection />
+        <CTASection />
 
         <FAQSection />
 
-        <FooterSection onCtaClick={openWaitlist} />
+        <FooterVariantTwo onCtaClick={openWaitlist} />
       </main>
     </div>
   );

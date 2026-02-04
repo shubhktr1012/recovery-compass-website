@@ -23,7 +23,7 @@ export function TestimonialCard({
         <div
             className={cn(
                 "flex flex-col items-start gap-6 p-8 rounded-xl w-[350px] shrink-0 min-h-[380px]",
-                "bg-[#d5dec5] text-[#1C2706]",
+                "bg-[oklch(0.95_0.025_146.79)] text-[oklch(0.2475_0.0661_146.79)]",
                 className
             )}
         >
@@ -34,7 +34,7 @@ export function TestimonialCard({
                         key={i}
                         className={cn(
                             "size-5",
-                            i < rating ? "fill-[#1C2706] text-[#1C2706]" : "fill-transparent text-[#1C2706]/30"
+                            i < rating ? "fill-[oklch(0.2475_0.0661_146.79)] text-[oklch(0.2475_0.0661_146.79)]" : "fill-transparent text-[oklch(0.2475_0.0661_146.79)]/30"
                         )}
                     />
                 ))}
@@ -47,9 +47,9 @@ export function TestimonialCard({
 
             {/* 3. Author Info */}
             <div className="flex items-center gap-4 mt-auto">
-                <Avatar className="size-12 border-2 border-[#1C2706]">
+                <Avatar className="size-12 border-2 border-[oklch(0.2475_0.0661_146.79)]">
                     <AvatarImage src={avatarSrc} alt={name} className="object-cover" />
-                    <AvatarFallback className="bg-[#1C2706]/10 text-[#1C2706]">
+                    <AvatarFallback className="bg-[oklch(0.2475_0.0661_146.79)]/10 text-[oklch(0.2475_0.0661_146.79)]">
                         {name.charAt(0)}
                     </AvatarFallback>
                 </Avatar>

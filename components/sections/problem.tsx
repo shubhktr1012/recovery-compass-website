@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 export function ProblemSection() {
     return (
-        <section className="relative py-24 md:py-32 overflow-hidden bg-white">
+        <section className="relative py-12 overflow-hidden bg-white">
             <div className="max-w-[1200px] mx-auto px-6 relative z-10">
 
                 {/* Section Header */}

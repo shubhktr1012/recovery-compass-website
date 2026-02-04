@@ -4,7 +4,7 @@ import { Check } from "lucide-react";
 
 export function ExploreProgramsSection() {
     return (
-        <section className="py-24 md:py-32 px-6 md:px-16 lg:px-24 bg-secondary/10">
+        <section className="py-12 px-6 md:px-16 lg:px-24 bg-secondary/10">
             <div className="max-w-[1200px] mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 text-left">
                     <div className="max-w-2xl space-y-4">
