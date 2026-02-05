@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { TestimonialMarquee } from "./testimonials/testimonial-marquee";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { motion, Variants } from "framer-motion";
 
@@ -57,27 +58,30 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                             <p className="text-base font-medium text-[oklch(0.2475_0.0661_146.79)]">
                                 Join 2,140+ beyond the urge
                             </p>
-                            <div className="flex -space-x-2">
+                            <div className="flex items-center">
                                 {[
                                     "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=64&h=64",
                                     "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=64&h=64",
                                     "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=64&h=64",
                                     "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=64&h=64"
                                 ].map((src, i) => (
-                                    <motion.img
+                                    <motion.div
                                         key={i}
-                                        src={src}
-                                        alt="Community member"
-                                        className="relative w-7 h-7 rounded-full border-2 border-[oklch(0.2475_0.0661_146.79)] object-cover cursor-pointer"
-                                        whileHover={{ scale: 1.2, zIndex: 10 }}
+                                        className="relative -ml-2 first:ml-0 z-0 hover:z-10"
+                                        whileHover={{ scale: 1.2, zIndex: 20 }}
                                         transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                                    />
+                                    >
+                                        <Avatar className="w-7 h-7 border-2 border-[oklch(0.2475_0.0661_146.79)] cursor-pointer">
+                                            <AvatarImage src={src} alt="Community member" className="object-cover" />
+                                            <AvatarFallback className="bg-[oklch(0.2475_0.0661_146.79)] text-white text-[8px]">M</AvatarFallback>
+                                        </Avatar>
+                                    </motion.div>
                                 ))}
                             </div>
                         </motion.div>
 
                         {/* Headline - Centered */}
-                        <motion.div variants={itemVariants} className="max-w-[280px] md:max-w-[350px] lg:max-w-[520px] mx-auto space-y-6">
+                        <motion.div variants={itemVariants} className="max-w-[320px] md:max-w-[350px] lg:max-w-[520px] mx-auto space-y-6">
                             <h1 className="text-4xl md:text-5xl lg:text-7xl font-erode font-semibold tracking-tight leading-[1.05] text-black">
                                 A smarter way to <span className="text-[oklch(0.2475_0.0661_146.79)] italic">quit smoking.</span>
                             </h1>

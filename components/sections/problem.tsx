@@ -14,7 +14,7 @@ function PointerText({ title, subtitle, source, href }: { title: string; subtitl
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-1.5 text-[10px] tracking-[0.3em] text-black/40 font-bold uppercase font-satoshi hover:text-[#05290C] transition-colors"
+                className="group flex items-center gap-1.5 text-xs tracking-[0.3em] text-black/40 font-bold uppercase font-satoshi hover:text-[#05290C] transition-colors"
             >
                 Source: {source}
                 <ArrowUpRight className="w-3 h-3 translate-y-[0.5px] transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -385,7 +385,7 @@ export function ProblemSection() {
                                     href={item.href}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="group flex items-center gap-1.5 text-[10px] tracking-[0.3em] text-black/40 font-bold uppercase font-satoshi hover:text-[#05290C] transition-colors"
+                                    className="group flex items-center gap-1.5 text-xs tracking-[0.3em] text-black/40 font-bold uppercase font-satoshi hover:text-[#05290C] transition-colors"
                                 >
                                     Source: {item.source}
                                     <ArrowUpRight className="w-3 h-3 translate-y-[0.5px] transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
