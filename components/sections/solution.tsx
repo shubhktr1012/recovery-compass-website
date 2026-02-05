@@ -74,19 +74,19 @@ function FeatureCard({ feature }: { feature: typeof features[0] }) {
                 </span>
 
                 {/* Headline */}
-                <h3 className="text-2xl md:text-3xl font-erode text-primary mb-3 leading-tight">
+                <h3 className="text-2xl md:text-3xl font-sans text-primary mb-3 leading-tight">
                     {feature.headline}
                 </h3>
 
                 {/* Description */}
-                <p className="text-sm md:text-base text-primary/70 font-satoshi leading-relaxed mb-4">
+                <p className="text-sm md:text-base text-primary/70 font-sans leading-relaxed mb-4">
                     {feature.description}
                 </p>
 
                 {/* View More Button */}
                 <button
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="flex items-center gap-2 text-sm font-satoshi text-primary/80 hover:text-primary transition-colors"
+                    className="flex items-center gap-2 text-sm font-sans text-primary/80 hover:text-primary transition-colors"
                 >
                     <span>{isExpanded ? "View Less" : "View More"}</span>
                     <motion.span
@@ -108,7 +108,7 @@ function FeatureCard({ feature }: { feature: typeof features[0] }) {
                             className="mt-4 space-y-3 overflow-hidden"
                         >
                             {feature.bullets.map((bullet, idx) => (
-                                <li key={idx} className="flex items-start gap-3 text-sm text-primary/70 font-satoshi">
+                                <li key={idx} className="flex items-start gap-3 text-sm text-primary/70 font-sans">
                                     <span className="w-1.5 h-1.5 rounded-full bg-primary/40 mt-1.5 shrink-0" />
                                     <span>
                                         <strong className="text-primary/90">{bullet.title}</strong> — {bullet.desc}
@@ -218,14 +218,14 @@ export function SolutionSection() {
             <section className="lg:hidden bg-primary px-4 py-16 md:px-8 md:py-20">
                 {/* Mobile Intro */}
                 <div className="max-w-2xl mx-auto text-center mb-12">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-secondary/30 bg-secondary/5 text-secondary text-xs uppercase tracking-widest font-satoshi mb-6">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-secondary/30 bg-secondary/5 text-secondary text-xs uppercase tracking-widest font-sans mb-6">
                         <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
                         The Solution
                     </div>
-                    <h2 className="text-4xl md:text-5xl font-erode font-medium text-secondary mb-4 leading-tight">
+                    <h2 className="text-4xl md:text-5xl font-sans font-medium text-secondary mb-4 leading-tight">
                         The Recovery Toolkit
                     </h2>
-                    <p className="text-base md:text-lg text-secondary/70 font-satoshi">
+                    <p className="text-base md:text-lg text-secondary/70 font-sans">
                         A calm, structured approach to navigating urges and building steady change.
                     </p>
                 </div>
@@ -254,11 +254,11 @@ export function SolutionSection() {
                             <motion.div
                                 style={{ y: introHeadlineY, opacity: introHeadlineOpacity, zIndex: 10, position: "relative" }}
                             >
-                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-secondary/30 bg-secondary/5 text-secondary text-xs uppercase tracking-widest font-satoshi mb-6">
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-secondary/30 bg-secondary/5 text-secondary text-xs uppercase tracking-widest font-sans mb-6">
                                     <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
                                     The Solution
                                 </div>
-                                <h2 className="text-5xl md:text-5xl lg:text-6xl font-erode font-medium text-secondary mb-8 max-w-4xl leading-[0.9]">
+                                <h2 className="text-5xl md:text-5xl lg:text-6xl font-sans font-medium text-secondary mb-8 max-w-4xl leading-[0.9]">
                                     The Recovery <br /> Toolkit
                                 </h2>
                                 {/* Scroll Cue */}
@@ -281,26 +281,26 @@ export function SolutionSection() {
                                     <span className="font-geist-mono text-secondary/50 text-sm tracking-widest uppercase mb-4 block">
                                         01 — Insight
                                     </span>
-                                    <h3 className="text-4xl md:text-5xl 2xl:text-6xl font-erode text-secondary mb-4 lg:mb-3 xl:mb-6 leading-tight">
+                                    <h3 className="text-4xl md:text-5xl 2xl:text-6xl font-sans text-secondary mb-4 lg:mb-3 xl:mb-6 leading-tight">
                                         Pattern <br /> Awareness
                                     </h3>
-                                    <p className="text-base lg:text-sm xl:text-xl text-secondary/80 font-satoshi leading-relaxed mb-4 lg:mb-3 xl:mb-6">
+                                    <p className="text-base lg:text-sm xl:text-xl text-secondary/80 font-sans leading-relaxed mb-4 lg:mb-3 xl:mb-6">
                                         You can't fight what you can't see. We visualize your rhythms so you can predict triggers before they become urges.
                                     </p>
                                     <ul className="hidden xl:block space-y-3 mb-8">
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
+                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
                                             <span><strong className="text-secondary/90">Daily mood, stress & urge check-ins</strong> — Quick, optional logs that reveal your patterns over time.</span>
                                         </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
+                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
                                             <span><strong className="text-secondary/90">Trigger mapping</strong> — See when and why urges appear, not just how many.</span>
                                         </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
+                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
                                             <span><strong className="text-secondary/90">Weekly insights</strong> — Progress without judgment or comparison.</span>
                                         </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
+                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
                                             <span><strong className="text-secondary/90">Pattern awareness without overthinking</strong> — Just notice. No pressure.</span>
                                         </li>
@@ -318,26 +318,26 @@ export function SolutionSection() {
                                     <span className="font-geist-mono text-secondary/50 text-sm tracking-widest uppercase mb-4 block">
                                         02 — Regulation
                                     </span>
-                                    <h3 className="text-4xl md:text-5xl 2xl:text-6xl font-erode text-secondary mb-4 lg:mb-3 xl:mb-6 leading-tight">
+                                    <h3 className="text-4xl md:text-5xl 2xl:text-6xl font-sans text-secondary mb-4 lg:mb-3 xl:mb-6 leading-tight">
                                         Audio <br /> Coaching
                                     </h3>
-                                    <p className="text-base lg:text-sm xl:text-xl text-secondary/80 font-satoshi leading-relaxed mb-4 lg:mb-3 xl:mb-6">
+                                    <p className="text-base lg:text-sm xl:text-xl text-secondary/80 font-sans leading-relaxed mb-4 lg:mb-3 xl:mb-6">
                                         Press play on panic. Guided somatic sessions that calm your nervous system in minutes—no meditation experience required.
                                     </p>
                                     <ul className="hidden xl:block space-y-3 mb-8">
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
+                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
                                             <span><strong className="text-secondary/90">Calm Yourself breathing guides</strong> — 4-6 breathing technique to signal safety to your body.</span>
                                         </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
+                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
                                             <span><strong className="text-secondary/90">5-4-3-2-1 grounding</strong> — Pulls you out of habit memory into the present moment.</span>
                                         </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
+                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
                                             <span><strong className="text-secondary/90">Progressive muscle relaxation</strong> — Tense and release to tell your body "I don't need to react."</span>
                                         </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
+                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
                                             <span><strong className="text-secondary/90">Works during intense urges</strong> — Designed for real moments, not ideal conditions.</span>
                                         </li>
@@ -355,26 +355,26 @@ export function SolutionSection() {
                                     <span className="font-geist-mono text-secondary/50 text-sm tracking-widest uppercase mb-4 block">
                                         03 — Community
                                     </span>
-                                    <h3 className="text-4xl md:text-5xl 2xl:text-6xl font-erode text-secondary mb-4 lg:mb-3 xl:mb-6 leading-tight">
+                                    <h3 className="text-4xl md:text-5xl 2xl:text-6xl font-sans text-secondary mb-4 lg:mb-3 xl:mb-6 leading-tight">
                                         The Panic <br /> Button
                                     </h3>
-                                    <p className="text-base lg:text-sm xl:text-xl text-secondary/80 font-satoshi leading-relaxed mb-4 lg:mb-3 xl:mb-6">
+                                    <p className="text-base lg:text-sm xl:text-xl text-secondary/80 font-sans leading-relaxed mb-4 lg:mb-3 xl:mb-6">
                                         Real-time support for the moments when the pull feels strongest. One tap. Immediate calm.
                                     </p>
                                     <ul className="hidden xl:block space-y-3 mb-8">
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
+                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
                                             <span><strong className="text-secondary/90">10-minute delay timer</strong> — Say "I'm not deciding now" and watch the urge peak and fall.</span>
                                         </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
+                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
                                             <span><strong className="text-secondary/90">Urge Now protocol</strong> — Structured steps: Breathe → Ground → Move → Wait.</span>
                                         </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
+                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
                                             <span><strong className="text-secondary/90">No willpower needed</strong> — Most urges fade within 7-10 minutes. Waiting works.</span>
                                         </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
+                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
                                             <span><strong className="text-secondary/90">Works for smoking and alcohol urges</strong> — Same nervous system, same solution.</span>
                                         </li>
@@ -395,7 +395,7 @@ export function SolutionSection() {
                                 style={{ y: introSubheadY, opacity: introSubheadOpacity }}
                                 className="absolute bottom-16 left-0 right-0 z-10"
                             >
-                                <p className="text-xl md:text-2xl text-secondary/80 font-satoshi max-w-xl leading-relaxed">
+                                <p className="text-xl md:text-2xl text-secondary/80 font-sans max-w-xl leading-relaxed">
                                     More than a subscription - it's a complete toolkit for navigating urges, calming your nervous system, and building steady change through structured daily programs.
                                 </p>
                             </motion.div>
@@ -422,7 +422,7 @@ export function SolutionSection() {
                                     className="absolute inset-0 z-30 bg-black/5 overflow-hidden shadow-2xl rounded-sm"
                                 >
                                     <Image
-                                        src="/pointer-2.png"
+                                        src="/pointer-2(2).png"
                                         alt="Audio Coaching Interface"
                                         fill
                                         className="object-cover"

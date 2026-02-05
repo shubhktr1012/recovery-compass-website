@@ -14,15 +14,15 @@ function PointerText({ title, subtitle, source, href }: { title: string; subtitl
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-1.5 text-[10px] tracking-[0.3em] text-black/40 font-bold uppercase font-satoshi hover:text-[#05290C] transition-colors"
+                className="group flex items-center gap-1.5 text-[10px] tracking-[0.3em] text-black/40 font-bold uppercase font-sans hover:text-[#05290C] transition-colors"
             >
                 Source: {source}
                 <ArrowUpRight className="w-3 h-3 translate-y-[0.5px] transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
-            <h3 className="text-xl md:text-2xl font-satoshi font-bold text-black tracking-tight uppercase">
+            <h3 className="text-xl md:text-2xl font-sans font-bold text-black tracking-tight uppercase">
                 {title}
             </h3>
-            <p className="text-base md:text-lg text-black/50 font-satoshi leading-relaxed">
+            <p className="text-base md:text-lg text-black/50 font-sans leading-relaxed">
                 {subtitle}
             </p>
         </div>
@@ -351,7 +351,7 @@ export function ProblemSection() {
                     >
                         The Reality
                     </Badge>
-                    <h2 className="text-4xl md:text-6xl font-erode font-semibold leading-[1.1] text-black">
+                    <h2 className="text-4xl md:text-6xl font-sans font-semibold leading-[1.1] text-black">
                         You're not failing. <br className="hidden md:block" />
                         <span className="text-[#05290C] italic font-semibold">You're being hijacked.</span>
                     </h2>
@@ -367,7 +367,7 @@ export function ProblemSection() {
                     {realityItems.slice(0, 3).map((item) => (
                         <div key={item.id} className="flex flex-col space-y-6">
                             {/* Headline */}
-                            <h3 className="text-3xl font-satoshi font-bold text-black tracking-tight">
+                            <h3 className="text-3xl font-sans font-bold text-black tracking-tight">
                                 {item.title}
                             </h3>
 
@@ -378,14 +378,14 @@ export function ProblemSection() {
 
                             {/* Subtitle & Source */}
                             <div className="flex flex-col space-y-4 max-w-lg">
-                                <p className="text-lg text-black/60 font-satoshi leading-relaxed">
+                                <p className="text-lg text-black/60 font-sans leading-relaxed">
                                     {item.subtitle}
                                 </p>
                                 <a
                                     href={item.href}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="group flex items-center gap-1.5 text-[10px] tracking-[0.3em] text-black/40 font-bold uppercase font-satoshi hover:text-[#05290C] transition-colors"
+                                    className="group flex items-center gap-1.5 text-[10px] tracking-[0.3em] text-black/40 font-bold uppercase font-sans hover:text-[#05290C] transition-colors"
                                 >
                                     Source: {item.source}
                                     <ArrowUpRight className="w-3 h-3 translate-y-[0.5px] transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

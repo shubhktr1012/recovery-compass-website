@@ -79,7 +79,7 @@ export function FAQSection() {
 
                     {/* Headings */}
                     <div className="space-y-4">
-                        <h2 className="text-4xl md:text-5xl font-erode font-semibold leading-[1.1] text-black">
+                        <h2 className="text-4xl md:text-5xl font-sans font-semibold leading-[1.1] text-black">
                             Answering <br /> your
                             <span className="text-[oklch(0.2475_0.0661_146.79)] italic"> questions</span>.
                         </h2>
@@ -111,7 +111,7 @@ export function FAQSection() {
                                     className="group hover:no-underline py-2 [&>svg]:hidden" // Hide default chevron, add group for child styling, restore py-2
                                 >
                                     <div className="flex items-center justify-between w-full gap-4">
-                                        <span className="text-xl md:text-2xl font-medium text-[oklch(0.2475_0.0661_146.79)] text-left font-erode">
+                                        <span className="text-xl md:text-2xl font-medium text-[oklch(0.2475_0.0661_146.79)] text-left font-sans">
                                             {faq.question}
                                         </span>
 
@@ -125,7 +125,7 @@ export function FAQSection() {
                                 </AccordionTrigger>
 
                                 <AccordionContent className="pt-4 pr-12">
-                                    <p className="font-satoshi text-lg text-[oklch(0.2475_0.0661_146.79)]/80 leading-relaxed">
+                                    <p className="font-sans text-lg text-[oklch(0.2475_0.0661_146.79)]/80 leading-relaxed">
                                         {faq.answer}
                                     </p>
                                 </AccordionContent>

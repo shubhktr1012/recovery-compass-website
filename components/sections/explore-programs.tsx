@@ -49,12 +49,12 @@ export function ExploreProgramsSection() {
                         >
                             OUR PROGRAMS
                         </Badge>
-                        <h2 className="text-4xl md:text-5xl font-erode font-semibold leading-[1.1] text-black">
+                        <h2 className="text-4xl md:text-5xl font-sans font-semibold leading-[1.1] text-black">
                             Navigate at your <br />
                             <span className="text-[oklch(0.2475_0.0661_146.79)] italic">own pace.</span>
                         </h2>
                     </div>
-                    <p className="text-lg text-[oklch(0.2475_0.0661_146.79)]/60 font-satoshi max-w-sm leading-relaxed md:mx-auto">
+                    <p className="text-lg text-[oklch(0.2475_0.0661_146.79)]/60 font-sans max-w-sm leading-relaxed md:mx-auto">
                         Start with a short reset. Continue with <br className="hidden lg:block" />
                         long-term stability if you choose.
                     </p>
@@ -69,7 +69,7 @@ export function ExploreProgramsSection() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.8, delay: idx * 0.2 }}
                             className={cn(
-                                "relative group flex flex-col p-8 md:p-10 rounded-3xl overflow-hidden transition-all duration-500 border-none",
+                                "relative group flex flex-col p-8 md:p-10 rounded-3xl overflow-hidden border-none",
                                 program.id === "6-day-reset"
                                     ? "bg-[oklch(0.2475_0.0661_146.79)] text-white"
                                     : "bg-[oklch(0.9484_0.0251_149.08)] text-[oklch(0.2475_0.0661_146.79)]"
@@ -89,13 +89,13 @@ export function ExploreProgramsSection() {
                                         {program.id === "6-day-reset" && <Zap className="size-6 text-white/20" />}
                                     </div>
                                     <h3 className={cn(
-                                        "text-2xl md:text-[28px] lg:text-3xl font-erode font-semibold leading-tight",
+                                        "text-2xl md:text-[28px] lg:text-3xl font-sans font-semibold leading-tight",
                                         program.id === "6-day-reset" ? "text-white" : "text-[oklch(0.2475_0.0661_146.79)]"
                                     )}>
                                         {program.title}
                                     </h3>
                                     <p className={cn(
-                                        "text-base md:text-lg font-satoshi leading-relaxed",
+                                        "text-base md:text-lg font-sans leading-relaxed",
                                         program.id === "6-day-reset" ? "text-white/70" : "text-[oklch(0.2475_0.0661_146.79)]/70"
                                     )}>
                                         {program.description}

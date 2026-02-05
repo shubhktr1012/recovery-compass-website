@@ -45,7 +45,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
 
                         {/* Headline - Centered */}
                         <div className="max-w-[280px] md:max-w-[350px] lg:max-w-[520px] mx-auto space-y-6">
-                            <h1 className="text-4xl md:text-5xl lg:text-7xl font-erode font-semibold tracking-tight leading-[1.05] text-black">
+                            <h1 className="text-4xl md:text-5xl lg:text-7xl font-semibold tracking-tight leading-[1.05] text-black">
                                 A smarter way to <span className="text-[oklch(0.2475_0.0661_146.79)] italic">quit smoking.</span>
                             </h1>
 

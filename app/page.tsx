@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import { NavbarSticky } from "@/components/navbar-sticky";
+import { Navbar } from "@/components/navbar";
+import { HeroVariantTrust } from "@/components/sections/hero-variant-trust";
 import {
-  HeroOmega,
   PhilosophySection,
   ProblemSection,
   SolutionSection,
   ExploreProgramsSection,
+  TestimonialsSection,
   CTASection,
   FAQSection,
   FooterVariantTwo,
@@ -23,38 +24,33 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Navigation */}
+    <main className="relative bg-background w-full">
       <NavbarSticky />
 
-      {/* Page Sections */}
-      <main>
-        <HeroOmega
-          onSecondaryClick={scrollToPhilosophy}
-        />
+      <HeroVariantTrust
+        onPrimaryClick={scrollToWaitlist}
+        onSecondaryClick={scrollToPhilosophy}
+      />
 
+      <div id="why-us">
+        <PhilosophySection />
+      </div>
 
+      <ProblemSection />
 
-        <div id="why-us" className="scroll-mt-28">
-          <PhilosophySection />
-        </div>
+      <SolutionSection />
 
-        <ProblemSection />
+      <ExploreProgramsSection />
 
-        <div id="features" className="scroll-mt-28">
-          <SolutionSection />
-        </div>
+      <TestimonialsSection />
 
-        <div id="programs" className="scroll-mt-28">
-          <ExploreProgramsSection />
-        </div>
-
+      <div id="waitlist">
         <CTASection />
+      </div>
 
-        <FAQSection />
+      <FAQSection />
 
-        <FooterVariantTwo />
-      </main>
-    </div>
+      <FooterVariantTwo />
+    </main>
   );
 }

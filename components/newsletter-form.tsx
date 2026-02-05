@@ -38,9 +38,10 @@ export function NewsletterForm({ alignment = "right", variant = "default", class
 
     return (
         <div className={cn(
-            "w-full max-w-md mx-auto",
-            alignment === "right" && "lg:ml-auto",
-            alignment === "left" && "lg:mr-auto",
+            "w-full max-w-md",
+            alignment === "center" && "mx-auto",
+            alignment === "left" && "mr-auto",
+            alignment === "right" && "ml-auto",
             className
         )}>
             <form

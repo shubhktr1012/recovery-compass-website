@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -12,25 +12,49 @@ interface NavbarStickyProps {
 
 export function NavbarSticky({ }: NavbarStickyProps) {
     const [isOpen, setIsOpen] = React.useState(false);
+    const [isScrolled, setIsScrolled] = React.useState(false);
+    const { scrollY } = useScroll();
+
+    useMotionValueEvent(scrollY, "change", (latest) => {
+        setIsScrolled(latest > 50);
+    });
+
+    React.useEffect(() => {
+        setIsScrolled(window.scrollY > 50);
+    }, []);
 
     const scrollToWaitlist = () => {
         document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
     };
 
+    // When menu is open, we want solid bg regardless of scroll
+    const isTransparent = !isScrolled && !isOpen;
+
     return (
-        <header className="sticky top-0 z-50 w-full bg-white">
+        <motion.header
+            className={cn(
+                "fixed top-0 z-50 w-full transition-all duration-300",
+                isTransparent ? "bg-transparent" : "bg-white"
+            )}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+        >
             <div className="flex items-center justify-between px-6 md:px-12 py-4 max-w-[1200px] mx-auto">
 
                 {/* Brand */}
-                <div className="flex items-center gap-2 text-[oklch(0.2475_0.0661_146.79)]">
+                <div className="flex items-center gap-2 transition-colors duration-300">
                     <Image
-                        src="/rc-logo-black.svg"
+                        src={isTransparent ? "/rc-logo-white.svg" : "/rc-logo-dark-green.svg"}
                         alt="Recovery Compass"
                         width={32}
                         height={32}
                         className="size-8"
                     />
-                    <span className="font-erode text-xl font-semibold tracking-tighter text-black">
+                    <span className={cn(
+                        "text-xl font-semibold tracking-tighter transition-colors duration-300",
+                        isTransparent ? "text-white" : "text-[oklch(0.2475_0.0661_146.79)]"
+                    )}>
                         Recovery Compass
                     </span>
                 </div>
@@ -43,7 +67,12 @@ export function NavbarSticky({ }: NavbarStickyProps) {
                             <a
                                 key={link}
                                 href={`#${link.toLowerCase().replace(" ", "-").replace("?", "")}`}
-                                className="text-base font-medium text-[oklch(0.2475_0.0661_146.79)] hover:text-[oklch(0.2475_0.0661_146.79)]/70 transition-colors"
+                                className={cn(
+                                    "text-base font-medium transition-colors duration-300",
+                                    isTransparent
+                                        ? "text-white/90 hover:text-white"
+                                        : "text-[oklch(0.2475_0.0661_146.79)] hover:text-[oklch(0.2475_0.0661_146.79)]/70"
+                                )}
                             >
                                 {link}
                             </a>
@@ -54,8 +83,10 @@ export function NavbarSticky({ }: NavbarStickyProps) {
                     <Button
                         onClick={scrollToWaitlist}
                         className={cn(
-                            "hidden md:inline-flex rounded-full px-6 text-base font-medium transition-transform active:scale-95",
-                            "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90",
+                            "hidden md:inline-flex rounded-full px-6 text-base font-medium transition-all duration-300 active:scale-95",
+                            isTransparent
+                                ? "bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-white/90"
+                                : "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90",
                             "border-none shadow-none h-11"
                         )}
                     >
@@ -70,15 +101,15 @@ export function NavbarSticky({ }: NavbarStickyProps) {
                     >
                         {/* Top Line */}
                         <motion.span
-                            animate={isOpen ? { rotate: 45, y: 4 } : { rotate: 0, y: 0 }}
+                            animate={isOpen ? { rotate: 45, y: 4, backgroundColor: "#1C2706" } : { rotate: 0, y: 0, backgroundColor: isTransparent ? "#FFFFFF" : "#1C2706" }}
                             transition={{ duration: 0.6, ease: "easeInOut" }}
-                            className="w-5 h-0.5 bg-[oklch(0.2475_0.0661_146.79)] block origin-center rounded-full"
+                            className="w-5 h-0.5 block origin-center rounded-full"
                         />
                         {/* Bottom Line */}
                         <motion.span
-                            animate={isOpen ? { rotate: -45, y: -4 } : { rotate: 0, y: 0 }}
+                            animate={isOpen ? { rotate: -45, y: -4, backgroundColor: "#1C2706" } : { rotate: 0, y: 0, backgroundColor: isTransparent ? "#FFFFFF" : "#1C2706" }}
                             transition={{ duration: 0.6, ease: "easeInOut" }}
-                            className="w-5 h-0.5 bg-[oklch(0.2475_0.0661_146.79)] block origin-center rounded-full"
+                            className="w-5 h-0.5 block origin-center rounded-full"
                         />
                     </button>
                 </div>
@@ -133,6 +164,6 @@ export function NavbarSticky({ }: NavbarStickyProps) {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </header>
+        </motion.header>
     );
 }

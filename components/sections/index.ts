@@ -5,6 +5,7 @@ export { ProblemSection } from "./problem";
 export { SolutionSection } from "./solution";
 export { JourneySection } from "./journey";
 export { ExploreProgramsSection } from "./explore-programs";
+export { TestimonialsSection } from "./testimonials-section";
 export { CTASection } from "./cta";
 export { FAQSection } from "./faq";
 export { FooterSection } from "./footer";

@@ -29,7 +29,7 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                                 height={32}
                                 className="size-8"
                             />
-                            <span className="font-erode text-2xl font-semibold tracking-tighter">
+                            <span className="font-sans text-2xl font-semibold tracking-tighter">
                                 Recovery Compass
                             </span>
                         </div>
@@ -43,7 +43,7 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
 
                             {/* Input Field Group */}
                             <div className="pt-2">
-                                <NewsletterForm alignment="left" className="lg:ml-0" variant="minimal" />
+                                <NewsletterForm alignment="left" variant="minimal" />
                             </div>
 
                             {/* Disclaimer */}

@@ -73,7 +73,7 @@ export function Preloader() {
                                 ease: [0.76, 0, 0.24, 1],
                             }}
                         >
-                            <h1 className="pl-4 text-3xl md:text-4xl text-primary font-erode font-medium whitespace-nowrap leading-none pt-1">
+                            <h1 className="pl-4 text-3xl md:text-4xl text-primary font-sans font-medium whitespace-nowrap leading-none pt-1">
                                 Recovery Compass
                             </h1>
                         </motion.div>

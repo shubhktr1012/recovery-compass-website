@@ -128,7 +128,7 @@ function ParallaxText({ children, baseVelocity = 100 }: ParallaxTextProps) {
 
 export function TestimonialMarquee({ className }: { className?: string }) {
     return (
-        <section className={cn("w-full py-20 bg-transparent overflow-hidden", className)}>
+        <div className={cn("w-full pt-6 bg-transparent overflow-hidden", className)}>
             <div className="relative w-full">
                 {/* Left Gradient Overlay - Subtler & Narrower */}
                 <div className="absolute left-0 top-0 bottom-0 w-20 z-10 pointer-events-none bg-gradient-to-r from-white/40 to-transparent" />
@@ -150,6 +150,6 @@ export function TestimonialMarquee({ className }: { className?: string }) {
                     ))}
                 </ParallaxText>
             </div>
-        </section>
+        </div>
     );
 }
