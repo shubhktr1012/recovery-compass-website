@@ -33,7 +33,7 @@ export function BackToTop() {
             whileTap={{ scale: 0.9 }}
             onClick={scrollToTop}
             className={cn(
-                "fixed bottom-8 right-8 z-50 p-0 rounded-full shadow-lg",
+                "fixed bottom-4 right-4 z-50 p-0 rounded-full shadow-lg",
                 "bg-white/90 backdrop-blur-md border border-white/20",
                 "text-[oklch(0.2475_0.0661_146.79)]", // Primary Deep Moss
                 "hover:bg-white hover:shadow-xl hover:border-white/40 transition-all duration-300",

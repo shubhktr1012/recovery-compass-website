@@ -69,6 +69,22 @@ export function HeroVariantTrust({ onPrimaryClick, onSecondaryClick }: HeroSecti
                             </p>
                         </motion.div>
 
+                        {/* Status Pill - First visually, animate with headline */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+                            className="inline-flex items-center gap-2 px-3 py-1 mb-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20"
+                        >
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-400"></span>
+                            </span>
+                            <span className="text-xs font-medium text-white/90 tracking-wide uppercase">
+                                Currently In Development — Launching Mid-March
+                            </span>
+                        </motion.div>
+
                         {/* Headline - Second to animate */}
                         <motion.h1
                             className="text-5xl lg:text-7xl font-sans font-medium tracking-tight leading-[1.1] text-white"
