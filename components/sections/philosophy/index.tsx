@@ -71,7 +71,7 @@ export function PhilosophySection() {
                         </Badge>
                         <h2 className="text-4xl md:text-5xl font-sans font-semibold leading-[1.1] text-black">
                             Why choose <br />
-                            <span className="text-[oklch(0.2475_0.0661_146.79)] italic">Recovery Compass?</span>
+                            <span className="text-[oklch(0.2475_0.0661_146.79)]">Recovery Compass?</span>
                         </h2>
                     </div>
 

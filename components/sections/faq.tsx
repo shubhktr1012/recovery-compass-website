@@ -81,7 +81,7 @@ export function FAQSection() {
                     <div className="space-y-4">
                         <h2 className="text-4xl md:text-5xl font-sans font-semibold leading-[1.1] text-black">
                             Answering <br /> your
-                            <span className="text-[oklch(0.2475_0.0661_146.79)] italic"> questions</span>.
+                            <span className="text-[oklch(0.2475_0.0661_146.79)]"> questions</span>.
                         </h2>
                         <p className="text-lg text-[oklch(0.2475_0.0661_146.79)]/70 max-w-sm">
                             Got more questions? Reach out to us using the button below.

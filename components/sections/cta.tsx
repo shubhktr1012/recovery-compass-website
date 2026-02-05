@@ -47,7 +47,7 @@ export function CTASection() {
                         <div className="space-y-6">
                             <h2 className="text-4xl md:text-5xl lg:text-6xl font-sans font-semibold text-white leading-[1.05] tracking-tight drop-shadow-md">
                                 Ready to find your <br />
-                                <span className="italic font-semibold text-white/90">True North?</span>
+                                <span className="font-semibold text-white/90">True North?</span>
                             </h2>
                             <p className="text-lg md:text-xl text-white font-sans max-w-xl leading-relaxed font-normal drop-shadow-sm">
                                 We're building a science-led path to recovery that respects your biology. Join the waitlist to be first in line when we launch.

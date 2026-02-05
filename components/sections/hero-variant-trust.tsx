@@ -65,7 +65,7 @@ export function HeroVariantTrust({ onPrimaryClick, onSecondaryClick }: HeroSecti
                                 ))}
                             </div>
                             <p className="text-sm lg:text-base font-medium text-white/90">
-                                Join 2,140+ beyond the urge
+                                Join 41+ beyond the urge
                             </p>
                         </motion.div>
 
@@ -105,7 +105,7 @@ export function HeroVariantTrust({ onPrimaryClick, onSecondaryClick }: HeroSecti
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
                         >
-                            Navigate urges, calm your body, and build steady change - one day at a time. Stop fighting biology with force and start using a structured approach that works with your nervous system.
+                            An intelligent app designed to navigate urges, calm your body, and build steady change - one day at a time. Stop fighting biology with force and start using a structured approach that works with your nervous system.
                         </motion.p>
 
                         {/* CTAs - Last to animate */}

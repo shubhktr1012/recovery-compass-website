@@ -12,7 +12,7 @@ export function TestimonialsSection() {
                     TESTIMONIALS
                 </Badge>
                 <h2 className="text-4xl md:text-5xl font-sans font-semibold leading-[1.1] text-black text-center">
-                    Stories of <span className="text-[oklch(0.2475_0.0661_146.79)] italic">change.</span>
+                    Stories of <span className="text-[oklch(0.2475_0.0661_146.79)]">change.</span>
                 </h2>
             </div>
             <TestimonialMarquee />

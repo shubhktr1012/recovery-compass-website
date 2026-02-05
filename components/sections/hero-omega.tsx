@@ -51,7 +51,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
 
                             {/* Subheadline - Centered */}
                             <p className="text-lg md:text-xl text-[oklch(0.2475_0.0661_146.79)]/70 leading-snug font-medium max-w-2xl mx-auto">
-                                Navigate nicotine cravings, calm your nervous system, and build a smoke-free life. Stop fighting biology with willpower.
+                                An intelligent app designed to navigate nicotine cravings, calm your nervous system, and build a smoke-free life. Stop fighting biology with willpower.
                             </p>
                         </div>
 

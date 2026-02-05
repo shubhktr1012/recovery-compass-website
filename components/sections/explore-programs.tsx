@@ -53,7 +53,7 @@ export function ExploreProgramsSection() {
                         </Badge>
                         <h2 className="text-4xl md:text-5xl font-sans font-semibold leading-[1.1] text-black">
                             Navigate at your <br />
-                            <span className="text-[oklch(0.2475_0.0661_146.79)] italic">own pace.</span>
+                            <span className="text-[oklch(0.2475_0.0661_146.79)]">own pace.</span>
                         </h2>
                     </div>
                     <p className="text-lg text-[oklch(0.2475_0.0661_146.79)]/60 font-sans max-w-sm leading-relaxed md:mx-auto">
