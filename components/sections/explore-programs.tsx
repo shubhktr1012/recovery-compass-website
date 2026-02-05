@@ -1,114 +1,156 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Check, Zap } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const programs = [
+    {
+        id: "6-day-reset",
+        tag: "Starting Point",
+        title: "The 6-Day Reset",
+        description: "A focused spring to reclaim your baseline and break autopilot habit loops.",
+        highlights: [
+            { label: "Day 1–2", text: "Urge Discovery & Mapping" },
+            { label: "Day 3–4", text: "The 10-Minute Protocol" },
+            { label: "Day 5–6", text: "Baseline Identity Reset" },
+            { label: "Guarantee", text: "Money-Back protection" }
+        ],
+        cta: "Start Reset",
+        color: "bg-[oklch(0.2475_0.0661_146.79)]"
+    },
+    {
+        id: "90-day-foundation",
+        tag: "Full Journey",
+        title: "The 90-Day Foundation",
+        description: "A complete roadmap to cement your identity and live without reference to smoking.",
+        highlights: [
+            { label: "Day 1–21", text: "Pattern Awareness & Shift" },
+            { label: "Day 22–60", text: "Habit Architecture Design" },
+            { label: "Day 61–90", text: "Mastery & Sustainable Ease" },
+            { label: "Guarantee", text: "Results-Backed protection" }
+        ],
+        cta: "Explore Foundation",
+        color: "bg-white"
+    }
+];
 
 export function ExploreProgramsSection() {
     return (
-        <section className="py-12 px-6 md:px-16 lg:px-24 bg-secondary/10">
-            <div className="max-w-[1200px] mx-auto">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 text-left">
-                    <div className="max-w-2xl space-y-4">
-                        <span className="text-xs uppercase tracking-widest text-muted-foreground/60 font-semibold">
-                            Our Programs
-                        </span>
-                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-foreground leading-[1.1]">
-                            The path to steady change.
-                        </h2>
-                    </div>
-                    <p className="text-lg text-muted-foreground max-w-sm leading-relaxed">
-                        Start with a focused reset. Build
-                        long-term stability when you're ready.
-                    </p>
+        <section className="py-12 px-6 md:px-12 max-w-[1000px] mx-auto overflow-visible">
+            <div className="flex flex-col mb-12 md:mb-16 gap-4 text-left md:text-center md:items-center">
+                <div className="space-y-4">
+                    <Badge
+                        variant="secondary"
+                        className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide border-none bg-[oklch(0.9484_0.0251_149.08)] text-[oklch(0.2475_0.0661_146.79)]"
+                    >
+                        OUR PROGRAMS
+                    </Badge>
+                    <h2 className="text-4xl md:text-5xl font-erode font-semibold leading-[1.1] text-black">
+                        Navigate at your <br />
+                        <span className="text-[oklch(0.2475_0.0661_146.79)] italic">own pace.</span>
+                    </h2>
                 </div>
+                <p className="text-lg text-[oklch(0.2475_0.0661_146.79)]/60 font-satoshi max-w-sm leading-relaxed md:mx-auto">
+                    Start with a short reset. Continue with <br className="hidden lg:block" />
+                    long-term stability if you choose.
+                </p>
+            </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {/* 6-Day Program - Primary */}
-                    <Card className="relative overflow-hidden border-none shadow-xl shadow-primary/5 bg-white rounded-[40px] p-4 group transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10">
-                        <div className="absolute top-8 right-8 bg-primary text-white text-[10px] uppercase tracking-widest px-3 py-1 rounded-full font-bold">
-                            Most Popular
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                {programs.map((program, idx) => (
+                    <motion.div
+                        key={idx}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: idx * 0.2 }}
+                        className={cn(
+                            "relative group flex flex-col p-8 md:p-10 rounded-3xl overflow-hidden transition-all duration-500 border-none",
+                            program.id === "6-day-reset"
+                                ? "bg-[oklch(0.2475_0.0661_146.79)] text-white"
+                                : "bg-[oklch(0.9484_0.0251_149.08)] text-[oklch(0.2475_0.0661_146.79)]"
+                        )}
+                    >
+                        <div className="relative z-10 flex flex-col h-full">
+                            <div className="space-y-4 mb-8">
+                                <div className="flex justify-between items-start">
+                                    <span className={cn(
+                                        "inline-block px-3 py-1 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase",
+                                        program.id === "6-day-reset"
+                                            ? "bg-white/10 text-white/70"
+                                            : "bg-[oklch(0.2475_0.0661_146.79)]/5 text-[oklch(0.2475_0.0661_146.79)]/40"
+                                    )}>
+                                        {program.tag}
+                                    </span>
+                                    {program.id === "6-day-reset" && <Zap className="size-6 text-white/20" />}
+                                </div>
+                                <h3 className={cn(
+                                    "text-2xl md:text-[28px] lg:text-3xl font-erode font-semibold leading-tight",
+                                    program.id === "6-day-reset" ? "text-white" : "text-[oklch(0.2475_0.0661_146.79)]"
+                                )}>
+                                    {program.title}
+                                </h3>
+                                <p className={cn(
+                                    "text-base md:text-lg font-satoshi leading-relaxed",
+                                    program.id === "6-day-reset" ? "text-white/70" : "text-[oklch(0.2475_0.0661_146.79)]/70"
+                                )}>
+                                    {program.description}
+                                </p>
+                            </div>
+
+                            <div className="space-y-4 mb-10 flex-grow">
+                                <div className={cn(
+                                    "h-px w-full mb-6",
+                                    program.id === "6-day-reset" ? "bg-white/10" : "bg-[oklch(0.2475_0.0661_146.79)]/10"
+                                )} />
+                                {program.highlights.map((item, i) => (
+                                    <div key={i} className="flex items-start gap-4 text-sm font-medium">
+                                        <div className={cn(
+                                            "flex-shrink-0 size-5 mt-0.5 rounded-full flex items-center justify-center",
+                                            program.id === "6-day-reset" ? "bg-white/20" : "bg-[oklch(0.2475_0.0661_146.79)]/10"
+                                        )}>
+                                            <Check className={cn(
+                                                "size-3",
+                                                program.id === "6-day-reset" ? "text-white" : "text-[oklch(0.2475_0.0661_146.79)]"
+                                            )} />
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <span className={cn(
+                                                "text-[10px] font-black uppercase tracking-widest leading-none mb-1",
+                                                program.id === "6-day-reset" ? "text-white/40" : "text-[oklch(0.2475_0.0661_146.79)]/30"
+                                            )}>
+                                                {item.label}
+                                            </span>
+                                            <span className={program.id === "6-day-reset" ? "text-white/90" : "text-[oklch(0.2475_0.0661_146.79)]/80"}>
+                                                {item.text}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="flex flex-col items-center mt-auto">
+                                <Button
+                                    variant="default"
+                                    className={cn(
+                                        "w-fit px-10 h-12 rounded-full font-bold text-base border-none transition-all duration-300",
+                                        program.id === "6-day-reset"
+                                            ? "bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-white/90 shadow-lg"
+                                            : "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 shadow-lg"
+                                    )}
+                                >
+                                    {program.cta}
+                                </Button>
+                            </div>
                         </div>
-                        <CardHeader className="space-y-4 pt-8 pb-4">
-                            <CardDescription className="text-xs uppercase tracking-[0.2em] font-bold text-muted-foreground/40">
-                                6-Day Program
-                            </CardDescription>
-                            <CardTitle className="text-3xl md:text-4xl font-medium text-foreground">
-                                The Reset
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-8">
-                            <p className="text-muted-foreground/80 leading-relaxed text-lg">
-                                Break the cycle. A short-term immersion designed to disrupt your autopilot and restore your dopamine baseline.
-                            </p>
-                            <div className="space-y-3">
-                                <div className="flex items-center gap-3 text-sm text-foreground/80 font-medium tracking-tight">
-                                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                                        <Check className="w-3 h-3 text-white" />
-                                    </div>
-                                    The 10-Minute Urge Protocol
-                                </div>
-                                <div className="flex items-center gap-3 text-sm text-foreground/80 font-medium tracking-tight">
-                                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                                        <Check className="w-3 h-3 text-white" />
-                                    </div>
-                                    Identity Shift Workshop
-                                </div>
-                                <div className="flex items-center gap-3 text-sm text-foreground/80 font-medium tracking-tight">
-                                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                                        <Check className="w-3 h-3 text-white" />
-                                    </div>
-                                    Money-Back Guarantee
-                                </div>
-                            </div>
-                        </CardContent>
-                        <CardFooter className="pt-8 pb-4">
-                            <Button className="w-full h-14 rounded-full bg-primary hover:bg-primary/90 text-white text-base font-medium transition-all group-hover:scale-[1.02]">
-                                Start the 6-Day Reset
-                            </Button>
-                        </CardFooter>
-                    </Card>
-
-                    {/* 90-Day Program - Secondary */}
-                    <Card className="relative overflow-hidden border border-primary/10 bg-transparent rounded-[40px] p-4 group transition-all duration-500 hover:bg-primary/[0.02]">
-                        <CardHeader className="space-y-4 pt-8 pb-4">
-                            <CardDescription className="text-xs uppercase tracking-[0.2em] font-bold text-muted-foreground/40">
-                                90-Day Program
-                            </CardDescription>
-                            <CardTitle className="text-3xl md:text-4xl font-medium text-foreground">
-                                The Foundation
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-8">
-                            <p className="text-muted-foreground/80 leading-relaxed text-lg">
-                                Long-term stability. A comprehensive roadmap to cement your identity as a non-smoker for the rest of your life.
-                            </p>
-                            <div className="space-y-3">
-                                <div className="flex items-center gap-3 text-sm text-foreground/80 font-medium tracking-tight">
-                                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
-                                        <Check className="w-3 h-3 text-primary" />
-                                    </div>
-                                    Personalized Accountability
-                                </div>
-                                <div className="flex items-center gap-3 text-sm text-foreground/80 font-medium tracking-tight">
-                                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
-                                        <Check className="w-3 h-3 text-primary" />
-                                    </div>
-                                    Deep Emotional Intelligence
-                                </div>
-                                <div className="flex items-center gap-3 text-sm text-foreground/80 font-medium tracking-tight">
-                                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
-                                        <Check className="w-3 h-3 text-primary" />
-                                    </div>
-                                    Results-Backed Guarantee
-                                </div>
-                            </div>
-                        </CardContent>
-                        <CardFooter className="pt-8 pb-4">
-                            <Button variant="outline" className="w-full h-14 rounded-full border-primary/20 bg-transparent hover:bg-primary hover:text-white text-primary text-base font-medium transition-all group-hover:scale-[1.02]">
-                                Explore the Foundation
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                </div>
+                        {program.id === "6-day-reset" && (
+                            <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-colors duration-500" />
+                        )}
+                    </motion.div>
+                ))}
             </div>
         </section>
     );

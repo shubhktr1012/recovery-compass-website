@@ -9,12 +9,12 @@ import { Input } from "@/components/ui/input";
 
 export function CTASection() {
     return (
-        <section className="py-12 px-6 md:px-12 max-w-[1200px] mx-auto">
+        <section className="py-12 px-6 md:px-12 max-w-[1400px] mx-auto">
             <div className="relative w-full min-h-[450px] md:min-h-[520px] rounded-3xl overflow-hidden flex flex-col justify-center shadow-[0_30px_40px_-10px_rgba(0,0,0,0.6)]">
                 {/* Background Image - Absolute Fill */}
                 <div className="absolute inset-0 z-0">
                     <Image
-                        src="/image-mesh-gradient (6).png"
+                        src="/cta-bg.png"
                         alt="Waitlist Background"
                         fill
                         className="object-cover pointer-events-none select-none"
