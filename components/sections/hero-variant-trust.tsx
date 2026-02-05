@@ -72,7 +72,7 @@ export function HeroVariantTrust({ onPrimaryClick, onSecondaryClick }: HeroSecti
                         </div>
 
                         {/* Headline */}
-                        <h1 className="text-5xl lg:text-7xl font-medium tracking-tight leading-[1.1] text-white">
+                        <h1 className="text-5xl lg:text-7xl font-erode font-medium tracking-tight leading-[1.1] text-white">
                             A smarter way to navigate quitting.
                         </h1>
                     </div>

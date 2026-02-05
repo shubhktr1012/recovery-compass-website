@@ -19,7 +19,7 @@ function PointerText({ title, subtitle, source, href }: { title: string; subtitl
                 Source: {source}
                 <ArrowUpRight className="w-3 h-3 translate-y-[0.5px] transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
-            <h3 className="text-xl md:text-2xl font-satoshi font-bold text-black tracking-tight uppercase">
+            <h3 className="text-xl md:text-2xl font-erode font-bold text-black tracking-tight uppercase">
                 {title}
             </h3>
             <p className="text-base md:text-lg text-black/50 font-satoshi leading-relaxed">
