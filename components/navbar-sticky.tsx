@@ -38,6 +38,9 @@ export function NavbarSticky({ }: NavbarStickyProps) {
                     <span className="font-erode text-xl font-semibold tracking-tighter text-black">
                         Recovery Compass
                     </span>
+                    <span className="ml-2 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest rounded-full border border-[oklch(0.2475_0.0661_146.79)]/30 text-[oklch(0.2475_0.0661_146.79)]/60">
+                        Preview
+                    </span>
                 </div>
 
                 {/* Right Actions (Nav + CTA + Mobile Toggle) */}

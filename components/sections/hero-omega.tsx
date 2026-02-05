@@ -81,8 +81,19 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                         </motion.div>
 
                         {/* Headline - Centered */}
-                        <motion.div variants={itemVariants} className="max-w-[320px] md:max-w-[350px] lg:max-w-[520px] mx-auto space-y-6">
-                            <h1 className="text-4xl md:text-5xl lg:text-7xl font-erode font-semibold tracking-tight leading-[1.05] text-black">
+                        <div className="max-w-[320px] md:max-w-[350px] lg:max-w-[520px] mx-auto space-y-6">
+                            {/* Status Pill */}
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[oklch(0.2475_0.0661_146.79)]/5 border border-[oklch(0.2475_0.0661_146.79)]/10">
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                                </span>
+                                <span className="text-[10px] md:text-xs font-bold text-[oklch(0.2475_0.0661_146.79)]/80 tracking-wide uppercase">
+                                    Currently In Development — Launching Mid-March
+                                </span>
+                            </div>
+
+                            <h1 className="text-4xl md:text-5xl lg:text-7xl font-semibold tracking-tight leading-[1.05] text-black">
                                 A smarter way to <span className="text-[oklch(0.2475_0.0661_146.79)] italic">quit smoking.</span>
                             </h1>
 
@@ -90,7 +101,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                             <p className="text-lg md:text-xl text-[oklch(0.2475_0.0661_146.79)]/70 leading-snug font-medium max-w-2xl mx-auto">
                                 Navigate nicotine cravings, calm your nervous system, and build a smoke-free life. Stop fighting biology with willpower.
                             </p>
-                        </motion.div>
+                        </div>
 
                         {/* CTAs - Centered & Customized */}
                         <motion.div variants={itemVariants} className="flex flex-row gap-3 justify-center w-full pt-4">
@@ -127,6 +138,6 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                 <TestimonialMarquee className="py-10" />
             </motion.div>
 
-        </section>
+        </section >
     );
 }
