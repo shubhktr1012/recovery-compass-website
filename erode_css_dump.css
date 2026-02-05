@@ -1,0 +1,39 @@
+/* Erode */
+@font-face {
+  font-family: 'Erode';
+  src: url('//cdn.fontshare.com/wf/6F76RMHFNUMAWUR6FGCXVQGFZMKZHHLB/F5HOKHQFYHQHSI7YYDIPL5ZJMWQYM6CT/SMFAKKZYPUS6JMKLX3YWBR33XTVQTN5D.woff2') format('woff2'),
+       url('//cdn.fontshare.com/wf/6F76RMHFNUMAWUR6FGCXVQGFZMKZHHLB/F5HOKHQFYHQHSI7YYDIPL5ZJMWQYM6CT/SMFAKKZYPUS6JMKLX3YWBR33XTVQTN5D.woff') format('woff'),
+       url('//cdn.fontshare.com/wf/6F76RMHFNUMAWUR6FGCXVQGFZMKZHHLB/F5HOKHQFYHQHSI7YYDIPL5ZJMWQYM6CT/SMFAKKZYPUS6JMKLX3YWBR33XTVQTN5D.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Erode';
+  src: url('//cdn.fontshare.com/wf/L3KUL2HSHIWQ5KJC2X2XEI4K2CVI23EN/BG3KS4N3WIOZY5QD635C3DVWM7NWSE3Q/RPYYUUA6FJVWJIL3CQP3LGB33YXVOOUV.woff2') format('woff2'),
+       url('//cdn.fontshare.com/wf/L3KUL2HSHIWQ5KJC2X2XEI4K2CVI23EN/BG3KS4N3WIOZY5QD635C3DVWM7NWSE3Q/RPYYUUA6FJVWJIL3CQP3LGB33YXVOOUV.woff') format('woff'),
+       url('//cdn.fontshare.com/wf/L3KUL2HSHIWQ5KJC2X2XEI4K2CVI23EN/BG3KS4N3WIOZY5QD635C3DVWM7NWSE3Q/RPYYUUA6FJVWJIL3CQP3LGB33YXVOOUV.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Erode';
+  src: url('//cdn.fontshare.com/wf/D7VESJV4FFHSHNE2EEZ6KB4HZX56LNL6/FTJIXQI4AA2BQVKSC2JJO2XDBG3WG7YU/AL47FDSJFHTXHQ4H2QPW6HPE5NZMJPEX.woff2') format('woff2'),
+       url('//cdn.fontshare.com/wf/D7VESJV4FFHSHNE2EEZ6KB4HZX56LNL6/FTJIXQI4AA2BQVKSC2JJO2XDBG3WG7YU/AL47FDSJFHTXHQ4H2QPW6HPE5NZMJPEX.woff') format('woff'),
+       url('//cdn.fontshare.com/wf/D7VESJV4FFHSHNE2EEZ6KB4HZX56LNL6/FTJIXQI4AA2BQVKSC2JJO2XDBG3WG7YU/AL47FDSJFHTXHQ4H2QPW6HPE5NZMJPEX.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Erode';
+  src: url('//cdn.fontshare.com/wf/W4KADQUTXSBS5JFKL5R6O3OD5Y2HUMPK/FUANNLITZ24BKB6NQZP3QPJP2PCYZG4I/4MK6ECKUA53PDOTLFHJC57TECDKREBGM.woff2') format('woff2'),
+       url('//cdn.fontshare.com/wf/W4KADQUTXSBS5JFKL5R6O3OD5Y2HUMPK/FUANNLITZ24BKB6NQZP3QPJP2PCYZG4I/4MK6ECKUA53PDOTLFHJC57TECDKREBGM.woff') format('woff'),
+       url('//cdn.fontshare.com/wf/W4KADQUTXSBS5JFKL5R6O3OD5Y2HUMPK/FUANNLITZ24BKB6NQZP3QPJP2PCYZG4I/4MK6ECKUA53PDOTLFHJC57TECDKREBGM.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+
