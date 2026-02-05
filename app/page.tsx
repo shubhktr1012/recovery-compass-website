@@ -12,49 +12,48 @@ import {
   FAQSection,
   FooterVariantTwo,
 } from "@/components/sections";
-import { WaitlistDialog } from "@/components/waitlist-dialog";
 
 export default function Home() {
-  const [waitlistOpen, setWaitlistOpen] = useState(false);
-
-  const openWaitlist = () => setWaitlistOpen(true);
-
   const scrollToPhilosophy = () => {
-    document.getElementById("philosophy")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("why-us")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const scrollToWaitlist = () => {
+    document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Waitlist Dialog */}
-      <WaitlistDialog open={waitlistOpen} onOpenChange={setWaitlistOpen} />
-
       {/* Navigation */}
-      <NavbarSticky onCtaClick={openWaitlist} />
+      <NavbarSticky />
 
       {/* Page Sections */}
       <main>
         <HeroOmega
-          onPrimaryClick={openWaitlist}
           onSecondaryClick={scrollToPhilosophy}
         />
 
 
 
-        <div id="philosophy">
+        <div id="why-us" className="scroll-mt-28">
           <PhilosophySection />
         </div>
 
         <ProblemSection />
 
-        <SolutionSection />
+        <div id="features" className="scroll-mt-28">
+          <SolutionSection />
+        </div>
 
-        <ExploreProgramsSection />
+        <div id="programs" className="scroll-mt-28">
+          <ExploreProgramsSection />
+        </div>
 
         <CTASection />
 
         <FAQSection />
 
-        <FooterVariantTwo onCtaClick={openWaitlist} />
+        <FooterVariantTwo />
       </main>
     </div>
   );

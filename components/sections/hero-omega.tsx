@@ -5,10 +5,13 @@ import { cn } from "@/lib/utils";
 import { TestimonialMarquee } from "./testimonials/testimonial-marquee";
 
 interface HeroOmegaProps {
-    onPrimaryClick?: () => void;
+    onPrimaryClick?: () => void; // Deprecated
     onSecondaryClick?: () => void;
 }
-export function HeroOmega({ onPrimaryClick, onSecondaryClick }: HeroOmegaProps) {
+export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
+    const scrollToWaitlist = () => {
+        document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
+    };
     return (
         <section className="relative flex flex-col justify-start pt-12 pb-16 overflow-hidden bg-white text-[oklch(0.2475_0.0661_146.79)]">
             {/* Content Container */}
@@ -59,7 +62,7 @@ export function HeroOmega({ onPrimaryClick, onSecondaryClick }: HeroOmegaProps) 
                                     "rounded-full px-5 py-2.5 text-sm font-medium transition-all active:scale-95",
                                     "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 border border-transparent h-auto"
                                 )}
-                                onClick={onPrimaryClick}
+                                onClick={scrollToWaitlist}
                             >
                                 Join the Waitlist
                             </Button>

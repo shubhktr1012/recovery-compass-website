@@ -5,11 +5,11 @@ import { ArrowRight, Mail } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { NewsletterForm } from "@/components/newsletter-form";
 
 export function CTASection() {
     return (
-        <section className="py-12 px-6 md:px-12 max-w-[1400px] mx-auto">
+        <section id="waitlist" className="py-12 px-6 md:px-12 max-w-[1400px] mx-auto scroll-mt-24">
             <div className="relative w-full min-h-[450px] md:min-h-[520px] rounded-3xl overflow-hidden flex flex-col justify-center shadow-[0_30px_40px_-10px_rgba(0,0,0,0.6)]">
                 {/* Background Image - Absolute Fill */}
                 <div className="absolute inset-0 z-0">
@@ -55,6 +55,7 @@ export function CTASection() {
                         </div>
                     </motion.div>
 
+
                     {/* Right Column: Input Part (Span 5) */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -63,35 +64,7 @@ export function CTASection() {
                         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
                         className="lg:col-span-12 xl:col-span-5 w-full max-w-md mx-auto lg:ml-auto"
                     >
-                        {/* Simple White Input Container - No Glassmorphism */}
-                        <div className="bg-white p-1.5 rounded-full shadow-2xl flex items-center gap-2">
-                            <div className="relative flex-grow">
-                                <Mail className="absolute left-5 top-1/2 -translate-y-1/2 size-5 text-[oklch(0.2475_0.0661_146.79)]/30 hidden sm:block" />
-                                <Input
-                                    type="email"
-                                    placeholder="Enter your email"
-                                    className="h-12 bg-transparent border-none text-[oklch(0.2475_0.0661_146.79)] placeholder:text-[oklch(0.2475_0.0661_146.79)]/40 pl-4 sm:pl-14 focus-visible:ring-0 text-base font-medium"
-                                />
-                            </div>
-                            <Button
-                                className="h-12 px-4 sm:px-8 bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 rounded-full font-bold transition-all duration-300 group/btn whitespace-nowrap"
-                            >
-                                <span className="hidden sm:inline">Join Waitlist</span>
-                                <span className="sm:hidden">Join</span>
-                                <ArrowRight className="ml-2 size-5 group-hover/btn:translate-x-1 transition-transform" />
-                            </Button>
-                        </div>
-
-                        <div className="mt-8 flex flex-col items-center lg:items-start xl:items-start gap-4">
-                            <p className="text-sm text-white font-satoshi flex items-center gap-2 font-medium drop-shadow-sm">
-                                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                                Limited spots for beta access
-                            </p>
-                            <div className="h-px w-24 bg-white/20" />
-                            <p className="text-[10px] uppercase tracking-[0.2em] text-white/50 font-bold drop-shadow-sm">
-                                Protected by Compass Security
-                            </p>
-                        </div>
+                        <NewsletterForm />
                     </motion.div>
 
                 </div>

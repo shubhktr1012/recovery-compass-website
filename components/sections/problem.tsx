@@ -34,7 +34,7 @@ function PointerText({ title, subtitle, source, href }: { title: string; subtitl
  */
 function VisualContainer({ children, padding = "p-8" }: { children: React.ReactNode; padding?: string }) {
     return (
-        <div className={`w-full aspect-video md:aspect-[4/3] bg-[#05290c] rounded-2xl flex items-center justify-center ${padding} overflow-hidden relative group`}>
+        <div className={`w-full aspect-[4/3] md:aspect-[5/4] bg-[#05290c] rounded-2xl flex items-center justify-center ${padding} overflow-hidden relative group`}>
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(46,125,107,0.15)_0%,transparent_70%)] opacity-50" />
             <div className="relative z-10 w-full h-full flex items-center justify-center">
                 {children}
@@ -294,12 +294,56 @@ function CravingWaveVisual() {
 }
 
 export function ProblemSection() {
+    // Data definition for consistent rendering
+    const realityItems = [
+        {
+            id: "hijack",
+            visual: <DopamineChart />,
+            title: "The Hijack",
+            subtitle: "Nicotine shatters the 'Normal' dopamine ceiling, peaking at 250%—instantly redefining your brain's reward logic.",
+            source: "Di Chiara, G. (2000)",
+            href: "https://pubmed.ncbi.nlm.nih.gov/11073861/",
+        },
+        {
+            id: "time-tax",
+            visual: <TimeTaxChart />,
+            title: "The Time Tax",
+            subtitle: "Average daily loss based on 14 units. Reclaim 21 full days of life every year.",
+            source: "CDC NHIS (2022)",
+            href: "https://www.cdc.gov/tobacco/data_statistics/fact_sheets/adult_data/cig_smoking/index.htm",
+        },
+        {
+            id: "oxygen",
+            visual: <OxygenResetVisual />,
+            title: "The 12-Hour Reset",
+            subtitle: "Carbon monoxide levels in your blood drop to normal within half a day. Biological recovery begins immediately.",
+            source: "WHO (2024)",
+            href: "https://www.who.int/news-room/fact-sheets/detail/tobacco",
+        },
+        {
+            id: "cost",
+            visual: <FinancialCostVisual />,
+            title: "The Annual Cost",
+            subtitle: "$2,920 per year is the average U.S. cost for a pack-a-day habit. Reclaim your capital.",
+            source: "Tobacco-Free Kids (2024)",
+            href: "https://www.tobaccofreekids.org/problem/toll-us",
+        },
+        {
+            id: "craving",
+            visual: <CravingWaveVisual />,
+            title: "The 3-Minute Wave",
+            subtitle: "The average intense craving peaks and passes in just 3-5 minutes. You only need to wait.",
+            source: "Hughes, J.R. (1992)",
+            href: "https://pubmed.ncbi.nlm.nih.gov/1572972/"
+        }
+    ];
+
     return (
         <section className="relative bg-[#FAFAFA] overflow-hidden py-24 md:py-32">
             <div className="max-w-[1200px] mx-auto px-6 relative z-10">
 
                 {/* Header Section */}
-                <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20 space-y-4">
+                <div className="text-center max-w-2xl mx-auto mb-16 md:mb-24 space-y-4">
                     <Badge
                         variant="secondary"
                         className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide border-none bg-[oklch(0.9484_0.0251_149.08)] text-[oklch(0.2475_0.0661_146.79)] hover:bg-[oklch(0.9484_0.0251_149.08)] uppercase"
@@ -310,84 +354,94 @@ export function ProblemSection() {
                         You're not failing. <br className="hidden md:block" />
                         <span className="text-[#05290C] italic font-semibold">You're being hijacked.</span>
                     </h2>
-                    <p className="text-lg text-black/50 font-satoshi max-w-md mx-auto leading-relaxed">
+                    {/* <p className="text-lg text-black/50 font-satoshi max-w-md mx-auto leading-relaxed">
                         Redefining recovery through <span className="text-black font-semibold">biological data</span>, not willpower.
-                    </p>
+                    </p> */}
                 </div>
 
-                {/* Alternating Row 1 */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
+                {/* ============ MOBILE / TABLET LAYOUT (< lg) ============ */}
+                {/* Simplified Stack: Headline -> Visual -> Subtitle -> Source */}
+                {/* Shows only first 3 items */}
+                <div className="flex flex-col space-y-20 lg:hidden">
+                    {realityItems.slice(0, 3).map((item) => (
+                        <div key={item.id} className="flex flex-col space-y-6">
+                            {/* Headline */}
+                            <h3 className="text-3xl font-satoshi font-bold text-black tracking-tight">
+                                {item.title}
+                            </h3>
 
-                    {/* Item 1: Source, Headline, Desc, Visual */}
-                    <div className="flex flex-col items-start space-y-12">
-                        <PointerText
-                            source="Di Chiara, G. (2000)"
-                            title="The Hijack"
-                            subtitle="Nicotine shatters the 'Normal' dopamine ceiling, peaking at 250%—instantly redefining your brain's reward logic."
-                            href="https://pubmed.ncbi.nlm.nih.gov/11073861/"
-                        />
-                        <VisualContainer padding="p-4">
-                            <DopamineChart />
-                        </VisualContainer>
-                    </div>
+                            {/* Visual Container */}
+                            <VisualContainer padding="p-4">
+                                {item.visual}
+                            </VisualContainer>
 
-                    {/* Item 2: Visual, Source, Headline, Desc */}
-                    <div className="flex flex-col items-start space-y-12">
-                        <VisualContainer padding="p-4">
-                            <TimeTaxChart />
-                        </VisualContainer>
-                        <PointerText
-                            source="CDC NHIS (2022)"
-                            title="The Time Tax"
-                            subtitle="Average daily loss based on 14 units. Reclaim 21 full days of life every year."
-                            href="https://www.cdc.gov/tobacco/data_statistics/fact_sheets/adult_data/cig_smoking/index.htm"
-                        />
-                    </div>
-
+                            {/* Subtitle & Source */}
+                            <div className="flex flex-col space-y-4 max-w-lg">
+                                <p className="text-lg text-black/60 font-satoshi leading-relaxed">
+                                    {item.subtitle}
+                                </p>
+                                <a
+                                    href={item.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group flex items-center gap-1.5 text-[10px] tracking-[0.3em] text-black/40 font-bold uppercase font-satoshi hover:text-[#05290C] transition-colors"
+                                >
+                                    Source: {item.source}
+                                    <ArrowUpRight className="w-3 h-3 translate-y-[0.5px] transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                                </a>
+                            </div>
+                        </div>
+                    ))}
                 </div>
 
-                {/* Row 2: 3-Column Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mt-12 md:mt-16">
+                {/* ============ DESKTOP LAYOUT (>= lg) ============ */}
+                {/* Original Complex Grid */}
+                <div className="hidden lg:block">
+                    {/* Row 1: 2 Columns */}
+                    <div className="grid grid-cols-2 gap-16 mb-16">
+                        {/* Item 1: Text -> Visual */}
+                        <div className="flex flex-col items-start space-y-12">
+                            <PointerText
+                                source={realityItems[0].source}
+                                title={realityItems[0].title}
+                                subtitle={realityItems[0].subtitle}
+                                href={realityItems[0].href}
+                            />
+                            <VisualContainer padding="p-4">
+                                {realityItems[0].visual}
+                            </VisualContainer>
+                        </div>
 
-                    {/* Item 3: Oxygen Reset */}
-                    <div className="flex flex-col items-start space-y-8">
-                        <VisualContainer padding="p-4">
-                            <OxygenResetVisual />
-                        </VisualContainer>
-                        <PointerText
-                            source="WHO (2024)"
-                            title="The 12-Hour Reset"
-                            subtitle="Carbon monoxide levels in your blood drop to normal within half a day. Biological recovery begins immediately."
-                            href="https://www.who.int/news-room/fact-sheets/detail/tobacco"
-                        />
+                        {/* Item 2: Visual -> Text */}
+                        <div className="flex flex-col items-start space-y-12">
+                            <VisualContainer padding="p-4">
+                                {realityItems[1].visual}
+                            </VisualContainer>
+                            <PointerText
+                                source={realityItems[1].source}
+                                title={realityItems[1].title}
+                                subtitle={realityItems[1].subtitle}
+                                href={realityItems[1].href}
+                            />
+                        </div>
                     </div>
 
-                    {/* Item 4: Annual Cost */}
-                    <div className="flex flex-col items-start space-y-8">
-                        <VisualContainer padding="p-4">
-                            <FinancialCostVisual />
-                        </VisualContainer>
-                        <PointerText
-                            source="Tobacco-Free Kids (2024)"
-                            title="The Annual Cost"
-                            subtitle="$2,920 per year is the average U.S. cost for a pack-a-day habit. Reclaim your capital."
-                            href="https://www.tobaccofreekids.org/problem/toll-us"
-                        />
+                    {/* Row 2: 3 Columns */}
+                    <div className="grid grid-cols-3 gap-6">
+                        {realityItems.slice(2).map((item) => (
+                            <div key={item.id} className="flex flex-col items-start space-y-8">
+                                <VisualContainer padding="p-4">
+                                    {item.visual}
+                                </VisualContainer>
+                                <PointerText
+                                    source={item.source}
+                                    title={item.title}
+                                    subtitle={item.subtitle}
+                                    href={item.href}
+                                />
+                            </div>
+                        ))}
                     </div>
-
-                    {/* Item 5: Craving Wave */}
-                    <div className="flex flex-col items-start space-y-8">
-                        <VisualContainer padding="p-4">
-                            <CravingWaveVisual />
-                        </VisualContainer>
-                        <PointerText
-                            source="Hughes, J.R. (1992)"
-                            title="The 3-Minute Wave"
-                            subtitle="The average intense craving peaks and passes in just 3-5 minutes. You only need to wait."
-                            href="https://pubmed.ncbi.nlm.nih.gov/1572972/"
-                        />
-                    </div>
-
                 </div>
 
             </div>

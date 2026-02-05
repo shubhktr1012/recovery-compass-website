@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
+import { BackToTop } from "@/components/ui/back-to-top";
+
 import "./globals.css";
 
 // Local Satoshi Font
@@ -29,6 +31,9 @@ const satoshi = localFont({
 export const metadata: Metadata = {
   title: "Recovery Compass - Reclaim Your Clarity",
   description: "A premium companion for your journey to a smoke-free life. Track progress, health recovery, and savings with clarity.",
+  icons: {
+    icon: "/rc-logo-white.svg",
+  },
 };
 
 export default function RootLayout({
@@ -44,7 +49,11 @@ export default function RootLayout({
       <body
         className={`${satoshi.variable} font-sans antialiased`}
       >
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+
+        <SmoothScrollProvider>
+          {children}
+          <BackToTop />
+        </SmoothScrollProvider>
       </body>
     </html>
   );

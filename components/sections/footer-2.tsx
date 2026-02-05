@@ -4,11 +4,13 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
+import { NewsletterForm } from "@/components/newsletter-form";
+
 interface FooterVariantTwoProps {
-    onCtaClick?: () => void;
+    onCtaClick?: () => void; // Deprecated
 }
 
-export function FooterVariantTwo({ onCtaClick }: FooterVariantTwoProps) {
+export function FooterVariantTwo({ }: FooterVariantTwoProps) {
     return (
         <footer className="w-full bg-[oklch(0.2475_0.0661_146.79)] text-white pt-20 pb-8 border-t border-white/5">
             <div className="max-w-[1200px] mx-auto px-6 md:px-12">
@@ -40,23 +42,8 @@ export function FooterVariantTwo({ onCtaClick }: FooterVariantTwoProps) {
                             </h3>
 
                             {/* Input Field Group */}
-                            <div className="space-y-2">
-                                <label className="text-xs uppercase tracking-widest text-white/40 font-medium">
-                                    Enter Your Email
-                                </label>
-                                <div className="flex items-end gap-4">
-                                    <input
-                                        type="email"
-                                        placeholder="hello@example.com"
-                                        className="flex-1 bg-transparent border-b border-white/20 py-3 text-lg placeholder:text-white/20 focus:outline-none focus:border-white transition-colors"
-                                    />
-                                    <Button
-                                        className="rounded-full bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-white/90 font-medium px-8"
-                                        onClick={onCtaClick}
-                                    >
-                                        Join
-                                    </Button>
-                                </div>
+                            <div className="pt-2">
+                                <NewsletterForm alignment="left" className="lg:ml-0" variant="minimal" />
                             </div>
 
                             {/* Disclaimer */}

@@ -1,18 +1,39 @@
 
 import { Button } from "@/components/ui/button";
+import { motion, Variants } from "framer-motion";
 
 interface HeroSectionProps {
     onPrimaryClick?: () => void;
     onSecondaryClick?: () => void;
 }
 
+const fadeUpVariants: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+};
+
+const staggerContainer: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.15,
+            delayChildren: 0.2
+        }
+    }
+};
+
 export function HeroSection({ onPrimaryClick, onSecondaryClick }: HeroSectionProps) {
     return (
         <section className="relative min-h-screen flex items-end justify-center px-6 pt-24 pb-15 overflow-hidden">
 
-            {/* Background Image */}
-            {/* Background Image Placeholder */}
-            <div className="absolute inset-0 z-0 bg-[#262626]">
+            {/* Background Image Container */}
+            <motion.div
+                initial={{ scale: 1 }}
+                animate={{ scale: 1.05 }}
+                transition={{ duration: 10, ease: "linear" }}
+                className="absolute inset-0 z-0 bg-[#262626] origin-center"
+            >
                 {/* Architectural Grid Pattern */}
                 <div
                     className="absolute inset-0 opacity-10"
@@ -38,16 +59,22 @@ export function HeroSection({ onPrimaryClick, onSecondaryClick }: HeroSectionPro
                         Image Goes Here
                     </span>
                 </div>
-            </div>
+            </motion.div>
 
             {/* Content Overlay - Gradient removed as per request */}
             {/* <div className="absolute inset-0 z-10 bg-gradient-to-r from-neutral-50 via-neutral-50/80 to-transparent w-full md:w-3/4 lg:w-2/3" /> */}
 
             {/* Content Container */}
             <div className="relative z-20 w-full max-w-[1200px]">
-                <div className="w-full md:max-w-[50%] space-y-6 text-left">
+                <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    variants={staggerContainer}
+                    className="w-full md:max-w-[50%] space-y-6 text-left"
+                >
                     {/* Feature Badges */}
-                    <div className="flex flex-wrap gap-3">
+                    <motion.div variants={fadeUpVariants} className="flex flex-wrap gap-3">
                         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/10 shadow-sm">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#D5DEC5]" />
                             <span className="text-sm font-medium text-white/90">Nervous System Regulation</span>
@@ -56,35 +83,35 @@ export function HeroSection({ onPrimaryClick, onSecondaryClick }: HeroSectionPro
                             <span className="w-1.5 h-1.5 rounded-full bg-[#D5DEC5]" />
                             <span className="text-sm font-medium text-white/90">Evidence-Based Support</span>
                         </div>
-                    </div>
+                    </motion.div>
 
                     {/* Headline */}
-                    <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-medium tracking-tight leading-[1.1] text-white">
+                    <motion.h1 variants={fadeUpVariants} className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-medium tracking-tight leading-[1.1] text-white">
                         A smarter way to navigate quitting.
-                    </h1>
+                    </motion.h1>
 
                     {/* Subheadline */}
-                    <p className="text-lg md:text-xl text-neutral-200 max-w-xl leading-relaxed font-medium">
+                    <motion.p variants={fadeUpVariants} className="text-lg md:text-xl text-neutral-200 max-w-xl leading-relaxed font-medium">
                         Navigate urges, calm your body, and build steady change—one day at a time. Stop fighting biology with force and start using a structured approach that works with your nervous system.
-                    </p>
+                    </motion.p>
 
                     {/* CTAs */}
-                    <div className="flex flex-row gap-3 justify-start pt-4 w-full">
+                    <motion.div variants={fadeUpVariants} className="flex flex-row gap-3 justify-start pt-4 w-full">
                         <Button
-                            className="rounded-full px-6 py-3 text-base font-medium bg-white hover:bg-neutral-100 text-neutral-900 shadow-lg shadow-black/20 h-auto whitespace-nowrap"
+                            className="rounded-full px-6 py-3 text-base font-medium bg-white hover:bg-neutral-100 text-neutral-900 shadow-lg shadow-black/20 h-auto whitespace-nowrap transition-transform hover:scale-105 active:scale-95"
                             onClick={onPrimaryClick}
                         >
                             Join the Waitlist
                         </Button>
                         <Button
                             variant="outline"
-                            className="rounded-full px-6 py-3 text-base font-medium border-neutral-300/50 bg-transparent text-white hover:bg-white/10 h-auto whitespace-nowrap"
+                            className="rounded-full px-6 py-3 text-base font-medium border-neutral-300/50 bg-transparent text-white hover:bg-white/10 h-auto whitespace-nowrap transition-transform hover:scale-105 active:scale-95"
                             onClick={onSecondaryClick}
                         >
                             Explore Programs
                         </Button>
-                    </div>
-                </div>
+                    </motion.div>
+                </motion.div>
             </div>
         </section>
     );

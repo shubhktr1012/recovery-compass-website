@@ -1,11 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { NewsletterForm } from "@/components/newsletter-form";
 
-interface FooterSectionProps {
-    onCtaClick?: () => void;
-}
-
-export function FooterSection({ onCtaClick }: FooterSectionProps) {
+export function FooterSection() {
     return (
         <footer className="py-24 md:py-32 px-6 md:px-16 lg:px-24 bg-primary text-white">
             <div className="max-w-4xl mx-auto">
@@ -17,13 +13,7 @@ export function FooterSection({ onCtaClick }: FooterSectionProps) {
                         Just join the list.
                     </p>
 
-                    <Button
-                        size="lg"
-                        className="rounded-full px-10 py-6 h-auto text-lg font-medium bg-white text-primary hover:bg-neutral-100 transition-all duration-300"
-                        onClick={onCtaClick}
-                    >
-                        Join the Waitlist
-                    </Button>
+                    <NewsletterForm alignment="center" />
                 </div>
 
                 {/* Separator */}

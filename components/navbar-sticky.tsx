@@ -7,11 +7,15 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface NavbarStickyProps {
-    onCtaClick?: () => void;
+    onCtaClick?: () => void; // Deprecated, but kept for compatibility during refactor
 }
 
-export function NavbarSticky({ onCtaClick }: NavbarStickyProps) {
+export function NavbarSticky({ }: NavbarStickyProps) {
     const [isOpen, setIsOpen] = React.useState(false);
+
+    const scrollToWaitlist = () => {
+        document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
+    };
 
     return (
         <header className="sticky top-0 z-50 w-full bg-white">
@@ -35,7 +39,7 @@ export function NavbarSticky({ onCtaClick }: NavbarStickyProps) {
                 <div className="flex items-center gap-8">
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex items-center gap-8">
-                        {["Why Us?", "Programs", "Testimonials"].map((link) => (
+                        {["Why Us?", "Features", "Programs"].map((link) => (
                             <a
                                 key={link}
                                 href={`#${link.toLowerCase().replace(" ", "-").replace("?", "")}`}
@@ -48,7 +52,7 @@ export function NavbarSticky({ onCtaClick }: NavbarStickyProps) {
 
                     {/* Desktop CTA */}
                     <Button
-                        onClick={onCtaClick}
+                        onClick={scrollToWaitlist}
                         className={cn(
                             "hidden md:inline-flex rounded-full px-6 text-base font-medium transition-transform active:scale-95",
                             "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90",
@@ -91,7 +95,7 @@ export function NavbarSticky({ onCtaClick }: NavbarStickyProps) {
                         className="md:hidden absolute top-full left-0 w-full bg-white border-b border-[oklch(0.2475_0.0661_146.79)]/5 shadow-lg overflow-hidden"
                     >
                         <nav className="flex flex-col gap-6 px-6 py-6 items-start">
-                            {["Why Us?", "Programs", "Testimonials"].map((link, i) => (
+                            {["Why Us?", "Features", "Programs"].map((link, i) => (
                                 <motion.a
                                     key={link}
                                     href={`#${link.toLowerCase().replace(" ", "-").replace("?", "")}`}
@@ -113,7 +117,7 @@ export function NavbarSticky({ onCtaClick }: NavbarStickyProps) {
                             >
                                 <Button
                                     onClick={() => {
-                                        onCtaClick?.();
+                                        scrollToWaitlist();
                                         setIsOpen(false);
                                     }}
                                     className={cn(
