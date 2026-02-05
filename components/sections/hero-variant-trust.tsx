@@ -71,7 +71,7 @@ export function HeroVariantTrust({ onPrimaryClick, onSecondaryClick }: HeroSecti
 
                         {/* Headline - Second to animate */}
                         <motion.h1
-                            className="text-5xl lg:text-7xl font-medium tracking-tight leading-[1.1] text-white"
+                            className="text-5xl lg:text-7xl font-sans font-medium tracking-tight leading-[1.1] text-white"
                             initial={{ opacity: 0, y: 15 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, ease: "easeOut", delay: 0.35 }}
