@@ -56,7 +56,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                         {/* Avatar Trust Bar - Centered */}
                         <motion.div variants={itemVariants} className="flex flex-row items-center justify-center gap-3">
                             <p className="text-base font-medium text-[oklch(0.2475_0.0661_146.79)]">
-                                Join 2,140+ beyond the urge
+                                Join 41+ beyond the urge
                             </p>
                             <div className="flex items-center">
                                 {[
