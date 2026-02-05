@@ -293,50 +293,51 @@ function CravingWaveVisual() {
     );
 }
 
+// Data definition for consistent rendering
+const realityItems = [
+    {
+        id: "hijack",
+        visual: <DopamineChart />,
+        title: "The Hijack",
+        subtitle: "Nicotine shatters the 'Normal' dopamine ceiling, peaking at 250%—instantly redefining your brain's reward logic.",
+        source: "Di Chiara, G. (2000)",
+        href: "https://pubmed.ncbi.nlm.nih.gov/11073861/",
+    },
+    {
+        id: "time-tax",
+        visual: <TimeTaxChart />,
+        title: "The Time Tax",
+        subtitle: "Average daily loss based on 14 units. Reclaim 21 full days of life every year.",
+        source: "CDC NHIS (2022)",
+        href: "https://www.cdc.gov/tobacco/data_statistics/fact_sheets/adult_data/cig_smoking/index.htm",
+    },
+    {
+        id: "oxygen",
+        visual: <OxygenResetVisual />,
+        title: "The 12-Hour Reset",
+        subtitle: "Carbon monoxide levels in your blood drop to normal within half a day. Biological recovery begins immediately.",
+        source: "WHO (2024)",
+        href: "https://www.who.int/news-room/fact-sheets/detail/tobacco",
+    },
+    {
+        id: "cost",
+        visual: <FinancialCostVisual />,
+        title: "The Annual Cost",
+        subtitle: "$2,920 per year is the average U.S. cost for a pack-a-day habit. Reclaim your capital.",
+        source: "Tobacco-Free Kids (2024)",
+        href: "https://www.tobaccofreekids.org/problem/toll-us",
+    },
+    {
+        id: "craving",
+        visual: <CravingWaveVisual />,
+        title: "The 3-Minute Wave",
+        subtitle: "The average intense craving peaks and passes in just 3-5 minutes. You only need to wait.",
+        source: "Hughes, J.R. (1992)",
+        href: "https://pubmed.ncbi.nlm.nih.gov/1572972/"
+    }
+];
+
 export function ProblemSection() {
-    // Data definition for consistent rendering
-    const realityItems = [
-        {
-            id: "hijack",
-            visual: <DopamineChart />,
-            title: "The Hijack",
-            subtitle: "Nicotine shatters the 'Normal' dopamine ceiling, peaking at 250%—instantly redefining your brain's reward logic.",
-            source: "Di Chiara, G. (2000)",
-            href: "https://pubmed.ncbi.nlm.nih.gov/11073861/",
-        },
-        {
-            id: "time-tax",
-            visual: <TimeTaxChart />,
-            title: "The Time Tax",
-            subtitle: "Average daily loss based on 14 units. Reclaim 21 full days of life every year.",
-            source: "CDC NHIS (2022)",
-            href: "https://www.cdc.gov/tobacco/data_statistics/fact_sheets/adult_data/cig_smoking/index.htm",
-        },
-        {
-            id: "oxygen",
-            visual: <OxygenResetVisual />,
-            title: "The 12-Hour Reset",
-            subtitle: "Carbon monoxide levels in your blood drop to normal within half a day. Biological recovery begins immediately.",
-            source: "WHO (2024)",
-            href: "https://www.who.int/news-room/fact-sheets/detail/tobacco",
-        },
-        {
-            id: "cost",
-            visual: <FinancialCostVisual />,
-            title: "The Annual Cost",
-            subtitle: "$2,920 per year is the average U.S. cost for a pack-a-day habit. Reclaim your capital.",
-            source: "Tobacco-Free Kids (2024)",
-            href: "https://www.tobaccofreekids.org/problem/toll-us",
-        },
-        {
-            id: "craving",
-            visual: <CravingWaveVisual />,
-            title: "The 3-Minute Wave",
-            subtitle: "The average intense craving peaks and passes in just 3-5 minutes. You only need to wait.",
-            source: "Hughes, J.R. (1992)",
-            href: "https://pubmed.ncbi.nlm.nih.gov/1572972/"
-        }
-    ];
 
     return (
         <section className="relative bg-[#FAFAFA] overflow-hidden py-24 md:py-32">
