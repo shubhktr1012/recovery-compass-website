@@ -9,10 +9,8 @@ interface HeroSectionProps {
 export function HeroVariantTrust({ onPrimaryClick, onSecondaryClick }: HeroSectionProps) {
     return (
         <section className="relative min-h-screen flex items-end justify-center px-6 md:px-16 lg:px-24 pt-24 pb-15 overflow-hidden">
-
-            {/* Background Image */}
-            {/* Background Image Placeholder */}
-            <div className="absolute inset-0 z-0 bg-[#262626]">
+            {/* Background Image Container */}
+            <div className="absolute inset-0 z-0 bg-[#fbfbfd]">
                 {/* Architectural Grid Pattern */}
                 <div
                     className="absolute inset-0 opacity-10"

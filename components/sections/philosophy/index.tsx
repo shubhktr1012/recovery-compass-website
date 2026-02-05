@@ -62,7 +62,12 @@ export function PhilosophySection() {
                 {/* Left Column: Content Navigation */}
                 <div className="flex flex-col h-full">
                     {/* Header */}
-                    <div className="space-y-4 mb-12 md:mb-24 lg:mb-48">
+                    <motion.div
+                        className="space-y-4 mb-12 md:mb-24 lg:mb-48"
+                        initial={{ opacity: 0, x: -50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                    >
                         <Badge
                             variant="secondary"
                             className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide border-none bg-[oklch(0.9484_0.0251_149.08)] text-[oklch(0.2475_0.0661_146.79)] hover:bg-[oklch(0.9484_0.0251_149.08)]"
@@ -73,7 +78,7 @@ export function PhilosophySection() {
                             Why choose <br />
                             <span className="text-[oklch(0.2475_0.0661_146.79)] italic">Recovery Compass?</span>
                         </h2>
-                    </div>
+                    </motion.div>
 
                     {/* Feature List */}
                     <div className="space-y-8 flex-grow">
@@ -121,7 +126,12 @@ export function PhilosophySection() {
                 </div>
 
                 {/* Right Column: Visual Canvas & Description Bundle */}
-                <div className="flex flex-col min-h-[500px] md:min-h-[600px] lg:min-h-[700px] w-full rounded-3xl overflow-hidden bg-[oklch(0.2475_0.0661_146.79)] border border-[oklch(0.2475_0.0661_146.79)]/5">
+                <motion.div
+                    className="flex flex-col min-h-[500px] md:min-h-[600px] lg:min-h-[700px] w-full rounded-3xl overflow-hidden bg-[oklch(0.2475_0.0661_146.79)] border border-[oklch(0.2475_0.0661_146.79)]/5"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+                >
                     {/* Top: Visual Animation Area */}
                     <div className="relative flex-grow w-full min-h-[350px] md:min-h-[400px] lg:min-h-[450px]">
                         <AnimatePresence mode="wait">
@@ -157,7 +167,7 @@ export function PhilosophySection() {
                             </motion.p>
                         </AnimatePresence>
                     </div>
-                </div>
+                </motion.div>
 
             </div>
         </section>

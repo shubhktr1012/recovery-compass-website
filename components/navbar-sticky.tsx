@@ -18,7 +18,12 @@ export function NavbarSticky({ }: NavbarStickyProps) {
     };
 
     return (
-        <header className="sticky top-0 z-50 w-full bg-white">
+        <motion.header
+            className="sticky top-0 z-50 w-full bg-white"
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+        >
             <div className="flex items-center justify-between px-6 md:px-12 py-4 max-w-[1200px] mx-auto">
 
                 {/* Brand */}
@@ -133,6 +138,6 @@ export function NavbarSticky({ }: NavbarStickyProps) {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </header>
+        </motion.header>
     );
 }
