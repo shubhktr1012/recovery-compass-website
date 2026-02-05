@@ -12,6 +12,7 @@ const programs = [
         tag: "Starting Point",
         title: "The 6-Day Reset",
         description: "A focused spring to reclaim your baseline and break autopilot habit loops.",
+        price: "$19",
         highlights: [
             { label: "Day 1–2", text: "Urge Discovery & Mapping" },
             { label: "Day 3–4", text: "The 10-Minute Protocol" },
@@ -26,6 +27,7 @@ const programs = [
         tag: "Full Journey",
         title: "The 90-Day Foundation",
         description: "A complete roadmap to cement your identity and live without reference to smoking.",
+        price: "$149",
         highlights: [
             { label: "Day 1–21", text: "Pattern Awareness & Shift" },
             { label: "Day 22–60", text: "Habit Architecture Design" },
@@ -133,7 +135,13 @@ export function ExploreProgramsSection() {
                                     ))}
                                 </div>
 
-                                <div className="flex flex-col items-center mt-auto">
+                                <div className="flex flex-col items-center mt-auto space-y-4">
+                                    <div className={cn(
+                                        "text-4xl font-sans font-bold",
+                                        program.id === "6-day-reset" ? "text-white" : "text-[oklch(0.2475_0.0661_146.79)]"
+                                    )}>
+                                        {program.price}
+                                    </div>
                                     <Button
                                         variant="default"
                                         className={cn(
