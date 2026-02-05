@@ -93,13 +93,13 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                                 </span>
                             </div>
 
-                            <h1 className="text-4xl md:text-5xl lg:text-7xl font-semibold tracking-tight leading-[1.05] text-black">
+                            <h1 className="text-4xl md:text-5xl lg:text-7xl font-erode font-semibold tracking-tight leading-[1.05] text-black">
                                 A smarter way to <span className="text-[oklch(0.2475_0.0661_146.79)] italic">quit smoking.</span>
                             </h1>
 
                             {/* Subheadline - Centered */}
                             <p className="text-lg md:text-xl text-[oklch(0.2475_0.0661_146.79)]/70 leading-snug font-medium max-w-2xl mx-auto">
-                                Navigate nicotine cravings, calm your nervous system, and build a smoke-free life. Stop fighting biology with willpower.
+                                The intelligent app designed to navigate nicotine cravings, calm your nervous system, and build a smoke-free life. Stop fighting biology with willpower.
                             </p>
                         </div>
 

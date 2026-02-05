@@ -8,7 +8,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
-  --font-erode: 'Erode', serif;
+  --font-erode: var(--font-erode);
   --font-mono: var(--font-geist-mono);
 
   --color-primary: var(--primary);
@@ -72,7 +72,7 @@
 
 @layer utilities {
   .font-erode {
-    font-family: 'Erode', serif;
+    font-family: var(--font-erode);
   }
 }
 
