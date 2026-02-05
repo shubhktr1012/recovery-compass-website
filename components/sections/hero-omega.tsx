@@ -89,7 +89,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
                                 </span>
                                 <span className="text-[10px] md:text-xs font-bold text-[oklch(0.2475_0.0661_146.79)]/80 tracking-wide uppercase">
-                                    Currently In Development — Launching Mid-March
+                                    Currently In Development <span className="hidden md:inline">— Launching Mid-March</span>
                                 </span>
                             </div>
 
