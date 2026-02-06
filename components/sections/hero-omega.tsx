@@ -108,7 +108,8 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                             <Button
                                 className={cn(
                                     "rounded-full px-5 py-2.5 text-sm font-medium transition-all active:scale-95",
-                                    "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 border border-transparent h-auto"
+                                    "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 border border-transparent h-auto",
+                                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2"
                                 )}
                                 onClick={scrollToWaitlist}
                             >
@@ -117,7 +118,8 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                             <Button
                                 className={cn(
                                     "rounded-full px-5 py-2.5 text-sm font-medium transition-all active:scale-95",
-                                    "bg-white text-[oklch(0.2475_0.0661_146.79)] border border-[oklch(0.2475_0.0661_146.79)] hover:bg-[oklch(0.2475_0.0661_146.79)] hover:text-white h-auto"
+                                    "bg-white text-[oklch(0.2475_0.0661_146.79)] border border-[oklch(0.2475_0.0661_146.79)] hover:bg-[oklch(0.2475_0.0661_146.79)] hover:text-white h-auto",
+                                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2"
                                 )}
                                 onClick={onSecondaryClick}
                             >

@@ -30,7 +30,7 @@ export function NavbarSticky({ }: NavbarStickyProps) {
                 <div className="flex items-center gap-2 text-[oklch(0.2475_0.0661_146.79)]">
                     <Image
                         src="/rc-logo-black.svg"
-                        alt="Recovery Compass"
+                        alt=""
                         width={32}
                         height={32}
                         className="size-8"
@@ -51,7 +51,7 @@ export function NavbarSticky({ }: NavbarStickyProps) {
                             <a
                                 key={link}
                                 href={`#${link.toLowerCase().replace(" ", "-").replace("?", "")}`}
-                                className="text-base font-medium text-[oklch(0.2475_0.0661_146.79)] hover:text-[oklch(0.2475_0.0661_146.79)]/70 transition-colors"
+                                className="text-base font-medium text-[oklch(0.2475_0.0661_146.79)] hover:text-[oklch(0.2475_0.0661_146.79)]/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2 rounded-sm"
                             >
                                 {link}
                             </a>
@@ -73,7 +73,7 @@ export function NavbarSticky({ }: NavbarStickyProps) {
                     {/* Mobile Menu Toggle (2-Line Animated Icon) */}
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 z-50 relative focus:outline-none"
+                        className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 z-50 relative rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2"
                         aria-label="Toggle menu"
                     >
                         {/* Top Line */}
@@ -107,7 +107,7 @@ export function NavbarSticky({ }: NavbarStickyProps) {
                                 <motion.a
                                     key={link}
                                     href={`#${link.toLowerCase().replace(" ", "-").replace("?", "")}`}
-                                    className="text-base font-medium text-[oklch(0.2475_0.0661_146.79)]"
+                                    className="text-base font-medium text-[oklch(0.2475_0.0661_146.79)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2 rounded-sm"
                                     onClick={() => setIsOpen(false)}
                                     initial={{ opacity: 0, y: -10 }}
                                     animate={{ opacity: 1, y: 0 }}

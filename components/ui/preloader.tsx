@@ -52,7 +52,7 @@ export function Preloader() {
                         >
                             <Image
                                 src="/rc-logo-dark-green.svg"
-                                alt="Recovery Compass Logo"
+                                alt=""
                                 fill
                                 className="object-contain"
                                 priority

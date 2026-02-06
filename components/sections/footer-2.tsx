@@ -24,7 +24,7 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                         <div className="flex items-center gap-2 text-white">
                             <Image
                                 src="/rc-logo-white.svg"
-                                alt="Recovery Compass"
+                                alt=""
                                 width={32}
                                 height={32}
                                 className="size-8"

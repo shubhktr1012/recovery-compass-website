@@ -88,7 +88,7 @@ export function ExploreProgramsSection() {
                                         )}>
                                             {program.tag}
                                         </span>
-                                        {program.id === "6-day-reset" && <Zap className="size-6 text-white/20" />}
+                                        {program.id === "6-day-reset" && <Zap className="size-6 text-white/20" aria-hidden="true" />}
                                     </div>
                                     <h3 className={cn(
                                         "text-2xl md:text-[28px] lg:text-3xl font-erode font-semibold leading-tight",
@@ -118,7 +118,7 @@ export function ExploreProgramsSection() {
                                                 <Check className={cn(
                                                     "size-3",
                                                     program.id === "6-day-reset" ? "text-white" : "text-[oklch(0.2475_0.0661_146.79)]"
-                                                )} />
+                                                )} aria-hidden="true" />
                                             </div>
                                             <div className="flex flex-col">
                                                 <span className={cn(
@@ -146,9 +146,10 @@ export function ExploreProgramsSection() {
                                         variant="default"
                                         className={cn(
                                             "w-fit px-10 h-12 rounded-full font-bold text-base border-none transition-all duration-300",
+                                            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
                                             program.id === "6-day-reset"
-                                                ? "bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-white/90 shadow-lg"
-                                                : "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 shadow-lg"
+                                                ? "bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-white/90 shadow-lg focus-visible:ring-white"
+                                                : "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 shadow-lg focus-visible:ring-[oklch(0.2475_0.0661_146.79)]"
                                         )}
                                     >
                                         {program.cta}

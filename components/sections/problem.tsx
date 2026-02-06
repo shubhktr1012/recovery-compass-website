@@ -309,7 +309,7 @@ const realityItems = [
         title: "The Time Tax",
         subtitle: "Average daily loss based on 14 units. Reclaim 21 full days of life every year.",
         source: "CDC NHIS (2022)",
-        href: "https://www.cdc.gov/tobacco/data_statistics/fact_sheets/adult_data/cig_smoking/index.htm",
+        href: "https://www.cdc.gov/tobacco/data_statistics/fact_sheets/adult_data/cig_smoking/index.html",
     },
     {
         id: "oxygen",

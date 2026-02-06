@@ -29,11 +29,59 @@ const satoshi = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Recovery Compass - Reclaim Your Clarity",
-  description: "A premium companion for your journey to a smoke-free life. Track progress, health recovery, and savings with clarity.",
+  metadataBase: new URL("https://recoverycompass.com"),
+  title: {
+    default: "Recovery Compass - Reclaim Your Clarity",
+    template: "%s | Recovery Compass",
+  },
+  description:
+    "Recovery Compass is your premium companion for a smoke-free life. Navigate urge waves, track health recovery, visualize savings, and build lasting habits.",
+  keywords: ["quit smoking", "addiction recovery", "somatic regulation", "health tracker", "smoke-free"],
+  authors: [{ name: "Recovery Compass Team" }],
+  creator: "Recovery Compass",
+  publisher: "Recovery Compass",
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://recoverycompass.com",
+    title: "Recovery Compass - Reclaim Your Clarity",
+    description:
+      "A premium companion for your journey to a smoke-free life. Track progress, health recovery, and savings with clarity.",
+    siteName: "Recovery Compass",
+    images: [
+      {
+        url: "/hero.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "Recovery Compass Dashboard",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Recovery Compass - Reclaim Your Clarity",
+    description:
+      "A premium companion for your journey to a smoke-free life. Track progress, health recovery, and savings with clarity.",
+    images: ["/hero.jpeg"],
+    creator: "@recoverycompass",
+  },
   icons: {
     icon: "/rc-logo-white.svg",
+    apple: "/rc-logo-white.svg",
   },
+};
+
+export const viewport = {
+  themeColor: "#0F172A",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -43,7 +91,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head />
+      <head>
+        <meta charSet="utf-8" />
+      </head>
       <body
         className={`${satoshi.variable} font-sans antialiased`}
       >

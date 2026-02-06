@@ -7,7 +7,6 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 
@@ -89,12 +88,11 @@ export function FAQSection() {
                     </div>
 
                     {/* CTA Button */}
-                    <Link href="#" className="inline-block">
-                        <Button
-                            className="bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 rounded-full h-12 px-8 text-base shadow-none"
-                        >
-                            Reach out
-                        </Button>
+                    <Link
+                        href="#"
+                        className="inline-flex items-center justify-center bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 rounded-full h-12 px-8 text-base font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2 transition-colors"
+                    >
+                        Reach out
                     </Link>
                 </div>
 
@@ -119,6 +117,7 @@ export function FAQSection() {
                                         <div className="relative shrink-0 flex items-center justify-center size-10 rounded-full bg-white border border-[oklch(0.2475_0.0661_146.79)]/20 group-data-[state=open]:bg-[oklch(0.2475_0.0661_146.79)] group-data-[state=open]:border-[oklch(0.2475_0.0661_146.79)] transition-all duration-500">
                                             <Plus
                                                 className="size-5 text-[oklch(0.2475_0.0661_146.79)] transition-transform duration-500 group-data-[state=open]:rotate-45 group-data-[state=open]:text-white"
+                                                aria-hidden="true"
                                             />
                                         </div>
                                     </div>
