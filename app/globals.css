@@ -42,6 +42,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-erode: 'Erode', serif;
+  --font-satoshi: var(--font-sans);
   --font-mono: var(--font-geist-mono);
 
   --color-primary: var(--primary);
@@ -110,95 +111,93 @@
 }
 
 :root {
-  /* Minimal Triad Palette */
+  /* ═══════════════════════════════════════════════════════════════════════════
+     AMALFI COAST PALETTE
+     Mediterranean-inspired: Tile Blue, Citrus Zest, Pearl White
+     ═══════════════════════════════════════════════════════════════════════════ */
   --radius: 0.75rem;
 
-  /* 1. Canvas White */
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.2547 0.0545 124.54);
-  /* Deep Moss */
+  /* ─── CANVAS ─── */
+  --background: oklch(0.9700 0.0120 85);
+  /* Warm Pearl */
+  --foreground: oklch(0.2500 0.0400 260);
+  /* Deep Amalfi Ink */
 
-  /* 2. Deep Moss (Primary Brand) -> Deep Forest */
-  --primary: oklch(0.2475 0.0661 146.79);
-  --primary-foreground: oklch(1 0 0);
-  /* White */
+  /* ─── PRIMARY: Amalfi Tile Blue ─── */
+  --primary: oklch(0.4783 0.1332 260.71);
+  --primary-foreground: oklch(0.9800 0.0100 85);
 
-  /* 3. Sage Mist -> Sage Glaze (Surface/Accent) */
-  --secondary: oklch(0.9484 0.0251 149.08);
-  --secondary-foreground: oklch(0.2475 0.0661 146.79);
-  /* Deep Forest Text */
+  /* ─── SECONDARY: Soft Coastal Blue ─── */
+  --secondary: oklch(0.9200 0.0350 260);
+  --secondary-foreground: oklch(0.3500 0.0800 260);
 
-  /* Derived Utility Shades (Strictly from Moss Hue ~124) */
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.2547 0.0545 124.54);
+  /* ─── SURFACES ─── */
+  --card: oklch(0.9800 0.0080 85);
+  --card-foreground: oklch(0.2500 0.0400 260);
 
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2547 0.0545 124.54);
+  --popover: oklch(0.9900 0.0050 85);
+  --popover-foreground: oklch(0.2500 0.0400 260);
 
-  /* Muted: Very light mist for backgrounds */
-  --muted: oklch(0.96 0.01 124);
-  --muted-foreground: oklch(0.55 0.04 124);
+  /* ─── MUTED: Warm Sand ─── */
+  --muted: oklch(0.9400 0.0200 85);
+  --muted-foreground: oklch(0.5000 0.0300 260);
 
-  /* Accent: Sage Glaze */
-  --accent: oklch(0.9484 0.0251 149.08);
-  --accent-foreground: oklch(0.2475 0.0661 146.79);
+  /* ─── ACCENT: Citrus Zest Yellow ─── */
+  --accent: oklch(0.8359 0.1679 82.76);
+  --accent-foreground: oklch(0.2500 0.0600 60);
 
-  /* Destructive: Keep accessible red, but muted */
-  --destructive: oklch(0.6 0.15 25);
-  --destructive-foreground: oklch(0.98 0 0);
+  /* ─── DESTRUCTIVE: Terracotta Red ─── */
+  --destructive: oklch(0.5500 0.1500 30);
+  --destructive-foreground: oklch(0.9800 0.0100 30);
 
-  /* Borders: Light Moss */
-  --border: oklch(0.92 0.02 124);
-  --input: oklch(0.92 0.02 124);
-  --ring: oklch(0.2547 0.0545 124.54);
-  /* Focus Ring = Primary */
+  /* ─── UTILITY ─── */
+  --border: oklch(0.8800 0.0250 85);
+  --input: oklch(0.9200 0.0200 85);
+  --ring: oklch(0.4783 0.1332 260.71);
 
-  /* Charts (Monochromatic Green Scale) */
-  --chart-1: oklch(0.2547 0.0545 124.54);
-  /* Deep Moss */
-  --chart-2: oklch(0.40 0.05 124);
-  --chart-3: oklch(0.55 0.05 124);
-  --chart-4: oklch(0.70 0.04 124);
-  --chart-5: oklch(0.887 0.0349 123.26);
-  /* Sage Mist */
+  /* ─── CHARTS (Blue to Yellow Gradient) ─── */
+  --chart-1: oklch(0.4783 0.1332 260.71);
+  /* Amalfi Blue */
+  --chart-2: oklch(0.5500 0.1100 260);
+  --chart-3: oklch(0.6500 0.0800 260);
+  --chart-4: oklch(0.7500 0.0500 100);
+  --chart-5: oklch(0.8359 0.1679 82.76);
+  /* Citrus Zest */
 }
 
-/* Dark Mode: Deep Moss Background */
+/* Dark Mode: Amalfi Night */
 .dark {
-  --background: oklch(0.2547 0.0545 124.54);
-  /* Deep Moss */
-  --foreground: oklch(1 0 0);
-  /* White */
+  --background: oklch(0.2000 0.0300 260);
+  /* Deep Amalfi Night */
+  --foreground: oklch(0.9500 0.0150 85);
+  /* Warm Pearl text */
 
-  --card: oklch(0.22 0.05 124);
-  /* Slightly darker moss */
-  --card-foreground: oklch(1 0 0);
+  --card: oklch(0.2500 0.0350 260);
+  --card-foreground: oklch(0.9500 0.0150 85);
 
-  --popover: oklch(0.22 0.05 124);
-  --popover-foreground: oklch(1 0 0);
+  --popover: oklch(0.2300 0.0300 260);
+  --popover-foreground: oklch(0.9500 0.0150 85);
 
-  --primary: oklch(1 0 0);
-  /* White in dark mode */
-  --primary-foreground: oklch(0.2547 0.0545 124.54);
-  /* Moss Text */
+  --primary: oklch(0.7000 0.1200 260);
+  /* Lighter blue for dark bg */
+  --primary-foreground: oklch(0.1500 0.0300 260);
 
-  --secondary: oklch(0.35 0.05 124);
-  /* Mid-tone moss */
-  --secondary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.3000 0.0500 260);
+  --secondary-foreground: oklch(0.9000 0.0200 260);
 
-  --muted: oklch(0.30 0.04 124);
-  --muted-foreground: oklch(0.70 0.02 124);
+  --muted: oklch(0.2800 0.0300 260);
+  --muted-foreground: oklch(0.6500 0.0300 260);
 
-  --accent: oklch(0.35 0.05 124);
-  --accent-foreground: oklch(1 0 0);
+  --accent: oklch(0.8000 0.1500 82.76);
+  /* Slightly muted citrus */
+  --accent-foreground: oklch(0.2000 0.0400 60);
 
-  --destructive: oklch(0.6 0.15 25);
-  --destructive-foreground: oklch(1 0 0);
+  --destructive: oklch(0.6000 0.1500 30);
+  --destructive-foreground: oklch(0.9800 0.0100 30);
 
-  --border: oklch(0.35 0.04 124);
-  --input: oklch(0.35 0.04 124);
-  --ring: oklch(0.887 0.0349 123.26);
-  /* Sage Ring */
+  --border: oklch(0.3500 0.0400 260);
+  --input: oklch(0.3000 0.0350 260);
+  --ring: oklch(0.7000 0.1200 260);
 }
 
 @layer base {

@@ -14,12 +14,12 @@ function PointerText({ title, subtitle, source, href }: { title: string; subtitl
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-1.5 text-xs tracking-[0.3em] text-black/40 font-bold uppercase font-satoshi hover:text-[#05290C] transition-colors"
+                className="group flex items-center gap-1.5 text-xs tracking-[0.3em] text-black/40 font-bold uppercase font-satoshi hover:text-[var(--primary)] transition-colors"
             >
                 Source: {source}
                 <ArrowUpRight className="w-3 h-3 translate-y-[0.5px] transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
-            <h3 className="text-xl md:text-2xl font-erode font-bold text-black tracking-tight uppercase">
+            <h3 className="text-xl md:text-2xl font-satoshi font-bold text-black tracking-tight uppercase">
                 {title}
             </h3>
             <p className="text-base md:text-lg text-black/50 font-satoshi leading-relaxed">
@@ -34,7 +34,7 @@ function PointerText({ title, subtitle, source, href }: { title: string; subtitl
  */
 function VisualContainer({ children, padding = "p-8" }: { children: React.ReactNode; padding?: string }) {
     return (
-        <div className={`w-full aspect-[4/3] md:aspect-[5/4] bg-[#05290c] rounded-2xl flex items-center justify-center ${padding} overflow-hidden relative group`}>
+        <div className={`w-full aspect-[4/3] md:aspect-[5/4] bg-[var(--primary)] rounded-2xl flex items-center justify-center ${padding} overflow-hidden relative group`}>
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(46,125,107,0.15)_0%,transparent_70%)] opacity-50" />
             <div className="relative z-10 w-full h-full flex items-center justify-center">
                 {children}
@@ -340,20 +340,20 @@ const realityItems = [
 export function ProblemSection() {
 
     return (
-        <section className="relative bg-[#FAFAFA] overflow-hidden py-24 md:py-32">
+        <section className="relative bg-[var(--background)] overflow-hidden py-24 md:py-32">
             <div className="max-w-[1200px] mx-auto px-6 relative z-10">
 
                 {/* Header Section */}
                 <div className="text-center max-w-2xl mx-auto mb-16 md:mb-24 space-y-4">
                     <Badge
                         variant="secondary"
-                        className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide border-none bg-[oklch(0.9484_0.0251_149.08)] text-[oklch(0.2475_0.0661_146.79)] hover:bg-[oklch(0.9484_0.0251_149.08)] uppercase"
+                        className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide border-none bg-[var(--secondary)] text-[var(--primary)] hover:bg-[var(--secondary)] uppercase"
                     >
                         The Reality
                     </Badge>
                     <h2 className="text-4xl md:text-6xl font-erode font-semibold leading-[1.1] text-black">
                         You're not failing. <br className="hidden md:block" />
-                        <span className="text-[#05290C] italic font-semibold">You're being hijacked.</span>
+                        <span className="text-[var(--primary)] italic font-semibold">You're being hijacked.</span>
                     </h2>
                     {/* <p className="text-lg text-black/50 font-satoshi max-w-md mx-auto leading-relaxed">
                         Redefining recovery through <span className="text-black font-semibold">biological data</span>, not willpower.
@@ -385,7 +385,7 @@ export function ProblemSection() {
                                     href={item.href}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="group flex items-center gap-1.5 text-xs tracking-[0.3em] text-black/40 font-bold uppercase font-satoshi hover:text-[#05290C] transition-colors"
+                                    className="group flex items-center gap-1.5 text-xs tracking-[0.3em] text-black/40 font-bold uppercase font-satoshi hover:text-[var(--primary)] transition-colors"
                                 >
                                     Source: {item.source}
                                     <ArrowUpRight className="w-3 h-3 translate-y-[0.5px] transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { Compass } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -29,10 +29,10 @@ export function Navbar({ onCtaClick }: NavbarProps) {
             <motion.div
                 className={cn(
                     "relative flex items-center justify-between gap-4 rounded-full px-3 py-2",
-                    // Styling: Deep Moss Capsule (#1C2706) with subtle transparency
-                    "bg-[#1C2706]/95 backdrop-blur-md shadow-lg",
+                    // Styling: Amalfi Primary with subtle transparency
+                    "bg-[var(--primary)]/95 backdrop-blur-md shadow-lg",
                     // Width constraint - Mobile: full, Desktop: Dynamic
-                    "w-full border border-[#F8FAF2]/10",
+                    "w-full border border-white/10",
                     isCompact ? "md:max-w-[600px]" : "md:max-w-[1200px]"
                 )}
                 layout
@@ -43,29 +43,46 @@ export function Navbar({ onCtaClick }: NavbarProps) {
                 }}
             >
                 {/* Left: Brand */}
-                <div className="flex items-center gap-2 text-[#F8FAF2]">
-                    <div className="flex size-8 items-center justify-center rounded-full bg-[#F8FAF2]/10">
-                        <Compass className="size-5 text-[#F8FAF2]" strokeWidth={1.5} />
-                    </div>
-                    <span className="font-sans text-xl font-medium tracking-tighter text-[#FFFFFF] hidden md:inline-block">
+                <div className="flex items-center gap-2 text-white">
+                    <Image
+                        src="/rc-logo-citrus-zest.svg"
+                        alt="Recovery Compass"
+                        width={24}
+                        height={24}
+                        className="size-6"
+                    />
+                    <span className="font-erode text-xl font-medium tracking-tighter text-white hidden md:inline-block">
                         Recovery Compass
                     </span>
                 </div>
 
-                {/* Center: Empty Space (as per Wireframe) */}
+                {/* Spacer */}
                 <div className="flex-1" />
 
-                {/* Right: CTA */}
-                <div className="flex items-center gap-2">
-                    {/* Mobile-only "Commit" text adjustment could go here if needed, 
-               but wireframe says "Commit to Quitting" (Pre-Launch). 
-               We might shorten for mobile. */}
+                {/* Right: Nav Links + CTA */}
+                <div className="flex items-center gap-6">
+                    {/* Nav Links (hidden when compact) */}
+                    {!isCompact && (
+                        <nav className="hidden md:flex items-center gap-6">
+                            {["Why Us?", "Features", "Programs"].map((link) => (
+                                <a
+                                    key={link}
+                                    href={`#${link.toLowerCase().replace(" ", "-").replace("?", "")}`}
+                                    className="text-sm font-medium text-white/80 hover:text-[var(--accent)] transition-colors"
+                                >
+                                    {link}
+                                </a>
+                            ))}
+                        </nav>
+                    )}
+
+                    {/* CTA Button */}
                     <Button
                         onClick={onCtaClick}
                         className={cn(
-                            "rounded-full px-5 text-base font-medium transition-transform active:scale-95",
-                            "bg-white text-[#1C2706] hover:bg-white/90",
-                            "border-none shadow-none h-10"
+                            "rounded-full px-5 text-base font-medium transition-all active:scale-95",
+                            "bg-white text-[var(--primary)] hover:bg-white/90 border-2 border-transparent hover:border-[var(--accent)]",
+                            "shadow-none h-10"
                         )}
                     >
                         <span className="hidden sm:inline">Join the Waitlist</span>

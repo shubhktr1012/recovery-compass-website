@@ -20,7 +20,7 @@ const programs = [
             { label: "Guarantee", text: "Money-Back protection" }
         ],
         cta: "Start Reset",
-        color: "bg-[oklch(0.2475_0.0661_146.79)]"
+        color: "bg-[var(--primary)]"
     },
     {
         id: "90-day-foundation",
@@ -47,16 +47,16 @@ export function ExploreProgramsSection() {
                     <div className="space-y-4">
                         <Badge
                             variant="secondary"
-                            className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide border-none bg-[oklch(0.9484_0.0251_149.08)] text-[oklch(0.2475_0.0661_146.79)]"
+                            className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide border-none bg-[var(--secondary)] text-[var(--primary)]"
                         >
                             OUR PROGRAMS
                         </Badge>
                         <h2 className="text-4xl md:text-5xl font-erode font-semibold leading-[1.1] text-black">
                             Navigate at your <br />
-                            <span className="text-[oklch(0.2475_0.0661_146.79)] italic">own pace.</span>
+                            <span className="text-[var(--primary)] italic">own pace.</span>
                         </h2>
                     </div>
-                    <p className="text-lg text-[oklch(0.2475_0.0661_146.79)]/60 font-satoshi max-w-sm leading-relaxed md:mx-auto">
+                    <p className="text-lg text-[var(--primary)]/60 font-satoshi max-w-sm leading-relaxed md:mx-auto">
                         Start with a short reset. Continue with <br className="hidden lg:block" />
                         long-term stability if you choose.
                     </p>
@@ -73,8 +73,8 @@ export function ExploreProgramsSection() {
                             className={cn(
                                 "relative group flex flex-col p-8 md:p-10 rounded-3xl overflow-hidden transition-all duration-500 border-none",
                                 program.id === "6-day-reset"
-                                    ? "bg-[oklch(0.2475_0.0661_146.79)] text-white"
-                                    : "bg-[oklch(0.9484_0.0251_149.08)] text-[oklch(0.2475_0.0661_146.79)]"
+                                    ? "bg-[var(--primary)] text-white"
+                                    : "bg-[var(--secondary)] text-[var(--primary)]"
                             )}
                         >
                             <div className="relative z-10 flex flex-col h-full">
@@ -84,7 +84,7 @@ export function ExploreProgramsSection() {
                                             "inline-block px-3 py-1 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase",
                                             program.id === "6-day-reset"
                                                 ? "bg-white/10 text-white/70"
-                                                : "bg-[oklch(0.2475_0.0661_146.79)]/5 text-[oklch(0.2475_0.0661_146.79)]/40"
+                                                : "bg-[var(--primary)]/5 text-[var(--primary)]/40"
                                         )}>
                                             {program.tag}
                                         </span>
@@ -92,13 +92,13 @@ export function ExploreProgramsSection() {
                                     </div>
                                     <h3 className={cn(
                                         "text-2xl md:text-[28px] lg:text-3xl font-erode font-semibold leading-tight",
-                                        program.id === "6-day-reset" ? "text-white" : "text-[oklch(0.2475_0.0661_146.79)]"
+                                        program.id === "6-day-reset" ? "text-white" : "text-[var(--primary)]"
                                     )}>
                                         {program.title}
                                     </h3>
                                     <p className={cn(
                                         "text-base md:text-lg font-satoshi leading-relaxed",
-                                        program.id === "6-day-reset" ? "text-white/70" : "text-[oklch(0.2475_0.0661_146.79)]/70"
+                                        program.id === "6-day-reset" ? "text-white/70" : "text-[var(--primary)]/70"
                                     )}>
                                         {program.description}
                                     </p>
@@ -107,27 +107,22 @@ export function ExploreProgramsSection() {
                                 <div className="space-y-4 mb-10 flex-grow">
                                     <div className={cn(
                                         "h-px w-full mb-6",
-                                        program.id === "6-day-reset" ? "bg-white/10" : "bg-[oklch(0.2475_0.0661_146.79)]/10"
+                                        program.id === "6-day-reset" ? "bg-white/10" : "bg-[var(--primary)]/10"
                                     )} />
                                     {program.highlights.map((item, i) => (
-                                        <div key={i} className="flex items-start gap-4 text-sm font-medium">
-                                            <div className={cn(
-                                                "flex-shrink-0 size-5 mt-0.5 rounded-full flex items-center justify-center",
-                                                program.id === "6-day-reset" ? "bg-white/20" : "bg-[oklch(0.2475_0.0661_146.79)]/10"
-                                            )}>
-                                                <Check className={cn(
-                                                    "size-3",
-                                                    program.id === "6-day-reset" ? "text-white" : "text-[oklch(0.2475_0.0661_146.79)]"
-                                                )} />
-                                            </div>
+                                        <div key={i} className="flex items-start gap-3 text-sm font-medium">
+                                            <Check className={cn(
+                                                "size-4 mt-0.5 flex-shrink-0",
+                                                "text-[var(--accent)]"
+                                            )} />
                                             <div className="flex flex-col">
                                                 <span className={cn(
                                                     "text-[10px] font-black uppercase tracking-widest leading-none mb-1",
-                                                    program.id === "6-day-reset" ? "text-white/40" : "text-[oklch(0.2475_0.0661_146.79)]/30"
+                                                    program.id === "6-day-reset" ? "text-white/40" : "text-[var(--primary)]/30"
                                                 )}>
                                                     {item.label}
                                                 </span>
-                                                <span className={program.id === "6-day-reset" ? "text-white/90" : "text-[oklch(0.2475_0.0661_146.79)]/80"}>
+                                                <span className={program.id === "6-day-reset" ? "text-white/90" : "text-[var(--primary)]/80"}>
                                                     {item.text}
                                                 </span>
                                             </div>
@@ -138,7 +133,7 @@ export function ExploreProgramsSection() {
                                 <div className="flex flex-col items-center mt-auto space-y-4">
                                     <div className={cn(
                                         "text-4xl font-sans font-bold",
-                                        program.id === "6-day-reset" ? "text-white" : "text-[oklch(0.2475_0.0661_146.79)]"
+                                        program.id === "6-day-reset" ? "text-white" : "text-[var(--primary)]"
                                     )}>
                                         {program.price}
                                     </div>
@@ -147,8 +142,8 @@ export function ExploreProgramsSection() {
                                         className={cn(
                                             "w-fit px-10 h-12 rounded-full font-bold text-base border-none transition-all duration-300",
                                             program.id === "6-day-reset"
-                                                ? "bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-white/90 shadow-lg"
-                                                : "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 shadow-lg"
+                                                ? "bg-white text-[var(--primary)] hover:bg-white/90 shadow-lg border-2 border-transparent hover:border-[var(--accent)]"
+                                                : "bg-[var(--primary)] text-white hover:bg-[var(--primary)]/90 shadow-lg border-2 border-transparent hover:border-[var(--accent)]"
                                         )}
                                     >
                                         {program.cta}

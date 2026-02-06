@@ -70,13 +70,13 @@ export function PhilosophySection() {
                     >
                         <Badge
                             variant="secondary"
-                            className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide border-none bg-[oklch(0.9484_0.0251_149.08)] text-[oklch(0.2475_0.0661_146.79)] hover:bg-[oklch(0.9484_0.0251_149.08)]"
+                            className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide border-none bg-[var(--secondary)] text-[var(--primary)] hover:bg-[var(--secondary)]"
                         >
                             PHILOSOPHY
                         </Badge>
                         <h2 className="text-4xl md:text-5xl font-erode font-semibold leading-[1.1] text-black">
                             Why choose <br />
-                            <span className="text-[oklch(0.2475_0.0661_146.79)] italic">Recovery Compass?</span>
+                            <span className="text-[var(--primary)] italic">Recovery Compass?</span>
                         </h2>
                     </motion.div>
 
@@ -98,10 +98,10 @@ export function PhilosophySection() {
                                     {isActive && (
                                         <motion.div
                                             layoutId="active-indicator"
-                                            className="absolute left-0 right-0 bottom-0 h-[2px] bg-[oklch(0.2475_0.0661_146.79)]/20 rounded-full overflow-hidden"
+                                            className="absolute left-0 right-0 bottom-0 h-[2px] bg-[var(--primary)]/20 rounded-full overflow-hidden"
                                         >
                                             <motion.div
-                                                className="h-full bg-[oklch(0.2475_0.0661_146.79)] origin-left"
+                                                className="h-full bg-[var(--accent)] origin-left"
                                                 initial={{ width: "0%" }}
                                                 animate={{ width: "100%" }}
                                                 transition={{ duration: feature.duration / 1000, ease: "linear" }}
@@ -111,11 +111,11 @@ export function PhilosophySection() {
 
                                     {/* Static Line for inactive */}
                                     {!isActive && (
-                                        <div className="absolute left-0 right-0 bottom-0 h-[2px] bg-[oklch(0.2475_0.0661_146.79)]/10 rounded-full" />
+                                        <div className="absolute left-0 right-0 bottom-0 h-[2px] bg-[var(--primary)]/10 rounded-full" />
                                     )}
 
                                     <div className="flex items-center h-full">
-                                        <h3 className="text-xl md:text-2xl lg:text-3xl font-medium text-[oklch(0.2475_0.0661_146.79)] font-sans">
+                                        <h3 className="text-xl md:text-2xl lg:text-3xl font-medium text-[var(--primary)] font-sans">
                                             {feature.title}
                                         </h3>
                                     </div>
@@ -127,7 +127,7 @@ export function PhilosophySection() {
 
                 {/* Right Column: Visual Canvas & Description Bundle */}
                 <motion.div
-                    className="flex flex-col min-h-[500px] md:min-h-[600px] lg:min-h-[700px] w-full rounded-3xl overflow-hidden bg-[oklch(0.2475_0.0661_146.79)] border border-[oklch(0.2475_0.0661_146.79)]/5"
+                    className="flex flex-col min-h-[500px] md:min-h-[600px] lg:min-h-[700px] w-full rounded-3xl overflow-hidden bg-[var(--primary)] border border-[var(--primary)]/5"
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}

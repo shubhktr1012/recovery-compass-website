@@ -60,7 +60,7 @@ export function HeroVariantTrust({ onPrimaryClick, onSecondaryClick }: HeroSecti
                                         key={i}
                                         src={src}
                                         alt="Community member"
-                                        className="relative w-8 h-8 lg:w-10 lg:h-10 rounded-full border-2 border-[oklch(0.2475_0.0661_146.79)] object-cover transition-transform duration-300 hover:-translate-y-1"
+                                        className="relative w-8 h-8 lg:w-10 lg:h-10 rounded-full border-2 border-[var(--primary)] object-cover transition-transform duration-300 hover:-translate-y-1"
                                     />
                                 ))}
                             </div>

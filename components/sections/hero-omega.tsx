@@ -40,7 +40,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
     };
 
     return (
-        <section className="relative flex flex-col justify-start pt-12 pb-6 overflow-hidden bg-white text-[oklch(0.2475_0.0661_146.79)]">
+        <section className="relative flex flex-col justify-start pt-12 pb-6 overflow-hidden bg-white text-[var(--primary)]">
             {/* Content Container */}
             <div className="relative z-20 w-full max-w-[1200px] mx-auto px-6 md:px-12 lg:px-24 flex flex-col justify-start pt-4 pb-12">
                 <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-y-8 lg:gap-x-12 items-center">
@@ -55,7 +55,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
 
                         {/* Avatar Trust Bar - Centered */}
                         <motion.div variants={itemVariants} className="flex flex-row items-center justify-center gap-3">
-                            <p className="text-base font-medium text-[oklch(0.2475_0.0661_146.79)]">
+                            <p className="text-base font-medium text-[var(--primary)]">
                                 Join 41+ beyond the urge
                             </p>
                             <div className="flex items-center">
@@ -71,9 +71,9 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                                         whileHover={{ scale: 1.2, zIndex: 20 }}
                                         transition={{ type: "spring", stiffness: 400, damping: 10 }}
                                     >
-                                        <Avatar className="w-7 h-7 border-2 border-[oklch(0.2475_0.0661_146.79)] cursor-pointer">
+                                        <Avatar className="w-7 h-7 border-2 border-[var(--primary)] hover:border-[var(--accent)] cursor-pointer transition-colors">
                                             <AvatarImage src={src} alt="Community member" className="object-cover" />
-                                            <AvatarFallback className="bg-[oklch(0.2475_0.0661_146.79)] text-white text-[8px]">M</AvatarFallback>
+                                            <AvatarFallback className="bg-[var(--primary)] text-white text-[8px]">M</AvatarFallback>
                                         </Avatar>
                                     </motion.div>
                                 ))}
@@ -83,22 +83,22 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                         {/* Headline - Centered */}
                         <div className="max-w-[320px] md:max-w-[350px] lg:max-w-[520px] mx-auto space-y-6">
                             {/* Status Pill */}
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[oklch(0.2475_0.0661_146.79)]/5 border border-[oklch(0.2475_0.0661_146.79)]/10">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/40">
                                 <span className="relative flex h-2 w-2">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
                                 </span>
-                                <span className="text-[10px] md:text-xs font-bold text-[oklch(0.2475_0.0661_146.79)]/80 tracking-wide uppercase">
+                                <span className="text-[10px] md:text-xs font-bold text-[var(--primary)]/80 tracking-wide uppercase">
                                     Currently In Development <span className="hidden md:inline">— Launching Mid-March</span>
                                 </span>
                             </div>
 
                             <h1 className="text-4xl md:text-5xl lg:text-7xl font-erode font-semibold tracking-tight leading-[1.05] text-black">
-                                A smarter way to <span className="text-[oklch(0.2475_0.0661_146.79)] italic">quit smoking.</span>
+                                A smarter way to <span className="text-[var(--primary)] italic">quit smoking.</span>
                             </h1>
 
                             {/* Subheadline - Centered */}
-                            <p className="text-lg md:text-xl text-[oklch(0.2475_0.0661_146.79)]/70 leading-snug font-medium max-w-2xl mx-auto">
+                            <p className="text-lg md:text-xl text-[var(--primary)]/70 leading-snug font-medium max-w-2xl mx-auto">
                                 The intelligent app designed to navigate nicotine cravings, calm your nervous system, and build a smoke-free life. Stop fighting biology with willpower.
                             </p>
                         </div>
@@ -108,7 +108,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                             <Button
                                 className={cn(
                                     "rounded-full px-5 py-2.5 text-sm font-medium transition-all active:scale-95",
-                                    "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 border border-transparent h-auto"
+                                    "bg-[var(--primary)] text-white hover:bg-[var(--primary)]/90 border-2 border-transparent hover:border-[var(--accent)] h-auto ring-offset-2 focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
                                 )}
                                 onClick={scrollToWaitlist}
                             >
@@ -117,7 +117,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                             <Button
                                 className={cn(
                                     "rounded-full px-5 py-2.5 text-sm font-medium transition-all active:scale-95",
-                                    "bg-white text-[oklch(0.2475_0.0661_146.79)] border border-[oklch(0.2475_0.0661_146.79)] hover:bg-[oklch(0.2475_0.0661_146.79)] hover:text-white h-auto"
+                                    "bg-white text-[var(--primary)] border-2 border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--primary)] h-auto"
                                 )}
                                 onClick={onSecondaryClick}
                             >

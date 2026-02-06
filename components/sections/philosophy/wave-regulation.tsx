@@ -30,7 +30,7 @@ export function WaveRegulation() {
                 <div className="absolute inset-0 border-2 border-white/30 rounded-[3rem] z-20 pointer-events-none" />
 
                 {/* Masking Container for Liquid */}
-                <div className="absolute inset-0 rounded-[3rem] overflow-hidden bg-[oklch(0.2475_0.0661_146.79)] z-10">
+                <div className="absolute inset-0 rounded-[3rem] overflow-hidden bg-[var(--primary)] z-10">
 
                     {/* Liquid Layer 1 (Back) */}
                     <motion.svg

@@ -14,7 +14,7 @@ export function CTASection() {
                 {/* Background Image - Absolute Fill */}
                 <div className="absolute inset-0 z-0">
                     <Image
-                        src="/cta-bg.png"
+                        src="/cta-bg-blue.png"
                         alt="Waitlist Background"
                         fill
                         className="object-cover pointer-events-none select-none"
@@ -38,7 +38,7 @@ export function CTASection() {
                         <div className="flex">
                             <Badge
                                 variant="secondary"
-                                className="rounded-full px-5 py-2 text-xs font-semibold tracking-widest border-none bg-white text-[oklch(0.2475_0.0661_146.79)]"
+                                className="rounded-full px-5 py-2 text-xs font-semibold tracking-widest border-none bg-white text-[var(--primary)]"
                             >
                                 WAITLIST
                             </Badge>

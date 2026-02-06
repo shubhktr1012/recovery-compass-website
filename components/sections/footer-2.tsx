@@ -12,7 +12,7 @@ interface FooterVariantTwoProps {
 
 export function FooterVariantTwo({ }: FooterVariantTwoProps) {
     return (
-        <footer className="w-full bg-[oklch(0.2475_0.0661_146.79)] text-white pt-20 pb-8 border-t border-white/5">
+        <footer className="w-full bg-[var(--primary)] text-white pt-20 pb-8 border-t border-white/5">
             <div className="max-w-[1200px] mx-auto px-6 md:px-12">
 
                 {/* Main Content Area */}
@@ -60,10 +60,10 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                             <h4 className="text-sm font-medium text-white/90">Legal</h4>
                             <ul className="space-y-4 text-sm text-white/60">
                                 <li>
-                                    <a href="#" className="hover:text-white transition-colors">Terms & Conditions</a>
+                                    <a href="#" className="hover:text-[var(--accent)] transition-colors">Terms & Conditions</a>
                                 </li>
                                 <li>
-                                    <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+                                    <a href="#" className="hover:text-[var(--accent)] transition-colors">Privacy Policy</a>
                                 </li>
                             </ul>
                         </div>
@@ -73,13 +73,13 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                             <h4 className="text-sm font-medium text-white/90">Socials</h4>
                             <ul className="space-y-4 text-sm text-white/60">
                                 <li>
-                                    <a href="#" className="hover:text-white transition-colors">Twitter / X</a>
+                                    <a href="#" className="hover:text-[var(--accent)] transition-colors">Twitter / X</a>
                                 </li>
                                 <li>
-                                    <a href="#" className="hover:text-white transition-colors">Instagram</a>
+                                    <a href="#" className="hover:text-[var(--accent)] transition-colors">Instagram</a>
                                 </li>
                                 <li>
-                                    <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
+                                    <a href="#" className="hover:text-[var(--accent)] transition-colors">LinkedIn</a>
                                 </li>
                             </ul>
                         </div>

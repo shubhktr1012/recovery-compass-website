@@ -48,15 +48,15 @@ export function NewsletterForm({ alignment = "right", variant = "default", class
                 className="relative"
             >
                 {variant === "default" ? (
-                    <div className="bg-white p-1.5 rounded-full shadow-2xl flex items-center gap-2 group focus-within:ring-2 focus-within:ring-white/20 transition-all">
+                    <div className="bg-white p-1.5 rounded-full shadow-2xl flex items-center gap-2 group focus-within:ring-2 focus-within:ring-[var(--accent)] transition-all">
                         <div className="relative flex-grow">
-                            <Mail className="absolute left-5 top-1/2 -translate-y-1/2 size-5 text-[oklch(0.2475_0.0661_146.79)]/30 hidden sm:block" />
+                            <Mail className="absolute left-5 top-1/2 -translate-y-1/2 size-5 text-[var(--primary)]/30 hidden sm:block" />
                             <Input
                                 type="email"
                                 placeholder="Enter your email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="h-12 bg-transparent border-none text-[oklch(0.2475_0.0661_146.79)] placeholder:text-[oklch(0.2475_0.0661_146.79)]/40 pl-4 sm:pl-14 focus-visible:ring-0 text-base font-medium"
+                                className="h-12 bg-transparent border-none text-[var(--primary)] placeholder:text-[var(--primary)]/40 pl-4 sm:pl-14 focus-visible:ring-0 text-base font-medium"
                                 required
                                 disabled={status === "loading" || status === "success"}
                             />
@@ -65,7 +65,7 @@ export function NewsletterForm({ alignment = "right", variant = "default", class
                             type="submit"
                             disabled={status === "loading" || status === "success"}
                             className={cn(
-                                "relative overflow-hidden h-12 px-4 sm:px-8 bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 rounded-full font-bold transition-all duration-300 group/btn whitespace-nowrap min-w-[100px]",
+                                "relative overflow-hidden h-12 px-4 sm:px-8 bg-[var(--primary)] text-white hover:bg-[var(--primary)]/90 rounded-full font-bold transition-all duration-300 group/btn whitespace-nowrap min-w-[100px]",
                                 status === "loading" && "opacity-80 cursor-not-allowed",
                                 status === "success" && "bg-green-500 hover:bg-green-600"
                             )}
@@ -110,7 +110,7 @@ export function NewsletterForm({ alignment = "right", variant = "default", class
                                 type="submit"
                                 disabled={status === "loading" || status === "success"}
                                 className={cn(
-                                    "rounded-full bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-white/90 font-medium px-8 min-w-[100px]",
+                                    "rounded-full bg-white text-[var(--primary)] hover:bg-white/90 font-medium px-8 min-w-[100px]",
                                     status === "loading" && "opacity-80 cursor-not-allowed",
                                     status === "success" && "bg-green-500 text-white hover:bg-green-600"
                                 )}
