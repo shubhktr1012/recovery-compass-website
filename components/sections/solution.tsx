@@ -285,20 +285,20 @@ export function SolutionSection() {
                                     <p className="text-base lg:text-sm xl:text-xl text-secondary/80 font-satoshi leading-relaxed mb-4 lg:mb-3 xl:mb-6">
                                         You can't fight what you can't see. We visualize your rhythms so you can predict triggers before they become urges.
                                     </p>
-                                    <ul className="hidden xl:block space-y-3 mb-8">
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
+                                    <ul className="hidden lg:block space-y-3 mb-8">
+                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
                                             <span><strong className="text-secondary/90">Daily mood, stress & urge check-ins</strong> — Quick, optional logs that reveal your patterns over time.</span>
                                         </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
+                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
                                             <span><strong className="text-secondary/90">Trigger mapping</strong> — See when and why urges appear, not just how many.</span>
                                         </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
+                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
                                             <span><strong className="text-secondary/90">Weekly insights</strong> — Progress without judgment or comparison.</span>
                                         </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
+                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
                                             <span><strong className="text-secondary/90">Pattern awareness without overthinking</strong> — Just notice. No pressure.</span>
                                         </li>
@@ -322,7 +322,7 @@ export function SolutionSection() {
                                     <p className="text-base lg:text-sm xl:text-xl text-secondary/80 font-satoshi leading-relaxed mb-4 lg:mb-3 xl:mb-6">
                                         Press play on panic. Guided somatic sessions that calm your nervous system in minutes—no meditation experience required.
                                     </p>
-                                    <ul className="hidden xl:block space-y-3 mb-8">
+                                    <ul className="hidden lg:block space-y-3 mb-8">
                                         <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
                                             <span><strong className="text-secondary/90">Calm Yourself breathing guides</strong> — 4-6 breathing technique to signal safety to your body.</span>
@@ -359,7 +359,7 @@ export function SolutionSection() {
                                     <p className="text-base lg:text-sm xl:text-xl text-secondary/80 font-satoshi leading-relaxed mb-4 lg:mb-3 xl:mb-6">
                                         Real-time support for the moments when the pull feels strongest. One tap. Immediate calm.
                                     </p>
-                                    <ul className="hidden xl:block space-y-3 mb-8">
+                                    <ul className="hidden lg:block space-y-3 mb-8">
                                         <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
                                             <span><strong className="text-secondary/90">10-minute delay timer</strong> — Say "I'm not deciding now" and watch the urge peak and fall.</span>

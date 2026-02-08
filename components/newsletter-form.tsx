@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, CheckCircle2, AlertCircle, Mail } from "lucide-react";
+import { Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -13,39 +13,87 @@ import { cn } from "@/lib/utils";
 
 type FormStatus = "idle" | "loading" | "success" | "error";
 
+interface FormData {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    countryCode: string;
+}
+
+const COUNTRY_CODES = [
+    { code: "IN", dial: "+91", flag: "🇮🇳", label: "India (+91)" },
+    { code: "US", dial: "+1", flag: "🇺🇸", label: "USA (+1)" },
+    { code: "GB", dial: "+44", flag: "🇬🇧", label: "UK (+44)" },
+    { code: "CA", dial: "+1", flag: "🇨🇦", label: "Canada (+1)" },
+    { code: "AU", dial: "+61", flag: "🇦🇺", label: "Australia (+61)" },
+    { code: "DE", dial: "+49", flag: "🇩🇪", label: "Germany (+49)" },
+    { code: "FR", dial: "+33", flag: "🇫🇷", label: "France (+33)" },
+    { code: "JP", dial: "+81", flag: "🇯🇵", label: "Japan (+81)" },
+    { code: "NZ", dial: "+64", flag: "🇳🇿", label: "NZ (+64)" },
+];
+
 function useNewsletterForm() {
-    const [email, setEmail] = useState("");
+    const [formData, setFormData] = useState<FormData>({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        countryCode: "+91"
+    });
     const [status, setStatus] = useState<FormStatus>("idle");
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!email) return;
+        if (!formData.email || !formData.firstName) return;
 
         setStatus("loading");
 
-        // Mock submission
-        setTimeout(() => {
+        try {
+            const response = await fetch("/api/waitlist", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData),
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                console.error("Submission failed:", data.error);
+                setStatus("error");
+                return;
+            }
+
             setStatus("success");
-        }, 1500);
+            // Optional: Reset form or keep it filled
+            setFormData({ firstName: "", lastName: "", email: "", phone: "", countryCode: "+91" });
+        } catch (error) {
+            console.error("Submission error:", error);
+            setStatus("error");
+        }
     };
 
     const isDisabled = status === "loading" || status === "success";
 
-    return { email, setEmail, status, handleSubmit, isDisabled };
+    return { formData, handleChange, status, handleSubmit, isDisabled };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Shared Components - Used by both variants
+// Shared Components
 // ─────────────────────────────────────────────────────────────────────────────
 
 function StatusMessages({ status }: { status: FormStatus }) {
     return (
-        <div className="absolute top-full left-0 mt-1 pl-1 w-full">
+        <div className="absolute top-full left-0 mt-2 w-full">
             <AnimatePresence>
                 {status === "error" && (
                     <motion.div
                         initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                        className="flex items-center gap-1.5 text-red-300 text-sm"
+                        className="flex items-center gap-1.5 text-red-400 text-sm font-medium bg-red-950/30 p-2 rounded-md border border-red-500/20"
                     >
                         <AlertCircle className="w-4 h-4" aria-hidden="true" />
                         <span>Something went wrong. Please try again.</span>
@@ -54,8 +102,9 @@ function StatusMessages({ status }: { status: FormStatus }) {
                 {status === "success" && (
                     <motion.div
                         initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                        className="flex items-center gap-1.5 text-green-300 text-sm"
+                        className="flex items-center gap-1.5 text-green-400 text-sm font-medium bg-green-950/30 p-2 rounded-md border border-green-500/20"
                     >
+                        <CheckCircle2 className="w-4 h-4" aria-hidden="true" />
                         <span>You're on the list! We'll be in touch.</span>
                     </motion.div>
                 )}
@@ -65,7 +114,7 @@ function StatusMessages({ status }: { status: FormStatus }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// DefaultNewsletterForm - Hero/CTA pill-style form
+// DefaultNewsletterForm - Enhanced Multi-field Form
 // ─────────────────────────────────────────────────────────────────────────────
 
 interface DefaultNewsletterFormProps {
@@ -74,8 +123,14 @@ interface DefaultNewsletterFormProps {
 }
 
 export function DefaultNewsletterForm({ alignment = "right", className }: DefaultNewsletterFormProps) {
-    const { email, setEmail, status, handleSubmit, isDisabled } = useNewsletterForm();
-    const isCenter = alignment === "center";
+    const { formData, handleChange, status, handleSubmit, isDisabled } = useNewsletterForm();
+
+    // High contrast inputs with "Pill" aesthetic
+    // Using bg-white/90 for slight transparency but high readability
+    const inputClasses = "h-12 rounded-full bg-white/90 border-0 text-zinc-900 placeholder:text-zinc-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:bg-white transition-all font-medium px-6 shadow-md";
+
+    // Select classes needs appearance-none to look good
+    const selectClasses = cn(inputClasses, "appearance-none pr-8 cursor-pointer");
 
     return (
         <div className={cn(
@@ -84,76 +139,111 @@ export function DefaultNewsletterForm({ alignment = "right", className }: Defaul
             alignment === "left" && "lg:mr-auto",
             className
         )}>
-            <form onSubmit={handleSubmit} className="relative">
-                <div className="bg-white p-1.5 rounded-full shadow-2xl flex items-center gap-2 group focus-within:ring-2 focus-within:ring-white/20 transition-all">
-                    <div className="relative flex-grow">
-                        <Mail className="absolute left-5 top-1/2 -translate-y-1/2 size-5 text-[oklch(0.2475_0.0661_146.79)]/30 hidden sm:block" aria-hidden="true" />
-                        <Input
-                            type="email"
-                            name="email"
-                            autoComplete="email"
-                            aria-label="Email address"
-                            placeholder="Enter your email…"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="h-12 bg-transparent border-none text-[oklch(0.2475_0.0661_146.79)] placeholder:text-[oklch(0.2475_0.0661_146.79)]/40 pl-4 sm:pl-14 focus-visible:ring-0 text-base font-medium"
-                            required
-                            disabled={isDisabled}
-                        />
-                    </div>
-                    <Button
-                        type="submit"
-                        disabled={isDisabled}
-                        className={cn(
-                            "relative overflow-hidden h-12 px-4 sm:px-8 bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 rounded-full font-bold transition-all duration-300 group/btn whitespace-nowrap min-w-[100px]",
-                            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2",
-                            status === "loading" && "opacity-80 cursor-not-allowed",
-                            status === "success" && "bg-green-500 hover:bg-green-600"
-                        )}
-                    >
-                        {status === "loading" ? (
-                            <Loader2 className="h-5 w-5 animate-spin mx-auto" aria-hidden="true" />
-                        ) : status === "success" ? (
-                            <div className="flex items-center gap-2">
-                                <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
-                                <span className="hidden sm:inline">Joined</span>
-                            </div>
-                        ) : (
-                            <>
-                                <span className="relative z-10 hidden sm:inline">Join Waitlist</span>
-                                <span className="relative z-10 sm:hidden">Join</span>
-                            </>
-                        )}
+            <form onSubmit={handleSubmit} className="relative space-y-4">
 
-                        {/* Shimmer Effect - Only show when idle */}
-                        {status === "idle" && (
-                            <div className="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-20deg]" />
-                        )}
-                    </Button>
+                {/* Name Row */}
+                <div className="grid grid-cols-2 gap-4">
+                    <Input
+                        type="text"
+                        name="firstName"
+                        placeholder="First Name"
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        className={inputClasses}
+                        required
+                        disabled={isDisabled}
+                        aria-label="First Name"
+                    />
+                    <Input
+                        type="text"
+                        name="lastName"
+                        placeholder="Last Name"
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        className={inputClasses}
+                        required
+                        disabled={isDisabled}
+                        aria-label="Last Name"
+                    />
                 </div>
+
+                {/* Email */}
+                <Input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={inputClasses}
+                    required
+                    disabled={isDisabled}
+                    aria-label="Email Address"
+                />
+
+                {/* Phone Row */}
+                <div className="flex gap-3">
+                    <div className="relative w-36 shrink-0">
+                        <select
+                            name="countryCode"
+                            value={formData.countryCode}
+                            onChange={handleChange}
+                            className={cn(selectClasses, "w-full text-base")}
+                            disabled={isDisabled}
+                            aria-label="Country Code"
+                        >
+                            {COUNTRY_CODES.map((country) => (
+                                <option key={country.code} value={country.dial}>
+                                    {country.flag} {country.dial}
+                                </option>
+                            ))}
+                        </select>
+                        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-zinc-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-down w-4 h-4"><path d="m6 9 6 6 6-6" /></svg>
+                        </div>
+                    </div>
+                    <Input
+                        type="tel"
+                        name="phone"
+                        placeholder="Phone Number"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        className={cn(inputClasses, "flex-1")}
+                        required
+                        disabled={isDisabled}
+                        aria-label="Phone Number"
+                    />
+                </div>
+
+                {/* Submit Button */}
+                <Button
+                    type="submit"
+                    disabled={isDisabled}
+                    className={cn(
+                        "w-full h-12 rounded-full bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5",
+                        "focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+                        status === "loading" && "opacity-80 cursor-not-allowed",
+                        status === "success" && "bg-green-500 text-white hover:bg-green-600"
+                    )}
+                >
+                    {status === "loading" ? (
+                        <Loader2 className="h-5 w-5 animate-spin mx-auto" aria-hidden="true" />
+                    ) : status === "success" ? (
+                        <div className="flex items-center justify-center gap-2">
+                            <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
+                            <span>Joined Waitlist</span>
+                        </div>
+                    ) : (
+                        "Join Waitlist"
+                    )}
+                </Button>
 
                 <StatusMessages status={status} />
             </form>
 
-            <div className={cn(
-                "mt-8 flex flex-col items-center gap-4 px-4 sm:px-0",
-                alignment === "right" && "lg:items-start xl:items-start",
-                alignment === "left" && "lg:items-start",
-                alignment === "center" && "lg:items-center"
-            )}>
-                <p className={cn(
-                    "text-sm text-white font-satoshi flex items-center gap-2 font-medium drop-shadow-sm justify-center",
-                    !isCenter && "lg:justify-start"
-                )}>
-                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                    Limited spots for beta access
-                </p>
-                <div className={cn("h-px w-24 bg-white/20 hidden", !isCenter && "lg:block", isCenter && "lg:hidden")} />
-                <p className={cn(
-                    "text-[10px] uppercase tracking-[0.2em] text-white/50 font-bold drop-shadow-sm text-center",
-                    !isCenter && "lg:text-left"
-                )}>
-                    Protected by Compass Security
+            <div className="mt-2 flex flex-col items-center gap-2">
+                <p className="text-xs text-white/60 font-medium flex items-center gap-1.5 px-4 py-1 rounded-full bg-black/20 backdrop-blur-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.5)]" />
+                    Secure & Confidential. Unsubscribe anytime.
                 </p>
             </div>
         </div>
@@ -161,68 +251,35 @@ export function DefaultNewsletterForm({ alignment = "right", className }: Defaul
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// MinimalNewsletterForm - Footer underline-style form
+// MinimalNewsletterForm - Footer "Join Waitlist" Button (Scrolls to CTA)
 // ─────────────────────────────────────────────────────────────────────────────
 
 interface MinimalNewsletterFormProps {
     alignment?: "left" | "center" | "right";
-    className?: string;
+    className?: string; // Kept for compatibility
 }
 
 export function MinimalNewsletterForm({ alignment = "left", className }: MinimalNewsletterFormProps) {
-    const { email, setEmail, status, handleSubmit, isDisabled } = useNewsletterForm();
+    const scrollToWaitlist = () => {
+        const element = document.getElementById('waitlist');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
 
     return (
         <div className={cn(
-            "w-full max-w-md mx-auto",
+            "w-full max-w-md",
             alignment === "right" && "lg:ml-auto",
             alignment === "left" && "lg:mr-auto",
             className
         )}>
-            <form onSubmit={handleSubmit} className="relative">
-                <div className="space-y-2">
-                    <label htmlFor="email-minimal" className="text-xs uppercase tracking-widest text-white/40 font-medium">
-                        Enter Your Email
-                    </label>
-                    <div className="flex items-end gap-4">
-                        <input
-                            id="email-minimal"
-                            type="email"
-                            name="email"
-                            autoComplete="email"
-                            placeholder="hello@example.com…"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            disabled={isDisabled}
-                            className="flex-1 bg-transparent border-b border-white/20 py-3 text-lg placeholder:text-white/20 text-white focus:outline-none focus:border-white transition-colors disabled:opacity-50"
-                        />
-                        <Button
-                            type="submit"
-                            disabled={isDisabled}
-                            className={cn(
-                                "rounded-full bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-white/90 font-medium px-8 min-w-[100px]",
-                                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[oklch(0.2475_0.0661_146.79)]",
-                                status === "loading" && "opacity-80 cursor-not-allowed",
-                                status === "success" && "bg-green-500 text-white hover:bg-green-600"
-                            )}
-                        >
-                            {status === "loading" ? (
-                                <Loader2 className="h-5 w-5 animate-spin mx-auto" aria-hidden="true" />
-                            ) : status === "success" ? (
-                                <div className="flex items-center gap-2">
-                                    <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
-                                    <span>Joined</span>
-                                </div>
-                            ) : (
-                                "Join"
-                            )}
-                        </Button>
-                    </div>
-                </div>
-
-                <StatusMessages status={status} />
-            </form>
+            <Button
+                onClick={scrollToWaitlist}
+                className="bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-white/90 rounded-full px-8 h-12 font-medium transition-all hover:scale-105 active:scale-95 group"
+            >
+                Join the Movement
+            </Button>
         </div>
     );
 }
