@@ -353,7 +353,7 @@ export function ProblemSection() {
                     </Badge>
                     <h2 className="text-4xl md:text-6xl font-erode font-medium tracking-tighter leading-[1.1] text-black">
                         You're not failing. <br className="hidden md:block" />
-                        <span className="text-[#05290C] italic">You're being hijacked.</span>
+                        You're being <span className="text-primary italic">hijacked.</span>
                     </h2>
                     {/* <p className="text-lg text-black/50 font-satoshi max-w-md mx-auto leading-relaxed">
                         Redefining recovery through <span className="text-black font-semibold">biological data</span>, not willpower.

@@ -5,6 +5,8 @@ import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "fra
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
+import { ArrowDown } from "lucide-react";
+
 // Feature data for cards
 const features = [
     {
@@ -262,13 +264,9 @@ export function SolutionSection() {
                                     The Recovery <br /> Toolkit
                                 </h2>
                                 {/* Scroll Cue */}
-                                <div className="flex items-center gap-4 text-secondary/60">
-                                    <span className="text-xs uppercase tracking-widest font-geist-mono">Scroll to explore</span>
-                                    <motion.div
-                                        animate={{ x: [0, 8, 0] }}
-                                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                                        className="h-px w-12 bg-gradient-to-r from-secondary to-transparent"
-                                    />
+                                <div className="flex items-center gap-2 text-secondary/60">
+                                    <span className="text-xs uppercase tracking-widest font-geist-mono">Keep scrolling down to explore</span>
+                                    <ArrowDown className="w-3 h-3 animate-bounce" />
                                 </div>
                             </motion.div>
 

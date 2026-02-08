@@ -29,6 +29,54 @@ const satoshi = localFont({
   display: "swap",
 });
 
+// Local Erode Font
+const erode = localFont({
+  src: [
+    {
+      path: "../public/fonts/Erode-Regular.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Erode-Italic.otf",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "../public/fonts/Erode-Medium.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Erode-MediumItalic.otf",
+      weight: "500",
+      style: "italic",
+    },
+    {
+      path: "../public/fonts/Erode-Semibold.otf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Erode-SemiboldItalic.otf",
+      weight: "600",
+      style: "italic",
+    },
+    {
+      path: "../public/fonts/Erode-Bold.otf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Erode-BoldItalic.otf",
+      weight: "700",
+      style: "italic",
+    },
+  ],
+  variable: "--font-erode",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://recoverycompass.com"),
   title: {
@@ -96,7 +144,7 @@ export default function RootLayout({
         <meta charSet="utf-8" />
       </head>
       <body
-        className={`${satoshi.variable} font-sans antialiased`}
+        className={`${satoshi.variable} ${erode.variable} font-sans antialiased`}
       >
 
         <SmoothScrollProvider>
