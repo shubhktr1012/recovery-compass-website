@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
-import { NewsletterForm } from "@/components/newsletter-form";
+import { MinimalNewsletterForm } from "@/components/newsletter-form";
 
 interface FooterVariantTwoProps {
     onCtaClick?: () => void; // Deprecated
@@ -43,7 +43,7 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
 
                             {/* Input Field Group */}
                             <div className="pt-2">
-                                <NewsletterForm alignment="left" className="lg:ml-0" variant="minimal" />
+                                <MinimalNewsletterForm alignment="left" className="mx-0 lg:ml-0" />
                             </div>
 
                             {/* Disclaimer */}

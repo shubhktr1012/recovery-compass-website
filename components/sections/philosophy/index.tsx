@@ -74,9 +74,9 @@ export function PhilosophySection() {
                         >
                             PHILOSOPHY
                         </Badge>
-                        <h2 className="text-4xl md:text-5xl font-erode font-semibold leading-[1.1] text-black">
+                        <h2 className="text-4xl md:text-5xl font-erode font-medium tracking-tighter leading-[1.1] text-black">
                             Why choose <br />
-                            <span className="text-[oklch(0.2475_0.0661_146.79)] italic">Recovery Compass?</span>
+                            <span className="italic text-[oklch(0.2475_0.0661_146.79)]">Recovery Compass?</span>
                         </h2>
                     </motion.div>
 

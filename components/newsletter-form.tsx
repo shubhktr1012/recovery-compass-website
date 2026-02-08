@@ -227,20 +227,3 @@ export function MinimalNewsletterForm({ alignment = "left", className }: Minimal
     );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Backwards-compatible export (deprecated, use explicit variants)
-// ─────────────────────────────────────────────────────────────────────────────
-
-interface NewsletterFormProps {
-    alignment?: "left" | "center" | "right";
-    variant?: "default" | "minimal";
-    className?: string;
-}
-
-/** @deprecated Use DefaultNewsletterForm or MinimalNewsletterForm instead */
-export function NewsletterForm({ alignment = "right", variant = "default", className }: NewsletterFormProps) {
-    if (variant === "minimal") {
-        return <MinimalNewsletterForm alignment={alignment} className={className} />;
-    }
-    return <DefaultNewsletterForm alignment={alignment} className={className} />;
-}

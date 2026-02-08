@@ -1,5 +1,5 @@
 import { Separator } from "@/components/ui/separator";
-import { NewsletterForm } from "@/components/newsletter-form";
+import { DefaultNewsletterForm } from "@/components/newsletter-form";
 
 export function FooterSection() {
     return (
@@ -8,12 +8,12 @@ export function FooterSection() {
 
                 {/* Soft CTA */}
                 <div className="text-center space-y-8 mb-20">
-                    <p className="text-2xl md:text-3xl lg:text-4xl font-medium leading-[1.3] text-white/90">
+                    <p className="text-2xl md:text-3xl lg:text-4xl font-erode font-medium tracking-tighter leading-[1.10] text-white/90">
                         You don't have to quit today.<br />
                         Just join the list.
                     </p>
 
-                    <NewsletterForm alignment="center" />
+                    <DefaultNewsletterForm alignment="center" />
                 </div>
 
                 {/* Separator */}

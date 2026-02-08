@@ -33,7 +33,7 @@ export function Preloader() {
                     // Exit animation: Dissolve/Blur out
                     exit={{ opacity: 0, filter: "blur(10px)" }}
                     transition={{ duration: 0.8, ease: "easeInOut" }}
-                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#FBF9F3]"
+                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-primary"
                 >
                     <div className="relative flex items-center justify-center">
                         {/* Logo Icon */}
@@ -51,7 +51,7 @@ export function Preloader() {
                             className="relative z-20 w-16 h-16 md:w-20 md:h-20 flex items-center justify-center"
                         >
                             <Image
-                                src="/rc-logo-dark-green.svg"
+                                src="/rc-logo-white.svg"
                                 alt=""
                                 fill
                                 className="object-contain"
@@ -73,7 +73,7 @@ export function Preloader() {
                                 ease: [0.76, 0, 0.24, 1],
                             }}
                         >
-                            <h1 className="pl-4 text-3xl md:text-4xl text-primary font-erode font-medium whitespace-nowrap leading-none pt-1">
+                            <h1 className="pl-4 text-3xl md:text-4xl text-white font-erode font-medium whitespace-nowrap leading-none pt-1">
                                 Recovery Compass
                             </h1>
                         </motion.div>

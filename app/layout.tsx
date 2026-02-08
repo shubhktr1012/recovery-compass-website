@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 import { BackToTop } from "@/components/ui/back-to-top";
+import { Preloader } from "@/components/ui/preloader";
 
 import "./globals.css";
 
@@ -99,6 +100,7 @@ export default function RootLayout({
       >
 
         <SmoothScrollProvider>
+          <Preloader />
           {children}
           <BackToTop />
         </SmoothScrollProvider>

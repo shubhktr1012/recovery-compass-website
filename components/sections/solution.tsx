@@ -74,7 +74,7 @@ function FeatureCard({ feature }: { feature: typeof features[0] }) {
                 </span>
 
                 {/* Headline */}
-                <h3 className="text-2xl md:text-3xl font-erode text-primary mb-3 leading-tight">
+                <h3 className="text-2xl md:text-3xl font-erode font-medium tracking-tighter text-secondary mb-3 leading-[1.10]">
                     {feature.headline}
                 </h3>
 
@@ -222,7 +222,7 @@ export function SolutionSection() {
                         <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
                         The Solution
                     </div>
-                    <h2 className="text-4xl md:text-5xl font-erode font-medium text-secondary mb-4 leading-tight">
+                    <h2 className="text-4xl md:text-5xl font-erode font-medium tracking-tighter text-secondary mb-4 leading-[1.10]">
                         The Recovery Toolkit
                     </h2>
                     <p className="text-base md:text-lg text-secondary/70 font-satoshi">
@@ -258,7 +258,7 @@ export function SolutionSection() {
                                     <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
                                     The Solution
                                 </div>
-                                <h2 className="text-5xl md:text-5xl lg:text-6xl font-erode font-medium text-secondary mb-8 max-w-4xl leading-[0.9]">
+                                <h2 className="text-5xl md:text-5xl lg:text-6xl font-erode font-medium tracking-tighter text-secondary mb-8 max-w-4xl leading-[1.10]">
                                     The Recovery <br /> Toolkit
                                 </h2>
                                 {/* Scroll Cue */}
@@ -281,7 +281,7 @@ export function SolutionSection() {
                                     <span className="font-geist-mono text-secondary/50 text-sm tracking-widest uppercase mb-4 block">
                                         01 — Insight
                                     </span>
-                                    <h3 className="text-4xl md:text-5xl 2xl:text-6xl font-erode text-secondary mb-4 lg:mb-3 xl:mb-6 leading-tight">
+                                    <h3 className="text-4xl md:text-5xl 2xl:text-6xl font-erode font-medium tracking-tighter text-secondary mb-4 lg:mb-3 xl:mb-6 leading-[1.10]">
                                         Pattern <br /> Awareness
                                     </h3>
                                     <p className="text-base lg:text-sm xl:text-xl text-secondary/80 font-satoshi leading-relaxed mb-4 lg:mb-3 xl:mb-6">
@@ -318,7 +318,7 @@ export function SolutionSection() {
                                     <span className="font-geist-mono text-secondary/50 text-sm tracking-widest uppercase mb-4 block">
                                         02 — Regulation
                                     </span>
-                                    <h3 className="text-4xl md:text-5xl 2xl:text-6xl font-erode text-secondary mb-4 lg:mb-3 xl:mb-6 leading-tight">
+                                    <h3 className="text-4xl md:text-5xl 2xl:text-6xl font-erode font-medium tracking-tighter text-secondary mb-4 lg:mb-3 xl:mb-6 leading-[1.10]">
                                         Audio <br /> Coaching
                                     </h3>
                                     <p className="text-base lg:text-sm xl:text-xl text-secondary/80 font-satoshi leading-relaxed mb-4 lg:mb-3 xl:mb-6">
@@ -355,7 +355,7 @@ export function SolutionSection() {
                                     <span className="font-geist-mono text-secondary/50 text-sm tracking-widest uppercase mb-4 block">
                                         03 — Community
                                     </span>
-                                    <h3 className="text-4xl md:text-5xl 2xl:text-6xl font-erode text-secondary mb-4 lg:mb-3 xl:mb-6 leading-tight">
+                                    <h3 className="text-4xl md:text-5xl 2xl:text-6xl font-erode font-medium tracking-tighter text-secondary mb-4 lg:mb-3 xl:mb-6 leading-[1.10]">
                                         The Panic <br /> Button
                                     </h3>
                                     <p className="text-base lg:text-sm xl:text-xl text-secondary/80 font-satoshi leading-relaxed mb-4 lg:mb-3 xl:mb-6">

@@ -19,7 +19,7 @@ function PointerText({ title, subtitle, source, href }: { title: string; subtitl
                 Source: {source}
                 <ArrowUpRight className="w-3 h-3 translate-y-[0.5px] transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
-            <h3 className="text-xl md:text-2xl font-erode font-bold text-black tracking-tight uppercase">
+            <h3 className="text-xl md:text-2xl font-sans font-bold text-black tracking-tight uppercase">
                 {title}
             </h3>
             <p className="text-base md:text-lg text-black/50 font-satoshi leading-relaxed">
@@ -351,9 +351,9 @@ export function ProblemSection() {
                     >
                         The Reality
                     </Badge>
-                    <h2 className="text-4xl md:text-6xl font-erode font-semibold leading-[1.1] text-black">
+                    <h2 className="text-4xl md:text-6xl font-erode font-medium tracking-tighter leading-[1.1] text-black">
                         You're not failing. <br className="hidden md:block" />
-                        <span className="text-[#05290C] italic font-semibold">You're being hijacked.</span>
+                        <span className="text-[#05290C] italic">You're being hijacked.</span>
                     </h2>
                     {/* <p className="text-lg text-black/50 font-satoshi max-w-md mx-auto leading-relaxed">
                         Redefining recovery through <span className="text-black font-semibold">biological data</span>, not willpower.

@@ -5,7 +5,7 @@ import { ArrowRight, Mail } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { NewsletterForm } from "@/components/newsletter-form";
+import { DefaultNewsletterForm } from "@/components/newsletter-form";
 
 export function CTASection() {
     return (
@@ -33,7 +33,7 @@ export function CTASection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="lg:col-span-12 xl:col-span-7 flex flex-col items-center text-center lg:items-start lg:text-left space-y-8"
+                        className="lg:col-span-7 flex flex-col items-center text-center lg:items-start lg:text-left space-y-8"
                     >
                         <div className="flex">
                             <Badge
@@ -45,9 +45,9 @@ export function CTASection() {
                         </div>
 
                         <div className="space-y-6">
-                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-erode font-semibold text-white leading-[1.05] tracking-tight drop-shadow-md">
+                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-erode font-medium tracking-tighter text-white leading-[1.10] drop-shadow-md">
                                 Ready to find your <br />
-                                <span className="italic font-semibold text-white/90">True North?</span>
+                                <span className="font-medium text-white/90">True North?</span>
                             </h2>
                             <p className="text-lg md:text-xl text-white font-satoshi max-w-xl leading-relaxed font-normal drop-shadow-sm">
                                 We're building a science-led path to recovery that respects your biology. Join the waitlist to be first in line when we launch.
@@ -62,9 +62,9 @@ export function CTASection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                        className="lg:col-span-12 xl:col-span-5 w-full max-w-md mx-auto lg:ml-auto"
+                        className="lg:col-span-5 w-full max-w-md mx-auto lg:ml-auto"
                     >
-                        <NewsletterForm />
+                        <DefaultNewsletterForm />
                     </motion.div>
 
                 </div>

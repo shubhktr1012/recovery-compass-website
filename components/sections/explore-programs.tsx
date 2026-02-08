@@ -51,9 +51,9 @@ export function ExploreProgramsSection() {
                         >
                             OUR PROGRAMS
                         </Badge>
-                        <h2 className="text-4xl md:text-5xl font-erode font-semibold leading-[1.1] text-black">
+                        <h2 className="text-4xl md:text-5xl font-erode font-medium tracking-tighter leading-[1.10] text-black">
                             Navigate at your <br />
-                            <span className="text-[oklch(0.2475_0.0661_146.79)] italic">own pace.</span>
+                            own <span className="italic text-[oklch(0.2475_0.0661_146.79)]">pace.</span>
                         </h2>
                     </div>
                     <p className="text-lg text-[oklch(0.2475_0.0661_146.79)]/60 font-satoshi max-w-sm leading-relaxed md:mx-auto">
@@ -91,7 +91,7 @@ export function ExploreProgramsSection() {
                                         {program.id === "6-day-reset" && <Zap className="size-6 text-white/20" aria-hidden="true" />}
                                     </div>
                                     <h3 className={cn(
-                                        "text-2xl md:text-[28px] lg:text-3xl font-erode font-semibold leading-tight",
+                                        "text-2xl md:text-[28px] lg:text-3xl font-erode font-medium tracking-tighter leading-[1.10]",
                                         program.id === "6-day-reset" ? "text-white" : "text-[oklch(0.2475_0.0661_146.79)]"
                                     )}>
                                         {program.title}

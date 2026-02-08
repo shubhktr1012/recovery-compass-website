@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { TestimonialMarquee } from "./testimonials/testimonial-marquee";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useLenis } from "@/components/smooth-scroll-provider";
 
 import { motion, Variants } from "framer-motion";
 
@@ -12,8 +13,13 @@ interface HeroOmegaProps {
 }
 
 export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
+    const lenis = useLenis();
     const scrollToWaitlist = () => {
-        document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
+        if (lenis) {
+            lenis.scrollTo("#waitlist");
+        } else {
+            document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
+        }
     };
 
     const containerVariants: Variants = {
@@ -42,7 +48,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
     return (
         <section className="relative flex flex-col justify-start pt-12 pb-6 overflow-hidden bg-white text-[oklch(0.2475_0.0661_146.79)]">
             {/* Content Container */}
-            <div className="relative z-20 w-full max-w-[1200px] mx-auto px-6 md:px-12 lg:px-24 flex flex-col justify-start pt-4 pb-12">
+            <div className="relative z-20 w-full max-w-[1200px] mx-auto px-6 md:px-12 lg:px-24 flex flex-col justify-start pt-4 pb-4">
                 <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-y-8 lg:gap-x-12 items-center">
 
                     {/* Centered Content Block (Mobile First) */}
@@ -68,8 +74,8 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                                     <motion.div
                                         key={i}
                                         className="relative -ml-2 first:ml-0 z-0 hover:z-10"
-                                        whileHover={{ scale: 1.2, zIndex: 20 }}
-                                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                        whileHover={{ y: -4 }}
+                                        transition={{ duration: 0.3, ease: "easeOut" }}
                                     >
                                         <Avatar className="w-7 h-7 border-2 border-[oklch(0.2475_0.0661_146.79)] cursor-pointer">
                                             <AvatarImage src={src} alt="Community member" className="object-cover" />
@@ -81,7 +87,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                         </motion.div>
 
                         {/* Headline - Centered */}
-                        <div className="max-w-[320px] md:max-w-[350px] lg:max-w-[520px] mx-auto space-y-6">
+                        <div className="max-w-[320px] md:max-w-[600px] lg:max-w-[520px] mx-auto space-y-6">
                             {/* Status Pill */}
                             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[oklch(0.2475_0.0661_146.79)]/5 border border-[oklch(0.2475_0.0661_146.79)]/10">
                                 <span className="relative flex h-2 w-2">
@@ -93,8 +99,8 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                                 </span>
                             </div>
 
-                            <h1 className="text-4xl md:text-5xl lg:text-7xl font-erode font-semibold tracking-tight leading-[1.05] text-black">
-                                A smarter way to <span className="text-[oklch(0.2475_0.0661_146.79)] italic">quit smoking.</span>
+                            <h1 className="text-5xl md:text-6xl lg:text-7xl font-erode font-medium tracking-tighter leading-[1.10] text-black">
+                                A smarter way to <span className="whitespace-nowrap"><span className="italic text-[oklch(0.2475_0.0661_146.79)]">quit</span> smoking.</span>
                             </h1>
 
                             {/* Subheadline - Centered */}

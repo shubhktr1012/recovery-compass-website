@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useLenis } from "@/components/smooth-scroll-provider";
 
 interface NavbarStickyProps {
     onCtaClick?: () => void; // Deprecated, but kept for compatibility during refactor
@@ -12,9 +13,24 @@ interface NavbarStickyProps {
 
 export function NavbarSticky({ }: NavbarStickyProps) {
     const [isOpen, setIsOpen] = React.useState(false);
+    const lenis = useLenis();
 
     const scrollToWaitlist = () => {
-        document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
+        if (lenis) {
+            lenis.scrollTo("#waitlist");
+        } else {
+            document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
+    const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+        e.preventDefault();
+        if (lenis) {
+            lenis.scrollTo(href);
+        } else {
+            const target = document.querySelector(href);
+            target?.scrollIntoView({ behavior: "smooth" });
+        }
     };
 
     return (
@@ -47,15 +63,19 @@ export function NavbarSticky({ }: NavbarStickyProps) {
                 <div className="flex items-center gap-8">
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex items-center gap-8">
-                        {["Why Us?", "Features", "Programs"].map((link) => (
-                            <a
-                                key={link}
-                                href={`#${link.toLowerCase().replace(" ", "-").replace("?", "")}`}
-                                className="text-base font-medium text-[oklch(0.2475_0.0661_146.79)] hover:text-[oklch(0.2475_0.0661_146.79)]/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2 rounded-sm"
-                            >
-                                {link}
-                            </a>
-                        ))}
+                        {["Why Us?", "Features", "Programs"].map((link) => {
+                            const href = `#${link.toLowerCase().replace(" ", "-").replace("?", "")}`;
+                            return (
+                                <a
+                                    key={link}
+                                    href={href}
+                                    onClick={(e) => handleNavClick(e, href)}
+                                    className="text-base font-medium text-[oklch(0.2475_0.0661_146.79)] hover:text-[oklch(0.2475_0.0661_146.79)]/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2 rounded-sm"
+                                >
+                                    {link}
+                                </a>
+                            );
+                        })}
                     </nav>
 
                     {/* Desktop CTA */}
@@ -103,20 +123,26 @@ export function NavbarSticky({ }: NavbarStickyProps) {
                         className="md:hidden absolute top-full left-0 w-full bg-white border-b border-[oklch(0.2475_0.0661_146.79)]/5 shadow-lg overflow-hidden"
                     >
                         <nav className="flex flex-col gap-6 px-6 py-6 items-start">
-                            {["Why Us?", "Features", "Programs"].map((link, i) => (
-                                <motion.a
-                                    key={link}
-                                    href={`#${link.toLowerCase().replace(" ", "-").replace("?", "")}`}
-                                    className="text-base font-medium text-[oklch(0.2475_0.0661_146.79)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2 rounded-sm"
-                                    onClick={() => setIsOpen(false)}
-                                    initial={{ opacity: 0, y: -10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -10 }}
-                                    transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
-                                >
-                                    {link}
-                                </motion.a>
-                            ))}
+                            {["Why Us?", "Features", "Programs"].map((link, i) => {
+                                const href = `#${link.toLowerCase().replace(" ", "-").replace("?", "")}`;
+                                return (
+                                    <motion.a
+                                        key={link}
+                                        href={href}
+                                        className="text-base font-medium text-[oklch(0.2475_0.0661_146.79)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2 rounded-sm"
+                                        onClick={(e) => {
+                                            handleNavClick(e, href);
+                                            setIsOpen(false);
+                                        }}
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
+                                    >
+                                        {link}
+                                    </motion.a>
+                                );
+                            })}
                             <motion.div
                                 initial={{ opacity: 0, y: -10 }}
                                 animate={{ opacity: 1, y: 0 }}

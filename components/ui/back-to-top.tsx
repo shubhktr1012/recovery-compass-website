@@ -2,8 +2,10 @@
 
 import { motion, AnimatePresence, useScroll, useVelocity, useSpring, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useLenis } from "@/components/smooth-scroll-provider";
 
 export function BackToTop() {
+    const lenis = useLenis();
     // Scroll Physics for Compass Rotation
     const { scrollY } = useScroll();
     const scrollVelocity = useVelocity(scrollY);
@@ -17,10 +19,14 @@ export function BackToTop() {
     const rotation = useTransform(smoothVelocity, [-3000, 3000], [-180, 180]);
 
     const scrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-        });
+        if (lenis) {
+            lenis.scrollTo(0);
+        } else {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+            });
+        }
     };
 
     return (
