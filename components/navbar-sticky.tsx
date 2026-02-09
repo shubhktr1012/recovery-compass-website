@@ -40,29 +40,29 @@ export function NavbarSticky({ }: NavbarStickyProps) {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
         >
-            <div className="flex items-center justify-between px-6 md:px-12 py-4 max-w-[1200px] mx-auto">
+            <div className="flex items-center justify-between px-6 md:px-12 py-2.5 max-w-[1200px] mx-auto">
 
                 {/* Brand */}
                 <div className="flex items-center gap-2 text-[oklch(0.2475_0.0661_146.79)]">
                     <Image
                         src="/rc-logo-black.svg"
                         alt=""
-                        width={32}
-                        height={32}
-                        className="size-8"
+                        width={28}
+                        height={28}
+                        className="size-7"
                     />
-                    <span className="font-erode text-xl font-semibold tracking-tighter text-black">
+                    <span className="font-erode text-lg font-semibold tracking-tighter text-black">
                         Recovery Compass
                     </span>
-                    <span className="ml-2 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest rounded-full border border-[oklch(0.2475_0.0661_146.79)]/30 text-[oklch(0.2475_0.0661_146.79)]/60">
+                    <span className="ml-2 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest rounded-full border border-[oklch(0.2475_0.0661_146.79)]/30 text-[oklch(0.2475_0.0661_146.79)]/60">
                         Preview
                     </span>
                 </div>
 
                 {/* Right Actions (Nav + CTA + Mobile Toggle) */}
-                <div className="flex items-center gap-8">
+                <div className="flex items-center gap-6">
                     {/* Desktop Navigation */}
-                    <nav className="hidden md:flex items-center gap-8">
+                    <nav className="hidden md:flex items-center gap-6">
                         {["Why Us?", "Features", "Programs"].map((link) => {
                             const href = `#${link.toLowerCase().replace(" ", "-").replace("?", "")}`;
                             return (
@@ -70,7 +70,7 @@ export function NavbarSticky({ }: NavbarStickyProps) {
                                     key={link}
                                     href={href}
                                     onClick={(e) => handleNavClick(e, href)}
-                                    className="text-base font-medium text-[oklch(0.2475_0.0661_146.79)] hover:text-[oklch(0.2475_0.0661_146.79)]/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2 rounded-sm"
+                                    className="text-sm font-medium text-[oklch(0.2475_0.0661_146.79)] hover:text-[oklch(0.2475_0.0661_146.79)]/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2 rounded-sm"
                                 >
                                     {link}
                                 </a>
@@ -82,9 +82,9 @@ export function NavbarSticky({ }: NavbarStickyProps) {
                     <Button
                         onClick={scrollToWaitlist}
                         className={cn(
-                            "hidden md:inline-flex rounded-full px-6 text-base font-medium transition-transform active:scale-95",
+                            "hidden md:inline-flex rounded-full px-5 text-sm font-medium transition-transform active:scale-95",
                             "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90",
-                            "border-none shadow-none h-11"
+                            "border-none shadow-none h-9"
                         )}
                     >
                         Join Waitlist
@@ -93,7 +93,7 @@ export function NavbarSticky({ }: NavbarStickyProps) {
                     {/* Mobile Menu Toggle (2-Line Animated Icon) */}
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 z-50 relative rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2"
+                        className="md:hidden flex flex-col justify-center items-center w-9 h-9 gap-1.5 z-50 relative rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2"
                         aria-label="Toggle menu"
                     >
                         {/* Top Line */}

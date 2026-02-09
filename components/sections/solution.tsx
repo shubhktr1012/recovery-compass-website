@@ -217,7 +217,7 @@ export function SolutionSection() {
     return (
         <>
             {/* ============ MOBILE/TABLET VIEW (below lg) ============ */}
-            <section className="lg:hidden bg-primary px-4 py-16 md:px-8 md:py-20">
+            <section className="lg:hidden bg-primary px-4 py-16 md:px-8 md:py-24">
                 {/* Mobile Intro */}
                 <div className="max-w-2xl mx-auto text-center mb-12">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-secondary/30 bg-secondary/5 text-secondary text-xs uppercase tracking-widest font-satoshi mb-6">

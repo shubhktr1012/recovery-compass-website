@@ -40,6 +40,16 @@ To move this to a client's account, simply:
 2.  Run the same SQL migration (Step 3) on their project.
 3.  Update the environment variables in Vercel (or wherever you deploy) with *their* keys (Step 2).
 
+## Vercel Deployment Guide
+Since `.env.local` is not committed (for security), you must manually add the keys to Vercel:
+1.  Go to your **Vercel Dashboard** > Select Project > **Settings**.
+2.  Click **Environment Variables**.
+3.  Add the following:
+    *   `NEXT_PUBLIC_SUPABASE_URL`: (Paste your Project URL)
+    *   `NEXT_PUBLIC_SUPABASE_ANON_KEY`: (Paste your Anon Key)
+4.  **Redeploy** the latest commit for these changes to take effect.
+
+
 ## Data Migration (Optional)
 **Important:** Changing the API keys in your `.env.local` to the client's account will **NOT** automatically move the existing data. The app will simply start writing to the *new* database, which starts empty.
 

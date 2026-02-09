@@ -88,24 +88,32 @@ function useNewsletterForm() {
 
 function StatusMessages({ status }: { status: FormStatus }) {
     return (
-        <div className="absolute top-full left-0 mt-2 w-full">
-            <AnimatePresence>
+        <div className="w-full">
+            <AnimatePresence mode="wait">
                 {status === "error" && (
                     <motion.div
-                        initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                        className="flex items-center gap-1.5 text-red-400 text-sm font-medium bg-red-950/30 p-2 rounded-md border border-red-500/20"
+                        initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                        animate={{ opacity: 1, height: "auto", marginTop: 8 }}
+                        exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                        className="overflow-hidden"
                     >
-                        <AlertCircle className="w-4 h-4" aria-hidden="true" />
-                        <span>Something went wrong. Please try again.</span>
+                        <div className="flex items-center gap-1.5 text-red-400 text-sm font-medium bg-red-950/30 p-2 rounded-md border border-red-500/20">
+                            <AlertCircle className="w-4 h-4" aria-hidden="true" />
+                            <span>Something went wrong. Please try again.</span>
+                        </div>
                     </motion.div>
                 )}
                 {status === "success" && (
                     <motion.div
-                        initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                        className="flex items-center gap-1.5 text-green-400 text-sm font-medium bg-green-950/30 p-2 rounded-md border border-green-500/20"
+                        initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                        animate={{ opacity: 1, height: "auto", marginTop: 8 }}
+                        exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                        className="overflow-hidden"
                     >
-                        <CheckCircle2 className="w-4 h-4" aria-hidden="true" />
-                        <span>You're on the list! We'll be in touch.</span>
+                        <div className="flex items-center gap-1.5 text-green-400 text-sm font-medium bg-green-950/30 p-2 rounded-md border border-green-500/20">
+                            <CheckCircle2 className="w-4 h-4" aria-hidden="true" />
+                            <span>You're on the list! We'll be in touch.</span>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -240,7 +248,7 @@ export function DefaultNewsletterForm({ alignment = "right", className }: Defaul
                 <StatusMessages status={status} />
             </form>
 
-            <div className="mt-2 flex flex-col items-center gap-2">
+            <div className="mt-4 flex flex-col items-center gap-2">
                 <p className="text-xs text-white/60 font-medium flex items-center gap-1.5 px-4 py-1 rounded-full bg-black/20 backdrop-blur-sm">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.5)]" />
                     Secure & Confidential. Unsubscribe anytime.

@@ -41,7 +41,7 @@ const programs = [
 
 export function ExploreProgramsSection() {
     return (
-        <section className="w-full bg-[#F9F9F9] py-16 overflow-visible">
+        <section className="w-full bg-[#F9F9F9] py-16 md:py-24 overflow-visible">
             <div className="max-w-[1000px] mx-auto px-6 md:px-12">
                 <div className="flex flex-col mb-12 md:mb-16 gap-4 text-left md:text-center md:items-center">
                     <div className="space-y-4">

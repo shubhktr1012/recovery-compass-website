@@ -63,7 +63,7 @@ const faqs = [
 
 export function FAQSection() {
     return (
-        <section className="py-12 px-6 md:px-12 max-w-[1200px] mx-auto">
+        <section className="py-16 md:py-24 px-6 md:px-12 max-w-[1200px] mx-auto">
             <div className="flex flex-col md:flex-row gap-16 lg:gap-24">
 
                 {/* Left Column: Header & CTA */}

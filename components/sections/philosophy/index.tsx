@@ -56,7 +56,7 @@ export function PhilosophySection() {
     }, [activeIndex]);
 
     return (
-        <section className="py-12 px-6 md:px-12 max-w-[1200px] mx-auto">
+        <section className="py-16 md:py-24 px-6 md:px-12 max-w-[1200px] mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-start">
 
                 {/* Left Column: Content Navigation */}

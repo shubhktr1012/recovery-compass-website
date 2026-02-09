@@ -340,7 +340,7 @@ const realityItems = [
 export function ProblemSection() {
 
     return (
-        <section className="relative bg-[#FAFAFA] overflow-hidden py-24 md:py-32">
+        <section className="relative bg-[#FAFAFA] overflow-hidden py-16 md:py-24">
             <div className="max-w-[1200px] mx-auto px-6 relative z-10">
 
                 {/* Header Section */}
