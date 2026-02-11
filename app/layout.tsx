@@ -78,7 +78,7 @@ const erode = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://recoverycompass.com"),
+  metadataBase: new URL("https://recoverycompass.co"),
   title: {
     default: "Recovery Compass - Reclaim Your Clarity",
     template: "%s | Recovery Compass",
@@ -99,7 +99,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://recoverycompass.com",
+    url: "https://recoverycompass.co",
     title: "Recovery Compass - Reclaim Your Clarity",
     description:
       "A premium companion for your journey to a smoke-free life. Track progress, health recovery, and savings with clarity.",
@@ -134,6 +134,7 @@ export const viewport = {
 };
 
 import { PageTransition } from "@/components/page-transition";
+import { CookieBanner } from "@/components/cookie-banner";
 
 export default function RootLayout({
   children,
@@ -155,6 +156,7 @@ export default function RootLayout({
             {children}
           </PageTransition>
           <BackToTop />
+          <CookieBanner />
         </SmoothScrollProvider>
       </body>
     </html>

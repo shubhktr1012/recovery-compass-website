@@ -453,6 +453,33 @@ export function PrivacyContent() {
                 <p><span className="font-bold">Email:</span> support@recoverycompass.co</p>
             </motion.section>
 
+            <motion.section
+                className="space-y-6"
+                variants={{
+                    initial: { opacity: 0, y: 10 },
+                    animate: { opacity: 1, y: 0 }
+                }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+                <h2 className="font-erode text-2xl font-semibold text-foreground">21. Cookies & Tracking Technologies</h2>
+                <div className="space-y-4">
+                    <p>
+                        We use cookies and similar technologies (such as local storage) to provide, protect, and improve our services.
+                    </p>
+                    <div className="space-y-3">
+                        <h3 className="text-xl font-medium text-foreground">Types of Cookies We Use</h3>
+                        <ul className="list-disc pl-6 space-y-2">
+                            <li><span className="font-bold">Essential Cookies:</span> Necessary for authentication and security. We use <span className="font-medium text-foreground">Supabase</span> to manage sessions; these cookies ensure you stay logged in.</li>
+                            <li><span className="font-bold">Analytical Cookies:</span> Used to understand how users interact with our platform so we can improve the experience.</li>
+                            <li><span className="font-bold">Functional Cookies:</span> To remember your preferences, such as language or display settings.</li>
+                        </ul>
+                    </div>
+                    <p className="text-sm">
+                        You can manage cookie preferences through your browser settings, though disabling essential cookies may impact app functionality.
+                    </p>
+                </div>
+            </motion.section>
+
             <div className="h-px w-full bg-foreground/10 mt-12 mb-8" />
             <p className="text-center text-sm text-foreground/50 italic">
                 By using Recovery Compass, you acknowledge that you have read and understood this Privacy Policy.
