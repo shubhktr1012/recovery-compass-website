@@ -88,7 +88,7 @@ function useNewsletterForm() {
 
 function StatusMessages({ status }: { status: FormStatus }) {
     return (
-        <div className="w-full">
+        <div className="w-full text-center">
             <AnimatePresence mode="wait">
                 {status === "error" && (
                     <motion.div
@@ -97,7 +97,7 @@ function StatusMessages({ status }: { status: FormStatus }) {
                         exit={{ opacity: 0, height: 0, marginTop: 0 }}
                         className="overflow-hidden"
                     >
-                        <div className="flex items-center gap-1.5 text-red-400 text-sm font-medium bg-red-950/30 p-2 rounded-md border border-red-500/20">
+                        <div className="flex items-center justify-center gap-1.5 text-red-400 text-sm font-medium">
                             <AlertCircle className="w-4 h-4" aria-hidden="true" />
                             <span>Something went wrong. Please try again.</span>
                         </div>
@@ -110,7 +110,7 @@ function StatusMessages({ status }: { status: FormStatus }) {
                         exit={{ opacity: 0, height: 0, marginTop: 0 }}
                         className="overflow-hidden"
                     >
-                        <div className="flex items-center gap-1.5 text-green-400 text-sm font-medium bg-green-950/30 p-2 rounded-md border border-green-500/20">
+                        <div className="flex items-center justify-center gap-1.5 text-green-400 text-sm font-medium">
                             <CheckCircle2 className="w-4 h-4" aria-hidden="true" />
                             <span>You're on the list! We'll be in touch.</span>
                         </div>

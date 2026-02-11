@@ -52,8 +52,8 @@ export function ExploreProgramsSection() {
                             OUR PROGRAMS
                         </Badge>
                         <h2 className="text-4xl md:text-5xl font-erode font-medium tracking-tighter leading-[1.10] text-black">
-                            Navigate at your <br />
-                            own <span className="italic text-[oklch(0.2475_0.0661_146.79)]">pace.</span>
+                            A plan for your <br />
+                            <span className="italic text-[oklch(0.2475_0.0661_146.79)]">personal needs.</span>
                         </h2>
                     </div>
                     <p className="text-lg text-[oklch(0.2475_0.0661_146.79)]/60 font-satoshi max-w-sm leading-relaxed md:mx-auto">

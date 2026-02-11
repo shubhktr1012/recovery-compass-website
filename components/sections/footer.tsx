@@ -1,5 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import { DefaultNewsletterForm } from "@/components/newsletter-form";
+import Link from "next/link";
 
 export function FooterSection() {
     return (
@@ -36,12 +37,12 @@ export function FooterSection() {
 
                     {/* Links */}
                     <div className="flex gap-8 text-sm text-white/40">
-                        <a href="#" className="hover:text-white transition-colors">
+                        <Link href="/privacy" className="hover:text-white transition-colors">
                             Privacy
-                        </a>
-                        <a href="#" className="hover:text-white transition-colors">
+                        </Link>
+                        <Link href="/terms" className="hover:text-white transition-colors">
                             Terms
-                        </a>
+                        </Link>
                     </div>
                 </div>
 

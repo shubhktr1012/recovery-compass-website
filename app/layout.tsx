@@ -133,6 +133,8 @@ export const viewport = {
   initialScale: 1,
 };
 
+import { PageTransition } from "@/components/page-transition";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -149,7 +151,9 @@ export default function RootLayout({
 
         <SmoothScrollProvider>
           <Preloader />
-          {children}
+          <PageTransition>
+            {children}
+          </PageTransition>
           <BackToTop />
         </SmoothScrollProvider>
       </body>

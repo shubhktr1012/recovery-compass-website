@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 import { MinimalNewsletterForm } from "@/components/newsletter-form";
+import Link from "next/link";
 
 interface FooterVariantTwoProps {
     onCtaClick?: () => void; // Deprecated
@@ -48,7 +49,14 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
 
                             {/* Disclaimer */}
                             <p className="text-xs text-white/40 leading-relaxed max-w-[320px]">
-                                By subscribing you agree to with our Privacy Policy and provide consent to receive updates from our company.
+                                By subscribing you agree to with our{" "}
+                                <Link
+                                    href="/privacy"
+                                    className="underline hover:text-white transition-colors cursor-pointer"
+                                >
+                                    Privacy Policy
+                                </Link>{" "}
+                                and provide consent to receive updates from our company.
                             </p>
                         </div>
                     </div>
@@ -60,10 +68,20 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                             <h4 className="text-sm font-medium text-white/90">Legal</h4>
                             <ul className="space-y-4 text-sm text-white/60">
                                 <li>
-                                    <a href="#" className="hover:text-white transition-colors">Terms & Conditions</a>
+                                    <Link
+                                        href="/terms"
+                                        className="hover:text-white transition-colors cursor-pointer"
+                                    >
+                                        Terms & Conditions
+                                    </Link>
                                 </li>
                                 <li>
-                                    <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+                                    <Link
+                                        href="/privacy"
+                                        className="hover:text-white transition-colors cursor-pointer"
+                                    >
+                                        Privacy Policy
+                                    </Link>
                                 </li>
                             </ul>
                         </div>
@@ -101,7 +119,7 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
 
                 {/* Copyright */}
                 <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/40">
-                    <p>© 2026 Recovery Compass. All rights reserved.</p> {/* Updated per request */}
+                    <p>© 2026 Recovery Compass. All rights reserved.</p>
                     <div className="flex gap-6">
                         <span className="opacity-50">Designed for clarity.</span>
                     </div>

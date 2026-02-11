@@ -100,7 +100,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                             </div>
 
                             <h1 className="text-4xl md:text-5xl lg:text-7xl font-erode font-medium tracking-tighter leading-[1.10] text-black">
-                                A smarter way to <span className="whitespace-nowrap"><span className="italic text-[oklch(0.2475_0.0661_146.79)]">quit</span> smoking.</span>
+                                A smarter way to <span className="whitespace-nowrap"><span className="italic text-[oklch(0.2475_0.0661_146.79)]">navigate</span> quitting.</span>
                             </h1>
 
                             {/* Subheadline - Centered */}
