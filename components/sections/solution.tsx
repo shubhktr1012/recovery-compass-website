@@ -46,7 +46,7 @@ const features = [
             { title: "No willpower needed", desc: "Most urges fade within 7-10 minutes. Waiting works." },
             { title: "Works for smoking and alcohol urges", desc: "Same nervous system, same solution." },
         ],
-        imageSrc: "/pointer-3.png",
+        imageSrc: "/pointer-3(1).png",
     },
 ];
 
@@ -76,7 +76,7 @@ function FeatureCard({ feature }: { feature: typeof features[0] }) {
                 </span>
 
                 {/* Headline */}
-                <h3 className="text-2xl md:text-3xl font-erode font-medium tracking-tighter text-secondary mb-3 leading-[1.10]">
+                <h3 className="text-2xl md:text-3xl font-erode font-medium tracking-tighter text-primary mb-3 leading-[1.10]">
                     {feature.headline}
                 </h3>
 

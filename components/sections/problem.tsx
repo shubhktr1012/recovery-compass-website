@@ -296,10 +296,10 @@ function CravingWaveVisual() {
 // Data definition for consistent rendering
 const realityItems = [
     {
-        id: "hijack",
+        id: "override",
         visual: <DopamineChart />,
-        title: "The Hijack",
-        subtitle: "Nicotine shatters the 'Normal' dopamine ceiling, peaking at 250%—instantly redefining your brain's reward logic.",
+        title: "The Override",
+        subtitle: "Nicotine bypasses natural limits, hitting 250% and forcefully rewriting your reward logic.",
         source: "Di Chiara, G. (2000)",
         href: "https://pubmed.ncbi.nlm.nih.gov/11073861/",
     },
@@ -352,8 +352,8 @@ export function ProblemSection() {
                         The Reality
                     </Badge>
                     <h2 className="text-4xl md:text-6xl font-erode font-medium tracking-tighter leading-[1.1] text-black">
-                        You're not failing. <br className="hidden md:block" />
-                        You're being <span className="text-primary italic">hijacked.</span>
+                        You aren’t failing. <br className="hidden md:block" />
+                        You’re just <span className="text-primary italic">overpowered.</span>
                     </h2>
                     {/* <p className="text-lg text-black/50 font-satoshi max-w-md mx-auto leading-relaxed">
                         Redefining recovery through <span className="text-black font-semibold">biological data</span>, not willpower.
@@ -364,10 +364,10 @@ export function ProblemSection() {
                 {/* Simplified Stack: Headline -> Visual -> Subtitle -> Source */}
                 {/* Shows only first 3 items */}
                 <div className="flex flex-col space-y-20 lg:hidden">
-                    {realityItems.slice(0, 3).map((item) => (
+                    {realityItems.map((item) => (
                         <div key={item.id} className="flex flex-col space-y-6">
                             {/* Headline */}
-                            <h3 className="text-3xl font-satoshi font-bold text-black tracking-tight">
+                            <h3 className="text-2xl font-sans font-bold text-black tracking-tight">
                                 {item.title}
                             </h3>
 
