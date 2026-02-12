@@ -47,7 +47,7 @@ const faqs = [
         question: "How should I navigate a momentary lapse?",
         answer: (
             <>
-                A slip is data, not a definition. It often reveals a specific trigger or unmet need. The most effective response is to distinctively <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">avoid judgment</strong>, re-center your nervous system, and immediately return to your baseline practices. Perfection is not the goal; persistence is.
+                A slip is data, not a definition. It often reveals a specific trigger or unmet need. The most effective response is <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">compassionate self-talk</strong>. Re-build your <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">self-efficacy</strong> by returning to your baseline practices immediately.
             </>
         ),
     },

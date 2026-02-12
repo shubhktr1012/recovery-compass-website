@@ -162,6 +162,22 @@ export function ExploreProgramsSection() {
                         </motion.div>
                     ))}
                 </div>
+
+                {/* Free Video Consultation CTA - Commented out until live */}
+                {/* 
+                <div className="mt-16 text-center">
+                    <p className="text-lg md:text-xl font-satoshi font-normal text-[oklch(0.2475_0.0661_146.79)]/70">
+                        Not sure which path is right for you? <a
+                            href="https://calendly.com/your-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-medium text-[oklch(0.2475_0.0661_146.79)] underline underline-offset-4 hover:text-[oklch(0.2475_0.0661_146.79)]/80 transition-colors"
+                        >
+                            Book a free video consultation.
+                        </a>
+                    </p>
+                </div>
+                */}
             </div>
         </section>
     );

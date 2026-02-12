@@ -30,14 +30,14 @@ const features = [
     {
         id: "data",
         title: "Progress, not perfection.",
-        description: "Smoking a cigarette isn't a failure—it's data. We track patterns, not streaks, so you can learn without starting over.",
+        description: "Build emotional resilience through non-judgmental tracking. Smoking isn't a failure—it's data to learn from.",
         Visual: DataInsight,
         duration: 12000,
     },
     {
         id: "structure",
         title: "Calm, daily clarity.",
-        description: "From the 6-Day Smoke-Free Reset to 90-Day Stability, you'll always know exactly what to do next. No guesswork.",
+        description: "Routine restructuring and behavioral flexibility. A guided path from breaking the loop to building a new identity.",
         Visual: StructurePath,
         duration: 14000,
     }
