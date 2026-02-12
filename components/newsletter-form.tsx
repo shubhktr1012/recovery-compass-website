@@ -161,6 +161,7 @@ export function DefaultNewsletterForm({ alignment = "right", className }: Defaul
                         required
                         disabled={isDisabled}
                         aria-label="First Name"
+                        autoComplete="given-name"
                     />
                     <Input
                         type="text"
@@ -172,6 +173,7 @@ export function DefaultNewsletterForm({ alignment = "right", className }: Defaul
                         required
                         disabled={isDisabled}
                         aria-label="Last Name"
+                        autoComplete="family-name"
                     />
                 </div>
 
@@ -186,6 +188,7 @@ export function DefaultNewsletterForm({ alignment = "right", className }: Defaul
                     required
                     disabled={isDisabled}
                     aria-label="Email Address"
+                    autoComplete="email"
                 />
 
                 {/* Phone Row */}
@@ -219,6 +222,7 @@ export function DefaultNewsletterForm({ alignment = "right", className }: Defaul
                         required
                         disabled={isDisabled}
                         aria-label="Phone Number"
+                        autoComplete="tel"
                     />
                 </div>
 

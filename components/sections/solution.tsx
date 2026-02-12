@@ -46,7 +46,7 @@ const features = [
             { title: "No willpower needed", desc: "Most urges fade within 7-10 minutes. Waiting works." },
             { title: "Works for smoking and alcohol urges", desc: "Same nervous system, same solution." },
         ],
-        imageSrc: "/pointer-3(1).png",
+        imageSrc: "/pointer-3.png",
     },
 ];
 
