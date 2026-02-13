@@ -41,6 +41,7 @@ export function WaveRegulation() {
                         <motion.path
                             fill="white"
                             fillOpacity="0.3"
+                            d={chaosPath1}
                             animate={{
                                 d: [chaosPath1, chaosPath2, calmPath1, flatPath, chaosPath1]
                             }}
@@ -62,6 +63,7 @@ export function WaveRegulation() {
                         <motion.path
                             fill="white"
                             fillOpacity="0.6"
+                            d={chaosPath2}
                             animate={{
                                 d: [chaosPath2, chaosPath1, calmPath2, flatPath, chaosPath2]
                             }}

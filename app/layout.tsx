@@ -106,7 +106,7 @@ export const metadata: Metadata = {
     siteName: "Recovery Compass",
     images: [
       {
-        url: "https://recoverycompass.co/hero.jpeg",
+        url: "/hero.jpeg",
         width: 1200,
         height: 630,
         alt: "Recovery Compass Dashboard",
