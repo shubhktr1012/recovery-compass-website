@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
             userAgent: "*",
             allow: "/",
         },
-        sitemap: "https://recoverycompass.com/sitemap.xml",
+        sitemap: "https://recoverycompass.co/sitemap.xml",
     };
 }

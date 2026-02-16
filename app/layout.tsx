@@ -106,10 +106,10 @@ export const metadata: Metadata = {
     siteName: "Recovery Compass",
     images: [
       {
-        url: "/hero.jpeg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Recovery Compass Dashboard",
+        alt: "Recovery Compass - Reclaim Your Clarity",
       },
     ],
   },
@@ -118,7 +118,7 @@ export const metadata: Metadata = {
     title: "Recovery Compass - Reclaim Your Clarity",
     description:
       "A premium companion for your journey to a smoke-free life. Track progress, health recovery, and savings with clarity.",
-    images: ["/hero.jpeg"],
+    images: ["/og-image.png"],
     creator: "@recoverycompass",
   },
   icons: {
