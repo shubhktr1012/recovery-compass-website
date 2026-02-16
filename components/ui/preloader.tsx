@@ -8,6 +8,14 @@ export function Preloader() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // specific check for session storage to prevent preloader from showing on every refresh
+        const hasSeenPreloader = sessionStorage.getItem("has_seen_preloader");
+
+        if (hasSeenPreloader) {
+            setLoading(false);
+            return;
+        }
+
         // Total animation time:
         // Breathe In: 2s
         // Exhale & Reveal: 1.5s
@@ -20,6 +28,7 @@ export function Preloader() {
         // Let's hold it for enough time to complete the sequence.
         const timer = setTimeout(() => {
             setLoading(false);
+            sessionStorage.setItem("has_seen_preloader", "true");
         }, 4500);
 
         return () => clearTimeout(timer);
