@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useId } from "react";
 import { Badge } from "@/components/ui/badge";
 import { ArrowUpRight } from "lucide-react";
 
@@ -34,7 +35,7 @@ function PointerText({ title, subtitle, source, href }: { title: string; subtitl
  */
 function VisualContainer({ children, padding = "p-8" }: { children: React.ReactNode; padding?: string }) {
     return (
-        <div className={`w-full aspect-[4/3] md:aspect-[5/4] bg-[#05290c] rounded-2xl flex items-center justify-center ${padding} overflow-hidden relative group`}>
+        <div className={`w-full min-h-[260px] sm:min-h-[300px] lg:min-h-0 lg:aspect-[5/4] bg-[#05290c] rounded-2xl flex items-center justify-center ${padding} overflow-hidden relative group`}>
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(46,125,107,0.15)_0%,transparent_70%)] opacity-50" />
             <div className="relative z-10 w-full h-full flex items-center justify-center">
                 {children}
@@ -49,9 +50,9 @@ function VisualContainer({ children, padding = "p-8" }: { children: React.ReactN
 function DopamineChart() {
     return (
         <div className="relative w-full h-full flex flex-col items-center justify-center p-4">
-            <div className="relative w-full h-full max-h-[180px]">
+            <div className="relative w-full h-full max-h-[180px] pl-6">
                 {/* Y-Axis Labels */}
-                <div className="absolute -left-2 inset-y-0 flex flex-col justify-between text-[10px] font-bold text-white/20 uppercase tracking-tighter">
+                <div className="absolute left-0 inset-y-0 flex flex-col justify-between text-[10px] font-bold text-white/20 uppercase tracking-tighter">
                     <span>250%</span>
                     <span>150%</span>
                     <span>100%</span>
@@ -101,7 +102,7 @@ function DopamineChart() {
                 </svg>
 
                 {/* Legend */}
-                <div className="flex justify-center gap-12 mt-8">
+                <div className="flex justify-center gap-6 sm:gap-12 mt-8 flex-wrap">
                     <div className="flex items-center gap-2">
                         <div className="w-4 h-0.5 bg-[#F59E0B] opacity-60" />
                         <span className="text-[9px] font-bold text-white/30 uppercase tracking-[0.2em]">Natural</span>
@@ -167,7 +168,7 @@ function TimeTaxChart() {
 function OxygenResetVisual() {
     return (
         <div className="relative w-full h-full flex items-center justify-center p-4">
-            <div className="relative w-40 h-40 md:w-44 md:h-44 scale-110 md:scale-125">
+            <div className="relative w-36 h-36 sm:w-40 sm:h-40 md:w-44 md:h-44 scale-100 sm:scale-110 md:scale-125">
                 <svg viewBox="0 0 100 100" className="w-full h-full">
                     <circle cx="50" cy="50" r="45" fill="none" stroke="white" strokeWidth="1" strokeOpacity="0.05" />
                     <motion.circle
@@ -245,35 +246,36 @@ function FinancialCostVisual() {
  * 5. The 3-Minute Wave (Behavioral)
  */
 function CravingWaveVisual() {
+    const waveGradientId = useId();
+
     return (
         <div className="w-full h-full flex flex-col items-center justify-center p-4">
-            <div className="w-full h-32 relative overflow-hidden scale-110 md:scale-125">
-                <svg viewBox="0 0 200 100" className="w-full h-full overflow-visible">
+            <div className="w-full h-36 sm:h-40 md:h-44 relative overflow-visible origin-bottom scale-100 sm:scale-105 md:scale-110">
+                <svg viewBox="0 0 200 120" className="w-full h-full overflow-visible">
                     <defs>
-                        <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <linearGradient id={waveGradientId} x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" stopColor="#F97316" stopOpacity="0.3" />
                             <stop offset="50%" stopColor="#FB923C" stopOpacity="1" />
                             <stop offset="100%" stopColor="#10B981" stopOpacity="0.3" />
                         </linearGradient>
                     </defs>
                     <motion.path
-                        d="M -80 75 Q -40 10, 0 75 T 80 75 T 160 75 T 240 75 T 320 75"
+                        d="M -240 82 Q -200 18, -160 82 T -80 82 T 0 82 T 80 82 T 160 82 T 240 82 T 320 82 T 400 82 T 480 82 T 560 82"
                         fill="none"
-                        stroke="url(#waveGradient)"
+                        stroke={`url(#${waveGradientId})`}
                         strokeWidth="3"
                         strokeLinecap="round"
                         initial={{ pathLength: 0, x: 0 }}
-                        animate={{ x: -80 }}
-                        whileInView={{ pathLength: 1 }}
+                        animate={{ pathLength: 1, x: -160 }}
                         transition={{
                             pathLength: { duration: 1.5, ease: "easeOut" },
-                            x: { duration: 3, repeat: Infinity, ease: "linear" }
+                            x: { duration: 4.5, repeat: Infinity, ease: "linear" }
                         }}
                     />
                     {/* Floating Pulse Point */}
                     <motion.circle
-                        cx="100" cy="70" r="3" fill="#FB923C"
-                        animate={{ y: [0, -30, 0] }}
+                        cx="100" cy="74" r="3" fill="#FB923C"
+                        animate={{ y: [0, -28, 0] }}
                         transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                         className="drop-shadow-[0_0_8px_rgba(251,146,60,0.8)]"
                     />
