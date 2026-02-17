@@ -70,13 +70,13 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                 {/* Brand */}
                 <Link href="/" className="flex items-center gap-2 text-[oklch(0.2475_0.0661_146.79)] hover:opacity-80 transition-opacity">
                     <Image
-                        src="/rc-logo-black.svg"
+                        src="/rc-logo-dark-green.svg"
                         alt=""
                         width={28}
                         height={28}
                         className="size-7"
                     />
-                    <span className="font-erode text-lg font-semibold tracking-tighter text-black">
+                    <span className="font-erode text-lg font-semibold tracking-tighter text-primary">
                         Recovery Compass
                     </span>
                     <span className="ml-2 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest rounded-full border border-[oklch(0.2475_0.0661_146.79)]/30 text-[oklch(0.2475_0.0661_146.79)]/60">
