@@ -42,7 +42,7 @@ export function TermsContent() {
             >
                 <h2 className="font-erode text-2xl font-semibold text-foreground">1. Introduction</h2>
                 <p>
-                    These Terms & Conditions ("Terms") govern your use of Recovery Compass ("Platform", "App", "we", "our", "us"), a digital wellness application designed to support smoking cessation.
+                    These Terms &amp; Conditions (&quot;Terms&quot;) govern your use of Recovery Compass (&quot;Platform&quot;, &quot;App&quot;, &quot;we&quot;, &quot;our&quot;, &quot;us&quot;), a digital wellness application designed to support smoking cessation.
                 </p>
                 <p>
                     By accessing or using Recovery Compass, you agree to be bound by these Terms. If you do not agree, please do not use the Platform.
@@ -120,7 +120,7 @@ export function TermsContent() {
                         <li>Payment will be charged to your Google Play account at confirmation of purchase</li>
                         <li>Subscriptions renew automatically unless cancelled before the end of the current billing period</li>
                         <li>You can manage or cancel subscriptions in your Google Play account settings</li>
-                        <li>Refunds are handled according to Google Play's refund policies</li>
+                        <li>Refunds are handled according to Google Play&apos;s refund policies</li>
                     </ul>
                 </div>
 
@@ -169,7 +169,7 @@ export function TermsContent() {
                 <div className="space-y-4">
                     <h3 className="text-xl font-medium text-foreground">No Guaranteed Outcomes</h3>
                     <p>
-                        Individual results vary based on personal effort, consistency, and circumstances. Recovery Compass does not guarantee cessation of smoking or any specific outcomes. The Platform's benefits depend on your participation and engagement.
+                        Individual results vary based on personal effort, consistency, and circumstances. Recovery Compass does not guarantee cessation of smoking or any specific outcomes. The Platform&apos;s benefits depend on your participation and engagement.
                     </p>
                 </div>
             </motion.section>
@@ -456,7 +456,7 @@ export function TermsContent() {
                 </div>
                 <div className="space-y-4">
                     <h3 className="text-xl font-medium text-foreground">Google</h3>
-                    <p>Google Play's terms and refund policies apply to subscriptions made through Google Play.</p>
+                    <p>Google Play&apos;s terms and refund policies apply to subscriptions made through Google Play.</p>
                 </div>
             </motion.section>
 

@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
-import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 import { ArrowDown } from "lucide-react";
@@ -248,10 +247,10 @@ export function SolutionSection() {
                 <div className="sticky top-24 h-[calc(100vh-6rem)] w-full overflow-hidden flex flex-col items-center justify-center">
 
                     {/* --- SHARED LAYOUT GRID --- */}
-                    <div className="absolute inset-0 z-0 flex flex-col md:flex-row p-8 lg:p-12 xl:p-24 overflow-hidden">
+                    <div className="absolute inset-0 z-0 flex flex-col md:flex-row items-center p-8 lg:p-12 xl:p-24 overflow-hidden">
 
                         {/* LEFT COLUMN: Headlines */}
-                        <div className="flex-1 relative flex flex-col justify-start items-start text-left">
+                        <div className="flex-1 relative h-[clamp(28rem,72vh,44rem)] flex flex-col justify-start items-start text-left">
                             {/* Intro Headline (Exits UP) */}
                             <motion.div
                                 style={{ y: introHeadlineY, opacity: introHeadlineOpacity, zIndex: 10, position: "relative" }}
@@ -283,7 +282,7 @@ export function SolutionSection() {
                                         Pattern <br /> Awareness
                                     </h3>
                                     <p className="text-base lg:text-sm xl:text-xl text-secondary/80 font-satoshi leading-relaxed mb-4 lg:mb-3 xl:mb-6">
-                                        You can't fight what you can't see. We visualize your rhythms so you can predict triggers before they become urges.
+                                        You can&apos;t fight what you can&apos;t see. We visualize your rhythms so you can predict triggers before they become urges.
                                     </p>
                                     <ul className="hidden lg:block space-y-3 mb-8">
                                         <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
@@ -333,7 +332,7 @@ export function SolutionSection() {
                                         </li>
                                         <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
-                                            <span><strong className="text-secondary/90">Progressive muscle relaxation</strong> — Tense and release to tell your body "I don't need to react."</span>
+                                            <span><strong className="text-secondary/90">Progressive muscle relaxation</strong> — Tense and release to tell your body &quot;I don&apos;t need to react.&quot;</span>
                                         </li>
                                         <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
@@ -362,7 +361,7 @@ export function SolutionSection() {
                                     <ul className="hidden lg:block space-y-3 mb-8">
                                         <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
-                                            <span><strong className="text-secondary/90">10-minute delay timer</strong> — Say "I'm not deciding now" and watch the urge peak and fall.</span>
+                                            <span><strong className="text-secondary/90">10-minute delay timer</strong> — Say &quot;I&apos;m not deciding now&quot; and watch the urge peak and fall.</span>
                                         </li>
                                         <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
                                             <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
@@ -383,10 +382,10 @@ export function SolutionSection() {
                         </div>
 
                         {/* VERTICAL DIVIDER (Fixed) */}
-                        <div className="hidden md:block w-px bg-secondary/30 mx-8 self-stretch z-20" />
+                        <div className="hidden md:block w-px h-[clamp(28rem,72vh,44rem)] bg-secondary/30 mx-8 self-center z-20" />
 
                         {/* RIGHT COLUMN: Subheadlines & Images */}
-                        <div className="flex-1 relative flex flex-col justify-center items-center">
+                        <div className="flex-1 relative h-[clamp(28rem,72vh,44rem)] flex flex-col justify-center items-center">
 
                             {/* Intro Subheadline (Exits DOWN) - Positioned absolutely bottom-left of right col */}
                             <motion.div
@@ -394,12 +393,12 @@ export function SolutionSection() {
                                 className="absolute bottom-16 left-0 right-0 z-10"
                             >
                                 <p className="text-xl md:text-2xl text-secondary/80 font-satoshi max-w-xl leading-relaxed">
-                                    More than a subscription - it's a complete toolkit for navigating urges, calming your nervous system, and building steady change through structured daily programs.
+                                    More than a subscription - it&apos;s a complete toolkit for navigating urges, calming your nervous system, and building steady change through structured daily programs.
                                 </p>
                             </motion.div>
 
                             {/* Shared Image Container - Fixed size, centered */}
-                            <div className="relative w-[95%] aspect-square">
+                            <div className="relative w-[95%] h-full">
 
                                 {/* Slide 1 Image (Enters RIGHT -> Fades Out) */}
                                 <motion.div

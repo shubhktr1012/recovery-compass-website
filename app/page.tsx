@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { NavbarSticky } from "@/components/navbar-sticky";
 import {
   HeroOmega,
@@ -16,10 +15,6 @@ import {
 export default function Home() {
   const scrollToPhilosophy = () => {
     document.getElementById("why-us")?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const scrollToWaitlist = () => {
-    document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (

@@ -32,10 +32,10 @@ export function PrivacyContent() {
                 <div className="h-px w-full bg-foreground/10 mb-12" />
                 <p className="italic mb-6">Please read this Privacy Policy carefully.</p>
                 <p className="mb-4">
-                    Recovery Compass ("Recovery Compass", "we", "us", or "our") is committed to protecting your privacy and carefully managing your personal data.
+                    Recovery Compass (&quot;Recovery Compass&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is committed to protecting your privacy and carefully managing your personal data.
                 </p>
                 <p>
-                    By accessing or using the Recovery Compass mobile application, website, or related services (collectively, the "Services"), you agree to this Privacy Policy. If you do not agree, please do not use the Services.
+                    By accessing or using the Recovery Compass mobile application, website, or related services (collectively, the &quot;Services&quot;), you agree to this Privacy Policy. If you do not agree, please do not use the Services.
                 </p>
             </motion.section>
 
@@ -96,7 +96,7 @@ export function PrivacyContent() {
             >
                 <h2 className="font-erode text-2xl font-semibold text-foreground">3. Personal Information We Collect</h2>
                 <div className="space-y-4">
-                    <p>"Personal Information" means any information that can identify you directly or indirectly, including:</p>
+                    <p>&quot;Personal Information&quot; means any information that can identify you directly or indirectly, including:</p>
                     <ul className="list-disc pl-6 space-y-2">
                         <li>Name</li>
                         <li>Email address</li>
@@ -342,7 +342,7 @@ export function PrivacyContent() {
                 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
             >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">14. Children's Privacy</h2>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">14. Children&apos;s Privacy</h2>
                 <div className="space-y-4">
                     <p>Recovery Compass is intended for individuals aged 18 years and above.</p>
                     <p>

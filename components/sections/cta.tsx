@@ -1,10 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Mail } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { DefaultNewsletterForm } from "@/components/newsletter-form";
 
 export function CTASection() {
@@ -50,7 +48,7 @@ export function CTASection() {
                                 <span className="font-medium text-white/90">True North?</span>
                             </h2>
                             <p className="text-lg md:text-xl text-white font-satoshi max-w-xl leading-relaxed font-normal drop-shadow-sm">
-                                We're building a science-led path to recovery that respects your biology. Join the waitlist to be first in line when we launch.
+                                We&apos;re building a science-led path to recovery that respects your biology. Join the waitlist to be first in line when we launch.
                             </p>
                         </div>
                     </motion.div>

@@ -6,13 +6,19 @@ import Image from "next/image";
 
 export function Preloader() {
     const [loading, setLoading] = useState(true);
+    const [isInstant, setIsInstant] = useState(false);
 
     useEffect(() => {
         // specific check for session storage to prevent preloader from showing on every refresh
         const hasSeenPreloader = sessionStorage.getItem("has_seen_preloader");
 
         if (hasSeenPreloader) {
-            setLoading(false);
+            // Avoid setting state synchronously inside effect body to prevent cascading renders
+            // Use setTimeout to defer it to the next tick as a simple workaround
+            setTimeout(() => {
+                setIsInstant(true);
+                setLoading(false);
+            }, 0);
             return;
         }
 
@@ -40,9 +46,9 @@ export function Preloader() {
                 <motion.div
                     key="preloader"
                     // Exit animation: Dissolve/Blur out
-                    exit={{ opacity: 0, filter: "blur(10px)" }}
-                    transition={{ duration: 0.8, ease: "easeInOut" }}
-                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-primary"
+                    exit={{ opacity: 0, filter: isInstant ? "none" : "blur(10px)" }}
+                    transition={{ duration: isInstant ? 0 : 0.8, ease: "easeInOut" }}
+                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-primary [.skip-preloader_&]:!hidden"
                 >
                     <div className="relative flex items-center justify-center">
                         {/* Logo Icon */}

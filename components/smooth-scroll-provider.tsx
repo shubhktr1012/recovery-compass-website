@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import Lenis from "lenis";
 
 const LenisContext = createContext<Lenis | null>(null);
@@ -21,7 +21,9 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
             smoothWheel: true,
         });
 
-        setLenis(instance);
+        // Avoid setting state synchronously inside effect body if possible
+        // but here Lenis instance is created asynchronously in useEffect
+        setTimeout(() => setLenis(instance), 0);
 
         // RAF loop for Lenis
         let rafId: number;

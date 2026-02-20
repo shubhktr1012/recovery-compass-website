@@ -10,7 +10,7 @@ export function FooterSection() {
                 {/* Soft CTA */}
                 <div className="text-center space-y-8 mb-20">
                     <p className="text-2xl md:text-3xl lg:text-4xl font-erode font-medium tracking-tighter leading-[1.10] text-white/90">
-                        You don't have to quit today.<br />
+                        You don&apos;t have to quit today.<br />
                         Just join the list.
                     </p>
 

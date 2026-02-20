@@ -92,7 +92,7 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                             <Link
                                 key={link.label}
                                 href={link.href}
-                                onClick={(e) => handleNavClick(e as any, link.href)}
+                                onClick={(e) => handleNavClick(e, link.href)}
                                 className="text-sm font-medium text-[oklch(0.2475_0.0661_146.79)] hover:text-[oklch(0.2475_0.0661_146.79)]/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2 rounded-sm"
                             >
                                 {link.label}
@@ -157,7 +157,7 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                                         href={link.href}
                                         className="text-base font-medium text-[oklch(0.2475_0.0661_146.79)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2 rounded-sm"
                                         onClick={(e) => {
-                                            handleNavClick(e as any, link.href);
+                                            handleNavClick(e, link.href);
                                             setIsOpen(false);
                                         }}
                                     >

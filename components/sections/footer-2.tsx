@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 import { MinimalNewsletterForm } from "@/components/newsletter-form";
@@ -38,7 +37,7 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                         <div className="space-y-8">
                             {/* Headline */}
                             <h3 className="text-2xl md:text-3xl font-medium leading-tight text-white/90">
-                                You don't have to quit today.<br />
+                                You don&apos;t have to quit today.<br />
                                 Just join the list.
                             </h3>
 

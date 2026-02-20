@@ -1,4 +1,5 @@
 
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 interface HeroSectionProps {
@@ -56,10 +57,12 @@ export function HeroVariantTrust({ onPrimaryClick, onSecondaryClick }: HeroSecti
                                     "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=64&h=64",
                                     "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=64&h=64"
                                 ].map((src, i) => (
-                                    <img
+                                    <Image
                                         key={i}
                                         src={src}
                                         alt="Community member"
+                                        width={40}
+                                        height={40}
                                         className="relative w-8 h-8 lg:w-10 lg:h-10 rounded-full border-2 border-[oklch(0.2475_0.0661_146.79)] object-cover transition-transform duration-300 hover:-translate-y-1"
                                     />
                                 ))}

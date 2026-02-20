@@ -98,7 +98,7 @@ function ProgramCard({ program, index }: { program: typeof programs[0]; index: n
 
     useEffect(() => {
         if (isInView) {
-            setHasAppeared(true);
+            setTimeout(() => setHasAppeared(true), 0);
         }
     }, [isInView]);
 

@@ -5,9 +5,9 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Terminal, Activity, CheckCircle2, AlertCircle } from "lucide-react";
+import { Terminal } from "lucide-react";
 
 export function PaletteDemo() {
     return (
@@ -15,9 +15,9 @@ export function PaletteDemo() {
             <div className="max-w-5xl mx-auto px-6 space-y-12">
                 <div className="space-y-4 text-center">
                     <Badge variant="outline" className="uppercase tracking-widest">System Visualization</Badge>
-                    <h2 className="text-4xl font-serif text-primary">The "Extended" Minimal System</h2>
+                    <h2 className="text-4xl font-serif text-primary">The &quot;Extended&quot; Minimal System</h2>
                     <p className="text-muted-foreground max-w-2xl mx-auto">
-                        This component demonstrates how your 3-color triad (Canvas, Moss, Sage) is "extended"
+                        This component demonstrates how your 3-color triad (Canvas, Moss, Sage) is &quot;extended&quot;
                         to cover all semantic roles without introducing new hues.
                     </p>
                 </div>
@@ -117,7 +117,7 @@ export function PaletteDemo() {
                             <Badge variant="secondary" className="bg-white/10 text-white hover:bg-white/20 border-none">Deep Moss BG</Badge>
                         </div>
                         <p className="text-white/60 max-w-xl">
-                            In dark mode, the "Deep Moss" becomes the background, and "Canvas White" becomes the text/primary.
+                            In dark mode, the &quot;Deep Moss&quot; becomes the background, and &quot;Canvas White&quot; becomes the text/primary.
                             The system inverts gracefully without needing new colors.
                         </p>
                         <div className="flex gap-4">

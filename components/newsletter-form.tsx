@@ -112,7 +112,7 @@ function StatusMessages({ status }: { status: FormStatus }) {
                     >
                         <div className="flex items-center justify-center gap-1.5 text-green-400 text-sm font-medium">
                             <CheckCircle2 className="w-4 h-4" aria-hidden="true" />
-                            <span>You're on the list! We'll be in touch.</span>
+                            <span>You&apos;re on the list! We&apos;ll be in touch.</span>
                         </div>
                     </motion.div>
                 )}
@@ -295,4 +295,3 @@ export function MinimalNewsletterForm({ alignment = "left", className }: Minimal
         </div>
     );
 }
-

@@ -36,7 +36,7 @@ export function StructurePath() {
 
     // Calculate rotation: 6 items = 60deg apart
     // Day 1 at Top (0deg from vertical ?? default 0 is usually 3 o'clock in math/svg)
-    // Let's assume 0 is UP.
+    // Let&apos;s assume 0 is UP.
     // Index 0 (Day 1) -> 0 deg
     // Index 1 (Day 2) -> 60 deg
     const rotation = (activeDay - 1) * 60;
@@ -55,7 +55,7 @@ export function StructurePath() {
                 {days.map((d, i) => {
                     const angle = i * 60;
                     const isActive = activeDay === d.day;
-                    const isPast = activeDay > d.day;
+
 
                     // Position calculations (Radius 120px)
                     // 0 degrees is TOP.

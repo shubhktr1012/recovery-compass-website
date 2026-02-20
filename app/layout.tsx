@@ -145,6 +145,17 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if (sessionStorage.getItem('has_seen_preloader')) {
+                  document.documentElement.classList.add('skip-preloader');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
       </head>
       <body
         className={`${satoshi.variable} ${erode.variable} font-sans antialiased`}
