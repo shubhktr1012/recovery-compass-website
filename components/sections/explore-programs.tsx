@@ -11,7 +11,7 @@ const programs = [
     {
         id: "6-day-reset",
         tag: "Starting Point",
-        title: "The 6-Day Reset",
+        title: "The 6-Day Control",
         description: "A focused spring to reclaim your baseline and break autopilot habit loops.",
         price: "₹599",
         highlights: [
@@ -26,7 +26,7 @@ const programs = [
     {
         id: "90-day-foundation",
         tag: "Full Journey",
-        title: "The 90-Day Foundation",
+        title: "The 90-Day Quit",
         description: "A complete roadmap to cement your identity and live without reference to smoking.",
         price: "₹6,549",
         highlights: [

@@ -106,7 +106,7 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                             <h4 className="text-sm font-medium text-white/90">Company</h4>
                             <ul className="space-y-4 text-sm text-white/60">
                                 <li>
-                                    <a href="#" className="hover:text-white transition-colors">Contact Us</a>
+                                    <Link href="/support" className="hover:text-white transition-colors cursor-pointer">Contact Us</Link>
                                 </li>
                             </ul>
                         </div>

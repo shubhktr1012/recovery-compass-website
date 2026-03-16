@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Plus } from "lucide-react";
-import Link from "next/link";
 
 const faqs = [
     {
@@ -88,12 +87,12 @@ export function FAQSection() {
                     </div>
 
                     {/* CTA Button */}
-                    <Link
-                        href="#"
+                    <a
+                        href="mailto:info@recoverycompass.co"
                         className="inline-flex items-center justify-center bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 rounded-full h-12 px-8 text-base font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2 transition-colors"
                     >
                         Reach out
-                    </Link>
+                    </a>
                 </div>
 
                 {/* Right Column: Accordion Questions */}
