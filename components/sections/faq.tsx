@@ -11,50 +11,50 @@ import { Plus } from "lucide-react";
 
 const faqs = [
     {
-        question: "What is a craving, really?",
+        question: "What if I’m not sure where to begin?",
         answer: (
             <>
-                Think of a craving as a <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">temporary signal</strong>, not a command. It’s just your body noticing a pattern or stressor. It feels loud, but like a wave, it will rise and fall on its own if you don’t fight it.
+                Recovery Compass is designed to <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">meet you where you are</strong>. Some programmes offer a short reset when you need immediate direction, while others support longer-term change around habits, sleep, energy, and daily balance. You don&apos;t need to have everything figured out before you start.
             </>
         ),
     },
     {
-        question: "Does experiencing urges indicate a regression in progress?",
+        question: "Will this feel like another app that pressures me to stay perfect?",
         answer: (
             <>
-                Not at all. Urges are a <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">natural component of neuroplastic change</strong>. Awareness of a craving—rather than automatic submission to it—is the primary indicator of recovery. It signifies that the gap between stimulus and response is widening.
+                No. Recovery Compass is built around <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">steady awareness, small daily actions, and compassionate progress</strong>. There&apos;s no streak pressure, no guilt-based tracking, and no expectation that change has to happen in a straight line.
             </>
         ),
     },
     {
-        question: "Why is 'white-knuckling' often ineffective?",
+        question: "What does daily support actually look like?",
         answer: (
             <>
-                Willpower is a finite resource. Fighting biology with force creates internal tension, often making the urge louder. <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">Regulation</strong> (calming the body) is far more effective than resistance because it addresses the underlying nervous system state rather than just the symptom.
+                It looks like <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">simple guided steps, calm routines, supportive check-ins, and practical tools for real-life moments</strong>. The goal is to help you pause, reset, and move forward without making the process feel heavy or overwhelming.
             </>
         ),
     },
     {
-        question: "What is the difference between distraction and grounding?",
+        question: "What if I have a difficult day or fall back into an old pattern?",
         answer: (
             <>
-                Distraction is an attempt to escape reality, which can reinforce the fear of the craving. <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">Grounding</strong> anchors you in the present reality. By feeling your feet on the floor or slowing your breath, you signal safety to your body, allowing the urge wave to pass naturally.
+                A difficult day doesn&apos;t erase progress. It usually points to a trigger, a stress point, or an unmet need. Recovery Compass is built to help you <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">notice what happened, reset without shame, and keep going with more awareness</strong>.
             </>
         ),
     },
     {
-        question: "How should I navigate a momentary lapse?",
+        question: "Do I need a lot of time every day for this to work?",
         answer: (
             <>
-                A slip is data, not a definition. It often reveals a specific trigger or unmet need. The most effective response is <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">compassionate self-talk</strong>. Re-build your <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">self-efficacy</strong> by returning to your baseline practices immediately.
+                No. The programmes are built around <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">manageable daily practices</strong>, not long routines or intense effort. The focus is on consistency, clarity, and small steps that feel realistic enough to keep returning to.
             </>
         ),
     },
     {
-        question: "Will these neural patterns eventually subside?",
+        question: "Is Recovery Compass a medical treatment?",
         answer: (
             <>
-                Yes. Neuroplasticity works in both directions. As you consistently separate the trigger from the reward (by noticing the urge but not acting on it), those synaptic connections <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">gradually weaken</strong>. The noise fades into the background as new pathways of regulation are built.
+                No. Recovery Compass provides <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">educational guidance and wellness practices</strong> designed to support healthier habits and daily balance. It is not intended to diagnose, treat, or replace professional medical advice.
             </>
         ),
     },

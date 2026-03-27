@@ -37,8 +37,8 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                         <div className="space-y-8">
                             {/* Headline */}
                             <h3 className="text-2xl md:text-3xl font-medium leading-tight text-white/90">
-                                You don&apos;t have to quit today.<br />
-                                Just join the list.
+                                Find your direction again.<br />
+                                Get early access.
                             </h3>
 
                             {/* Input Field Group */}
@@ -55,7 +55,7 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                                 >
                                     Privacy Policy
                                 </Link>{" "}
-                                and provide consent to receive updates from our company.
+                                and provide consent to receive launch updates from Recovery Compass.
                             </p>
                         </div>
                     </div>
@@ -111,6 +111,13 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                             </ul>
                         </div>
                     </div>
+                </div>
+
+                <div className="mb-10 max-w-3xl">
+                    <p className="text-[11px] uppercase tracking-[0.25em] text-white/35 mb-3">Disclaimer</p>
+                    <p className="text-sm text-white/55 leading-relaxed max-w-2xl">
+                        Recovery Compass provides educational guidance and wellness practices designed to support healthier habits and daily balance. It is not intended to diagnose, treat, or replace professional medical advice.
+                    </p>
                 </div>
 
                 {/* Divider */}

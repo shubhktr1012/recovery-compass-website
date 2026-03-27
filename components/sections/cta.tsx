@@ -13,7 +13,7 @@ export function CTASection() {
                 <div className="absolute inset-0 z-0">
                     <Image
                         src="/cta-bg.png"
-                        alt="Waitlist Background"
+                        alt="Early access background"
                         fill
                         className="object-cover pointer-events-none select-none"
                         priority
@@ -38,17 +38,17 @@ export function CTASection() {
                                 variant="secondary"
                                 className="rounded-full px-5 py-2 text-xs font-semibold tracking-widest border-none bg-white text-[oklch(0.2475_0.0661_146.79)]"
                             >
-                                WAITLIST
+                                EARLY ACCESS
                             </Badge>
                         </div>
 
                         <div className="space-y-6">
                             <h2 className="text-4xl md:text-5xl lg:text-6xl font-erode font-medium tracking-tighter text-white leading-[1.10] drop-shadow-md">
-                                Ready to find your <br />
-                                <span className="font-medium text-white/90">True North?</span>
+                                Small steps. <br />
+                                <span className="font-medium text-white/90">Real change.</span>
                             </h2>
                             <p className="text-lg md:text-xl text-white font-satoshi max-w-xl leading-relaxed font-normal drop-shadow-sm">
-                                We&apos;re building a science-led path to recovery that respects your biology. Join the waitlist to be first in line when we launch.
+                                Recovery Compass meets you where you are and guides you forward one steady step at a time. Join the early access list to be first to know when the app launches.
                             </p>
                         </div>
                     </motion.div>

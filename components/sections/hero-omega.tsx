@@ -62,7 +62,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                         {/* Avatar Trust Bar - Centered */}
                         <motion.div variants={itemVariants} className="flex flex-row items-center justify-center gap-3">
                             <p className="text-sm md:text-base font-medium text-[oklch(0.2475_0.0661_146.79)]">
-                                Join 41+ beyond the urge
+                                Guided support for habits, sleep, and daily balance
                             </p>
                             <div className="flex items-center">
                                 {[
@@ -95,17 +95,16 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
                                 </span>
                                 <span className="text-[10px] md:text-xs font-bold text-[oklch(0.2475_0.0661_146.79)]/80 tracking-wide uppercase">
-                                    Currently In Development <span className="hidden md:inline">— Launching Mid-March</span>
+                                    Early Access <span className="hidden md:inline">— App launching soon</span>
                                 </span>
                             </div>
 
                             <h1 className="text-4xl md:text-5xl lg:text-7xl font-erode font-medium tracking-tighter leading-[1.10] text-black">
-                                A smarter way to <span className="whitespace-nowrap"><span className="italic text-[oklch(0.2475_0.0661_146.79)]">navigate</span> quitting.</span>
+                                Steady progress, <span className="whitespace-nowrap"><span className="italic text-[oklch(0.2475_0.0661_146.79)]">without</span> pressure.</span>
                             </h1>
 
-                            {/* Subheadline - Centered */}
                             <p className="text-base md:text-xl text-[oklch(0.2475_0.0661_146.79)]/70 leading-snug font-medium max-w-2xl mx-auto">
-                                The intelligent app designed to help you calm your nervous system, navigate cravings, and learn to respond instead of react.
+                                Find your direction again. Recovery Compass helps you gently reset habits, restore balance, and move toward a healthier daily rhythm.
                             </p>
                         </div>
 
@@ -119,7 +118,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                                 )}
                                 onClick={scrollToWaitlist}
                             >
-                                Join the Waitlist
+                                Get Early Access
                             </Button>
                             <Button
                                 className={cn(

@@ -15,29 +15,29 @@ import { StructurePath } from "./structure-path";
 const features = [
     {
         id: "neuroplasticity",
-        title: "Better than willpower.",
-        description: "Willpower runs out. We use neuroplasticity science to help you rewire how your brain reacts to nicotine triggers naturally.",
+        title: "Awareness changes patterns.",
+        description: "Recovery Compass helps you notice the habits, triggers, and daily rhythms behind automatic behaviour so change can begin with clarity.",
         Visual: NeuralPattern,
         duration: 14000,
     },
     {
         id: "regulation",
-        title: "Regulate, don't resist.",
-        description: "You can't fight a nicotine craving. We give you tools to calm your nervous system so the urge loses its power.",
+        title: "Regulate, then respond.",
+        description: "By calming the nervous system first, the app makes it easier to navigate stress, urges, poor sleep, and difficult moments with more balance.",
         Visual: WaveRegulation,
         duration: 8000, // Matched to requested 8s internal cycle
     },
     {
         id: "data",
         title: "Progress, not perfection.",
-        description: "Build emotional resilience through non-judgmental tracking. Smoking isn't a failure—it's data to learn from.",
+        description: "Gentle check-ins and reflection help you learn from patterns without guilt, streak pressure, or all-or-nothing thinking.",
         Visual: DataInsight,
         duration: 12000,
     },
     {
         id: "structure",
-        title: "Calm, daily clarity.",
-        description: "Routine restructuring and behavioral flexibility. A guided path from breaking the loop to building a new identity.",
+        title: "Small steps build trust.",
+        description: "Structured daily guidance supports healthier routines over time, helping progress feel steady, practical, and sustainable.",
         Visual: StructurePath,
         duration: 14000,
     }
@@ -72,11 +72,11 @@ export function PhilosophySection() {
                             variant="secondary"
                             className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide border-none bg-[oklch(0.9484_0.0251_149.08)] text-[oklch(0.2475_0.0661_146.79)] hover:bg-[oklch(0.9484_0.0251_149.08)]"
                         >
-                            PHILOSOPHY
+                            OUR APPROACH
                         </Badge>
                         <h2 className="text-4xl md:text-5xl font-erode font-medium tracking-tighter leading-[1.1] text-black">
-                            Why choose <br />
-                            <span className="italic text-[oklch(0.2475_0.0661_146.79)]">Recovery Compass?</span>
+                            Why Recovery Compass <br />
+                            <span className="italic text-[oklch(0.2475_0.0661_146.79)]">feels different.</span>
                         </h2>
                     </motion.div>
 

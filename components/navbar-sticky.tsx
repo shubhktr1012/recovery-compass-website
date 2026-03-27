@@ -80,7 +80,7 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                         Recovery Compass
                     </span>
                     <span className="ml-2 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest rounded-full border border-[oklch(0.2475_0.0661_146.79)]/30 text-[oklch(0.2475_0.0661_146.79)]/60">
-                        Preview
+                        Launching Soon
                     </span>
                 </Link>
 
@@ -109,7 +109,7 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                             "border-none shadow-none h-9"
                         )}
                     >
-                        Join Waitlist
+                        Get Early Access
                     </Button>
 
                     {/* Mobile Menu Toggle (2-Line Animated Icon) */}
@@ -182,7 +182,7 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                                         "h-auto"
                                     )}
                                 >
-                                    Join Waitlist
+                                    Get Early Access
                                 </Button>
                             </motion.div>
                         </nav>
