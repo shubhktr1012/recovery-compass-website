@@ -6,88 +6,133 @@ import Image from "next/image";
 
 import { ArrowDown } from "lucide-react";
 
-// Feature data for cards
-const features = [
+type Feature = {
+    index: string;
+    label: string;
+    headline: string;
+    desktopLines: [string, string?];
+    description: string;
+    bullets: {
+        title: string;
+        desc: string;
+    }[];
+    imageSrc: string;
+    imageAlt: string;
+};
+
+const sectionIntro = {
+    badge: "How It Works",
+    title: "Recovery Compass keeps the process simple.",
+    mobileBody: "Choose the support that fits your goal, follow calm daily guidance, and build a healthier rhythm without pressure.",
+    desktopLead: "From check-ins to guided routines, every part of the app is designed to help you understand yourself more clearly, respond more calmly, and stay consistent for longer.",
+    scrollCue: "Keep scrolling to explore",
+};
+
+const features: Feature[] = [
     {
         index: "01",
-        label: "Insight",
-        headline: "Pattern Awareness",
-        description: "You can't fight what you can't see. We visualize your rhythms so you can predict triggers before they become urges.",
+        label: "Awareness",
+        headline: "See What Shapes Your Day",
+        desktopLines: ["See What", "Shapes Your Day"],
+        description: "Brief check-ins surface the routines, triggers, and energy shifts influencing your day, so support feels timely instead of generic.",
         bullets: [
-            { title: "Daily mood, stress & urge check-ins", desc: "Quick, optional logs that reveal your patterns over time." },
-            { title: "Trigger mapping", desc: "See when and why urges appear, not just how many." },
-            { title: "Weekly insights", desc: "Progress without judgment or comparison." },
-            { title: "Cognitive Defusion", desc: "Practice seeing thoughts as passing events, not facts." },
+            { title: "Daily check-ins", desc: "Quick reflections on sleep, stress, energy, and habits." },
+            { title: "Trigger mapping", desc: "Understand what tends to pull you off course." },
+            { title: "Trend snapshots", desc: "Notice recurring patterns without obsessing over data." },
+            { title: "Gentle reflection", desc: "Observe progress with clarity instead of judgment." },
         ],
         imageSrc: "/pointer-1.png",
+        imageAlt: "Daily awareness and check-in interface",
     },
     {
         index: "02",
         label: "Regulation",
-        headline: "Audio Coaching",
-        description: "Press play on panic. Guided somatic sessions that calm your nervous system in minutes—no meditation experience required.",
+        headline: "Return to Calm",
+        desktopLines: ["Return", "to Calm"],
+        description: "Guided audio, breathwork, and grounding routines help settle the body when stress is high, sleep is off, or the day feels noisy.",
         bullets: [
-            { title: "Self-Soothing Protocols", desc: "Directly calm your nervous system when logic fails." },
-            { title: "5-4-3-2-1 grounding", desc: "Pulls you out of habit memory into the present moment." },
-            { title: "Progressive muscle relaxation", desc: "Tense and release to tell your body \"I don't need to react.\"" },
-            { title: "Distress Tolerance", desc: "Tools designed for high-intensity moments, not just quiet ones." },
+            { title: "Audio sessions", desc: "Short guided support for tense or unsteady moments." },
+            { title: "Breathing patterns", desc: "Regulate first, then decide what comes next." },
+            { title: "Grounding routines", desc: "Shift attention from spiraling thoughts back to the present." },
+            { title: "Restorative pauses", desc: "Support that fits real life, not perfect conditions." },
         ],
         imageSrc: "/pointer-2.png",
+        imageAlt: "Guided regulation and grounding audio tools",
     },
     {
         index: "03",
-        label: "Community",
-        headline: "The Panic Button",
-        description: "Real-time support for the moments when the pull feels strongest. One tap. Immediate calm.",
+        label: "Momentum",
+        headline: "Build a Better Rhythm",
+        desktopLines: ["Build a", "Better Rhythm"],
+        description: "Each programme turns change into a manageable daily rhythm, so healthier choices feel repeatable instead of overwhelming.",
         bullets: [
-            { title: "Acceptance-Based Coping", desc: "Sit with the urge for 10 minutes until it naturally fades." },
-            { title: "Structured 'What Now' protocols", desc: "Replace the habit loop with new, healthy responses." },
-            { title: "No willpower needed", desc: "Most urges fade within 7-10 minutes. Waiting works." },
-            { title: "Works for smoking and alcohol urges", desc: "Same nervous system, same solution." },
+            { title: "Daily actions", desc: "Simple steps that fit around real schedules." },
+            { title: "Routine anchors", desc: "Gentle cues for mornings, evenings, and difficult moments." },
+            { title: "Flexible progress", desc: "One missed day does not cancel momentum." },
+            { title: "Confidence through repetition", desc: "Self-trust grows by returning, not by being perfect." },
         ],
         imageSrc: "/pointer-3(1).png",
+        imageAlt: "Structured daily support and routines",
     },
 ];
 
-// Mobile Feature Card Component
-function FeatureCard({ feature }: { feature: typeof features[0] }) {
+function FeatureBullets({
+    bullets,
+    className,
+    itemClassName,
+    strongClassName,
+}: {
+    bullets: Feature["bullets"];
+    className: string;
+    itemClassName: string;
+    strongClassName: string;
+}) {
+    return (
+        <ul className={className}>
+            {bullets.map((bullet) => (
+                <li key={bullet.title} className={itemClassName}>
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-current opacity-60" />
+                    <span>
+                        <strong className={strongClassName}>{bullet.title}</strong> — {bullet.desc}
+                    </span>
+                </li>
+            ))}
+        </ul>
+    );
+}
+
+function FeatureCard({ feature }: { feature: Feature }) {
     const [isExpanded, setIsExpanded] = useState(false);
 
     return (
-        <div className="rounded-3xl bg-secondary overflow-hidden">
-            {/* Image - Top Half */}
+        <div className="overflow-hidden rounded-3xl bg-secondary">
             <div className="p-3 pb-0">
-                <div className="relative aspect-square rounded-2xl overflow-hidden bg-secondary/50">
+                <div className="relative aspect-square overflow-hidden rounded-2xl bg-secondary/50">
                     <Image
                         src={feature.imageSrc}
-                        alt={feature.headline}
+                        alt={feature.imageAlt}
                         fill
                         className="object-cover"
                     />
                 </div>
             </div>
 
-            {/* Content - Bottom Half */}
             <div className="p-6 pt-5">
-                {/* Badge */}
-                <span className="font-geist-mono text-primary/60 text-xs tracking-widest uppercase mb-3 block">
+                <span className="mb-3 block text-xs uppercase tracking-widest text-primary/60 font-geist-mono">
                     {feature.index} — {feature.label}
                 </span>
 
-                {/* Headline */}
-                <h3 className="text-2xl md:text-3xl font-erode font-medium tracking-tighter text-primary mb-3 leading-[1.10]">
+                <h3 className="mb-3 text-2xl font-erode font-medium leading-[1.10] tracking-tighter text-primary md:text-3xl">
                     {feature.headline}
                 </h3>
 
-                {/* Description */}
-                <p className="text-sm md:text-base text-primary/70 font-satoshi leading-relaxed mb-4">
+                <p className="mb-4 text-sm font-satoshi leading-relaxed text-primary/70 md:text-base">
                     {feature.description}
                 </p>
 
-                {/* View More Button */}
                 <button
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="flex items-center gap-2 text-sm font-satoshi text-primary/80 hover:text-primary transition-colors"
+                    className="flex items-center gap-2 text-sm font-satoshi text-primary/80 transition-colors hover:text-primary"
                 >
                     <span>{isExpanded ? "View Less" : "View More"}</span>
                     <motion.span
@@ -98,25 +143,22 @@ function FeatureCard({ feature }: { feature: typeof features[0] }) {
                     </motion.span>
                 </button>
 
-                {/* Expandable Bullet Points */}
                 <AnimatePresence>
                     {isExpanded && (
-                        <motion.ul
+                        <motion.div
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: "auto", opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
                             transition={{ duration: 0.3 }}
-                            className="mt-4 space-y-3 overflow-hidden"
+                            className="overflow-hidden"
                         >
-                            {feature.bullets.map((bullet, idx) => (
-                                <li key={idx} className="flex items-start gap-3 text-sm text-primary/70 font-satoshi">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-primary/40 mt-1.5 shrink-0" />
-                                    <span>
-                                        <strong className="text-primary/90">{bullet.title}</strong> — {bullet.desc}
-                                    </span>
-                                </li>
-                            ))}
-                        </motion.ul>
+                            <FeatureBullets
+                                bullets={feature.bullets}
+                                className="mt-4 space-y-3"
+                                itemClassName="flex items-start gap-3 text-sm font-satoshi text-primary/70"
+                                strongClassName="text-primary/90"
+                            />
+                        </motion.div>
                     )}
                 </AnimatePresence>
             </div>
@@ -128,45 +170,26 @@ export function SolutionSection() {
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: containerRef });
 
-    // Smooth scroll progress for softer landings
     const smoothProgress = useSpring(scrollYProgress, {
         stiffness: 100,
         damping: 30,
-        restDelta: 0.001
+        restDelta: 0.001,
     });
 
-    // -- Animation Sequence (SEQUENTIAL - No Overlap) --
-
-    // PHASE 1: Intro -> Slide 1 (0% - 40%)
-    // -------------------------------------
-    // Step 1: Subheadline Exit (0% - 10%)
     const introSubheadY = useTransform(smoothProgress, [0, 0.10], ["0vh", "50vh"]);
     const introSubheadOpacity = useTransform(smoothProgress, [0, 0.08], [1, 0]);
 
-    // Step 2: Slide 1 Image Entry (10% - 20%)
     const slide1ImageX = useTransform(smoothProgress, [0.10, 0.20], ["120%", "0%"]);
-
-    // Step 3: Intro Headline Exit (20% - 30%)
     const introHeadlineY = useTransform(smoothProgress, [0.20, 0.30], ["0vh", "-50vh"]);
     const introHeadlineOpacity = useTransform(smoothProgress, [0.20, 0.28], [1, 0]);
-
-    // Step 4: Slide 1 Headline Entry (30% - 40%)
     const slide1HeadlineEntryY = useTransform(smoothProgress, [0.30, 0.40], ["50vh", "0vh"]);
     const slide1HeadlineEntryOpacity = useTransform(smoothProgress, [0.30, 0.38], [0, 1]);
 
-    // PHASE 2: Slide 1 -> Slide 2 (40% - 65%)
-    // ---------------------------------------
-    // Step 5: Slide 1 Image Exit (40% - 47%)
     const slide1ImageOpacity = useTransform(smoothProgress, [0.40, 0.47], [1, 0]);
-
-    // Step 6: Slide 2 Image Entry (47% - 54%)
     const slide2ImageX = useTransform(smoothProgress, [0.47, 0.54], ["120%", "0%"]);
-
-    // Step 7: Slide 1 Headline Exit (54% - 61%)
     const slide1HeadlineExitY = useTransform(smoothProgress, [0.54, 0.61], ["0vh", "-50vh"]);
     const slide1HeadlineExitOpacity = useTransform(smoothProgress, [0.54, 0.59], [1, 0]);
 
-    // Combined Slide 1 Headline transforms
     const slide1HeadlineCombinedY = useTransform(smoothProgress, (val) => {
         if (val < 0.54) return slide1HeadlineEntryY.get();
         return slide1HeadlineExitY.get();
@@ -179,23 +202,14 @@ export function SolutionSection() {
         return 0;
     });
 
-    // Step 8: Slide 2 Headline Entry (61% - 68%)
     const slide2HeadlineEntryY = useTransform(smoothProgress, [0.61, 0.68], ["50vh", "0vh"]);
     const slide2HeadlineEntryOpacity = useTransform(smoothProgress, [0.61, 0.66], [0, 1]);
 
-    // PHASE 3: Slide 2 -> Slide 3 (68% - 93%)
-    // ---------------------------------------
-    // Step 9: Slide 2 Image Exit (68% - 75%)
     const slide2ImageOpacity = useTransform(smoothProgress, [0.68, 0.75], [1, 0]);
-
-    // Step 10: Slide 3 Image Entry (75% - 82%)
     const slide3ImageX = useTransform(smoothProgress, [0.75, 0.82], ["120%", "0%"]);
-
-    // Step 11: Slide 2 Headline Exit (82% - 89%)
     const slide2HeadlineExitY = useTransform(smoothProgress, [0.82, 0.89], ["0vh", "-50vh"]);
     const slide2HeadlineExitOpacity = useTransform(smoothProgress, [0.82, 0.87], [1, 0]);
 
-    // Combined Slide 2 Headline transforms
     const slide2HeadlineCombinedY = useTransform(smoothProgress, (val) => {
         if (val < 0.82) return slide2HeadlineEntryY.get();
         return slide2HeadlineExitY.get();
@@ -208,241 +222,127 @@ export function SolutionSection() {
         return 0;
     });
 
-    // Step 12: Slide 3 Headline Entry (89% - 96%)
     const slide3HeadlineY = useTransform(smoothProgress, [0.89, 0.96], ["50vh", "0vh"]);
     const slide3HeadlineOpacity = useTransform(smoothProgress, [0.89, 0.96], [0, 1]);
 
+    const headlineAnimations = [
+        { y: slide1HeadlineCombinedY, opacity: slide1HeadlineOpacity },
+        { y: slide2HeadlineCombinedY, opacity: slide2HeadlineOpacity },
+        { y: slide3HeadlineY, opacity: slide3HeadlineOpacity },
+    ];
+
+    const imageAnimations = [
+        { x: slide1ImageX, opacity: slide1ImageOpacity },
+        { x: slide2ImageX, opacity: slide2ImageOpacity },
+        { x: slide3ImageX },
+    ];
+
+    const imageLayers = ["z-20", "z-30", "z-40"];
 
     return (
         <>
-            {/* ============ MOBILE/TABLET VIEW (below lg) ============ */}
-            <section className="lg:hidden bg-primary px-4 py-16 md:px-8 md:py-24">
-                {/* Mobile Intro */}
-                <div className="max-w-2xl mx-auto text-center mb-12">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-secondary/30 bg-secondary/5 text-secondary text-xs uppercase tracking-widest font-satoshi mb-6">
-                        <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-                        The Solution
+            <section className="bg-primary px-4 py-16 md:px-8 md:py-24 lg:hidden">
+                <div className="mx-auto mb-12 max-w-2xl text-center">
+                    <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-secondary/30 bg-secondary/5 px-3 py-1 text-xs uppercase tracking-widest text-secondary font-satoshi">
+                        <span className="h-1.5 w-1.5 rounded-full bg-secondary animate-pulse" />
+                        {sectionIntro.badge}
                     </div>
-                    <h2 className="text-4xl md:text-5xl font-erode font-medium tracking-tighter text-secondary mb-4 leading-[1.10]">
-                        The Recovery Toolkit
+                    <h2 className="mb-4 text-4xl font-erode font-medium leading-[1.10] tracking-tighter text-secondary md:text-5xl">
+                        {sectionIntro.title}
                     </h2>
-                    <p className="text-base md:text-lg text-secondary/70 font-satoshi">
-                        A calm, structured approach to navigating urges and building steady change.
+                    <p className="text-base font-satoshi text-secondary/70 md:text-lg">
+                        {sectionIntro.mobileBody}
                     </p>
                 </div>
 
-                {/* Mobile Feature Cards */}
-                <div className="max-w-md mx-auto space-y-6">
+                <div className="mx-auto max-w-md space-y-6">
                     {features.map((feature) => (
                         <FeatureCard key={feature.index} feature={feature} />
                     ))}
                 </div>
             </section>
 
-            {/* ============ DESKTOP VIEW (lg and above) ============ */}
-            {/* Height increased to 700vh to accommodate 3 slides + intro */}
-            <div ref={containerRef} className="hidden lg:block relative h-[700vh] bg-primary">
-
-                {/* Sticky Viewport */}
-                <div className="sticky top-24 h-[calc(100vh-6rem)] w-full overflow-hidden flex flex-col items-center justify-center">
-
-                    {/* --- SHARED LAYOUT GRID --- */}
-                    <div className="absolute inset-0 z-0 flex flex-col md:flex-row items-center p-8 lg:p-12 xl:p-24 overflow-hidden">
-
-                        {/* LEFT COLUMN: Headlines */}
-                        <div className="flex-1 relative h-[clamp(28rem,72vh,44rem)] flex flex-col justify-start items-start text-left">
-                            {/* Intro Headline (Exits UP) */}
+            <div ref={containerRef} className="relative hidden h-[700vh] bg-primary lg:block">
+                <div className="sticky top-24 flex h-[calc(100vh-6rem)] w-full items-center justify-center overflow-hidden">
+                    <div className="absolute inset-0 z-0 flex flex-col items-center overflow-hidden p-8 md:flex-row lg:p-12 xl:p-24">
+                        <div className="relative flex h-[clamp(28rem,72vh,44rem)] flex-1 flex-col items-start justify-start text-left">
                             <motion.div
                                 style={{ y: introHeadlineY, opacity: introHeadlineOpacity, zIndex: 10, position: "relative" }}
                             >
-                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-secondary/30 bg-secondary/5 text-secondary text-xs uppercase tracking-widest font-satoshi mb-6">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-                                    The Solution
+                                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-secondary/30 bg-secondary/5 px-3 py-1 text-xs uppercase tracking-widest text-secondary font-satoshi">
+                                    <span className="h-1.5 w-1.5 rounded-full bg-secondary animate-pulse" />
+                                    {sectionIntro.badge}
                                 </div>
-                                <h2 className="text-5xl md:text-5xl lg:text-6xl font-erode font-medium tracking-tighter text-secondary mb-8 max-w-4xl leading-[1.10]">
-                                    The Recovery <br /> Toolkit
+                                <h2 className="mb-8 max-w-4xl text-5xl font-erode font-medium leading-[1.10] tracking-tighter text-secondary md:text-5xl lg:text-6xl">
+                                    {sectionIntro.title}
                                 </h2>
-                                {/* Scroll Cue */}
                                 <div className="flex items-center gap-2 text-secondary/60">
-                                    <span className="text-xs uppercase tracking-widest font-geist-mono">Keep scrolling down to explore</span>
-                                    <ArrowDown className="w-3 h-3 animate-bounce" />
+                                    <span className="text-xs uppercase tracking-widest font-geist-mono">
+                                        {sectionIntro.scrollCue}
+                                    </span>
+                                    <ArrowDown className="h-3 w-3 animate-bounce" />
                                 </div>
                             </motion.div>
 
-                            {/* Slide 1 Headline (Enters UP -> Exits UP) */}
-                            <motion.div
-                                style={{ y: slide1HeadlineCombinedY, opacity: slide1HeadlineOpacity }}
-                                className="absolute top-0 left-0 w-full"
-                            >
-                                <div className="max-w-lg text-left">
-                                    <span className="font-geist-mono text-secondary/50 text-sm tracking-widest uppercase mb-4 block">
-                                        01 — Insight
-                                    </span>
-                                    <h3 className="text-4xl md:text-5xl 2xl:text-6xl font-erode font-medium tracking-tighter text-secondary mb-4 lg:mb-3 xl:mb-6 leading-[1.10]">
-                                        Pattern <br /> Awareness
-                                    </h3>
-                                    <p className="text-base lg:text-sm xl:text-xl text-secondary/80 font-satoshi leading-relaxed mb-4 lg:mb-3 xl:mb-6">
-                                        You can&apos;t fight what you can&apos;t see. We visualize your rhythms so you can predict triggers before they become urges.
-                                    </p>
-                                    <ul className="hidden lg:block space-y-3 mb-8">
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
-                                            <span><strong className="text-secondary/90">Daily mood, stress & urge check-ins</strong> — Quick, optional logs that reveal your patterns over time.</span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
-                                            <span><strong className="text-secondary/90">Trigger mapping</strong> — See when and why urges appear, not just how many.</span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
-                                            <span><strong className="text-secondary/90">Weekly insights</strong> — Progress without judgment or comparison.</span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-sans">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
-                                            <span><strong className="text-secondary/90">Pattern awareness without overthinking</strong> — Just notice. No pressure.</span>
-                                        </li>
-                                    </ul>
-                                    <div className="h-px w-24 bg-secondary/30" />
-                                </div>
-                            </motion.div>
-
-                            {/* Slide 2 Headline (Enters UP -> Exits UP) */}
-                            <motion.div
-                                style={{ y: slide2HeadlineCombinedY, opacity: slide2HeadlineOpacity }}
-                                className="absolute top-0 left-0 w-full"
-                            >
-                                <div className="max-w-lg text-left">
-                                    <span className="font-geist-mono text-secondary/50 text-sm tracking-widest uppercase mb-4 block">
-                                        02 — Regulation
-                                    </span>
-                                    <h3 className="text-4xl md:text-5xl 2xl:text-6xl font-erode font-medium tracking-tighter text-secondary mb-4 lg:mb-3 xl:mb-6 leading-[1.10]">
-                                        Audio <br /> Coaching
-                                    </h3>
-                                    <p className="text-base lg:text-sm xl:text-xl text-secondary/80 font-satoshi leading-relaxed mb-4 lg:mb-3 xl:mb-6">
-                                        Press play on panic. Guided somatic sessions that calm your nervous system in minutes—no meditation experience required.
-                                    </p>
-                                    <ul className="hidden lg:block space-y-3 mb-8">
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
-                                            <span><strong className="text-secondary/90">Calm Yourself breathing guides</strong> — 4-6 breathing technique to signal safety to your body.</span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
-                                            <span><strong className="text-secondary/90">5-4-3-2-1 grounding</strong> — Pulls you out of habit memory into the present moment.</span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
-                                            <span><strong className="text-secondary/90">Progressive muscle relaxation</strong> — Tense and release to tell your body &quot;I don&apos;t need to react.&quot;</span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
-                                            <span><strong className="text-secondary/90">Works during intense urges</strong> — Designed for real moments, not ideal conditions.</span>
-                                        </li>
-                                    </ul>
-                                    <div className="h-px w-24 bg-secondary/30" />
-                                </div>
-                            </motion.div>
-
-                            {/* Slide 3 Headline (Enters UP) */}
-                            <motion.div
-                                style={{ y: slide3HeadlineY, opacity: slide3HeadlineOpacity }}
-                                className="absolute top-0 left-0 w-full"
-                            >
-                                <div className="max-w-lg text-left">
-                                    <span className="font-geist-mono text-secondary/50 text-sm tracking-widest uppercase mb-4 block">
-                                        03 — Community
-                                    </span>
-                                    <h3 className="text-4xl md:text-5xl 2xl:text-6xl font-erode font-medium tracking-tighter text-secondary mb-4 lg:mb-3 xl:mb-6 leading-[1.10]">
-                                        The Panic <br /> Button
-                                    </h3>
-                                    <p className="text-base lg:text-sm xl:text-xl text-secondary/80 font-satoshi leading-relaxed mb-4 lg:mb-3 xl:mb-6">
-                                        Real-time support for the moments when the pull feels strongest. One tap. Immediate calm.
-                                    </p>
-                                    <ul className="hidden lg:block space-y-3 mb-8">
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
-                                            <span><strong className="text-secondary/90">10-minute delay timer</strong> — Say &quot;I&apos;m not deciding now&quot; and watch the urge peak and fall.</span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
-                                            <span><strong className="text-secondary/90">Urge Now protocol</strong> — Structured steps: Breathe → Ground → Move → Wait.</span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
-                                            <span><strong className="text-secondary/90">No willpower needed</strong> — Most urges fade within 7-10 minutes. Waiting works.</span>
-                                        </li>
-                                        <li className="flex items-start gap-3 text-sm md:text-base 2xl:text-lg text-secondary/70 font-satoshi">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-secondary/50 mt-2 shrink-0" />
-                                            <span><strong className="text-secondary/90">Works for smoking and alcohol urges</strong> — Same nervous system, same solution.</span>
-                                        </li>
-                                    </ul>
-                                    <div className="h-px w-24 bg-secondary/30" />
-                                </div>
-                            </motion.div>
+                            {features.map((feature, index) => (
+                                <motion.div
+                                    key={feature.index}
+                                    style={headlineAnimations[index]}
+                                    className="absolute left-0 top-0 w-full"
+                                >
+                                    <div className="max-w-lg text-left">
+                                        <span className="mb-4 block text-sm uppercase tracking-widest text-secondary/50 font-geist-mono">
+                                            {feature.index} — {feature.label}
+                                        </span>
+                                        <h3 className="mb-4 text-4xl font-erode font-medium leading-[1.10] tracking-tighter text-secondary md:text-5xl 2xl:text-6xl lg:mb-3 xl:mb-6">
+                                            <span className="block">{feature.desktopLines[0]}</span>
+                                            {feature.desktopLines[1] ? <span className="block">{feature.desktopLines[1]}</span> : null}
+                                        </h3>
+                                        <p className="mb-4 text-base font-satoshi leading-relaxed text-secondary/80 lg:text-sm lg:mb-3 xl:mb-6 xl:text-xl">
+                                            {feature.description}
+                                        </p>
+                                        <FeatureBullets
+                                            bullets={feature.bullets}
+                                            className="mb-8 hidden space-y-3 lg:block"
+                                            itemClassName="flex items-start gap-3 text-sm font-satoshi text-secondary/70 md:text-base 2xl:text-lg"
+                                            strongClassName="text-secondary/90"
+                                        />
+                                        <div className="h-px w-24 bg-secondary/30" />
+                                    </div>
+                                </motion.div>
+                            ))}
                         </div>
 
-                        {/* VERTICAL DIVIDER (Fixed) */}
-                        <div className="hidden md:block w-px h-[clamp(28rem,72vh,44rem)] bg-secondary/30 mx-8 self-center z-20" />
+                        <div className="z-20 mx-8 hidden h-[clamp(28rem,72vh,44rem)] w-px self-center bg-secondary/30 md:block" />
 
-                        {/* RIGHT COLUMN: Subheadlines & Images */}
-                        <div className="flex-1 relative h-[clamp(28rem,72vh,44rem)] flex flex-col justify-center items-center">
-
-                            {/* Intro Subheadline (Exits DOWN) - Positioned absolutely bottom-left of right col */}
+                        <div className="relative flex h-[clamp(28rem,72vh,44rem)] flex-1 flex-col items-center justify-center">
                             <motion.div
                                 style={{ y: introSubheadY, opacity: introSubheadOpacity }}
                                 className="absolute bottom-16 left-0 right-0 z-10"
                             >
-                                <p className="text-xl md:text-2xl text-secondary/80 font-satoshi max-w-xl leading-relaxed">
-                                    More than a subscription - it&apos;s a complete toolkit for navigating urges, calming your nervous system, and building steady change through structured daily programs.
+                                <p className="max-w-xl text-xl font-satoshi leading-relaxed text-secondary/80 md:text-2xl">
+                                    {sectionIntro.desktopLead}
                                 </p>
                             </motion.div>
 
-                            {/* Shared Image Container - Fixed size, centered */}
-                            <div className="relative w-[95%] h-full">
-
-                                {/* Slide 1 Image (Enters RIGHT -> Fades Out) */}
-                                <motion.div
-                                    style={{ x: slide1ImageX, opacity: slide1ImageOpacity }}
-                                    className="absolute inset-0 z-20 bg-black/5 overflow-hidden shadow-2xl rounded-sm"
-                                >
-                                    <Image
-                                        src="/pointer-1.png"
-                                        alt="Pattern Awareness"
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </motion.div>
-
-                                {/* Slide 2 Image (Enters RIGHT -> Fades Out) */}
-                                <motion.div
-                                    style={{ x: slide2ImageX, opacity: slide2ImageOpacity }}
-                                    className="absolute inset-0 z-30 bg-black/5 overflow-hidden shadow-2xl rounded-sm"
-                                >
-                                    <Image
-                                        src="/pointer-2.png"
-                                        alt="Audio Coaching Interface"
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </motion.div>
-
-                                {/* Slide 3 Image (Enters RIGHT) - Placeholder */}
-                                <motion.div
-                                    style={{ x: slide3ImageX }}
-                                    className="absolute inset-0 z-40 bg-black/5 overflow-hidden shadow-2xl rounded-sm"
-                                >
-                                    <Image
-                                        src="/pointer-3(1).png"
-                                        alt="Peer Support Community"
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </motion.div>
-
+                            <div className="relative h-full w-[95%]">
+                                {features.map((feature, index) => (
+                                    <motion.div
+                                        key={feature.index}
+                                        style={imageAnimations[index]}
+                                        className={`absolute inset-0 overflow-hidden rounded-sm bg-black/5 shadow-2xl ${imageLayers[index]}`}
+                                    >
+                                        <Image
+                                            src={feature.imageSrc}
+                                            alt={feature.imageAlt}
+                                            fill
+                                            className="object-cover"
+                                        />
+                                    </motion.div>
+                                ))}
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </>
