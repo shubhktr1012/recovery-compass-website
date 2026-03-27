@@ -80,12 +80,12 @@ const erode = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL("https://recoverycompass.co"),
   title: {
-    default: "Recovery Compass - Reclaim Your Clarity",
+    default: "Recovery Compass - Steady Progress Without Pressure",
     template: "%s | Recovery Compass",
   },
   description:
-    "Recovery Compass is your premium companion for a smoke-free life. Navigate urge waves, track health recovery, visualize savings, and build lasting habits.",
-  keywords: ["quit smoking", "addiction recovery", "somatic regulation", "health tracker", "smoke-free"],
+    "Recovery Compass helps you gently reset habits, restore balance, and move toward a healthier daily rhythm through calm, structured daily guidance.",
+  keywords: ["habit reset", "nervous system regulation", "sleep reset", "wellness programs", "daily balance"],
   authors: [{ name: "Recovery Compass Team" }],
   creator: "Recovery Compass",
   publisher: "Recovery Compass",
@@ -100,24 +100,24 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://recoverycompass.co",
-    title: "Recovery Compass - Reclaim Your Clarity",
+    title: "Recovery Compass - Steady Progress Without Pressure",
     description:
-      "A premium companion for your journey to a smoke-free life. Track progress, health recovery, and savings with clarity.",
+      "Recovery Compass helps you gently reset habits, restore balance, and move toward a healthier daily rhythm.",
     siteName: "Recovery Compass",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Recovery Compass - Reclaim Your Clarity",
+        alt: "Recovery Compass - Steady Progress Without Pressure",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Recovery Compass - Reclaim Your Clarity",
+    title: "Recovery Compass - Steady Progress Without Pressure",
     description:
-      "A premium companion for your journey to a smoke-free life. Track progress, health recovery, and savings with clarity.",
+      "Recovery Compass helps you gently reset habits, restore balance, and move toward a healthier daily rhythm.",
     images: ["/og-image.png"],
     creator: "@recoverycompass",
   },

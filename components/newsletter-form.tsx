@@ -112,7 +112,7 @@ function StatusMessages({ status }: { status: FormStatus }) {
                     >
                         <div className="flex items-center justify-center gap-1.5 text-green-400 text-sm font-medium">
                             <CheckCircle2 className="w-4 h-4" aria-hidden="true" />
-                            <span>You&apos;re on the list! We&apos;ll be in touch.</span>
+                            <span>You&apos;re on the early access list. We&apos;ll be in touch.</span>
                         </div>
                     </motion.div>
                 )}
@@ -242,10 +242,10 @@ export function DefaultNewsletterForm({ alignment = "right", className }: Defaul
                     ) : status === "success" ? (
                         <div className="flex items-center justify-center gap-2">
                             <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
-                            <span>Joined Waitlist</span>
+                        <span>Early Access Confirmed</span>
                         </div>
                     ) : (
-                        "Join Waitlist"
+                        "Get Early Access"
                     )}
                 </Button>
 
@@ -255,7 +255,7 @@ export function DefaultNewsletterForm({ alignment = "right", className }: Defaul
             <div className="mt-4 flex flex-col items-center gap-2">
                 <p className="text-xs text-white/60 font-medium flex items-center gap-1.5 px-4 py-1 rounded-full bg-black/20 backdrop-blur-sm">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.5)]" />
-                    Secure & Confidential. Unsubscribe anytime.
+                    Secure & confidential. Unsubscribe anytime.
                 </p>
             </div>
         </div>
@@ -263,7 +263,7 @@ export function DefaultNewsletterForm({ alignment = "right", className }: Defaul
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// MinimalNewsletterForm - Footer "Join Waitlist" Button (Scrolls to CTA)
+// MinimalNewsletterForm - Footer CTA Button (Scrolls to CTA)
 // ─────────────────────────────────────────────────────────────────────────────
 
 interface MinimalNewsletterFormProps {
@@ -290,7 +290,7 @@ export function MinimalNewsletterForm({ alignment = "left", className }: Minimal
                 onClick={scrollToWaitlist}
                 className="bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-white/90 rounded-full px-8 h-12 font-medium transition-all hover:scale-105 active:scale-95 group"
             >
-                Join the Movement
+                Get Early Access
             </Button>
         </div>
     );
