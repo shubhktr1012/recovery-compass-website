@@ -11,12 +11,12 @@ export function CTASection() {
             <div className="relative w-full min-h-[450px] md:min-h-[520px] rounded-3xl overflow-hidden flex flex-col justify-center shadow-[0_30px_40px_-10px_rgba(0,0,0,0.6)]">
                 {/* Background Image - Absolute Fill */}
                 <div className="absolute inset-0 z-0">
-                    <Image
-                        src="/cta-bg.png"
+                   <Image
+                        src="/cta-bg.webp"
                         alt="Early access background"
                         fill
                         className="object-cover pointer-events-none select-none"
-                        priority
+                        sizes="(max-width: 768px) 100vw, 1400px"
                     />
                     {/* Subtle Overlay for Readability */}
                     <div className="absolute inset-0 bg-black/10 lg:bg-gradient-to-r lg:from-black/20 lg:via-transparent lg:to-transparent" />
