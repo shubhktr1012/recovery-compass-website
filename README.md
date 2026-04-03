@@ -1,138 +1,134 @@
-# Recovery Compass - Reclaim Your Clarity
+# Recovery Compass Website
 
-> **A premium digital companion designed to guide users on their journey to a smoke-free life. Providing clarity, structure, and nervous system regulation through a "Warm Luxury" wellness aesthetic.**
+Recovery Compass Website is the Next.js marketing site and early-access capture flow for the Recovery Compass product line. It covers the landing page, program-exploration sections, legal pages, SEO metadata, and the Supabase-backed waitlist endpoint.
 
----
+## Status snapshot
 
-## 📖 Overview
+Current repo state as of March 29, 2026:
 
-**Recovery Compass** is more than just a quit-smoking tool; it is a holistic wellness platform. It focuses on urge navigation, nervous system regulation, and structured daily programs to help users build lasting change.
+- The homepage is a section-based marketing site with hero, philosophy, problem, solution, program explorer, FAQ, and CTA sections.
+- Waitlist submissions are handled through `POST /api/waitlist` and stored in Supabase.
+- Legal/support routes are already in the app router.
+- SEO essentials are wired in: metadata, Open Graph, Twitter tags, `robots.ts`, and `sitemap.ts`.
+- Non-smoking program pricing is still placeholder content, matching the current product status.
 
-This repository contains the source code for the **Phase 1 Marketing Launchpad**, which includes:
-- A high-conversion **brand landing page**.
-- An **interactive "Preview Experience"** (dashboard simulation) to demonstrate value.
-- A **Waitlist System** for user acquisition.
+## Main routes
 
-The project differentiates itself from sterile "tech tools" by adopting a **"Warm Luxury"** design language, positioning itself alongside lifestyle wellness brands like *Calm* or *Attentive*.
+| Route | Purpose |
+| --- | --- |
+| `/` | Main marketing landing page |
+| `/privacy` | Privacy policy |
+| `/terms` | Terms and conditions |
+| `/support` | Support page |
+| `/api/waitlist` | Waitlist submission endpoint |
 
----
+## Stack
 
-## 🛠 Tech Stack
+- Next.js 16 App Router
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- Framer Motion
+- Lenis smooth scrolling
+- Radix UI primitives
+- Supabase JS client
+- Local Satoshi and Erode fonts via `next/font/local`
 
-This project is built with a modern, performance-focused stack ensuring scalability and a premium user experience.
+## What is in this repo
 
-### Core Frameworks
-- **[Next.js 16](https://nextjs.org/)** (App Router) - The React Framework for the Web.
-- **[React 19](https://react.dev/)** - The library for web and native user interfaces.
-- **[TypeScript](https://www.typescriptlang.org/)** - For type safety and developer experience.
-
-### Styling & Design
-- **[Tailwind CSS v4](https://tailwindcss.com/)** - Utility-first CSS framework (configured with PostCSS).
-- **[Framer Motion](https://www.framer.com/motion/)** - Production-ready animation library for React.
-- **[Radix UI](https://www.radix-ui.com/)** - Unstyled, accessible components for building high-quality design systems.
-- **[Lenis](https://lenis.studio/)** - Smooth scrolling library for a premium feel.
-- **[Lucide React](https://lucide.dev/)** - Beautiful & consistent icons.
-
-### Fonts
-- **Satoshi** (Local) - Primary typeface for clean, modern readability.
-- **Erode** - Secondary display typeface for headings and distinctive branding.
-- **Dravica** - Used for specific brand elements.
-
----
-
-## 📂 Project Structure
-
-The project follows the standard Next.js App Router structure:
-
-```
-/web
-├── app/                  # Main application routes and layouts
-│   ├── layout.tsx        # Root layout with global providers
-│   ├── page.tsx          # Landing page
-│   └── globals.css       # Global styles and Tailwind imports
-│
-├── components/           # Reusable UI components & Sections
-│   ├── ui/               # Atomic components (Buttons, Inputs, etc.)
-│   ├── sections/         # Page sections (Hero, Philosophy, Problem, etc.)
-│   ├── navbar.tsx        # Floating navigation bar
-│   └── footer.tsx        # Application footer
-│
-├── public/               # Static assets
-│   ├── fonts/            # Local font files (Satoshi)
-│   └── images/           # Graphic assets
-│
-└── lib/                  # Utility functions and shared logic
+```text
+web/
+├── app/                  Routes, metadata, sitemap, and API handlers
+├── components/           Sections, forms, legal content, and UI primitives
+├── lib/                  Supabase client and shared helpers
+├── public/               Logos, OG image, CTA art, and other assets
+├── supabase/             Waitlist migration
+├── SUPABASE_SETUP.md     Step-by-step waitlist setup guide
+└── lighthouse-report.json
 ```
 
----
-
-## ✨ Key Features
-
-### 1. "Warm Luxury" Design System
-A custom aesthetic designed to feel calming and premium.
-- **Color Palette:** Deep Forest, Sage Glaze.
-- **Visuals:** Breathing Orb (Top Semicircle Gradient), Glassmorphic elements.
-- **Navigation:** Floating Navbar with smooth transitions.
-
-### 2. Interactive Sections
-- **Dynamic Compass:** A unique "Back to Top" button that functions as a compass, reacting to scroll velocity.
-- **Philosophy Section:** Animations explaining "Wave Regulation" and "Structure Path".
-- **Testimonial Marquee:** Smooth scrolling user success stories with gradient fade effects.
-
-### 3. App Preview Experience
-A simulated dashboard environment allowing users to explore the app's potential without needing to sign up immediately.
-- **Goal:** Showcase the value of tracking progress/savings instantly.
-
-### 4. Waitlist Integration
-- **Inline Newsletter Form:** Integrated into the CTA section and footer for seamless user capture.
-
----
-
-## 🚀 Getting Started
-
-To run the application locally:
+## Local development
 
 ### Prerequisites
-- Node.js (v20+ recommended)
-- npm, pnpm, or bun
 
-### Installation
+- Node.js 20+
+- npm
+- A Supabase project for the waitlist table
 
-1.  Navigate to the project directory (if not already there).
+### Install
 
-2.  Install dependencies:
-    ```bash
-    npm install
-    # or
-    pnpm install
-    ```
+```bash
+npm install
+```
 
-### Development Server
+### Environment variables
 
-Start the local development server:
+Copy the example file and add your project values:
+
+```bash
+cp .env.example .env.local
+```
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+### Run the waitlist migration
+
+Apply the SQL in:
+
+```text
+web/supabase/migrations/20260208_initial_schema.sql
+```
+
+That migration creates the `waitlist` table and the RLS policies needed for public signups.
+
+### Start the dev server
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
----
+## Commands
 
-## 🚢 Deployment
+```bash
+npm run dev
+npm run build
+npm run start
+npm run lint
+```
 
-The project is optimized for deployment on **Vercel**.
+## Waitlist flow
 
-1.  Push code to your git repository.
-2.  Import the project into Vercel.
-3.  Vercel will automatically detect the Next.js framework and build settings.
-4.  Deploy!
+The website collects:
 
----
+- first name
+- last name
+- email
+- phone
+- country code
 
-## 📄 License & Status
+The frontend form posts to `app/api/waitlist/route.ts`, which inserts into Supabase and returns duplicate-email errors cleanly.
 
-**Proprietary Software** - All rights reserved.
-Current Phase: **Phase 1 Execution (Marketing Launchpad)**
+## Design and content notes
 
-*Built with intention by Shubh Khatri.*
+- The site uses a calm wellness visual system built around deep forest and sage tones.
+- Program cards rotate across three buckets: Break Habits, Restore Balance, and Build Vitality.
+- CTA copy and pricing blocks intentionally reflect the current launch state, including `TBD` pricing where product decisions are not final yet.
+
+## Deployment
+
+The repo is set up for Vercel-style deployment:
+
+1. Add the Supabase environment variables to the hosting environment.
+2. Deploy the Next.js app.
+3. Re-run the waitlist migration against the production Supabase project if needed.
+
+For a longer walkthrough, use [`SUPABASE_SETUP.md`](SUPABASE_SETUP.md).
+
+## Ownership
+
+This codebase is proprietary to Recovery Compass.

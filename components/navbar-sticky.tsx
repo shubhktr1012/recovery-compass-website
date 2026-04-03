@@ -70,7 +70,7 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                 {/* Brand */}
                 <Link href="/" className="flex items-center gap-2 text-[oklch(0.2475_0.0661_146.79)] hover:opacity-80 transition-opacity">
                     <Image
-                        src="/rc-logo-dark-green.svg"
+                        src="/rc-logo-primary.svg"
                         alt=""
                         width={28}
                         height={28}
