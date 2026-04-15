@@ -11,6 +11,9 @@ import { useCart } from "@/lib/context/cart-context";
 import Link from "next/link";
 
 import { usePathname } from "next/navigation";
+import { useUser } from "@/lib/context/user-context";
+import { LogOut, User as UserIcon } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 interface NavbarStickyProps {
     onCtaClick?: () => void; // Deprecated, but kept for compatibility during refactor
@@ -22,6 +25,7 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
     const lenis = useLenis();
     const pathname = usePathname();
     const { items, setIsCartOpen } = useCart();
+    const { user, profile, openAuthModal, signOut } = useUser();
 
     const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
         if (href.startsWith("#")) {
@@ -89,26 +93,52 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                         ))}
                     </nav>
 
-                    {/* Desktop CTA */}
-                    <Button
-                        onClick={() => setIsCartOpen(true)}
-                        className={cn(
-                            "hidden md:inline-flex rounded-full px-6 text-sm font-bold transition-all active:scale-[0.98] relative",
-                            "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/95 hover:shadow-lg",
-                            "border-none h-10 shadow-sm transition-all duration-300"
-                        )}
-                    >
-                        My Plan
-                        {items.length > 0 && (
-                            <motion.span 
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[oklch(0.55_0.15_25)] text-[10px] font-bold text-white shadow-md ring-2 ring-white"
+                    {/* Desktop CTA & Auth */}
+                    <div className="hidden md:flex items-center gap-4">
+                        {!user ? (
+                            <button 
+                                onClick={() => openAuthModal("signin")}
+                                className="text-sm font-bold text-[oklch(0.2475_0.0661_146.79)] hover:opacity-70 transition-all px-2"
                             >
-                                {items.length}
-                            </motion.span>
+                                Login
+                            </button>
+                        ) : (
+                            <div className="flex items-center gap-3 pr-2 border-r border-black/5 mr-2">
+                                <Avatar className="size-8 rounded-full border border-[oklch(0.2475_0.0661_146.79)]/10">
+                                    <AvatarFallback className="bg-[oklch(0.2475_0.0661_146.79)]/5 text-[oklch(0.2475_0.0661_146.79)] text-[10px] font-bold">
+                                        {user.email?.substring(0, 2).toUpperCase()}
+                                    </AvatarFallback>
+                                </Avatar>
+                                <button 
+                                    onClick={() => signOut()}
+                                    className="p-2 rounded-full hover:bg-black/5 transition-colors"
+                                    title="Sign Out"
+                                >
+                                    <LogOut className="size-4 text-[oklch(0.2475_0.0661_146.79)]/60" />
+                                </button>
+                            </div>
                         )}
-                    </Button>
+
+                        <Button
+                            onClick={() => setIsCartOpen(true)}
+                            className={cn(
+                                "rounded-full px-6 text-sm font-bold transition-all active:scale-[0.98] relative",
+                                "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/95 hover:shadow-lg",
+                                "border-none h-10 shadow-sm transition-all duration-300"
+                            )}
+                        >
+                            My Plan
+                            {items.length > 0 && (
+                                <motion.span 
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[oklch(0.55_0.15_25)] text-[10px] font-bold text-white shadow-md ring-2 ring-white"
+                                >
+                                    {items.length}
+                                </motion.span>
+                            )}
+                        </Button>
+                    </div>
 
                     {/* Mobile Menu Toggle (2-Line Animated Icon) */}
                     <button
@@ -169,18 +199,43 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                                 exit={{ opacity: 0, y: -10 }}
                                 transition={{ duration: 0.6, delay: 0.6 }}
                             >
+                            <div className="flex flex-col gap-4 w-full">
+                                {!user ? (
+                                    <Button
+                                        onClick={() => {
+                                            openAuthModal("signin");
+                                            setIsOpen(false);
+                                        }}
+                                        variant="outline"
+                                        className="w-full rounded-full border-[oklch(0.2475_0.0661_146.79)]/20 text-[oklch(0.2475_0.0661_146.79)] h-12 font-bold"
+                                    >
+                                        Log In
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        onClick={() => {
+                                            signOut();
+                                            setIsOpen(false);
+                                        }}
+                                        variant="outline"
+                                        className="w-full rounded-full border-red-100 text-red-600 bg-red-50/30 h-12 font-bold flex gap-2"
+                                    >
+                                        <LogOut className="size-4" /> Sign Out
+                                    </Button>
+                                )}
+
                                 <Button
                                     onClick={() => {
                                         setIsCartOpen(true);
                                         setIsOpen(false);
                                     }}
                                     className={cn(
-                                        "w-auto rounded-full px-6 py-3 text-base font-medium relative",
+                                        "w-full rounded-full px-6 py-4 text-base font-bold relative",
                                         "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90",
-                                        "h-auto"
+                                        "h-12 shadow-md active:scale-95 transition-all"
                                     )}
                                 >
-                                    My Plan
+                                    View My Plan
                                     {items.length > 0 && (
                                         <motion.span 
                                             initial={{ scale: 0 }}
@@ -191,6 +246,7 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                                         </motion.span>
                                     )}
                                 </Button>
+                            </div>
                             </motion.div>
                         </nav>
                     </motion.div>
