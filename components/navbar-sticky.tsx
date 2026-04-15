@@ -119,25 +119,27 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                             </div>
                         )}
 
-                        <Button
-                            onClick={() => setIsCartOpen(true)}
-                            className={cn(
-                                "rounded-full px-6 text-sm font-bold transition-all active:scale-[0.98] relative",
-                                "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/95 hover:shadow-lg",
-                                "border-none h-10 shadow-sm transition-all duration-300"
-                            )}
-                        >
-                            My Plan
-                            {items.length > 0 && (
-                                <motion.span 
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1 }}
-                                    className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[oklch(0.55_0.15_25)] text-[10px] font-bold text-white shadow-md ring-2 ring-white"
-                                >
-                                    {items.length}
-                                </motion.span>
-                            )}
-                        </Button>
+                        {(user || items.length > 0) && (
+                            <Button
+                                onClick={() => setIsCartOpen(true)}
+                                className={cn(
+                                    "rounded-full px-6 text-sm font-bold transition-all active:scale-[0.98] relative",
+                                    "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/95 hover:shadow-lg",
+                                    "border-none h-10 shadow-sm transition-all duration-300"
+                                )}
+                            >
+                                My Plan
+                                {items.length > 0 && (
+                                    <motion.span 
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: 1 }}
+                                        className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[oklch(0.55_0.15_25)] text-[10px] font-bold text-white shadow-md ring-2 ring-white"
+                                    >
+                                        {items.length}
+                                    </motion.span>
+                                )}
+                            </Button>
+                        )}
                     </div>
 
                     {/* Mobile Menu Toggle (2-Line Animated Icon) */}

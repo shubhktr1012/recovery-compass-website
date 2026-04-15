@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { TestimonialMarquee } from "./testimonials/testimonial-marquee";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useCart } from "@/lib/context/cart-context";
+import { useUser } from "@/lib/context/user-context";
 
 import { motion, Variants } from "framer-motion";
 
@@ -13,7 +14,15 @@ interface HeroOmegaProps {
 }
 
 export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
-    const { setIsCartOpen } = useCart();
+    const { items, setIsCartOpen } = useCart();
+    const { user, openAuthModal } = useUser();
+    
+    // Guest with empty cart → prompt sign in. Everyone else → view their plan.
+    const isGuestWithEmptyCart = !user && items.length === 0;
+    const secondaryLabel = isGuestWithEmptyCart ? "Sign In" : "View My Plan";
+    const handleSecondaryClick = isGuestWithEmptyCart 
+        ? () => openAuthModal("signin") 
+        : () => setIsCartOpen(true);
 
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
@@ -109,7 +118,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                                     "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 border border-transparent h-auto",
                                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2"
                                 )}
-                                onClick={onSecondaryClick}
+                                onClick={() => setIsCartOpen(true)}
                             >
                                 Explore Programs
                             </Button>
@@ -117,11 +126,11 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                                 className={cn(
                                     "rounded-full px-5 py-2.5 text-sm font-medium transition-all active:scale-95",
                                     "bg-white text-[oklch(0.2475_0.0661_146.79)] border border-[oklch(0.2475_0.0661_146.79)] hover:bg-[oklch(0.2475_0.0661_146.79)] hover:text-white h-auto",
-                                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2"
+                                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                                 )}
-                                onClick={() => setIsCartOpen(true)}
+                                onClick={handleSecondaryClick}
                             >
-                                View My Plan
+                                {secondaryLabel}
                             </Button>
                         </motion.div>
                     </motion.div>
