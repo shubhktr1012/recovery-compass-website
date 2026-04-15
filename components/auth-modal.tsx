@@ -31,26 +31,29 @@ type AuthView = "signin" | "signup" | "forgot";
 // Animation Variants
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Typed cubic bezier to satisfy Framer Motion's strict Easing types
+const EASE_CUBIC: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
 const panelVariants = {
     hidden: { opacity: 0, y: 8, scale: 0.99 },
     visible: {
         opacity: 1, y: 0, scale: 1,
-        transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] }
+        transition: { duration: 0.3, ease: EASE_CUBIC }
     },
     exit: {
         opacity: 0, y: -8, scale: 0.99,
-        transition: { duration: 0.2, ease: "easeIn" }
+        transition: { duration: 0.2, ease: "easeIn" as const }
     }
 };
 
 const staggerContainer = {
     hidden: {},
-    visible: { transition: { staggerChildren: 0.06, delayChildren: 0.05 } }
+    visible: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } }
 };
 
 const fadeUp = {
-    hidden: { opacity: 0, y: 12 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: EASE_CUBIC } }
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -287,14 +290,14 @@ export function AuthModal({ isOpen, onClose, defaultTab = "signin" }: AuthModalP
     return (
         <Dialog open={isOpen} onOpenChange={(open) => { if (!open) { reset(); onClose(); } }}>
             <DialogContent className={cn(
-                "sm:max-w-[400px] p-0 overflow-hidden border-none",
+                "sm:max-w-[440px] p-0 overflow-hidden border-none",
                 "bg-[oklch(0.9484_0.0251_149.08)] shadow-2xl shadow-black/10",
-                "rounded-[28px]"
+                "rounded-[32px]"
             )}>
 
                 {/* ── Tab Bar (Sign In / Create Account) ── */}
                 {view !== "forgot" && (
-                    <div className="flex gap-1 p-2 mx-6 mt-6 rounded-full bg-white/60 backdrop-blur-sm border border-white/80 shadow-sm">
+                    <div className="flex gap-1.5 p-1.5 mx-7 mt-7 rounded-full bg-white/60 backdrop-blur-sm border border-white/80 shadow-sm">
                         {(["signin", "signup"] as AuthView[]).map((v) => (
                             <button
                                 key={v}
@@ -313,7 +316,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "signin" }: AuthModalP
                 )}
 
                 {/* ── Body ── */}
-                <div className="px-6 pb-7 pt-5 overflow-hidden relative">
+                <div className="px-7 pb-8 pt-6 overflow-hidden relative">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={panelKey}
@@ -325,13 +328,13 @@ export function AuthModal({ isOpen, onClose, defaultTab = "signin" }: AuthModalP
 
                             {/* === SIGN IN VIEW === */}
                             {view === "signin" && (
-                                <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="space-y-4">
-                                    <motion.div variants={fadeUp} className="mb-1">
+                                <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="space-y-5">
+                                    <motion.div variants={fadeUp} className="mb-2">
                                         <DialogHeader>
-                                            <DialogTitle className="font-erode text-2xl font-semibold tracking-tight text-[oklch(0.2475_0.0661_146.79)]">
+                                            <DialogTitle className="font-erode text-[28px] font-semibold tracking-tight text-[oklch(0.2475_0.0661_146.79)] leading-tight">
                                                 Welcome back.
                                             </DialogTitle>
-                                            <DialogDescription className="text-zinc-500 text-sm mt-0.5">
+                                            <DialogDescription className="text-zinc-500 text-sm mt-1">
                                                 Sign in to sync your progress.
                                             </DialogDescription>
                                         </DialogHeader>
@@ -403,13 +406,13 @@ export function AuthModal({ isOpen, onClose, defaultTab = "signin" }: AuthModalP
 
                             {/* === SIGN UP VIEW === */}
                             {view === "signup" && (
-                                <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="space-y-4">
-                                    <motion.div variants={fadeUp} className="mb-1">
+                                <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="space-y-5">
+                                    <motion.div variants={fadeUp} className="mb-2">
                                         <DialogHeader>
-                                            <DialogTitle className="font-erode text-2xl font-semibold tracking-tight text-[oklch(0.2475_0.0661_146.79)]">
+                                            <DialogTitle className="font-erode text-[28px] font-semibold tracking-tight text-[oklch(0.2475_0.0661_146.79)] leading-tight">
                                                 Start your journey.
                                             </DialogTitle>
-                                            <DialogDescription className="text-zinc-500 text-sm mt-0.5">
+                                            <DialogDescription className="text-zinc-500 text-sm mt-1">
                                                 Your programs travel with you, on any device.
                                             </DialogDescription>
                                         </DialogHeader>
@@ -481,7 +484,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "signin" }: AuthModalP
 
                             {/* === FORGOT PASSWORD VIEW === */}
                             {view === "forgot" && (
-                                <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="space-y-4">
+                                <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="space-y-5">
                                     <motion.div variants={fadeUp}>
                                         <button
                                             onClick={() => switchView("signin")}
@@ -490,10 +493,10 @@ export function AuthModal({ isOpen, onClose, defaultTab = "signin" }: AuthModalP
                                             <ArrowLeft className="size-3.5" /> Back to Sign In
                                         </button>
                                         <DialogHeader>
-                                            <DialogTitle className="font-erode text-2xl font-semibold tracking-tight text-[oklch(0.2475_0.0661_146.79)]">
+                                            <DialogTitle className="font-erode text-[28px] font-semibold tracking-tight text-[oklch(0.2475_0.0661_146.79)] leading-tight">
                                                 Forgot password?
                                             </DialogTitle>
-                                            <DialogDescription className="text-zinc-500 text-sm mt-0.5">
+                                            <DialogDescription className="text-zinc-500 text-sm mt-1">
                                                 We'll send a reset link to your email.
                                             </DialogDescription>
                                         </DialogHeader>
