@@ -30,7 +30,6 @@ type Program = {
     metaValue: string;
     metaLabel: string;
     highlights: ProgramHighlight[];
-    cta: string;
     accent: "dark" | "light";
 };
 
