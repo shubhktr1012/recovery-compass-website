@@ -13,8 +13,8 @@ import {
 } from "@/components/sections";
 
 export default function Home() {
-  const scrollToPhilosophy = () => {
-    document.getElementById("why-us")?.scrollIntoView({ behavior: "smooth" });
+  const scrollToPrograms = () => {
+    document.getElementById("programs")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -25,7 +25,7 @@ export default function Home() {
       {/* Page Sections */}
       <main>
         <HeroOmega
-          onSecondaryClick={scrollToPhilosophy}
+          onSecondaryClick={scrollToPrograms}
         />
 
 

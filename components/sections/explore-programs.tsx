@@ -75,7 +75,7 @@ const categoryPrograms: Record<string, Program[]> = {
                 whoIsItFor: "For those ready to commit to long-term behavioral change, seeking daily guidance to help stabilize their nervous system during the crucial 3-month rewiring phase.",
                 curriculumOverview: "Daily 2-4 minute audio modules focused on pattern recognition, resilience building, optional low-pressure journaling, and long-term stabilization."
             },
-            metaValue: "₹6,549",
+            metaValue: "₹5,999",
             metaLabel: "Launch price",
             highlights: [
                 { label: "Daily Focus", text: "Notice patterns without trying to change everything at once" },
@@ -102,8 +102,8 @@ const categoryPrograms: Record<string, Program[]> = {
                 whoIsItFor: "For those caught in the frustrating cycle of waking up exhausted, feeling wired all day, and lying awake at night.",
                 curriculumOverview: "Sunlight protocols, precise caffeine management, physiological sigh techniques, and guided sleep audios designed to lower heart rate variability before bed."
             },
-            metaValue: "TBD",
-            metaLabel: "Price to be announced",
+            metaValue: "₹2,599",
+            metaLabel: "Launch price",
             highlights: [
                 { label: "Morning Signal", text: "Sunlight exposure within 30 minutes of waking" },
                 { label: "Calm", text: "Hydration plus 10 cycles of physiological sigh" },
@@ -127,8 +127,8 @@ const categoryPrograms: Record<string, Program[]> = {
                 whoIsItFor: "For individuals feeling chronically sluggish, dealing with mid-afternoon slumps, or struggling to find the physical motivation to accomplish daily goals.",
                 curriculumOverview: "Hydration protocols, light-exposure timing, strict activity windows, and biological sleep cues."
             },
-            metaValue: "TBD",
-            metaLabel: "Price to be announced",
+            metaValue: "₹1,499",
+            metaLabel: "Launch price",
             highlights: [
                 { label: "Foundation", text: "500 ml water within 10 minutes of waking" },
                 { label: "Circadian Reset", text: "10–15 minutes of morning sunlight" },
@@ -154,8 +154,8 @@ const categoryPrograms: Record<string, Program[]> = {
                 whoIsItFor: "Men seeking to overcome performance anxiety, break negative compulsive habits, and restore physical confidence through natural regulation.",
                 curriculumOverview: "Daily pelvic strength exercises, rapid-calming breathing techniques (4-2-6), and hormone-supporting night routines."
             },
-            metaValue: "TBD",
-            metaLabel: "Price to be announced",
+            metaValue: "₹4,999",
+            metaLabel: "Launch price",
             highlights: [
                 { label: "Urge Control", text: "Use CALM when the urge appears and let it pass in 5–10 minutes" },
                 { label: "Performance Anxiety", text: "4-2-6 breathing to activate the relaxation response" },
@@ -179,8 +179,8 @@ const categoryPrograms: Record<string, Program[]> = {
                 whoIsItFor: "For those looking to move beyond superficial skincare treatments into deep, systemic lifestyle restoration for lasting vitality and appearance.",
                 curriculumOverview: "Circulation-boosting movements, targeted facial activation, deep nervous-system calming audio, and sleep-enhancing repair protocols."
             },
-            metaValue: "TBD",
-            metaLabel: "Price to be announced",
+            metaValue: "₹6,999",
+            metaLabel: "Launch price",
             highlights: [
                 { label: "Circulation", text: "20-minute relaxed walk to improve blood flow and cellular energy" },
                 { label: "Face Exercise", text: "Daily facial muscle activation to support firmness and lift" },
