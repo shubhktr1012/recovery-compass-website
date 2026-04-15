@@ -38,7 +38,7 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                             {/* Headline */}
                             <h3 className="text-2xl md:text-3xl font-medium leading-tight text-white/90">
                                 Find your direction again.<br />
-                                Get early access.
+                                Start your journey today.
                             </h3>
 
                             {/* Input Field Group */}

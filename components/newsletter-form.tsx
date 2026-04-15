@@ -273,7 +273,7 @@ interface MinimalNewsletterFormProps {
 
 export function MinimalNewsletterForm({ alignment = "left", className }: MinimalNewsletterFormProps) {
     const scrollToWaitlist = () => {
-        const element = document.getElementById('waitlist');
+        const element = document.getElementById('programs');
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
         }
@@ -290,7 +290,7 @@ export function MinimalNewsletterForm({ alignment = "left", className }: Minimal
                 onClick={scrollToWaitlist}
                 className="bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-white/90 rounded-full px-8 h-12 font-medium transition-all hover:scale-105 active:scale-95 group"
             >
-                Get Early Access
+                View Programs
             </Button>
         </div>
     );

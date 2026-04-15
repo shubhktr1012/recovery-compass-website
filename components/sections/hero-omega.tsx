@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { TestimonialMarquee } from "./testimonials/testimonial-marquee";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useLenis } from "@/components/smooth-scroll-provider";
+import { useCart } from "@/lib/context/cart-context";
 
 import { motion, Variants } from "framer-motion";
 
@@ -13,14 +13,7 @@ interface HeroOmegaProps {
 }
 
 export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
-    const lenis = useLenis();
-    const scrollToWaitlist = () => {
-        if (lenis) {
-            lenis.scrollTo("#waitlist");
-        } else {
-            document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
-        }
-    };
+    const { setIsCartOpen } = useCart();
 
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
@@ -95,7 +88,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
                                 </span>
                                 <span className="text-[10px] md:text-xs font-bold text-[oklch(0.2475_0.0661_146.79)]/80 tracking-wide uppercase">
-                                    Early Access <span className="hidden md:inline">— App launching soon</span>
+                                    Open Beta <span className="hidden md:inline">— Native Apps Launching Soon</span>
                                 </span>
                             </div>
 
@@ -116,9 +109,9 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                                     "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 border border-transparent h-auto",
                                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2"
                                 )}
-                                onClick={scrollToWaitlist}
+                                onClick={() => setIsCartOpen(true)}
                             >
-                                Get Early Access
+                                View My Plan
                             </Button>
                             <Button
                                 className={cn(

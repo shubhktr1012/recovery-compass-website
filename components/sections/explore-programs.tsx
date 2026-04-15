@@ -58,13 +58,12 @@ const categoryPrograms: Record<string, Program[]> = {
                 { label: "Disruption", text: "Change one trigger routine to break the loop" },
                 { label: "Urge Protocol", text: "Grounding and light movement while the timer runs" },
             ],
-            cta: "Get Early Access",
             accent: "dark",
         },
         {
             id: "90-day-smoke-free-journey",
             tag: "Daily Guided Modules",
-            title: "90-Day Quit Smoking",
+            title: "90-Day Smoking Reset",
             cardDescription: "A longer journey designed to support lasting change by strengthening awareness, resilience, and consistency over time.",
             article: {
                 subtitle: "Rewiring the deeply ingrained neural pathways.",
@@ -83,7 +82,6 @@ const categoryPrograms: Record<string, Program[]> = {
                 { label: "Journal", text: "Optional prompts for reflection without pressure" },
                 { label: "Long-Term Shift", text: "Pattern-level awareness, resilience, and sustained confidence" },
             ],
-            cta: "Get Early Access",
             accent: "light",
         },
     ],
@@ -91,7 +89,7 @@ const categoryPrograms: Record<string, Program[]> = {
         {
             id: "14-day-sleep-reset",
             tag: "Reset the Body Clock",
-            title: "Sleep Disorder Reset",
+            title: "21-Day Deep Sleep Reset",
             cardDescription: "Reset the body clock and nervous system so the brain begins recognizing the signals for sleep again.",
             article: {
                 subtitle: "Calming the hyperactive nervous system.",
@@ -110,13 +108,12 @@ const categoryPrograms: Record<string, Program[]> = {
                 { label: "Sleep Pressure", text: "Light morning movement to make the body naturally tired at night" },
                 { label: "Night Routine", text: "No caffeine after 2 PM and guided sleep meditation before bed" },
             ],
-            cta: "Get Early Access",
             accent: "dark",
         },
         {
             id: "21-day-energy-reset",
             tag: "Energy Reset Foundations",
-            title: "Energy & Vitality",
+            title: "14-Day Energy Restore",
             cardDescription: "Restore daily energy and mental clarity by rebuilding the body’s natural rhythm through simple daily missions.",
             article: {
                 subtitle: "Reclaiming your natural momentum.",
@@ -135,7 +132,6 @@ const categoryPrograms: Record<string, Program[]> = {
                 { label: "Activation", text: "10 minutes of movement plus a light walk" },
                 { label: "Recovery", text: "Deep breathing before bed and a fixed sleep time" },
             ],
-            cta: "Get Early Access",
             accent: "light",
         },
     ],
@@ -143,7 +139,7 @@ const categoryPrograms: Record<string, Program[]> = {
         {
             id: "mens-vitality-reset-program",
             tag: "Reset & Activation",
-            title: "Male Sexual Health",
+            title: "30-Day Men's Vitality Reset",
             cardDescription: "Break automatic habits, calm performance anxiety, and activate the muscles that support blood flow and sexual strength.",
             article: {
                 subtitle: "Physical activation and psychological calm.",
@@ -162,13 +158,12 @@ const categoryPrograms: Record<string, Program[]> = {
                 { label: "Vitality Exercise", text: "Pelvic strength, glute bridges, squats, and a brisk walk" },
                 { label: "Recovery", text: "Night routine to support hormones and physical recovery" },
             ],
-            cta: "Get Early Access",
             accent: "dark",
         },
         {
             id: "radiance-journey",
             tag: "Rejuvenation Journey",
-            title: "Age Reversal",
+            title: "90-Day Biohacking Reset",
             cardDescription: "Activate the body’s natural rejuvenation process by improving circulation, stimulating facial muscles, and calming the nervous system.",
             article: {
                 subtitle: "Cellular renewal through rhythm and blood flow.",
@@ -187,7 +182,6 @@ const categoryPrograms: Record<string, Program[]> = {
                 { label: "Calm", text: "Guided calm session to relax the nervous system and lower cortisol" },
                 { label: "Sleep Preparation", text: "Consistent sleep routine to support hormone balance and repair" },
             ],
-            cta: "Get Early Access",
             accent: "light",
         },
     ],
@@ -318,7 +312,9 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
         }
     }, [isDrawerOpen]);
     const isDark = program.accent === "dark";
-    const { addItem } = useCart();
+    const { addItem, removeItem, isItemInCart } = useCart();
+    
+    const inCart = isItemInCart(program.id);
 
     useEffect(() => {
         if (isInView) {
@@ -415,21 +411,34 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
                     <div className="flex flex-col items-center w-full gap-3 mt-2">
                         <Button
                             variant="default"
-                            onClick={() => addItem({
-                                id: program.id,
-                                title: program.title,
-                                price: program.metaValue === "TBD" ? null : parseInt(program.metaValue.replace(/[^0-9]/g, '')),
-                                tag: program.tag
-                            })}
+                            onClick={() => {
+                                if (inCart) {
+                                    removeItem(program.id);
+                                } else {
+                                    addItem({
+                                        id: program.id,
+                                        title: program.title,
+                                        price: program.metaValue === "TBD" ? null : parseInt(program.metaValue.replace(/[^0-9]/g, '')),
+                                        tag: program.tag
+                                    });
+                                }
+                            }}
                             className={cn(
                                 "w-full md:w-fit px-10 h-12 rounded-full font-bold text-base border-none transition-all duration-300",
                                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
-                                isDark
-                                    ? "bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-white/90 shadow-lg focus-visible:ring-white"
-                                    : "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 shadow-lg focus-visible:ring-[oklch(0.2475_0.0661_146.79)]"
+                                inCart 
+                                    ? isDark ? "bg-white/10 text-white flex gap-2 items-center hover:bg-white/20" : "bg-[oklch(0.2475_0.0661_146.79)]/10 text-[oklch(0.2475_0.0661_146.79)] flex gap-2 items-center hover:bg-[oklch(0.2475_0.0661_146.79)]/20"
+                                    : isDark ? "bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-white/90 shadow-lg focus-visible:ring-white"
+                                           : "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 shadow-lg focus-visible:ring-[oklch(0.2475_0.0661_146.79)]"
                             )}
                         >
-                            Add to Plan
+                            {inCart ? (
+                                <>
+                                    <Check className="size-4" /> Added to Plan
+                                </>
+                            ) : (
+                                "Add to Plan"
+                            )}
                         </Button>
                         <button
                             onClick={() => setIsDrawerOpen(true)}
