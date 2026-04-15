@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useLenis } from "@/components/smooth-scroll-provider";
+import { useCart } from "@/lib/context/cart-context";
 
 import Link from "next/link";
 
@@ -21,6 +22,7 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
     const lenis = useLenis();
     const router = useRouter();
     const pathname = usePathname();
+    const { items, setIsCartOpen } = useCart();
 
     const scrollToWaitlist = () => {
         if (pathname !== "/") {
@@ -102,14 +104,19 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
 
                     {/* Desktop CTA */}
                     <Button
-                        onClick={scrollToWaitlist}
+                        onClick={() => setIsCartOpen(true)}
                         className={cn(
-                            "hidden md:inline-flex rounded-full px-5 text-sm font-medium transition-transform active:scale-95",
+                            "hidden md:inline-flex rounded-full px-5 text-sm font-medium transition-transform active:scale-95 relative",
                             "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90",
                             "border-none shadow-none h-9"
                         )}
                     >
-                        Get Early Access
+                        My Plan
+                        {items.length > 0 && (
+                            <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[oklch(0.6_0.15_25)] text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
+                                {items.length}
+                            </span>
+                        )}
                     </Button>
 
                     {/* Mobile Menu Toggle (2-Line Animated Icon) */}
@@ -173,16 +180,21 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                             >
                                 <Button
                                     onClick={() => {
-                                        scrollToWaitlist();
+                                        setIsCartOpen(true);
                                         setIsOpen(false);
                                     }}
                                     className={cn(
-                                        "w-auto rounded-full px-6 py-3 text-base font-medium",
+                                        "w-auto rounded-full px-6 py-3 text-base font-medium relative",
                                         "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90",
                                         "h-auto"
                                     )}
                                 >
-                                    Get Early Access
+                                    My Plan
+                                    {items.length > 0 && (
+                                        <span className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-[oklch(0.6_0.15_25)] text-xs font-bold text-white shadow-sm ring-2 ring-white">
+                                            {items.length}
+                                        </span>
+                                    )}
                                 </Button>
                             </motion.div>
                         </nav>

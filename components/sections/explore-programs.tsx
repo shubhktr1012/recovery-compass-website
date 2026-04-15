@@ -4,19 +4,29 @@ import { motion, useInView } from "framer-motion";
 import { Check, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
+import { useCart } from "@/lib/context/cart-context";
 
 type ProgramHighlight = {
     label: string;
     text: string;
 };
 
+type ProgramArticle = {
+    subtitle: string;
+    philosophy: string[];
+    whoIsItFor: string;
+    curriculumOverview: string;
+};
+
 type Program = {
     id: string;
     tag: string;
     title: string;
-    description: string;
+    cardDescription: string;
+    article: ProgramArticle;
     metaValue: string;
     metaLabel: string;
     highlights: ProgramHighlight[];
@@ -30,7 +40,16 @@ const categoryPrograms: Record<string, Program[]> = {
             id: "6-day-compass-reset",
             tag: "Decision & Reset",
             title: "6-Day Control",
-            description: "Break autopilot, make smoking inconvenient and conscious, and regain control through interruption instead of perfection.",
+            cardDescription: "Break autopilot, make smoking inconvenient and conscious, and regain control through interruption instead of perfection.",
+            article: {
+                subtitle: "The bridge between intention and action.",
+                philosophy: [
+                    "Most quitting methods rely entirely on willpower, forcing you into a sudden restriction that naturally triggers panic and relapse. The 6-Day Control program fundamentally shifts this dynamic by removing the pressure of 'never again' and replacing it with 'not right now.'",
+                    "By introducing a mandatory 10-minute delay before any urge is satisfied, you sever the automatic, subconscious loop. You aren't fighting the craving; you are simply observing it and proving to your nervous system that you can tolerate the delay."
+                ],
+                whoIsItFor: "Designed for those who feel trapped in an automatic, unconscious smoking pattern and need a structured, low-pressure way to prove to themselves that they are in control.",
+                curriculumOverview: "Six days of progressive behavioral disruption. You will throw away visual triggers, change physical routines associated with smoking, and learn grounding protocols to manage acute cravings in real-time."
+            },
             metaValue: "₹599",
             metaLabel: "Launch price",
             highlights: [
@@ -46,7 +65,16 @@ const categoryPrograms: Record<string, Program[]> = {
             id: "90-day-smoke-free-journey",
             tag: "Daily Guided Modules",
             title: "90-Day Quit Smoking",
-            description: "A longer journey designed to support lasting change by strengthening awareness, resilience, and consistency over time.",
+            cardDescription: "A longer journey designed to support lasting change by strengthening awareness, resilience, and consistency over time.",
+            article: {
+                subtitle: "Rewiring the deeply ingrained neural pathways.",
+                philosophy: [
+                    "Stopping the habit is only the first layer; remaining free requires a fundamental shift in how you process stress, boredom, and reward. The 90-Day Transform program acts as a daily anchor, gradually reshaping your emotional infrastructure without overwhelming you.",
+                    "Through daily guided audio prompts and psychological framing, the program moves you away from the identity of a 'smoker who is quitting' into the identity of someone who simply no longer relies on that crutch for peace."
+                ],
+                whoIsItFor: "For those ready to commit to long-term behavioral change, seeking daily guidance to help stabilize their nervous system during the crucial 3-month rewiring phase.",
+                curriculumOverview: "Daily 2-4 minute audio modules focused on pattern recognition, resilience building, optional low-pressure journaling, and long-term stabilization."
+            },
             metaValue: "₹6,549",
             metaLabel: "Launch price",
             highlights: [
@@ -64,7 +92,16 @@ const categoryPrograms: Record<string, Program[]> = {
             id: "14-day-sleep-reset",
             tag: "Reset the Body Clock",
             title: "Sleep Disorder Reset",
-            description: "Reset the body clock and nervous system so the brain begins recognizing the signals for sleep again.",
+            cardDescription: "Reset the body clock and nervous system so the brain begins recognizing the signals for sleep again.",
+            article: {
+                subtitle: "Calming the hyperactive nervous system.",
+                philosophy: [
+                    "Insomnia and disordered sleep are rarely just 'sleep problems'—they are usually hyperarousal problems. When the nervous system is stuck in an endless loop of low-level threat detection, the brain refuses to power down.",
+                    "This program focuses on creating distinct, undeniable physical signals to the body—starting from the moment you wake up. By leveraging light, movement, and temperature, we rebuild your natural biological pressure for sleep."
+                ],
+                whoIsItFor: "For those caught in the frustrating cycle of waking up exhausted, feeling wired all day, and lying awake at night.",
+                curriculumOverview: "Sunlight protocols, precise caffeine management, physiological sigh techniques, and guided sleep audios designed to lower heart rate variability before bed."
+            },
             metaValue: "TBD",
             metaLabel: "Price to be announced",
             highlights: [
@@ -80,7 +117,16 @@ const categoryPrograms: Record<string, Program[]> = {
             id: "21-day-energy-reset",
             tag: "Energy Reset Foundations",
             title: "Energy & Vitality",
-            description: "Restore daily energy and mental clarity by rebuilding the body’s natural rhythm through simple daily missions.",
+            cardDescription: "Restore daily energy and mental clarity by rebuilding the body’s natural rhythm through simple daily missions.",
+            article: {
+                subtitle: "Reclaiming your natural momentum.",
+                philosophy: [
+                    "Chronic fatigue often stems from an environment out of sync with your biology. When we rely on artificial stimulants rather than natural rhythms, our energy becomes chaotic, leading to mid-day crashes and brain fog.",
+                    "This reset strips away complex diets and exhaustive workout plans, focusing purely on establishing a bulletproof morning and evening framework that naturally generates cellular energy."
+                ],
+                whoIsItFor: "For individuals feeling chronically sluggish, dealing with mid-afternoon slumps, or struggling to find the physical motivation to accomplish daily goals.",
+                curriculumOverview: "Hydration protocols, light-exposure timing, strict activity windows, and biological sleep cues."
+            },
             metaValue: "TBD",
             metaLabel: "Price to be announced",
             highlights: [
@@ -98,7 +144,16 @@ const categoryPrograms: Record<string, Program[]> = {
             id: "mens-vitality-reset-program",
             tag: "Reset & Activation",
             title: "Male Sexual Health",
-            description: "Break automatic habits, calm performance anxiety, and activate the muscles that support blood flow and sexual strength.",
+            cardDescription: "Break automatic habits, calm performance anxiety, and activate the muscles that support blood flow and sexual strength.",
+            article: {
+                subtitle: "Physical activation and psychological calm.",
+                philosophy: [
+                    "Optimal sexual health requires both a relaxed mind and strong, conditioned physiological systems. Performance anxiety acts as a sudden block to blood flow, while automatic negative habits drain vital energy.",
+                    "By combining targeted physical movement (core and pelvic conditioning) with the proprietary CALM protocol to down-regulate anxiety in real-time, this program addresses both the mechanical and psychological barriers."
+                ],
+                whoIsItFor: "Men seeking to overcome performance anxiety, break negative compulsive habits, and restore physical confidence through natural regulation.",
+                curriculumOverview: "Daily pelvic strength exercises, rapid-calming breathing techniques (4-2-6), and hormone-supporting night routines."
+            },
             metaValue: "TBD",
             metaLabel: "Price to be announced",
             highlights: [
@@ -114,7 +169,16 @@ const categoryPrograms: Record<string, Program[]> = {
             id: "radiance-journey",
             tag: "Rejuvenation Journey",
             title: "Age Reversal",
-            description: "Activate the body’s natural rejuvenation process by improving circulation, stimulating facial muscles, and calming the nervous system.",
+            cardDescription: "Activate the body’s natural rejuvenation process by improving circulation, stimulating facial muscles, and calming the nervous system.",
+            article: {
+                subtitle: "Cellular renewal through rhythm and blood flow.",
+                philosophy: [
+                    "True anti-aging begins below the skin surface. When the nervous system is locked in high-cortisol survival mode, cellular repair halts. The skin loses its glow, and the body ages prematurely under the weight of stress.",
+                    "This program focuses on activating the parasympathetic nervous system (rest and digest) to allow the body to heal itself, combined with targeted routines that maximize nutrient delivery to facial tissues."
+                ],
+                whoIsItFor: "For those looking to move beyond superficial skincare treatments into deep, systemic lifestyle restoration for lasting vitality and appearance.",
+                curriculumOverview: "Circulation-boosting movements, targeted facial activation, deep nervous-system calming audio, and sleep-enhancing repair protocols."
+            },
             metaValue: "TBD",
             metaLabel: "Price to be announced",
             highlights: [
@@ -136,16 +200,19 @@ const CATEGORY_VISIBLE_MS = 20000;
 
 export function ExploreProgramsSection() {
     const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
+    
     const activeCategory = categories[activeCategoryIndex];
     const visiblePrograms = categoryPrograms[activeCategory] ?? categoryPrograms[categories[0]];
 
     useEffect(() => {
+        if (isPaused) return;
         const timeoutId = window.setTimeout(() => {
             setActiveCategoryIndex((currentIndex) => (currentIndex + 1) % categories.length);
         }, CATEGORY_VISIBLE_MS);
 
         return () => window.clearTimeout(timeoutId);
-    }, [activeCategoryIndex]);
+    }, [activeCategoryIndex, isPaused]);
 
     return (
         <section className="w-full bg-[#F9F9F9] py-16 md:py-24 overflow-visible">
@@ -172,7 +239,10 @@ export function ExploreProgramsSection() {
                             <button
                                 key={category}
                                 type="button"
-                                onClick={() => setActiveCategoryIndex(categories.indexOf(category))}
+                                onClick={() => {
+                                    setActiveCategoryIndex(categories.indexOf(category));
+                                    setIsPaused(true); // User took manual control, stop auto-cycling
+                                }}
                                 className={cn(
                                     "relative cursor-pointer font-satoshi pb-2 transition-colors",
                                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2 rounded-sm",
@@ -198,9 +268,20 @@ export function ExploreProgramsSection() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                <div 
+                    className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12"
+                    onMouseEnter={() => setIsPaused(true)}
+                    onMouseLeave={() => setIsPaused(false)}
+                >
                     {visiblePrograms.map((program, idx) => (
-                        <ProgramCard key={`${activeCategory}-${program.id}`} program={program} index={idx} />
+                        <ProgramCard 
+                            key={`${activeCategory}-${program.id}`} 
+                            program={program} 
+                            index={idx} 
+                            onDrawerStateChange={(isOpen) => {
+                                if (isOpen) setIsPaused(true);
+                            }}
+                        />
                     ))}
                 </div>
 
@@ -224,11 +305,20 @@ export function ExploreProgramsSection() {
     );
 }
 
-function ProgramCard({ program, index }: { program: Program; index: number }) {
+function ProgramCard({ program, index, onDrawerStateChange }: { program: Program; index: number; onDrawerStateChange?: (isOpen: boolean) => void }) {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: "-50px" });
     const [hasAppeared, setHasAppeared] = useState(false);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    
+    // Notify parent when drawer state changes so it doesn't cycle and kill the UI
+    useEffect(() => {
+        if (onDrawerStateChange) {
+            onDrawerStateChange(isDrawerOpen);
+        }
+    }, [isDrawerOpen]);
     const isDark = program.accent === "dark";
+    const { addItem } = useCart();
 
     useEffect(() => {
         if (isInView) {
@@ -271,7 +361,7 @@ function ProgramCard({ program, index }: { program: Program; index: number }) {
                         "text-base md:text-lg font-satoshi leading-relaxed",
                         isDark ? "text-white/70" : "text-[oklch(0.2475_0.0661_146.79)]/70"
                     )}>
-                        {program.description}
+                        {program.cardDescription}
                     </p>
                 </div>
 
@@ -321,23 +411,137 @@ function ProgramCard({ program, index }: { program: Program; index: number }) {
                             {program.metaLabel}
                         </p>
                     </div>
-                    <Button
-                        variant="default"
-                        className={cn(
-                            "w-fit px-10 h-12 rounded-full font-bold text-base border-none transition-all duration-300",
-                            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
-                            isDark
-                                ? "bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-white/90 shadow-lg focus-visible:ring-white"
-                                : "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 shadow-lg focus-visible:ring-[oklch(0.2475_0.0661_146.79)]"
-                        )}
-                    >
-                        {program.cta}
-                    </Button>
+                    
+                    <div className="flex flex-col items-center w-full gap-3 mt-2">
+                        <Button
+                            variant="default"
+                            onClick={() => addItem({
+                                id: program.id,
+                                title: program.title,
+                                price: program.metaValue === "TBD" ? null : parseInt(program.metaValue.replace(/[^0-9]/g, '')),
+                                tag: program.tag
+                            })}
+                            className={cn(
+                                "w-full md:w-fit px-10 h-12 rounded-full font-bold text-base border-none transition-all duration-300",
+                                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+                                isDark
+                                    ? "bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-white/90 shadow-lg focus-visible:ring-white"
+                                    : "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 shadow-lg focus-visible:ring-[oklch(0.2475_0.0661_146.79)]"
+                            )}
+                        >
+                            Add to Plan
+                        </Button>
+                        <button
+                            onClick={() => setIsDrawerOpen(true)}
+                            className={cn(
+                                "text-sm underline underline-offset-4 font-medium transition-opacity hover:opacity-100",
+                                isDark ? "text-white/60 hover:text-white" : "text-[oklch(0.2475_0.0661_146.79)]/60 hover:text-[oklch(0.2475_0.0661_146.79)]"
+                            )}
+                        >
+                            Know More
+                        </button>
+                    </div>
                 </div>
             </div>
             {isDark && (
-                <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-colors duration-500" />
+                <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-colors duration-500 pointer-events-none" />
             )}
+
+            {/* Program Info Drawer */}
+            <Sheet open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+                <SheetContent side="right" className="w-full sm:max-w-lg bg-[oklch(0.9484_0.0251_149.08)] text-[oklch(0.2475_0.0661_146.79)] border-l border-[oklch(0.2475_0.0661_146.79)]/10 p-0 flex flex-col gap-0 shadow-2xl h-full max-h-screen overflow-hidden">
+                    <div className="flex-1 overflow-y-auto px-6 md:px-10 pb-32 overscroll-contain" data-lenis-prevent="true">
+                        <SheetHeader className="mt-12 mb-8 text-left space-y-4">
+                            <span className="inline-block px-4 py-1.5 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase bg-[oklch(0.2475_0.0661_146.79)]/10 text-[oklch(0.2475_0.0661_146.79)]/80 w-fit">
+                                {program.tag}
+                            </span>
+                            <SheetTitle className="font-erode text-4xl md:text-5xl text-[oklch(0.2475_0.0661_146.79)] tracking-tight leading-[1.05]">
+                                {program.title}
+                            </SheetTitle>
+                            <div className="flex items-end gap-3 mt-4">
+                                <div className="text-3xl font-sans font-bold">
+                                    {program.metaValue}
+                                </div>
+                                <span className="text-sm font-medium opacity-60 mb-1">{program.metaLabel}</span>
+                            </div>
+                        </SheetHeader>
+
+                        <div className="w-full h-px bg-[oklch(0.2475_0.0661_146.79)]/10 my-8" />
+
+                        <div className="space-y-12 font-satoshi">
+                            {/* Subtitle / Hook */}
+                            <div className="space-y-4">
+                                <p className="text-[oklch(0.2475_0.0661_146.79)] font-medium text-xl leading-relaxed italic font-erode">
+                                    "{program.article.subtitle}"
+                                </p>
+                            </div>
+
+                            {/* Philosophy */}
+                            <div className="space-y-4">
+                                <h4 className="font-bold text-sm tracking-widest uppercase opacity-50 mb-3">Our Philosophy</h4>
+                                {program.article.philosophy.map((para, i) => (
+                                    <p key={i} className="text-[oklch(0.2475_0.0661_146.79)]/80 leading-relaxed text-base">
+                                        {para}
+                                    </p>
+                                ))}
+                            </div>
+
+                            {/* Who is it for */}
+                            <div className="space-y-4 border-l-2 border-[oklch(0.2475_0.0661_146.79)]/20 pl-4 my-8">
+                                <h4 className="font-bold text-sm tracking-widest uppercase opacity-50 mb-2">Who is this for?</h4>
+                                <p className="text-[oklch(0.2475_0.0661_146.79)]/90 leading-relaxed font-medium">
+                                    {program.article.whoIsItFor}
+                                </p>
+                            </div>
+
+                            {/* Curriculum Overview */}
+                            <div className="space-y-6">
+                                <h4 className="font-bold text-sm tracking-widest uppercase opacity-50 mb-3">The Curriculum</h4>
+                                <p className="text-[oklch(0.2475_0.0661_146.79)]/80 leading-relaxed text-base mb-6">
+                                    {program.article.curriculumOverview}
+                                </p>
+                                
+                                <div className="space-y-3">
+                                    {program.highlights.map((item, i) => (
+                                        <div key={i} className="flex gap-4 p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-[oklch(0.2475_0.0661_146.79)]/5">
+                                            <div className="flex-shrink-0 size-6 mt-0.5 rounded-full bg-[oklch(0.2475_0.0661_146.79)]/10 flex items-center justify-center">
+                                                <Check className="size-3 text-[oklch(0.2475_0.0661_146.79)]" />
+                                            </div>
+                                            <div className="flex flex-col gap-1">
+                                                <span className="text-[10px] font-black uppercase tracking-widest leading-none text-[oklch(0.2475_0.0661_146.79)]/50">
+                                                    {item.label}
+                                                </span>
+                                                <span className="text-[oklch(0.2475_0.0661_146.79)]/90 font-medium text-sm leading-snug">
+                                                    {item.text}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Sticky Bottom Action Bar */}
+                    <div className="absolute flex flex-col items-center justify-center bottom-0 w-full p-6 bg-gradient-to-t from-[oklch(0.9484_0.0251_149.08)] via-[oklch(0.9484_0.0251_149.08)] to-transparent pt-12 border-t border-transparent">
+                        <Button
+                            variant="default"
+                            onClick={() => {
+                                addItem({
+                                    id: program.id,
+                                    title: program.title,
+                                    price: program.metaValue === "TBD" ? null : parseInt(program.metaValue.replace(/[^0-9]/g, '')),
+                                    tag: program.tag
+                                });
+                                setIsDrawerOpen(false);
+                            }}
+                            className="w-full h-14 rounded-full font-bold text-lg border-none transition-transform hover:scale-[0.98] active:scale-95 bg-[oklch(0.2475_0.0661_146.79)] text-white shadow-xl"
+                        >
+                            Add to My Plan
+                        </Button>
+                    </div>
+                </SheetContent>
+            </Sheet>
         </div>
     );
 }

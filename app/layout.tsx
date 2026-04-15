@@ -135,6 +135,8 @@ export const viewport = {
 
 import { PageTransition } from "@/components/page-transition";
 import { CookieBanner } from "@/components/cookie-banner";
+import { CartProvider } from "@/lib/context/cart-context";
+import { MyPlanDrawer } from "@/components/my-plan-drawer";
 
 export default function RootLayout({
   children,
@@ -162,12 +164,15 @@ export default function RootLayout({
       >
 
         <SmoothScrollProvider>
-          <Preloader />
-          <PageTransition>
-            {children}
-          </PageTransition>
-          <BackToTop />
-          <CookieBanner />
+          <CartProvider>
+            <Preloader />
+            <PageTransition>
+              {children}
+            </PageTransition>
+            <MyPlanDrawer />
+            <BackToTop />
+            <CookieBanner />
+          </CartProvider>
         </SmoothScrollProvider>
       </body>
     </html>
