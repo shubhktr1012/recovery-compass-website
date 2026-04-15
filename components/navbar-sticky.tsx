@@ -10,7 +10,7 @@ import { useCart } from "@/lib/context/cart-context";
 
 import Link from "next/link";
 
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 interface NavbarStickyProps {
     onCtaClick?: () => void; // Deprecated, but kept for compatibility during refactor
@@ -20,22 +20,8 @@ interface NavbarStickyProps {
 export function NavbarSticky({ simple = false }: NavbarStickyProps) {
     const [isOpen, setIsOpen] = React.useState(false);
     const lenis = useLenis();
-    const router = useRouter();
     const pathname = usePathname();
     const { items, setIsCartOpen } = useCart();
-
-    const scrollToWaitlist = () => {
-        if (pathname !== "/") {
-            router.push("/#waitlist");
-            return;
-        }
-
-        if (lenis) {
-            lenis.scrollTo("#waitlist");
-        } else {
-            document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
-        }
-    };
 
     const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
         if (href.startsWith("#")) {
@@ -81,8 +67,8 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                     <span className="font-erode text-lg font-semibold tracking-tighter text-primary">
                         Recovery Compass
                     </span>
-                    <span className="ml-2 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest rounded-full border border-[oklch(0.2475_0.0661_146.79)]/30 text-[oklch(0.2475_0.0661_146.79)]/60">
-                        Launching Soon
+                    <span className="ml-2 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.15em] rounded-full border border-[oklch(0.2475_0.0661_146.79)]/20 text-[oklch(0.2475_0.0661_146.79)]/50 bg-[oklch(0.2475_0.0661_146.79)]/5">
+                        Open Beta
                     </span>
                 </Link>
 
@@ -95,9 +81,10 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                                 key={link.label}
                                 href={link.href}
                                 onClick={(e) => handleNavClick(e, link.href)}
-                                className="text-sm font-medium text-[oklch(0.2475_0.0661_146.79)] hover:text-[oklch(0.2475_0.0661_146.79)]/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2 rounded-sm"
+                                className="group relative text-sm font-medium text-[oklch(0.2475_0.0661_146.79)]/80 hover:text-[oklch(0.2475_0.0661_146.79)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2 rounded-sm py-1"
                             >
                                 {link.label}
+                                <span className="absolute inset-x-0 bottom-0 h-px bg-[oklch(0.2475_0.0661_146.79)] scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 ease-out" />
                             </Link>
                         ))}
                     </nav>
@@ -106,16 +93,20 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                     <Button
                         onClick={() => setIsCartOpen(true)}
                         className={cn(
-                            "hidden md:inline-flex rounded-full px-5 text-sm font-medium transition-transform active:scale-95 relative",
-                            "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90",
-                            "border-none shadow-none h-9"
+                            "hidden md:inline-flex rounded-full px-6 text-sm font-bold transition-all active:scale-[0.98] relative",
+                            "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/95 hover:shadow-lg",
+                            "border-none h-10 shadow-sm transition-all duration-300"
                         )}
                     >
                         My Plan
                         {items.length > 0 && (
-                            <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[oklch(0.6_0.15_25)] text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
+                            <motion.span 
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[oklch(0.55_0.15_25)] text-[10px] font-bold text-white shadow-md ring-2 ring-white"
+                            >
                                 {items.length}
-                            </span>
+                            </motion.span>
                         )}
                     </Button>
 
@@ -191,9 +182,13 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                                 >
                                     My Plan
                                     {items.length > 0 && (
-                                        <span className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-[oklch(0.6_0.15_25)] text-xs font-bold text-white shadow-sm ring-2 ring-white">
+                                        <motion.span 
+                                            initial={{ scale: 0 }}
+                                            animate={{ scale: 1 }}
+                                            className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-[oklch(0.55_0.15_25)] text-xs font-bold text-white shadow-md ring-2 ring-white"
+                                        >
                                             {items.length}
-                                        </span>
+                                        </motion.span>
                                     )}
                                 </Button>
                             </motion.div>
