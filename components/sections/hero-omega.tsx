@@ -109,9 +109,9 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                                     "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 border border-transparent h-auto",
                                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2"
                                 )}
-                                onClick={() => setIsCartOpen(true)}
+                                onClick={onSecondaryClick}
                             >
-                                View My Plan
+                                Explore Programs
                             </Button>
                             <Button
                                 className={cn(
@@ -119,9 +119,9 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                                     "bg-white text-[oklch(0.2475_0.0661_146.79)] border border-[oklch(0.2475_0.0661_146.79)] hover:bg-[oklch(0.2475_0.0661_146.79)] hover:text-white h-auto",
                                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2"
                                 )}
-                                onClick={onSecondaryClick}
+                                onClick={() => setIsCartOpen(true)}
                             >
-                                Explore Programs
+                                View My Plan
                             </Button>
                         </motion.div>
                     </motion.div>
