@@ -92,7 +92,7 @@ export function HeroSection({ onPrimaryClick, onSecondaryClick }: HeroSectionPro
 
                     {/* Subheadline */}
                     <motion.p variants={fadeUpVariants} className="text-lg md:text-xl text-neutral-200 max-w-xl leading-relaxed font-medium">
-                        Navigate urges, calm your body, and build steady change—one day at a time. Stop fighting biology with force and start using a structured approach that works with your nervous system.
+                        Navigate urges, calm your body, and build steady change - one day at a time. Stop fighting biology with force and start using a structured approach that works with your nervous system.
                     </motion.p>
 
                     {/* CTAs */}

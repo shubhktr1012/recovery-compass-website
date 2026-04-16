@@ -13,11 +13,12 @@ const nextConfig = {
                         key: 'Content-Security-Policy',
                         value: [
                             "default-src 'self'",
-                            "script-src 'self' 'unsafe-inline' cdn.jsdelivr.net",
+                            "script-src 'self' 'unsafe-inline' 'unsafe-eval' cdn.jsdelivr.net checkout.razorpay.com",
                             "style-src 'self' 'unsafe-inline' cdn.jsdelivr.net",
                             "img-src 'self' data: https: *.supabase.co",
                             "font-src 'self' data: https:",
-                            "connect-src 'self' *.supabase.co https://vitals.vercel-insights.com cdn.jsdelivr.net",
+                            "connect-src 'self' *.supabase.co https://vitals.vercel-insights.com cdn.jsdelivr.net *.razorpay.com https://lumberjack.razorpay.com",
+                            "frame-src https://api.razorpay.com https://checkout.razorpay.com",
                             "frame-ancestors 'none'",
                             "upgrade-insecure-requests"
                         ].join('; '),

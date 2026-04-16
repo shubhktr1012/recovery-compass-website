@@ -93,7 +93,7 @@ function FeatureBullets({
                 <li key={bullet.title} className={itemClassName}>
                     <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-current opacity-60" />
                     <span>
-                        <strong className={strongClassName}>{bullet.title}</strong> — {bullet.desc}
+                        <strong className={strongClassName}>{bullet.title}</strong> - {bullet.desc}
                     </span>
                 </li>
             ))}
@@ -119,7 +119,7 @@ function FeatureCard({ feature }: { feature: Feature }) {
 
             <div className="p-6 pt-5">
                 <span className="mb-3 block text-xs uppercase tracking-widest text-primary/60 font-geist-mono">
-                    {feature.index} — {feature.label}
+                    {feature.index} - {feature.label}
                 </span>
 
                 <h3 className="mb-3 text-2xl font-erode font-medium leading-[1.10] tracking-tighter text-primary md:text-3xl">
@@ -292,7 +292,7 @@ export function SolutionSection() {
                                 >
                                     <div className="max-w-lg text-left">
                                         <span className="mb-4 block text-sm uppercase tracking-widest text-secondary/50 font-geist-mono">
-                                            {feature.index} — {feature.label}
+                                            {feature.index} - {feature.label}
                                         </span>
                                         <h3 className="mb-4 text-4xl font-erode font-medium leading-[1.10] tracking-tighter text-secondary md:text-5xl 2xl:text-6xl lg:mb-3 xl:mb-6">
                                             <span className="block">{feature.desktopLines[0]}</span>

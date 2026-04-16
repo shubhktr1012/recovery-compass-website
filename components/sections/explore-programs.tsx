@@ -93,8 +93,8 @@ const categoryPrograms: Record<string, Program[]> = {
             article: {
                 subtitle: "Calming the hyperactive nervous system.",
                 philosophy: [
-                    "Insomnia and disordered sleep are rarely just 'sleep problems'—they are usually hyperarousal problems. When the nervous system is stuck in an endless loop of low-level threat detection, the brain refuses to power down.",
-                    "This program focuses on creating distinct, undeniable physical signals to the body—starting from the moment you wake up. By leveraging light, movement, and temperature, we rebuild your natural biological pressure for sleep."
+                    "Insomnia and disordered sleep are rarely just 'sleep problems' - they are usually hyperarousal problems. When the nervous system is stuck in an endless loop of low-level threat detection, the brain refuses to power down.",
+                    "This program focuses on creating distinct, undeniable physical signals to the body - starting from the moment you wake up. By leveraging light, movement, and temperature, we rebuild your natural biological pressure for sleep."
                 ],
                 whoIsItFor: "For those caught in the frustrating cycle of waking up exhausted, feeling wired all day, and lying awake at night.",
                 curriculumOverview: "Sunlight protocols, precise caffeine management, physiological sigh techniques, and guided sleep audios designed to lower heart rate variability before bed."

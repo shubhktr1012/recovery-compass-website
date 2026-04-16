@@ -5,10 +5,23 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Button } from "@/components/ui/button";
 import { XIcon } from "lucide-react";
 import { useUser } from "@/lib/context/user-context";
+import { useRouter } from "next/navigation";
 
 export function MyPlanDrawer() {
     const { items, isCartOpen, setIsCartOpen, removeItem, cartTotal } = useCart();
     const { user, openAuthModal } = useUser();
+    const router = useRouter();
+
+    const handleFinalize = () => {
+        setIsCartOpen(false);
+        if (!user) {
+            openAuthModal("signup", () => {
+                router.push("/checkout");
+            });
+        } else {
+            router.push("/checkout");
+        }
+    };
 
     return (
         <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
@@ -58,14 +71,7 @@ export function MyPlanDrawer() {
                         </div>
                         <Button 
                             className="w-full bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 h-14 rounded-full font-bold text-lg shadow-xl hover:scale-[0.98] transition-transform"
-                            onClick={() => {
-                                if (!user) {
-                                    openAuthModal("signup");
-                                } else {
-                                    // Will connect to checkout flow in Phase 3
-                                    console.log("Proceed to checkout", items);
-                                }
-                            }}
+                            onClick={handleFinalize}
                         >
                             Finalize Plan
                         </Button>

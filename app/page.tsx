@@ -25,7 +25,7 @@ export default function Home() {
       {/* Page Sections */}
       <main>
         <HeroOmega
-          onSecondaryClick={scrollToPrograms}
+          onExploreClick={scrollToPrograms}
         />
 
 

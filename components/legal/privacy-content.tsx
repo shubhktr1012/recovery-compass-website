@@ -265,7 +265,7 @@ export function PrivacyContent() {
                 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
             >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">10. Your Rights (India — DPDP Act 2023)</h2>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">10. Your Rights (India - DPDP Act 2023)</h2>
                 <div className="space-y-4">
                     <p>Under applicable Indian law, you have the right to:</p>
                     <ul className="list-disc pl-6 space-y-2">
@@ -291,11 +291,11 @@ export function PrivacyContent() {
                 <div className="space-y-4">
                     <p>We may share Personal Information with:</p>
                     <ul className="list-disc pl-6 space-y-2">
-                        <li><span className="font-medium text-foreground">Supabase</span> — Backend hosting provider</li>
-                        <li><span className="font-medium text-foreground">RevenueCat</span> — Subscription validation</li>
-                        <li><span className="font-medium text-foreground">Apple & Google</span> — Payment processing</li>
+                        <li><span className="font-medium text-foreground">Supabase</span> - Backend hosting provider</li>
+                        <li><span className="font-medium text-foreground">RevenueCat</span> - Subscription validation</li>
+                        <li><span className="font-medium text-foreground">Apple & Google</span> - Payment processing</li>
                         <li>Analytics service providers</li>
-                        <li>Law enforcement — If required by law</li>
+                        <li>Law enforcement - If required by law</li>
                     </ul>
                     <p className="font-bold">We do not sell or rent personal data.</p>
                 </div>

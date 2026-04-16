@@ -10,19 +10,26 @@ import { useUser } from "@/lib/context/user-context";
 import { motion, Variants } from "framer-motion";
 
 interface HeroOmegaProps {
-    onSecondaryClick?: () => void;
+    onExploreClick?: () => void;
+    onActionClick?: () => void;
 }
 
-export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
+export function HeroOmega({ onExploreClick, onActionClick }: HeroOmegaProps) {
     const { items, setIsCartOpen } = useCart();
     const { user, openAuthModal } = useUser();
     
     // Guest with empty cart → prompt sign in. Everyone else → view their plan.
     const isGuestWithEmptyCart = !user && items.length === 0;
     const secondaryLabel = isGuestWithEmptyCart ? "Sign In" : "View My Plan";
-    const handleSecondaryClick = isGuestWithEmptyCart 
-        ? () => openAuthModal("signin") 
-        : () => setIsCartOpen(true);
+    const handleSecondaryClick = () => {
+        if (onActionClick) {
+            onActionClick();
+        } else if (isGuestWithEmptyCart) {
+            openAuthModal("signin");
+        } else {
+            setIsCartOpen(true);
+        }
+    };
 
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
@@ -97,7 +104,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
                                 </span>
                                 <span className="text-[10px] md:text-xs font-bold text-[oklch(0.2475_0.0661_146.79)]/80 tracking-wide uppercase">
-                                    Open Beta <span className="hidden md:inline">— Native Apps Launching Soon</span>
+                                    Open Beta <span className="hidden md:inline"> - Native Apps Launching Soon</span>
                                 </span>
                             </div>
 
@@ -118,7 +125,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                                     "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 border border-transparent h-auto",
                                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2"
                                 )}
-                                onClick={() => setIsCartOpen(true)}
+                                onClick={onExploreClick}
                             >
                                 Explore Programs
                             </Button>

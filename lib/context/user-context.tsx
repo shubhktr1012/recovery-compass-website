@@ -21,7 +21,7 @@ type UserContextType = {
     isLoading: boolean;
     signOut: () => Promise<void>;
     isAuthModalOpen: boolean;
-    openAuthModal: (tab?: "signin" | "signup") => void;
+    openAuthModal: (tab?: "signin" | "signup", onSuccess?: () => void) => void;
     closeAuthModal: () => void;
 };
 
@@ -34,6 +34,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     const [isLoading, setIsLoading] = useState(true);
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [authModalTab, setAuthModalTab] = useState<"signin" | "signup">("signin");
+    const [authSuccessCallback, setAuthSuccessCallback] = useState<(() => void) | null>(null);
 
     const fetchProfile = async (userId: string) => {
         try {
@@ -84,12 +85,16 @@ export function UserProvider({ children }: { children: ReactNode }) {
         };
     }, []);
 
-    const openAuthModal = (tab: "signin" | "signup" = "signin") => {
+    const openAuthModal = (tab: "signin" | "signup" = "signin", onSuccess?: () => void) => {
         setAuthModalTab(tab);
+        setAuthSuccessCallback(() => onSuccess || null);
         setIsAuthModalOpen(true);
     };
 
-    const closeAuthModal = () => setIsAuthModalOpen(false);
+    const closeAuthModal = () => {
+        setIsAuthModalOpen(false);
+        setAuthSuccessCallback(null);
+    };
 
     const signOut = async () => {
         await supabase.auth.signOut();
@@ -113,6 +118,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
                 isOpen={isAuthModalOpen} 
                 onClose={closeAuthModal} 
                 defaultTab={authModalTab}
+                onSuccess={() => {
+                    if (authSuccessCallback) {
+                        authSuccessCallback();
+                    }
+                    closeAuthModal();
+                }}
             />
         </UserContext.Provider>
     );
