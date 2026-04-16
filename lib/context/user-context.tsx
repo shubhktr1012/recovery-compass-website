@@ -1,9 +1,14 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useState, ReactNode } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import { AuthModal } from "@/components/auth-modal";
+
+const dbToWebSlug: Record<string, string> = {
+    "six_day_reset": "6-day-compass-reset",
+    "ninety_day_transform": "90-day-smoke-free-journey",
+};
 
 type Profile = {
     id: string;
@@ -23,6 +28,7 @@ type UserContextType = {
     isAuthModalOpen: boolean;
     openAuthModal: (tab?: "signin" | "signup", onSuccess?: () => void) => void;
     closeAuthModal: () => void;
+    ownedProgram: string | null;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -35,6 +41,32 @@ export function UserProvider({ children }: { children: ReactNode }) {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [authModalTab, setAuthModalTab] = useState<"signin" | "signup">("signin");
     const [authSuccessCallback, setAuthSuccessCallback] = useState<(() => void) | null>(null);
+    const [ownedProgram, setOwnedProgram] = useState<string | null>(null);
+
+    const fetchOwnedProgram = useCallback(async (userId: string) => {
+        try {
+            const { data, error } = await supabase
+                .from("program_access")
+                .select("owned_program, purchase_state")
+                .eq("user_id", userId)
+                .maybeSingle();
+
+            if (error) {
+                console.error("Error fetching program_access:", error);
+                setOwnedProgram(null);
+                return;
+            }
+
+            if (data && ["owned_active", "owned_completed", "owned_archived"].includes(data.purchase_state)) {
+                setOwnedProgram(dbToWebSlug[data.owned_program] || null);
+            } else {
+                setOwnedProgram(null);
+            }
+        } catch (e) {
+            console.error("Failed to fetch owned programs:", e);
+            setOwnedProgram(null);
+        }
+    }, []);
 
     const fetchProfile = async (userId: string) => {
         try {
@@ -62,6 +94,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
             setUser(session?.user ?? null);
             if (session?.user) {
                 fetchProfile(session.user.id);
+                fetchOwnedProgram(session.user.id);
+            } else {
+                setOwnedProgram(null);
             }
             setIsLoading(false);
         });
@@ -72,9 +107,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
             setUser(session?.user ?? null);
             
             if (session?.user) {
-                await fetchProfile(session.user.id);
+                await Promise.all([
+                    fetchProfile(session.user.id),
+                    fetchOwnedProgram(session.user.id)
+                ]);
             } else {
                 setProfile(null);
+                setOwnedProgram(null);
             }
             
             setIsLoading(false);
@@ -83,7 +122,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         return () => {
             subscription.unsubscribe();
         };
-    }, []);
+    }, [fetchOwnedProgram]);
 
     const openAuthModal = (tab: "signin" | "signup" = "signin", onSuccess?: () => void) => {
         setAuthModalTab(tab);
@@ -98,6 +137,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
     const signOut = async () => {
         await supabase.auth.signOut();
+        setOwnedProgram(null);
     };
 
     return (
@@ -110,7 +150,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
                 signOut,
                 isAuthModalOpen,
                 openAuthModal,
-                closeAuthModal
+                closeAuthModal,
+                ownedProgram
             }}
         >
             {children}

@@ -4,10 +4,11 @@ import { motion, useInView } from "framer-motion";
 import { Check, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/lib/context/cart-context";
+import { useUser } from "@/lib/context/user-context";
 
 type ProgramHighlight = {
     label: string;
@@ -309,11 +310,13 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
         if (onDrawerStateChange) {
             onDrawerStateChange(isDrawerOpen);
         }
-    }, [isDrawerOpen]);
+    }, [isDrawerOpen, onDrawerStateChange]);
     const isDark = program.accent === "dark";
     const { addItem, removeItem, isItemInCart } = useCart();
+    const { ownedProgram } = useUser();
     
     const inCart = isItemInCart(program.id);
+    const isOwned = ownedProgram === program.id;
 
     useEffect(() => {
         if (isInView) {
@@ -408,37 +411,49 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
                     </div>
                     
                     <div className="flex flex-col items-center w-full gap-3 mt-2">
-                        <Button
-                            variant="default"
-                            onClick={() => {
-                                if (inCart) {
-                                    removeItem(program.id);
-                                } else {
-                                    addItem({
-                                        id: program.id,
-                                        title: program.title,
-                                        price: program.metaValue === "TBD" ? null : parseInt(program.metaValue.replace(/[^0-9]/g, '')),
-                                        tag: program.tag
-                                    });
-                                }
-                            }}
-                            className={cn(
-                                "w-full md:w-fit px-10 h-12 rounded-full font-bold text-base border-none transition-all duration-300",
-                                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
-                                inCart 
-                                    ? isDark ? "bg-white/10 text-white flex gap-2 items-center hover:bg-white/20" : "bg-[oklch(0.2475_0.0661_146.79)]/10 text-[oklch(0.2475_0.0661_146.79)] flex gap-2 items-center hover:bg-[oklch(0.2475_0.0661_146.79)]/20"
-                                    : isDark ? "bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-white/90 shadow-lg focus-visible:ring-white"
-                                           : "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 shadow-lg focus-visible:ring-[oklch(0.2475_0.0661_146.79)]"
-                            )}
-                        >
-                            {inCart ? (
-                                <>
-                                    <Check className="size-4" /> Added to Plan
-                                </>
-                            ) : (
-                                "Add to Plan"
-                            )}
-                        </Button>
+                        {isOwned ? (
+                            <Button
+                                disabled
+                                className={cn(
+                                    "w-full md:w-fit px-10 h-12 rounded-full font-bold text-base border-none transition-all duration-300 opacity-100",
+                                    isDark ? "bg-white/10 text-white/50" : "bg-[oklch(0.2475_0.0661_146.79)]/10 text-[oklch(0.2475_0.0661_146.79)]/50"
+                                )}
+                            >
+                                <Check className="size-4 mr-2" /> Owned
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="default"
+                                onClick={() => {
+                                    if (inCart) {
+                                        removeItem(program.id);
+                                    } else {
+                                        addItem({
+                                            id: program.id,
+                                            title: program.title,
+                                            price: program.metaValue === "TBD" ? null : parseInt(program.metaValue.replace(/[^0-9]/g, '')),
+                                            tag: program.tag
+                                        });
+                                    }
+                                }}
+                                className={cn(
+                                    "w-full md:w-fit px-10 h-12 rounded-full font-bold text-base border-none transition-all duration-300",
+                                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+                                    inCart 
+                                        ? isDark ? "bg-white/10 text-white flex gap-2 items-center hover:bg-white/20" : "bg-[oklch(0.2475_0.0661_146.79)]/10 text-[oklch(0.2475_0.0661_146.79)] flex gap-2 items-center hover:bg-[oklch(0.2475_0.0661_146.79)]/20"
+                                        : isDark ? "bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-white/90 shadow-lg focus-visible:ring-white"
+                                               : "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 shadow-lg focus-visible:ring-[oklch(0.2475_0.0661_146.79)]"
+                                )}
+                            >
+                                {inCart ? (
+                                    <>
+                                        <Check className="size-4" /> Added to Plan
+                                    </>
+                                ) : (
+                                    "Add to Plan"
+                                )}
+                            </Button>
+                        )}
                         <button
                             onClick={() => setIsDrawerOpen(true)}
                             className={cn(
@@ -480,7 +495,7 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
                             {/* Subtitle / Hook */}
                             <div className="space-y-4">
                                 <p className="text-[oklch(0.2475_0.0661_146.79)] font-medium text-xl leading-relaxed italic font-erode">
-                                    "{program.article.subtitle}"
+                                    &ldquo;{program.article.subtitle}&rdquo;
                                 </p>
                             </div>
 
@@ -532,21 +547,30 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
 
                     {/* Sticky Bottom Action Bar */}
                     <div className="absolute flex flex-col items-center justify-center bottom-0 w-full p-6 bg-gradient-to-t from-[oklch(0.9484_0.0251_149.08)] via-[oklch(0.9484_0.0251_149.08)] to-transparent pt-12 border-t border-transparent">
-                        <Button
-                            variant="default"
-                            onClick={() => {
-                                addItem({
-                                    id: program.id,
-                                    title: program.title,
-                                    price: program.metaValue === "TBD" ? null : parseInt(program.metaValue.replace(/[^0-9]/g, '')),
-                                    tag: program.tag
-                                });
-                                setIsDrawerOpen(false);
-                            }}
-                            className="w-full h-14 rounded-full font-bold text-lg border-none transition-transform hover:scale-[0.98] active:scale-95 bg-[oklch(0.2475_0.0661_146.79)] text-white shadow-xl"
-                        >
-                            Add to My Plan
-                        </Button>
+                        {isOwned ? (
+                            <Button
+                                disabled
+                                className="w-full h-14 rounded-full font-bold text-lg border-none opacity-50 bg-[oklch(0.2475_0.0661_146.79)] text-white"
+                            >
+                                <Check className="size-5 mr-2" /> Program Owned
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="default"
+                                onClick={() => {
+                                    addItem({
+                                        id: program.id,
+                                        title: program.title,
+                                        price: program.metaValue === "TBD" ? null : parseInt(program.metaValue.replace(/[^0-9]/g, '')),
+                                        tag: program.tag
+                                    });
+                                    setIsDrawerOpen(false);
+                                }}
+                                className="w-full h-14 rounded-full font-bold text-lg border-none transition-transform hover:scale-[0.98] active:scale-95 bg-[oklch(0.2475_0.0661_146.79)] text-white shadow-xl"
+                            >
+                                Add to My Plan
+                            </Button>
+                        )}
                     </div>
                 </SheetContent>
             </Sheet>
