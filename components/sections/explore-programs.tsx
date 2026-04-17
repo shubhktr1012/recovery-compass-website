@@ -279,12 +279,11 @@ export function ExploreProgramsSection() {
                     ))}
                 </div>
 
-                {/* Free Video Consultation CTA - Commented out until live */}
-                {/* 
+                {/* Free Video Consultation CTA */}
                 <div className="mt-16 text-center">
                     <p className="text-lg md:text-xl font-satoshi font-normal text-[oklch(0.2475_0.0661_146.79)]/70">
                         Not sure which path is right for you? <a
-                            href="https://calendly.com/your-link"
+                            href="https://calendly.com/anjan-recoverycompass/30min"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="font-medium text-[oklch(0.2475_0.0661_146.79)] underline underline-offset-4 hover:text-[oklch(0.2475_0.0661_146.79)]/80 transition-colors"
@@ -293,7 +292,6 @@ export function ExploreProgramsSection() {
                         </a>
                     </p>
                 </div>
-                */}
             </div>
         </section>
     );
@@ -313,7 +311,7 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
     }, [isDrawerOpen, onDrawerStateChange]);
     const isDark = program.accent === "dark";
     const { addItem, removeItem, isItemInCart } = useCart();
-    const { ownedProgram } = useUser();
+    const { ownedProgram, hasActiveProgram } = useUser();
     
     const inCart = isItemInCart(program.id);
     const isOwned = ownedProgram === program.id;
@@ -420,6 +418,16 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
                                 )}
                             >
                                 <Check className="size-4 mr-2" /> Owned
+                            </Button>
+                        ) : hasActiveProgram ? (
+                            <Button
+                                disabled
+                                className={cn(
+                                    "w-full md:w-fit px-8 h-12 rounded-full font-bold text-sm md:text-base border-none transition-all duration-300 opacity-80",
+                                    isDark ? "bg-white/10 text-white/70" : "bg-[oklch(0.2475_0.0661_146.79)]/10 text-[oklch(0.2475_0.0661_146.79)]/70"
+                                )}
+                            >
+                                Active Program in Progress
                             </Button>
                         ) : (
                             <Button
@@ -553,6 +561,13 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
                                 className="w-full h-14 rounded-full font-bold text-lg border-none opacity-50 bg-[oklch(0.2475_0.0661_146.79)] text-white"
                             >
                                 <Check className="size-5 mr-2" /> Program Owned
+                            </Button>
+                        ) : hasActiveProgram ? (
+                            <Button
+                                disabled
+                                className="w-full h-14 rounded-full font-bold text-lg border-none opacity-60 bg-[oklch(0.2475_0.0661_146.79)]/80 text-white"
+                            >
+                                Active Program in Progress
                             </Button>
                         ) : (
                             <Button

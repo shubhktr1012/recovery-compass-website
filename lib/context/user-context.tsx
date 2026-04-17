@@ -8,6 +8,10 @@ import { AuthModal } from "@/components/auth-modal";
 const dbToWebSlug: Record<string, string> = {
     "six_day_reset": "6-day-compass-reset",
     "ninety_day_transform": "90-day-smoke-free-journey",
+    "sleep_disorder_reset": "14-day-sleep-reset",
+    "energy_vitality": "21-day-energy-reset",
+    "age_reversal": "radiance-journey",
+    "male_sexual_health": "mens-vitality-reset-program",
 };
 
 type Profile = {
@@ -29,6 +33,7 @@ type UserContextType = {
     openAuthModal: (tab?: "signin" | "signup", onSuccess?: () => void) => void;
     closeAuthModal: () => void;
     ownedProgram: string | null;
+    hasActiveProgram: boolean;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -42,29 +47,46 @@ export function UserProvider({ children }: { children: ReactNode }) {
     const [authModalTab, setAuthModalTab] = useState<"signin" | "signup">("signin");
     const [authSuccessCallback, setAuthSuccessCallback] = useState<(() => void) | null>(null);
     const [ownedProgram, setOwnedProgram] = useState<string | null>(null);
+    const [hasActiveProgram, setHasActiveProgram] = useState(false);
 
     const fetchOwnedProgram = useCallback(async (userId: string) => {
         try {
             const { data, error } = await supabase
                 .from("program_access")
-                .select("owned_program, purchase_state")
+                .select("owned_program, purchase_state, updated_at")
                 .eq("user_id", userId)
-                .maybeSingle();
+                .order("updated_at", { ascending: false });
 
             if (error) {
                 console.error("Error fetching program_access:", error);
                 setOwnedProgram(null);
+                setHasActiveProgram(false);
                 return;
             }
 
-            if (data && ["owned_active", "owned_completed", "owned_archived"].includes(data.purchase_state)) {
-                setOwnedProgram(dbToWebSlug[data.owned_program] || null);
+            if (data && data.length > 0) {
+                const activeRecord = data.find(r => r.purchase_state === "owned_active");
+                const anyRecord = activeRecord || data.find(r => ["owned_completed", "owned_archived"].includes(r.purchase_state));
+
+                if (anyRecord) {
+                    setOwnedProgram(dbToWebSlug[anyRecord.owned_program] || null);
+                } else {
+                    setOwnedProgram(null);
+                }
+
+                if (activeRecord) {
+                    setHasActiveProgram(true);
+                } else {
+                    setHasActiveProgram(false);
+                }
             } else {
                 setOwnedProgram(null);
+                setHasActiveProgram(false);
             }
         } catch (e) {
             console.error("Failed to fetch owned programs:", e);
             setOwnedProgram(null);
+            setHasActiveProgram(false);
         }
     }, []);
 
@@ -97,6 +119,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
                 fetchOwnedProgram(session.user.id);
             } else {
                 setOwnedProgram(null);
+                setHasActiveProgram(false);
             }
             setIsLoading(false);
         });
@@ -114,6 +137,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
             } else {
                 setProfile(null);
                 setOwnedProgram(null);
+                setHasActiveProgram(false);
             }
             
             setIsLoading(false);
@@ -138,6 +162,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     const signOut = async () => {
         await supabase.auth.signOut();
         setOwnedProgram(null);
+        setHasActiveProgram(false);
     };
 
     return (
@@ -151,7 +176,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
                 isAuthModalOpen,
                 openAuthModal,
                 closeAuthModal,
-                ownedProgram
+                ownedProgram,
+                hasActiveProgram
             }}
         >
             {children}

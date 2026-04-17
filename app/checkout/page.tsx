@@ -30,6 +30,7 @@ import Script from "next/script";
 import Image from "next/image";
 import { FooterVariantTwo } from "@/components/sections";
 import { NavbarSticky } from "@/components/navbar-sticky";
+import { formatPaymentDescription, formatProgramCountLabel } from "@/lib/program-commerce-policy";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Design Tokens (Warm Luxury)
@@ -230,7 +231,7 @@ function CartItem({
 
 export default function CheckoutPage() {
     const { items, cartTotal, removeItem } = useCart();
-    const { user, isLoading: isAuthLoading } = useUser();
+    const { user, isLoading: isAuthLoading, hasActiveProgram } = useUser();
     const router = useRouter();
     const [isProcessing, setIsProcessing] = useState(false);
     const [promoCode, setPromoCode] = useState("");
@@ -248,13 +249,16 @@ export default function CheckoutPage() {
 
     // Redirect if not logged in or cart is empty (only after loading completes)
     useEffect(() => {
-        if (!isAuthLoading && !user) {
-            router.push("/");
+        if (!isAuthLoading) {
+            if (!user || hasActiveProgram) {
+                router.push("/");
+                return;
+            }
         }
         if (cartLoaded && items.length === 0) {
             router.push("/");
         }
-    }, [user, items, isAuthLoading, cartLoaded, router]);
+    }, [user, items, isAuthLoading, cartLoaded, router, hasActiveProgram]);
 
     const handlePromoApply = () => {
         setPromoError("");
@@ -316,7 +320,7 @@ export default function CheckoutPage() {
                 amount: orderData.amount,
                 currency: orderData.currency,
                 name: "Recovery Compass",
-                description: `Payment for ${items.length} program(s)`,
+                description: formatPaymentDescription(items.length),
                 image: "/rc-logo-primary.svg",
                 order_id: orderData.id,
                 handler: async function (response: any) {
@@ -490,7 +494,7 @@ export default function CheckoutPage() {
                             <div className="mb-6">
                                 <h3 className="font-erode text-xl font-semibold mb-1">Order Summary</h3>
                                 <p className="text-[13px] opacity-40 font-medium">
-                                    {items.length} program{items.length > 1 ? "s" : ""} selected
+                                    {formatProgramCountLabel(items.length)}
                                 </p>
                             </div>
 

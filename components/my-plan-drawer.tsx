@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 export function MyPlanDrawer() {
     const { items, isCartOpen, setIsCartOpen, removeItem, cartTotal } = useCart();
-    const { user, openAuthModal } = useUser();
+    const { user, openAuthModal, hasActiveProgram } = useUser();
     const router = useRouter();
 
     const handleFinalize = () => {
@@ -34,10 +34,20 @@ export function MyPlanDrawer() {
 
                 <div className="flex-1 overflow-y-auto p-6 pb-32 overscroll-contain" data-lenis-prevent="true">
                     {items.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center h-full text-center space-y-4 opacity-70">
-                            <p className="font-satoshi text-lg">Your plan is empty.</p>
-                            <p className="font-satoshi text-sm">Select a program to begin your journey.</p>
-                        </div>
+                        hasActiveProgram ? (
+                            <div className="flex flex-col items-center justify-center h-full text-center space-y-4 opacity-70 mt-10">
+                                <div className="size-12 rounded-full bg-[oklch(0.2475_0.0661_146.79)]/10 flex items-center justify-center mb-2">
+                                    <span className="text-[oklch(0.2475_0.0661_146.79)]">✨</span>
+                                </div>
+                                <p className="font-erode text-2xl font-medium">Active Program in Progress</p>
+                                <p className="font-satoshi text-base text-[oklch(0.2475_0.0661_146.79)]/70 max-w-[250px]">Open your program in the app.</p>
+                            </div>
+                        ) : (
+                            <div className="flex flex-col items-center justify-center h-full text-center space-y-4 opacity-70 mt-20">
+                                <p className="font-satoshi text-lg">Your plan is empty.</p>
+                                <p className="font-satoshi text-sm">Select a program to begin your journey.</p>
+                            </div>
+                        )
                     ) : (
                         <div className="space-y-6">
                             {items.map((item) => (

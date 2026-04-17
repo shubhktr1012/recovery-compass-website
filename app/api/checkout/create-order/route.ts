@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Razorpay from "razorpay";
-import { createTransaction, TransactionItem } from "@/lib/commerce";
+import { createTransaction, TransactionItem, supabaseAdmin } from "@/lib/commerce";
+import { MAX_CART_ITEMS } from "@/lib/program-commerce-policy";
 
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID!,
@@ -21,6 +22,32 @@ export async function POST(req: NextRequest) {
 
         if (!items || !Array.isArray(items) || items.length === 0) {
             return NextResponse.json({ message: "At least one item is required" }, { status: 400 });
+        }
+
+        if (items.length > MAX_CART_ITEMS) {
+            return NextResponse.json(
+                { message: "This plan currently supports only one program at a time." },
+                { status: 400 }
+            );
+        }
+
+        // Server-Side Safety Net: Check if user already owns an active program
+        const { data: activePrograms, error: accessError } = await supabaseAdmin
+            .from("program_access")
+            .select("owned_program")
+            .eq("user_id", userId)
+            .eq("purchase_state", "owned_active");
+
+        if (accessError) {
+            console.error("Supabase Error checking active program:", accessError);
+            return NextResponse.json({ message: "Unable to verify program eligibility" }, { status: 500 });
+        }
+
+        if (activePrograms && activePrograms.length > 0) {
+            return NextResponse.json(
+                { message: "You already have an active program. Please finish it before purchasing a new one." },
+                { status: 400 }
+            );
         }
 
         // Razorpay expects amount in paise (multiply by 100)
