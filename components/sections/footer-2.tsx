@@ -48,7 +48,7 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
 
                             {/* Disclaimer */}
                             <p className="text-xs text-white/40 leading-relaxed max-w-[320px]">
-                                By subscribing you agree to with our{" "}
+                                By subscribing you agree to our{" "}
                                 <Link
                                     href="/privacy"
                                     className="underline hover:text-white transition-colors cursor-pointer"
@@ -80,6 +80,14 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                                         className="hover:text-white transition-colors cursor-pointer"
                                     >
                                         Privacy Policy
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        href="/citations"
+                                        className="hover:text-white transition-colors cursor-pointer"
+                                    >
+                                        Citations &amp; Sources
                                     </Link>
                                 </li>
                             </ul>
