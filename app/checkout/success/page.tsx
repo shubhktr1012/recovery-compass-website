@@ -292,7 +292,7 @@ export default function SuccessPage() {
 
                             {/* ── Calendly Booking (Brand Native) ── */}
                             <motion.a
-                                href="https://calendly.com"
+                                href="https://calendly.com/anjan-recoverycompass/30min"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 initial={{ opacity: 0, y: 24 }}

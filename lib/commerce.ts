@@ -5,7 +5,7 @@ import { sendWelcomeEmail } from "@/lib/mail";
 // Supabase Admin Client (server-only, service_role)
 // ─────────────────────────────────────────────────────────────────────────────
 
-const supabaseAdmin = createClient(
+export const supabaseAdmin = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
@@ -128,19 +128,56 @@ export async function markTransactionFailed(providerOrderId: string, metadata?: 
 //    Current behavior:
 //    - Logs the intent
 //    - Sends the Welcome & Receipt email to the user via Resend!
-//    - Does NOT update `profiles.purchased_programs`
-//    - Does NOT change `fulfillment_status` to "fulfilled"
-//    - Leaves `fulfillment_status` as "pending" until the real DB entitlement flow is wired
-//
-//    When ready, this function should:
-//    1. Read the transaction's `items` JSONB
-//    2. Insert rows into `program_access` for each program_slug
-//    3. Update the transaction's `fulfillment_status` to "fulfilled"
-//    4. Handle errors by setting `fulfillment_status` to "fulfillment_failed"
+//    - Resolves the purchased program from the transaction payload
+//    - UPSERTs the entitlement into `program_access`
+//    - Marks the transaction as fulfilled only after the entitlement write succeeds
+//    - Marks the transaction as fulfillment_failed on any error
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Mapping from the website marketing slugs to the actual database enums
+const webToDbSlug: Record<string, string> = {
+    "6-day-compass-reset": "six_day_reset",
+    "90-day-smoke-free-journey": "ninety_day_transform",
+    "14-day-sleep-reset": "sleep_disorder_reset",
+    "21-day-energy-reset": "energy_vitality",
+    "mens-vitality-reset-program": "male_sexual_health",
+    "radiance-journey": "age_reversal",
+};
+
+const allowedProgramSlugs = new Set([
+    "six_day_reset",
+    "ninety_day_transform",
+    "sleep_disorder_reset",
+    "energy_vitality",
+    "age_reversal",
+    "male_sexual_health",
+]);
+
+function resolveProgramSlugs(items: unknown): string[] {
+    if (!Array.isArray(items) || items.length === 0) {
+        return [];
+    }
+
+    const slugs = items
+        .map((item) => {
+            if (!item || typeof item !== "object") {
+                return null;
+            }
+
+            const rawProgramSlug = (item as { program_slug?: unknown }).program_slug;
+            if (typeof rawProgramSlug !== "string" || !rawProgramSlug.trim()) {
+                return null;
+            }
+
+            const dbSlug = webToDbSlug[rawProgramSlug.trim()] ?? rawProgramSlug.trim();
+            return allowedProgramSlugs.has(dbSlug) ? dbSlug : null;
+        })
+        .filter((slug): slug is string => Boolean(slug));
+
+    return Array.from(new Set(slugs));
+}
+
 async function attemptFulfillment(transactionId: string): Promise<void> {
-    // eslint-disable-next-line no-console
     console.log(`[Commerce] Fulfillment started for transaction ${transactionId}...`);
 
     try {
@@ -167,9 +204,11 @@ async function attemptFulfillment(transactionId: string): Promise<void> {
             const amountInr = (txn.amount / 100).toFixed(2);
             const amountFormatted = `₹${amountInr}`;
             
-            // For now, take the first item's title as the program name
+            // For receipt copy, join the item titles so the message stays accurate
             const items = txn.items as TransactionItem[];
-            const programName = items && items.length > 0 ? items[0].title : "Recovery Compass Curriculum";
+            const programName = items && items.length > 0
+                ? items.map((item) => item.title).join(", ")
+                : "Recovery Compass Curriculum";
 
             // Fire and forget the email dispatch
              await sendWelcomeEmail({
@@ -183,9 +222,40 @@ async function attemptFulfillment(transactionId: string): Promise<void> {
              console.log(`[Commerce] No email found for profile linked to txn ${transactionId}`);
         }
 
-        // When program_access DB entitlement exists, we would complete the flow here
-        // and update fulfillment_status to "fulfilled".
-        
+        // 1. Read the transaction's items to get the purchased program slugs
+        const dbSlugs = resolveProgramSlugs(txn.items);
+
+        if (dbSlugs.length === 0) {
+            throw new Error(`Unable to resolve program slug for transaction ${transactionId}`);
+        }
+
+        // 2. Upsert into program_access so the user natively owns each program
+        for (const dbSlug of dbSlugs) {
+            const { error: accessError } = await supabaseAdmin
+                .from("program_access")
+                .upsert({
+                    user_id: txn.user_id,
+                    owned_program: dbSlug,
+                    purchase_state: 'owned_active',
+                    completion_state: 'not_started'
+                }, { onConflict: 'user_id, owned_program' });
+
+            if (accessError) {
+                console.error(`[Commerce] Failed to write entitlement for txn ${transactionId}:`, accessError);
+                throw accessError;
+            }
+        }
+
+        // 3. Mark transaction as fully fulfilled
+        const { error: fulfillmentError } = await supabaseAdmin
+            .from("transactions")
+            .update({ fulfillment_status: "fulfilled" })
+            .eq("id", transactionId);
+
+        if (fulfillmentError) {
+            throw new Error(`Failed to mark transaction fulfilled: ${fulfillmentError.message}`);
+        }
+            
     } catch (err) {
         console.error(`[Commerce] Fulfillment failed for ${transactionId}:`, err);
         await supabaseAdmin

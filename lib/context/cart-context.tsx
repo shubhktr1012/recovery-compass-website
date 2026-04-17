@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { nextCartItems, normalizeCartItems } from "@/lib/program-commerce-policy";
 
 export type ProgramItem = {
     id: string;
@@ -31,7 +32,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
         const savedCart = localStorage.getItem("rc_cart");
         if (savedCart) {
             try {
-                setItems(JSON.parse(savedCart));
+                const parsed = JSON.parse(savedCart);
+                if (Array.isArray(parsed)) {
+                    // Normalize any legacy multi-item cart down to the current
+                    // policy limit so the rule stays consistent on reload.
+                    setItems(normalizeCartItems(parsed));
+                }
             } catch (e) {
                 console.error("Failed to parse cart", e);
             }
@@ -43,10 +49,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }, [items]);
 
     const addItem = (item: ProgramItem) => {
-        setItems((prev) => {
-            if (prev.find((i) => i.id === item.id)) return prev;
-            return [...prev, item];
-        });
+        setItems((prev) => nextCartItems(prev, item));
         setIsCartOpen(true); // Auto-open cart when adding an item
     };
 

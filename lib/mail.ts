@@ -43,7 +43,7 @@ export async function sendWelcomeEmail({
                 orderId,
                 // Replace with Dynamic Links from DB later if needed, harding for Phase 1
                 whatsappLink: "https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0",
-                calendlyLink: "https://calendly.com", 
+                calendlyLink: "https://calendly.com/anjan-recoverycompass/30min", 
             }),
         });
 

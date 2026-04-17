@@ -30,7 +30,7 @@ export const WelcomeReceiptEmail = ({
     amountFormatted = "₹4,999.00",
     orderId = "order_placeholder",
     whatsappLink = "https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0",
-    calendlyLink = "https://calendly.com",
+    calendlyLink = "https://calendly.com/anjan-recoverycompass/30min",
 }: WelcomeReceiptEmailProps) => {
     return (
         <Html lang="en">
