@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
@@ -10,7 +10,7 @@ import { supabase } from "@/lib/supabase";
 const MAX_WAIT_MS = 6000;
 const POLL_INTERVAL_MS = 300;
 
-export default function AuthCompletePage() {
+function AuthCompleteContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
@@ -92,5 +92,34 @@ export default function AuthCompletePage() {
         )}
       </div>
     </main>
+  );
+}
+
+function AuthCompleteFallback() {
+  return (
+    <main className="min-h-screen bg-background text-foreground flex items-center justify-center px-6">
+      <div className="w-full max-w-md rounded-[32px] border border-black/5 bg-white p-8 shadow-xl shadow-black/5 text-center">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[oklch(0.2475_0.0661_146.79)]/8 text-[oklch(0.2475_0.0661_146.79)]">
+          <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+        </div>
+        <p className="mt-4 text-sm font-bold uppercase tracking-[0.18em] text-[oklch(0.2475_0.0661_146.79)]/45">
+          Completing sign-in
+        </p>
+        <h1 className="mt-4 font-erode text-3xl tracking-tight text-[oklch(0.2475_0.0661_146.79)]">
+          Just a moment
+        </h1>
+        <p className="mt-4 text-sm leading-relaxed text-zinc-600">
+          We&apos;re finishing your sign-in and bringing your session online.
+        </p>
+      </div>
+    </main>
+  );
+}
+
+export default function AuthCompletePage() {
+  return (
+    <Suspense fallback={<AuthCompleteFallback />}>
+      <AuthCompleteContent />
+    </Suspense>
   );
 }
