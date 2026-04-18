@@ -1,6 +1,14 @@
 import { NextResponse } from 'next/server';
 import { sendWelcomeEmail } from '@/lib/mail';
 
+function getErrorMessage(error: unknown) {
+    if (error instanceof Error) {
+        return error.message;
+    }
+
+    return "Unknown error";
+}
+
 // IMPORTANT: Delete this file after testing!
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
@@ -24,7 +32,7 @@ export async function GET(request: Request) {
         });
 
         return NextResponse.json({ success: true, result });
-    } catch (error: any) {
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        return NextResponse.json({ success: false, error: getErrorMessage(error) }, { status: 500 });
     }
 }

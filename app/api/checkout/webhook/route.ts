@@ -2,6 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { markTransactionPaid, markTransactionFailed } from "@/lib/commerce";
 
+function getErrorMessage(error: unknown) {
+    if (error instanceof Error) {
+        return error.message;
+    }
+
+    return "Unknown error";
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Razorpay Webhook Handler
 // ─────────────────────────────────────────────────────────────────────────────
@@ -84,10 +92,10 @@ export async function POST(req: NextRequest) {
 
         // Razorpay expects a 200 response to acknowledge receipt
         return NextResponse.json({ status: "ok" });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("[Webhook] Error processing event:", error);
         // Return 200 even on error to prevent Razorpay from retrying endlessly
         // for events we've at least attempted to process
-        return NextResponse.json({ status: "error", message: error.message }, { status: 200 });
+        return NextResponse.json({ status: "error", message: getErrorMessage(error) }, { status: 200 });
     }
 }

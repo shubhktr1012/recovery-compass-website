@@ -2,6 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { markTransactionPaid } from "@/lib/commerce";
 
+function getErrorMessage(error: unknown) {
+    if (error instanceof Error) {
+        return error.message;
+    }
+
+    return "Something went wrong";
+}
+
 export async function POST(req: NextRequest) {
     try {
         const {
@@ -39,10 +47,10 @@ export async function POST(req: NextRequest) {
                 : "Payment verified successfully",
             transactionId,
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Payment Verification Error:", error);
         return NextResponse.json(
-            { message: error.message || "Something went wrong" },
+            { message: getErrorMessage(error) },
             { status: 500 }
         );
     }

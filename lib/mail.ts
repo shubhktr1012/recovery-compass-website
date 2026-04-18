@@ -1,7 +1,8 @@
 import { Resend } from "resend";
 import WelcomeReceiptEmail from "@/components/emails/WelcomeReceiptEmail";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// We initialize resend lazily inside the function to prevent build-time errors
+// when the API key is missing.
 
 // User's verified sending domain handle or test handle
 // NOTE: Until you verify your domain in Resend, you MUST use onboarding@resend.dev
@@ -30,6 +31,7 @@ export async function sendWelcomeEmail({
         return null;
     }
 
+    const resend = new Resend(process.env.RESEND_API_KEY);
     try {
         const { data, error } = await resend.emails.send({
             from: FROM_EMAIL,
@@ -54,9 +56,64 @@ export async function sendWelcomeEmail({
 
         console.log(`[Mail] Welcome email sent successfully to ${to}. Email ID: ${data?.id}`);
         return data;
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error("[Mail] Exception sending welcome email:", err);
         // We log it but usually do not want to crash the main transaction flow
         // The webhook should still complete
+    }
+}
+
+export interface SendOpsAlertEmailParams {
+    subject: string;
+    message: string;
+}
+
+function getOpsRecipients() {
+    const rawRecipients = process.env.COMMERCE_ALERT_EMAILS || process.env.ALERT_EMAIL;
+    if (!rawRecipients) {
+        return [];
+    }
+
+    return rawRecipients
+        .split(",")
+        .map((value) => value.trim())
+        .filter(Boolean);
+}
+
+export async function sendOpsAlertEmail({
+    subject,
+    message,
+}: SendOpsAlertEmailParams) {
+    const recipients = getOpsRecipients();
+
+    if (!process.env.RESEND_API_KEY) {
+        console.warn("[Mail] RESEND_API_KEY is not set. Ops alert email not sent.");
+        return null;
+    }
+
+    if (recipients.length === 0) {
+        console.warn("[Mail] COMMERCE_ALERT_EMAILS/ALERT_EMAIL not set. Ops alert email not sent.");
+        return null;
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    try {
+        const { data, error } = await resend.emails.send({
+            from: FROM_EMAIL,
+            to: recipients,
+            subject,
+            text: message,
+        });
+
+        if (error) {
+            console.error("[Mail] Failed to send ops alert email via Resend:", error);
+            return null;
+        }
+
+        return data;
+    } catch (error) {
+        console.error("[Mail] Exception sending ops alert email:", error);
+        return null;
     }
 }
