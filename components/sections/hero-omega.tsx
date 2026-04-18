@@ -71,7 +71,7 @@ export function HeroOmega({ onExploreClick, onActionClick }: HeroOmegaProps) {
                         {/* Avatar Trust Bar - Centered */}
                         <motion.div variants={itemVariants} className="flex flex-row items-center justify-center gap-3">
                             <p className="text-sm md:text-base font-medium text-[oklch(0.2475_0.0661_146.79)]">
-                                Guided support for habits, sleep, and daily balance
+                                Guided support for daily balance
                             </p>
                             <div className="flex items-center">
                                 {[
