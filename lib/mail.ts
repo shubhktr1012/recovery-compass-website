@@ -68,8 +68,31 @@ export interface SendOpsAlertEmailParams {
     message: string;
 }
 
+export interface SendEnquiryNotificationEmailParams {
+    name: string;
+    email: string;
+    phone?: string | null;
+    message: string;
+}
+
 function getOpsRecipients() {
     const rawRecipients = process.env.COMMERCE_ALERT_EMAILS || process.env.ALERT_EMAIL;
+    if (!rawRecipients) {
+        return [];
+    }
+
+    return rawRecipients
+        .split(",")
+        .map((value) => value.trim())
+        .filter(Boolean);
+}
+
+function getEnquiryRecipients() {
+    const rawRecipients =
+        process.env.ENQUIRY_ALERT_EMAILS ||
+        process.env.COMMERCE_ALERT_EMAILS ||
+        process.env.ALERT_EMAIL;
+
     if (!rawRecipients) {
         return [];
     }
@@ -114,6 +137,55 @@ export async function sendOpsAlertEmail({
         return data;
     } catch (error) {
         console.error("[Mail] Exception sending ops alert email:", error);
+        return null;
+    }
+}
+
+export async function sendEnquiryNotificationEmail({
+    name,
+    email,
+    phone,
+    message,
+}: SendEnquiryNotificationEmailParams) {
+    const recipients = getEnquiryRecipients();
+
+    if (!process.env.RESEND_API_KEY) {
+        console.warn("[Mail] RESEND_API_KEY is not set. Enquiry notification email not sent.");
+        return null;
+    }
+
+    if (recipients.length === 0) {
+        console.warn("[Mail] ENQUIRY_ALERT_EMAILS/COMMERCE_ALERT_EMAILS/ALERT_EMAIL not set. Enquiry notification email not sent.");
+        return null;
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    try {
+        const { data, error } = await resend.emails.send({
+            from: FROM_EMAIL,
+            to: recipients,
+            subject: `New website enquiry from ${name}`,
+            text: [
+                "A new enquiry was submitted on the website.",
+                "",
+                `Name: ${name}`,
+                `Email: ${email}`,
+                `Phone: ${phone || "Not provided"}`,
+                "",
+                "Message:",
+                message,
+            ].join("\n"),
+        });
+
+        if (error) {
+            console.error("[Mail] Failed to send enquiry notification email via Resend:", error);
+            return null;
+        }
+
+        return data;
+    } catch (error) {
+        console.error("[Mail] Exception sending enquiry notification email:", error);
         return null;
     }
 }

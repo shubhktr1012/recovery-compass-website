@@ -1,6 +1,6 @@
 # Supabase Setup Instructions
 
-Follow these steps to connect the waitlist form to your Supabase project.
+Follow these steps to connect the enquiry form to your Supabase project.
 
 ## 1. Create a Supabase Project
 1.  Go to [database.new](https://database.new) and create a new project.
@@ -17,22 +17,26 @@ Follow these steps to connect the waitlist form to your Supabase project.
     ```env
     NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
     NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+    SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+    RESEND_API_KEY=your-resend-api-key
+    ENQUIRY_ALERT_EMAILS=anjan@your-company.com
     ```
 3.  **Restart your dev server** (`npm run dev`) to load the new variables.
 
 ## 3. Run Database Migration
-1.  Open the migration file: `web/supabase/migrations/20260208_initial_schema.sql`.
+1.  Open the migration file: `web/supabase/migrations/20260418172000_create_enquiries.sql`.
 2.  Copy the entire content of the file.
 3.  Go to your Supabase Dashboard > **SQL Editor**.
 4.  Paste the SQL and click **Run**.
-    *   This creates the `waitlist` table.
-    *   It sets up **Row Level Security (RLS)** to allow public inserts (sign-ups) but restrict reading data to admins/service roles only.
+    *   This creates the `enquiries` table.
+    *   It sets up **Row Level Security (RLS)** to allow public inserts but restrict reading data to admins/service roles only.
 
 ## 4. Verify Integration
 1.  Refresh your application.
-2.  Fill out the Waitlist form in the CTA section.
-3.  Click "Join Waitlist".
-4.  Check your Supabase Dashboard > **Table Editor** > `waitlist` table. You should see the new entry!
+2.  Fill out the enquiry form in the CTA section.
+3.  Click "Send Enquiry".
+4.  Check your Supabase Dashboard > **Table Editor** > `enquiries`. You should see the new entry.
+5.  Check Anjan's inbox to confirm the notification email arrived.
 
 ## Handoff to Client
 To move this to a client's account, simply:
@@ -54,7 +58,7 @@ Since `.env.local` is not committed (for security), you must manually add the ke
 **Important:** Changing the API keys in your `.env.local` to the client's account will **NOT** automatically move the existing data. The app will simply start writing to the *new* database, which starts empty.
 
 If you have collected emails during development/testing that you want to move to their account:
-1.  Go to your Supabase Dashboard > **Table Editor** > `waitlist`.
+1.  Go to your Supabase Dashboard > **Table Editor** > `enquiries`.
 2.  Click **Export to CSV**.
-3.  Go to the Client's Supabase Dashboard > **Table Editor** > `waitlist`.
+3.  Go to the Client's Supabase Dashboard > **Table Editor** > `enquiries`.
 4.  Click **Import Data** and upload the CSV file.

@@ -7,6 +7,8 @@ export async function GET(request: Request) {
     const code = searchParams.get("code");
     // if "next" is in search params, use it as the redirection URL
     const next = searchParams.get("next") ?? "/";
+    const redirectUrl = new URL(next, request.url);
+    let response = NextResponse.redirect(redirectUrl);
 
     if (code) {
         const cookieStore = await cookies(); // Next.js 15+ requires await
@@ -19,13 +21,10 @@ export async function GET(request: Request) {
                         return cookieStore.getAll();
                     },
                     setAll(cookiesToSet) {
-                        try {
-                            cookiesToSet.forEach(({ name, value, options }) =>
-                                cookieStore.set(name, value, options)
-                            );
-                        } catch {
-                            // Cookies can't be set in some contexts — safe to ignore
-                        }
+                        cookiesToSet.forEach(({ name, value, options }) => {
+                            cookieStore.set(name, value, options);
+                            response.cookies.set(name, value, options);
+                        });
                     },
                 },
             }
@@ -33,7 +32,7 @@ export async function GET(request: Request) {
         const { error } = await supabase.auth.exchangeCodeForSession(code);
 
         if (!error) {
-            return NextResponse.redirect(`${origin}${next}`);
+            return response;
         }
     }
 

@@ -48,14 +48,14 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
 
                             {/* Disclaimer */}
                             <p className="text-xs text-white/40 leading-relaxed max-w-[320px]">
-                                By subscribing you agree to our{" "}
+                                By sending an enquiry you agree to our{" "}
                                 <Link
                                     href="/privacy"
                                     className="underline hover:text-white transition-colors cursor-pointer"
                                 >
                                     Privacy Policy
                                 </Link>{" "}
-                                and provide consent to receive launch updates from Recovery Compass.
+                                and allow us to reply to your message.
                             </p>
                         </div>
                     </div>

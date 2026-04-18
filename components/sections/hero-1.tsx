@@ -101,7 +101,7 @@ export function HeroSection({ onPrimaryClick, onSecondaryClick }: HeroSectionPro
                             className="rounded-full px-6 py-3 text-base font-medium bg-white hover:bg-neutral-100 text-neutral-900 shadow-lg shadow-black/20 h-auto whitespace-nowrap transition-transform hover:scale-105 active:scale-95"
                             onClick={onPrimaryClick}
                         >
-                            Join the Waitlist
+                            Send Enquiry
                         </Button>
                         <Button
                             variant="outline"

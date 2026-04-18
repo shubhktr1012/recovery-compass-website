@@ -91,7 +91,7 @@ export function HeroVariantTrust({ onPrimaryClick, onSecondaryClick }: HeroSecti
                                 className="rounded-full px-6 py-3 lg:px-8 lg:py-4 text-base lg:text-lg font-medium bg-white hover:bg-neutral-100 text-neutral-900 shadow-lg shadow-black/20 h-auto whitespace-nowrap"
                                 onClick={onPrimaryClick}
                             >
-                                Join the Waitlist
+                                Send Enquiry
                             </Button>
                             <Button
                                 variant="outline"
