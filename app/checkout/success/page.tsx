@@ -134,14 +134,10 @@ function AppStoreBadge({ platform }: { platform: "ios" | "android" }) {
 
 export default function SuccessPage() {
     const { clearCart } = useCart();
-    const [showContent, setShowContent] = useState(false);
 
     // Clear cart on success
     useEffect(() => {
         clearCart();
-        // Small delay before showing content for dramatic effect
-        const timer = setTimeout(() => setShowContent(true), 400);
-        return () => clearTimeout(timer);
     }, [clearCart]);
 
     return (
@@ -225,172 +221,168 @@ export default function SuccessPage() {
             </section>
 
             {/* ───── "What Happens Next" Journey ───── */}
-            <AnimatePresence>
-                {showContent && (
-                    <motion.main
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.6 }}
-                        className="flex-1 w-full max-w-[1200px] mx-auto px-6 md:px-12 pb-16 md:pb-24"
-                    >
-                        {/* Section Label */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
+            <motion.main
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="flex-1 w-full max-w-[1200px] mx-auto px-6 md:px-12 pb-16 md:pb-24"
+            >
+                {/* Section Label */}
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="flex items-center gap-4 mb-10 max-w-4xl mx-auto"
+                >
+                    <div className="h-px flex-1 bg-[oklch(0.2475_0.0661_146.79)]/[0.06]" />
+                    <p className="text-[10px] uppercase tracking-[0.25em] font-bold text-[oklch(0.2475_0.0661_146.79)]/25 whitespace-nowrap">
+                        Your Next Steps
+                    </p>
+                    <div className="h-px flex-1 bg-[oklch(0.2475_0.0661_146.79)]/[0.06]" />
+                </motion.div>
+
+                {/* ── BENTO GRID LAYOUT ── */}
+                <div className="max-w-[960px] mx-auto grid md:grid-cols-12 gap-5 md:gap-6 mb-16">
+                    
+                    {/* LEFT COLUMN */}
+                    <div className="md:col-span-7 flex flex-col gap-5 md:gap-6">
+                        
+                        {/* ── WhatsApp Community ── */}
+                        <motion.a
+                            href="https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            initial={{ opacity: 0, y: 24 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1 }}
-                            className="flex items-center gap-4 mb-10 max-w-4xl mx-auto"
+                            transition={{ delay: 0.6 }}
+                            className="group flex-1 rounded-[32px] p-8 md:p-10 bg-white/70 backdrop-blur-md border border-white/50 flex flex-col justify-between shadow-xl shadow-[oklch(0.2475_0.0661_146.79)]/5 hover:shadow-2xl transition-all duration-500 hover:-translate-y-1"
                         >
-                            <div className="h-px flex-1 bg-[oklch(0.2475_0.0661_146.79)]/[0.06]" />
-                            <p className="text-[10px] uppercase tracking-[0.25em] font-bold text-[oklch(0.2475_0.0661_146.79)]/25 whitespace-nowrap">
-                                Your Next Steps
-                            </p>
-                            <div className="h-px flex-1 bg-[oklch(0.2475_0.0661_146.79)]/[0.06]" />
-                        </motion.div>
-
-                        {/* ── BENTO GRID LAYOUT ── */}
-                        <div className="max-w-[960px] mx-auto grid md:grid-cols-12 gap-5 md:gap-6 mb-16">
-                            
-                            {/* LEFT COLUMN */}
-                            <div className="md:col-span-7 flex flex-col gap-5 md:gap-6">
-                                
-                                {/* ── WhatsApp Community ── */}
-                                <motion.a
-                                    href="https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    initial={{ opacity: 0, y: 24 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.2 }}
-                                    className="group flex-1 rounded-[32px] p-8 md:p-10 bg-white/70 backdrop-blur-md border border-white/50 flex flex-col justify-between shadow-xl shadow-[oklch(0.2475_0.0661_146.79)]/5 hover:shadow-2xl transition-all duration-500 hover:-translate-y-1"
-                                >
-                                    <div className="mb-6 size-12 rounded-full bg-[#25D366]/10 flex items-center justify-center border border-[#25D366]/20">
-                                        <FaWhatsapp className="size-6 text-[#25D366]" />
-                                    </div>
-                                    <div className="mb-8">
-                                        <h3 className="text-[28px] md:text-[32px] font-bold mb-3 text-[oklch(0.2475_0.0661_146.79)] leading-tight font-erode">
-                                            Join the Inner Circle
-                                        </h3>
-                                        <p className="text-[15px] md:text-[16px] text-[oklch(0.2475_0.0661_146.79)]/70 font-medium leading-relaxed max-w-sm">
-                                            Connect with guides and fellow members walking the same path, in our private WhatsApp community.
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <span className="inline-flex items-center gap-2.5 text-[14px] font-bold text-[#25D366] bg-[#25D366]/5 px-5 py-2.5 rounded-full ring-1 ring-[#25D366]/20 group-hover:bg-[#25D366]/10 transition-colors">
-                                            Join Now <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
-                                        </span>
-                                    </div>
-                                </motion.a>
-
-                                {/* ── Check Inbox ── */}
-                                <motion.div
-                                    initial={{ opacity: 0, y: 24 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.25 }}
-                                    className="rounded-[32px] p-8 md:p-10 bg-[oklch(0.2475_0.0661_146.79)]/5 border border-[oklch(0.2475_0.0661_146.79)]/10"
-                                >
-                                    <div className="mb-5 size-12 rounded-full bg-white flex items-center justify-center shadow-sm">
-                                        <Mail className="size-5 text-[oklch(0.2475_0.0661_146.79)]" />
-                                    </div>
-                                    <h4 className="text-[18px] font-bold mb-2 text-[oklch(0.2475_0.0661_146.79)]">Check Your Inbox</h4>
-                                    <p className="text-[14px] md:text-[15px] text-[oklch(0.2475_0.0661_146.79)]/70 font-medium leading-relaxed">
-                                        Your receipt and onboarding guides are on their way to your email.
-                                    </p>
-                                </motion.div>
+                            <div className="mb-6 size-12 rounded-full bg-[#25D366]/10 flex items-center justify-center border border-[#25D366]/20">
+                                <FaWhatsapp className="size-6 text-[#25D366]" />
                             </div>
-
-                            {/* RIGHT COLUMN */}
-                            <div className="md:col-span-5 flex flex-col gap-5 md:gap-6">
-                                
-                                {/* ── App Store Banner ── */}
-                                <motion.div
-                                    initial={{ opacity: 0, y: 24 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.3 }}
-                                    className="rounded-[32px] p-8 md:p-10 bg-[oklch(0.2475_0.0661_146.79)] text-white overflow-hidden relative shadow-xl shadow-[oklch(0.2475_0.0661_146.79)]/20"
-                                >
-                                    <div className="relative z-10">
-                                        <div className="mb-6 size-12 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
-                                            <Sparkles className="size-5 text-[#E5D7B7]" />
-                                        </div>
-                                        <h3 className="text-[22px] font-bold mb-3 leading-tight font-erode">
-                                            Download the App
-                                        </h3>
-                                        <p className="text-[14px] md:text-[15px] text-white/70 font-medium leading-relaxed mb-6">
-                                            Your daily sessions, audios, and journal live natively on your phone.
-                                        </p>
-                                        <div className="flex flex-col gap-3 items-start">
-                                            <AppStoreBadge platform="ios" />
-                                            <AppStoreBadge platform="android" />
-                                        </div>
-                                    </div>
-                                </motion.div>
-
-                                {/* ── Calendly Booking ── */}
-                                <motion.a
-                                    href="https://calendly.com/anjan-recoverycompass/30min"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    initial={{ opacity: 0, y: 24 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.35 }}
-                                    className="group flex-1 rounded-[32px] p-8 md:p-10 bg-white/70 backdrop-blur-md border border-white/50 flex flex-col shadow-xl shadow-[oklch(0.2475_0.0661_146.79)]/5 hover:shadow-2xl transition-all duration-500 hover:-translate-y-1"
-                                >
-                                    <div className="mb-6 size-12 rounded-xl bg-[#F08000]/10 flex items-center justify-center border border-[#F08000]/20">
-                                        <Calendar className="size-5 text-[#F08000]" />
-                                    </div>
-                                    <div className="flex-1 mb-8">
-                                        <h3 className="text-[20px] md:text-[22px] font-bold mb-3 text-[oklch(0.2475_0.0661_146.79)] leading-tight font-erode">
-                                            Book Your Free Call
-                                        </h3>
-                                        <p className="text-[14px] md:text-[15px] text-[oklch(0.2475_0.0661_146.79)]/70 font-medium leading-relaxed">
-                                            Every program includes a 1-on-1 strategy session to set your baseline.
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <span className="inline-flex items-center gap-2.5 text-[13px] md:text-[14px] font-bold text-[#F08000] bg-[#F08000]/5 px-5 py-2.5 rounded-[16px] ring-1 ring-[#F08000]/20 group-hover:bg-[#F08000]/10 transition-colors">
-                                            <Phone className="size-3.5" />
-                                            Schedule on Calendly <ArrowRight className="size-3.5 group-hover:translate-x-1 transition-transform" />
-                                        </span>
-                                    </div>
-                                </motion.a>
+                            <div className="mb-8">
+                                <h3 className="text-[28px] md:text-[32px] font-bold mb-3 text-[oklch(0.2475_0.0661_146.79)] leading-tight font-erode">
+                                    Join the Inner Circle
+                                </h3>
+                                <p className="text-[15px] md:text-[16px] text-[oklch(0.2475_0.0661_146.79)]/70 font-medium leading-relaxed max-w-sm">
+                                    Connect with guides and fellow members walking the same path, in our private WhatsApp community.
+                                </p>
                             </div>
-                        </div>
+                            <div>
+                                <span className="inline-flex items-center gap-2.5 text-[14px] font-bold text-[#25D366] bg-[#25D366]/5 px-5 py-2.5 rounded-full ring-1 ring-[#25D366]/20 group-hover:bg-[#25D366]/10 transition-colors">
+                                    Join Now <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
+                                </span>
+                            </div>
+                        </motion.a>
 
-                        {/* ── Divider ── */}
-                        <div className="max-w-3xl mx-auto mt-14 mb-10">
-                            <div className="h-px bg-[oklch(0.2475_0.0661_146.79)]/[0.05]" />
-                        </div>
-
-                        {/* ── Bottom CTA ── */}
+                        {/* ── Check Inbox ── */}
                         <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.8 }}
-                            className="flex flex-col items-center gap-6"
+                            initial={{ opacity: 0, y: 24 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.65 }}
+                            className="rounded-[32px] p-8 md:p-10 bg-[oklch(0.2475_0.0661_146.79)]/5 border border-[oklch(0.2475_0.0661_146.79)]/10"
                         >
-                            <Button
-                                asChild
-                                className={cn(
-                                    "h-12 rounded-full px-8 font-bold text-[15px] transition-all active:scale-[0.98]",
-                                    "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90",
-                                    "shadow-xl shadow-[oklch(0.2475_0.0661_146.79)]/15"
-                                )}
-                            >
-                                <Link
-                                    href="/"
-                                    className="flex items-center justify-center gap-2.5"
-                                >
-                                    Return Home
-                                    <ArrowRight className="size-4" />
-                                </Link>
-                            </Button>
-                            <p className="text-[12px] text-[oklch(0.2475_0.0661_146.79)]/30 font-medium">
-                                Thank you for trusting us with your journey.
+                            <div className="mb-5 size-12 rounded-full bg-white flex items-center justify-center shadow-sm">
+                                <Mail className="size-5 text-[oklch(0.2475_0.0661_146.79)]" />
+                            </div>
+                            <h4 className="text-[18px] font-bold mb-2 text-[oklch(0.2475_0.0661_146.79)]">Check Your Inbox</h4>
+                            <p className="text-[14px] md:text-[15px] text-[oklch(0.2475_0.0661_146.79)]/70 font-medium leading-relaxed">
+                                Your receipt and onboarding guides are on their way to your email.
                             </p>
                         </motion.div>
-                    </motion.main>
-                )}
-            </AnimatePresence>
+                    </div>
+
+                    {/* RIGHT COLUMN */}
+                    <div className="md:col-span-5 flex flex-col gap-5 md:gap-6">
+                        
+                        {/* ── App Store Banner ── */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 24 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.7 }}
+                            className="rounded-[32px] p-8 md:p-10 bg-[oklch(0.2475_0.0661_146.79)] text-white overflow-hidden relative shadow-xl shadow-[oklch(0.2475_0.0661_146.79)]/20"
+                        >
+                            <div className="relative z-10">
+                                <div className="mb-6 size-12 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
+                                    <Sparkles className="size-5 text-[#E5D7B7]" />
+                                </div>
+                                <h3 className="text-[22px] font-bold mb-3 leading-tight font-erode">
+                                    Download the App
+                                </h3>
+                                <p className="text-[14px] md:text-[15px] text-white/70 font-medium leading-relaxed mb-6">
+                                    Your daily sessions, audios, and journal live natively on your phone.
+                                </p>
+                                <div className="flex flex-col gap-3 items-start">
+                                    <AppStoreBadge platform="ios" />
+                                    <AppStoreBadge platform="android" />
+                                </div>
+                            </div>
+                        </motion.div>
+
+                        {/* ── Calendly Booking ── */}
+                        <motion.a
+                            href="https://calendly.com/anjan-recoverycompass/30min"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            initial={{ opacity: 0, y: 24 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.75 }}
+                            className="group flex-1 rounded-[32px] p-8 md:p-10 bg-white/70 backdrop-blur-md border border-white/50 flex flex-col shadow-xl shadow-[oklch(0.2475_0.0661_146.79)]/5 hover:shadow-2xl transition-all duration-500 hover:-translate-y-1"
+                        >
+                            <div className="mb-6 size-12 rounded-xl bg-[#F08000]/10 flex items-center justify-center border border-[#F08000]/20">
+                                <Calendar className="size-5 text-[#F08000]" />
+                            </div>
+                            <div className="flex-1 mb-8">
+                                <h3 className="text-[20px] md:text-[22px] font-bold mb-3 text-[oklch(0.2475_0.0661_146.79)] leading-tight font-erode">
+                                    Book Your Free Call
+                                </h3>
+                                <p className="text-[14px] md:text-[15px] text-[oklch(0.2475_0.0661_146.79)]/70 font-medium leading-relaxed">
+                                    Every program includes a 1-on-1 strategy session to set your baseline.
+                                </p>
+                            </div>
+                            <div>
+                                <span className="inline-flex items-center gap-2.5 text-[13px] md:text-[14px] font-bold text-[#F08000] bg-[#F08000]/5 px-5 py-2.5 rounded-[16px] ring-1 ring-[#F08000]/20 group-hover:bg-[#F08000]/10 transition-colors">
+                                    <Phone className="size-3.5" />
+                                    Schedule on Calendly <ArrowRight className="size-3.5 group-hover:translate-x-1 transition-transform" />
+                                </span>
+                            </div>
+                        </motion.a>
+                    </div>
+                </div>
+
+                {/* ── Divider ── */}
+                <div className="max-w-3xl mx-auto mt-14 mb-10">
+                    <div className="h-px bg-[oklch(0.2475_0.0661_146.79)]/[0.05]" />
+                </div>
+
+                {/* ── Bottom CTA ── */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.2 }}
+                    className="flex flex-col items-center gap-6"
+                >
+                    <Button
+                        asChild
+                        className={cn(
+                            "h-12 rounded-full px-8 font-bold text-[15px] transition-all active:scale-[0.98]",
+                            "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90",
+                            "shadow-xl shadow-[oklch(0.2475_0.0661_146.79)]/15"
+                        )}
+                    >
+                        <Link
+                            href="/"
+                            className="flex items-center justify-center gap-2.5"
+                        >
+                            Return Home
+                            <ArrowRight className="size-4" />
+                        </Link>
+                    </Button>
+                    <p className="text-[12px] text-[oklch(0.2475_0.0661_146.79)]/30 font-medium">
+                        Thank you for trusting us with your journey.
+                    </p>
+                </motion.div>
+            </motion.main>
 
             {/* ───── Footer ───── */}
             <FooterVariantTwo />
