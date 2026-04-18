@@ -30,6 +30,14 @@ interface AuthModalProps {
 
 type AuthView = "signin" | "signup" | "forgot";
 
+function getErrorMessage(error: unknown) {
+    if (error instanceof Error) {
+        return error.message;
+    }
+
+    return "Something went wrong.";
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Animation Variants
 // ─────────────────────────────────────────────────────────────────────────────
@@ -237,8 +245,8 @@ export function AuthModal({ isOpen, onClose, onSuccess, defaultTab = "signin" }:
                     onClose();
                 }
             }
-        } catch (err: any) {
-            const msg = err.message || "Something went wrong.";
+        } catch (err: unknown) {
+            const msg = getErrorMessage(err);
             setError(
                 msg.includes("Invalid login credentials")
                     ? "Incorrect email or password."
@@ -261,8 +269,8 @@ export function AuthModal({ isOpen, onClose, onSuccess, defaultTab = "signin" }:
             });
             if (error) throw error;
             setSuccess("Reset link sent! Check your inbox.");
-        } catch (err: any) {
-            setError(err.message || "Could not send reset email.");
+        } catch (err: unknown) {
+            setError(getErrorMessage(err));
         } finally {
             setIsLoading(false);
         }
@@ -277,8 +285,8 @@ export function AuthModal({ isOpen, onClose, onSuccess, defaultTab = "signin" }:
                 options: { redirectTo: `${window.location.origin}/auth/callback` }
             });
             if (error) throw error;
-        } catch (err: any) {
-            setError(`Could not sign in with ${provider}.`);
+        } catch (err: unknown) {
+            setError(getErrorMessage(err));
             setIsLoading(false);
         }
     };
@@ -497,7 +505,7 @@ export function AuthModal({ isOpen, onClose, onSuccess, defaultTab = "signin" }:
                                                 Forgot password?
                                             </DialogTitle>
                                             <DialogDescription className="text-zinc-500 text-sm mt-1">
-                                                We'll send a reset link to your email.
+                                                We&apos;ll send a reset link to your email.
                                             </DialogDescription>
                                         </DialogHeader>
                                     </motion.div>

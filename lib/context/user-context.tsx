@@ -4,6 +4,7 @@ import React, { createContext, useCallback, useContext, useEffect, useState, Rea
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import { AuthModal } from "@/components/auth-modal";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const dbToWebSlug: Record<string, string> = {
     "six_day_reset": "6-day-compass-reset",
@@ -32,7 +33,7 @@ type UserContextType = {
     isAuthModalOpen: boolean;
     openAuthModal: (tab?: "signin" | "signup", onSuccess?: () => void) => void;
     closeAuthModal: () => void;
-    ownedProgram: string | null;
+    ownedPrograms: string[];
     hasActiveProgram: boolean;
 };
 
@@ -46,10 +47,59 @@ export function UserProvider({ children }: { children: ReactNode }) {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [authModalTab, setAuthModalTab] = useState<"signin" | "signup">("signin");
     const [authSuccessCallback, setAuthSuccessCallback] = useState<(() => void) | null>(null);
-    const [ownedProgram, setOwnedProgram] = useState<string | null>(null);
+    const [ownedPrograms, setOwnedPrograms] = useState<string[]>([]);
     const [hasActiveProgram, setHasActiveProgram] = useState(false);
+    const [sessionNotice, setSessionNotice] = useState<string | null>(null);
 
-    const fetchOwnedProgram = useCallback(async (userId: string) => {
+    const clearAuthState = useCallback(() => {
+        setSession(null);
+        setUser(null);
+        setProfile(null);
+        setOwnedPrograms([]);
+        setHasActiveProgram(false);
+    }, []);
+
+    const clearStaleSession = useCallback(async (reason: string, error?: unknown) => {
+        console.warn(`Clearing stale web session: ${reason}`, error);
+        try {
+            await supabase.auth.signOut({ scope: "local" });
+        } catch (signOutError) {
+            console.warn("Failed to clear stale local web session.", signOutError);
+        }
+        clearAuthState();
+        setSessionNotice("Your session expired because this account is no longer available. Please sign in again if needed.");
+    }, [clearAuthState]);
+
+    const isUnauthorizedAuthError = useCallback((error: unknown) => {
+        if (!error || typeof error !== "object") {
+            return false;
+        }
+
+        const authError = error as {
+            status?: number;
+            code?: string;
+            message?: string;
+            name?: string;
+        };
+
+        if (authError.status === 401 || authError.status === 403) {
+            return true;
+        }
+
+        const haystack = `${authError.code ?? ""} ${authError.name ?? ""} ${authError.message ?? ""}`.toLowerCase();
+
+        return (
+            haystack.includes("jwt") ||
+            haystack.includes("session") ||
+            haystack.includes("token") ||
+            haystack.includes("unauthorized") ||
+            haystack.includes("forbidden") ||
+            haystack.includes("refresh token") ||
+            haystack.includes("auth session missing")
+        );
+    }, []);
+
+    const fetchOwnedPrograms = useCallback(async (userId: string) => {
         try {
             const { data, error } = await supabase
                 .from("program_access")
@@ -58,39 +108,41 @@ export function UserProvider({ children }: { children: ReactNode }) {
                 .order("updated_at", { ascending: false });
 
             if (error) {
+                if (isUnauthorizedAuthError(error)) {
+                    await clearStaleSession("program_access fetch returned unauthorized", error);
+                    return;
+                }
                 console.error("Error fetching program_access:", error);
-                setOwnedProgram(null);
+                setOwnedPrograms([]);
                 setHasActiveProgram(false);
                 return;
             }
 
             if (data && data.length > 0) {
-                const activeRecord = data.find(r => r.purchase_state === "owned_active");
-                const anyRecord = activeRecord || data.find(r => ["owned_completed", "owned_archived"].includes(r.purchase_state));
+                // Collect ALL owned program slugs (active, completed, or archived)
+                const ownedSlugs = data
+                    .filter(r => ["owned_active", "owned_completed", "owned_archived"].includes(r.purchase_state))
+                    .map(r => dbToWebSlug[r.owned_program])
+                    .filter((slug): slug is string => Boolean(slug));
 
-                if (anyRecord) {
-                    setOwnedProgram(dbToWebSlug[anyRecord.owned_program] || null);
-                } else {
-                    setOwnedProgram(null);
-                }
-
-                if (activeRecord) {
-                    setHasActiveProgram(true);
-                } else {
-                    setHasActiveProgram(false);
-                }
+                setOwnedPrograms(ownedSlugs);
+                setHasActiveProgram(data.some(r => r.purchase_state === "owned_active"));
             } else {
-                setOwnedProgram(null);
+                setOwnedPrograms([]);
                 setHasActiveProgram(false);
             }
         } catch (e) {
+            if (isUnauthorizedAuthError(e)) {
+                await clearStaleSession("program_access fetch threw unauthorized", e);
+                return;
+            }
             console.error("Failed to fetch owned programs:", e);
-            setOwnedProgram(null);
+            setOwnedPrograms([]);
             setHasActiveProgram(false);
         }
-    }, []);
+    }, [clearStaleSession, isUnauthorizedAuthError]);
 
-    const fetchProfile = async (userId: string) => {
+    const fetchProfile = useCallback(async (userId: string) => {
         try {
             const { data, error } = await supabase
                 .from("profiles")
@@ -103,50 +155,60 @@ export function UserProvider({ children }: { children: ReactNode }) {
             } else if (error && error.code === "PGRST116") {
                 // Profile doesn't exist yet, we'll handle this in sign-up flow
                 setProfile(null);
+            } else if (error) {
+                if (isUnauthorizedAuthError(error)) {
+                    await clearStaleSession("profile fetch returned unauthorized", error);
+                    return;
+                }
+                console.error("Error fetching profile:", error);
             }
         } catch (e) {
+            if (isUnauthorizedAuthError(e)) {
+                await clearStaleSession("profile fetch threw unauthorized", e);
+                return;
+            }
             console.error("Error fetching profile:", e);
         }
-    };
+    }, [clearStaleSession, isUnauthorizedAuthError]);
+
+    const syncAuthenticatedState = useCallback(async (candidateSession: Session | null) => {
+        if (!candidateSession) {
+            clearAuthState();
+            return;
+        }
+
+        const { data, error } = await supabase.auth.getUser();
+
+        if (error || !data.user) {
+            await clearStaleSession("auth.getUser no longer recognizes the session", error);
+            return;
+        }
+
+        setSession(candidateSession);
+        setUser(data.user);
+        await Promise.all([
+            fetchProfile(data.user.id),
+            fetchOwnedPrograms(data.user.id),
+        ]);
+    }, [clearStaleSession, fetchOwnedPrograms, fetchProfile]);
 
     useEffect(() => {
         // Initial session check
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            setSession(session);
-            setUser(session?.user ?? null);
-            if (session?.user) {
-                fetchProfile(session.user.id);
-                fetchOwnedProgram(session.user.id);
-            } else {
-                setOwnedProgram(null);
-                setHasActiveProgram(false);
-            }
+        supabase.auth.getSession().then(async ({ data: { session } }) => {
+            await syncAuthenticatedState(session);
             setIsLoading(false);
         });
 
         // Listen for auth changes
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-            setSession(session);
-            setUser(session?.user ?? null);
-            
-            if (session?.user) {
-                await Promise.all([
-                    fetchProfile(session.user.id),
-                    fetchOwnedProgram(session.user.id)
-                ]);
-            } else {
-                setProfile(null);
-                setOwnedProgram(null);
-                setHasActiveProgram(false);
-            }
-            
+            await syncAuthenticatedState(session);
             setIsLoading(false);
         });
 
         return () => {
             subscription.unsubscribe();
         };
-    }, [fetchOwnedProgram]);
+    }, [syncAuthenticatedState]);
 
     const openAuthModal = (tab: "signin" | "signup" = "signin", onSuccess?: () => void) => {
         setAuthModalTab(tab);
@@ -161,8 +223,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
     const signOut = async () => {
         await supabase.auth.signOut();
-        setOwnedProgram(null);
-        setHasActiveProgram(false);
+        clearAuthState();
+        setSessionNotice(null);
     };
 
     return (
@@ -176,11 +238,35 @@ export function UserProvider({ children }: { children: ReactNode }) {
                 isAuthModalOpen,
                 openAuthModal,
                 closeAuthModal,
-                ownedProgram,
+                ownedPrograms,
                 hasActiveProgram
             }}
         >
             {children}
+            {sessionNotice ? (
+                <div className="fixed inset-x-0 top-4 z-[120] flex justify-center px-4 pointer-events-none">
+                    <div className="w-full max-w-xl pointer-events-auto">
+                        <Alert className="border-forest/15 bg-white/95 shadow-lg backdrop-blur">
+                            <div className="pr-10">
+                                <AlertTitle className="font-satoshi-bold text-forest">
+                                    Session ended
+                                </AlertTitle>
+                                <AlertDescription className="font-satoshi text-forest/70">
+                                    <p>{sessionNotice}</p>
+                                </AlertDescription>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => setSessionNotice(null)}
+                                className="absolute right-3 top-3 rounded-full px-2 py-1 text-xs font-satoshi-bold uppercase tracking-[1px] text-forest/45 transition hover:bg-forest/5 hover:text-forest"
+                                aria-label="Dismiss session notice"
+                            >
+                                Dismiss
+                            </button>
+                        </Alert>
+                    </div>
+                </div>
+            ) : null}
             <AuthModal 
                 isOpen={isAuthModalOpen} 
                 onClose={closeAuthModal} 
