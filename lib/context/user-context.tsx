@@ -172,15 +172,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }, [clearStaleSession, isUnauthorizedAuthError]);
 
     const syncAuthenticatedState = useCallback(async (candidateSession: Session | null) => {
+        if (!candidateSession) {
+            clearAuthState();
+            return;
+        }
+
         const { data, error } = await supabase.auth.getUser();
 
         if (error || !data.user) {
-            if (candidateSession) {
-                await clearStaleSession("auth.getUser no longer recognizes the session", error);
-                return;
-            }
-
-            clearAuthState();
+            await clearStaleSession("auth.getUser no longer recognizes the session", error);
             return;
         }
 
@@ -190,7 +190,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
             fetchProfile(data.user.id),
             fetchOwnedPrograms(data.user.id),
         ]);
-    }, [clearStaleSession, fetchOwnedPrograms, fetchProfile]);
+    }, [clearAuthState, clearStaleSession, fetchOwnedPrograms, fetchProfile]);
 
     useEffect(() => {
         // Initial session check

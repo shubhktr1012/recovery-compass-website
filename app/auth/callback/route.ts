@@ -10,7 +10,7 @@ export async function GET(request: Request) {
     const code = searchParams.get("code");
     // if "next" is in search params, use it as the redirection URL
     const next = searchParams.get("next") ?? "/";
-    const redirectUrl = new URL(`/auth/complete?next=${encodeURIComponent(next)}`, request.url);
+    const redirectUrl = new URL(next, request.url);
     let response = NextResponse.redirect(redirectUrl);
     response.headers.set("Cache-Control", "private, no-store");
     response.headers.set("Pragma", "no-cache");
