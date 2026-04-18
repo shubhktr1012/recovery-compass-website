@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Shared Hook - Encapsulates form state and submission logic
@@ -272,13 +273,6 @@ interface MinimalNewsletterFormProps {
 }
 
 export function MinimalNewsletterForm({ alignment = "left", className }: MinimalNewsletterFormProps) {
-    const scrollToWaitlist = () => {
-        const element = document.getElementById('programs');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
-
     return (
         <div className={cn(
             "w-full max-w-md",
@@ -287,10 +281,10 @@ export function MinimalNewsletterForm({ alignment = "left", className }: Minimal
             className
         )}>
             <Button
-                onClick={scrollToWaitlist}
+                asChild
                 className="bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-white/90 rounded-full px-8 h-12 font-medium transition-all hover:scale-105 active:scale-95 group"
             >
-                View Programs
+                <Link href="/#programs">View Programs</Link>
             </Button>
         </div>
     );
