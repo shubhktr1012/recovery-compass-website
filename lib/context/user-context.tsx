@@ -172,15 +172,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }, [clearStaleSession, isUnauthorizedAuthError]);
 
     const syncAuthenticatedState = useCallback(async (candidateSession: Session | null) => {
-        if (!candidateSession) {
-            clearAuthState();
-            return;
-        }
-
         const { data, error } = await supabase.auth.getUser();
 
         if (error || !data.user) {
-            await clearStaleSession("auth.getUser no longer recognizes the session", error);
+            if (candidateSession) {
+                await clearStaleSession("auth.getUser no longer recognizes the session", error);
+                return;
+            }
+
+            clearAuthState();
             return;
         }
 

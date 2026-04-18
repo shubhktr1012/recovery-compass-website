@@ -27,17 +27,16 @@ function AuthCompleteContent() {
     const finishSignIn = async () => {
       while (!cancelled && Date.now() - startedAt < MAX_WAIT_MS) {
         const {
-          data: { session },
-          error: sessionError,
-        } = await supabase.auth.getSession();
+          data: { user },
+          error: userError,
+        } = await supabase.auth.getUser();
 
-        if (sessionError) {
-          console.error("[Auth Complete] getSession failed:", sessionError);
+        if (userError) {
+          console.error("[Auth Complete] getUser failed:", userError);
         }
 
-        if (session?.user) {
-          router.replace(next);
-          router.refresh();
+        if (user) {
+          window.location.replace(next);
           return;
         }
 
@@ -45,7 +44,7 @@ function AuthCompleteContent() {
       }
 
       if (!cancelled) {
-        setError("We couldn't finish signing you in automatically. Please try again.");
+        window.location.replace(next);
       }
     };
 
