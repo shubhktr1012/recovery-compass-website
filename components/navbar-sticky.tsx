@@ -7,13 +7,14 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useLenis } from "@/components/smooth-scroll-provider";
 import { useCart } from "@/lib/context/cart-context";
+import { supabase } from "@/lib/supabase";
 
 import Link from "next/link";
 
 import { usePathname } from "next/navigation";
 import { useUser } from "@/lib/context/user-context";
-import { LogOut, User as UserIcon } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { LogOut, User as UserIcon, Loader2 } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface NavbarStickyProps {
     onCtaClick?: () => void; // Deprecated, but kept for compatibility during refactor
@@ -22,10 +23,65 @@ interface NavbarStickyProps {
 
 export function NavbarSticky({ simple = false }: NavbarStickyProps) {
     const [isOpen, setIsOpen] = React.useState(false);
+    const [avatarUrl, setAvatarUrl] = React.useState<string | null>(null);
+    const [uploading, setUploading] = React.useState(false);
+    const fileInputRef = React.useRef<HTMLInputElement>(null);
+
     const lenis = useLenis();
     const pathname = usePathname();
     const { items, setIsCartOpen } = useCart();
     const { user, profile, openAuthModal, signOut } = useUser();
+
+    React.useEffect(() => {
+        if (profile?.avatar_url) {
+            if (profile.avatar_url.startsWith('http')) {
+                setAvatarUrl(profile.avatar_url);
+            } else {
+                supabase.storage.from('profile-images').createSignedUrl(profile.avatar_url, 60 * 60 * 24).then(({ data }) => {
+                    if (data?.signedUrl) {
+                        setAvatarUrl(data.signedUrl);
+                    }
+                });
+            }
+        } else {
+            setAvatarUrl(null);
+        }
+    }, [profile?.avatar_url]);
+
+    const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        try {
+            if (!e.target.files || e.target.files.length === 0 || !user) return;
+            setUploading(true);
+            const file = e.target.files[0];
+            const fileExt = file.name.split('.').pop()?.toLowerCase() || 'jpeg';
+            const fileName = `${user.id}/${Date.now()}.${fileExt}`;
+            
+            const { error: uploadError } = await supabase.storage
+                .from('profile-images')
+                .upload(fileName, file, { upsert: true });
+                
+            if (uploadError) throw uploadError;
+            
+            const { error: updateError } = await supabase
+                .from('profiles')
+                .update({ avatar_url: fileName, updated_at: new Date().toISOString() })
+                .eq('id', user.id);
+                
+            if (updateError) throw updateError;
+            
+            const { data } = await supabase.storage.from('profile-images').createSignedUrl(fileName, 60 * 60 * 24);
+            if (data?.signedUrl) {
+                setAvatarUrl(data.signedUrl);
+            }
+            
+        } catch (error) {
+            console.error('Error uploading avatar:', error);
+            alert("Error uploading avatar. Please try again.");
+        } finally {
+            setUploading(false);
+            if (fileInputRef.current) fileInputRef.current.value = "";
+        }
+    };
 
     const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
         if (href.startsWith("#")) {
@@ -104,11 +160,31 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                             </button>
                         ) : (
                             <div className="flex items-center gap-3 pr-2 border-r border-black/5 mr-2">
-                                <Avatar className="size-8 rounded-full border border-[oklch(0.2475_0.0661_146.79)]/10">
-                                    <AvatarFallback className="bg-[oklch(0.2475_0.0661_146.79)]/5 text-[oklch(0.2475_0.0661_146.79)] text-[10px] font-bold">
-                                        {user.email?.substring(0, 2).toUpperCase()}
-                                    </AvatarFallback>
-                                </Avatar>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    ref={fileInputRef}
+                                    onChange={handleAvatarUpload}
+                                    style={{ display: 'none' }}
+                                />
+                                <button
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="relative group rounded-full disabled:opacity-50 transition-opacity"
+                                    disabled={uploading}
+                                    title="Upload Profile Picture"
+                                >
+                                    <Avatar className="size-8 rounded-full border border-[oklch(0.2475_0.0661_146.79)]/10 transition-transform group-hover:scale-105">
+                                        <AvatarImage src={avatarUrl || undefined} alt="Profile Picture" className="object-cover" />
+                                        <AvatarFallback className="bg-[oklch(0.2475_0.0661_146.79)]/5 text-[oklch(0.2475_0.0661_146.79)] text-[10px] font-bold">
+                                            {user.email?.substring(0, 2).toUpperCase()}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                    {uploading && (
+                                        <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/60">
+                                            <Loader2 className="size-4 animate-spin text-white" />
+                                        </div>
+                                    )}
+                                </button>
                                 <button 
                                     onClick={() => signOut()}
                                     className="p-2 rounded-full hover:bg-black/5 transition-colors"
