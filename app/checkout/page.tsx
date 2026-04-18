@@ -31,6 +31,7 @@ import Image from "next/image";
 import { FooterVariantTwo } from "@/components/sections";
 import { NavbarSticky } from "@/components/navbar-sticky";
 import { formatPaymentDescription, formatProgramCountLabel } from "@/lib/program-commerce-policy";
+import type { LucideIcon } from "lucide-react";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Design Tokens (Warm Luxury)
@@ -39,6 +40,72 @@ const T = {
     forest: "oklch(0.2475 0.0661 146.79)",
     cream: "oklch(0.9484 0.0251 149.08)",
 };
+
+type CreateOrderResponse = {
+    id: string;
+    amount: number;
+    currency: string;
+    message?: string;
+};
+
+type RazorpaySuccessResponse = {
+    razorpay_order_id: string;
+    razorpay_payment_id: string;
+    razorpay_signature: string;
+};
+
+type RazorpayFailureResponse = {
+    error: {
+        description?: string;
+    };
+};
+
+type RazorpayModalOptions = {
+    backdropclose: boolean;
+    escape: boolean;
+    confirm_close: boolean;
+    ondismiss: () => void;
+};
+
+type RazorpayOptions = {
+    key: string | undefined;
+    amount: number;
+    currency: string;
+    name: string;
+    description: string;
+    image: string;
+    order_id: string;
+    handler: (response: RazorpaySuccessResponse) => Promise<void>;
+    prefill: {
+        email: string | null | undefined;
+        contact: string;
+    };
+    theme: {
+        color: string;
+    };
+    modal: RazorpayModalOptions;
+};
+
+type RazorpayInstance = {
+    on: (event: "payment.failed", handler: (response: RazorpayFailureResponse) => void) => void;
+    open: () => void;
+};
+
+type RazorpayConstructor = new (options: RazorpayOptions) => RazorpayInstance;
+
+declare global {
+    interface Window {
+        Razorpay?: RazorpayConstructor;
+    }
+}
+
+function getErrorMessage(error: unknown) {
+    if (error instanceof Error) {
+        return error.message;
+    }
+
+    return "Something went wrong";
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Testimonials Data
@@ -78,7 +145,7 @@ const TESTIMONIALS = [
 // Sub-components
 // ─────────────────────────────────────────────────────────────────────────────
 
-function ValueFeature({ icon: Icon, title, desc }: { icon: any; title: string; desc: string }) {
+function ValueFeature({ icon: Icon, title, desc }: { icon: LucideIcon; title: string; desc: string }) {
     return (
         <div className="flex gap-4 items-start group">
             <div className="mt-0.5 size-10 rounded-2xl bg-[oklch(0.2475_0.0661_146.79)]/[0.04] flex items-center justify-center text-[oklch(0.2475_0.0661_146.79)] group-hover:bg-[oklch(0.2475_0.0661_146.79)] group-hover:text-white transition-all duration-300 shrink-0">
@@ -271,8 +338,8 @@ export default function CheckoutPage() {
 
     // Helper to dynamically load the Razorpay script if it's not yet present
     const loadRazorpayScript = () => {
-        return new Promise((resolve) => {
-            if ((window as any).Razorpay) {
+        return new Promise<boolean>((resolve) => {
+            if (window.Razorpay) {
                 resolve(true);
                 return;
             }
@@ -310,7 +377,7 @@ export default function CheckoutPage() {
                     userId: user?.id,
                 }),
             });
-            const orderData = await res.json();
+            const orderData = (await res.json()) as CreateOrderResponse;
 
             if (!res.ok) throw new Error(orderData.message || "Failed to create order");
 
@@ -323,7 +390,7 @@ export default function CheckoutPage() {
                 description: formatPaymentDescription(items.length),
                 image: "/rc-logo-primary.svg",
                 order_id: orderData.id,
-                handler: async function (response: any) {
+                handler: async function (response: RazorpaySuccessResponse) {
                     // Step 3: Verify Payment on Server
                     const verifyRes = await fetch("/api/checkout/verify-payment", {
                         method: "POST",
@@ -359,15 +426,20 @@ export default function CheckoutPage() {
                 },
             };
 
-            const rzp = new (window as any).Razorpay(options);
-            rzp.on("payment.failed", function (response: any) {
+            const Razorpay = window.Razorpay;
+            if (!Razorpay) {
+                throw new Error("Razorpay SDK unavailable after loading.");
+            }
+
+            const rzp = new Razorpay(options);
+            rzp.on("payment.failed", function (response: RazorpayFailureResponse) {
                 console.error("Payment failed:", response.error);
-                alert(`Payment failed: ${response.error.description}`);
+                alert(`Payment failed: ${response.error.description || "Please try again."}`);
             });
             rzp.open();
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
-            alert("Error: " + err.message);
+            alert("Error: " + getErrorMessage(err));
         } finally {
             setIsProcessing(false);
         }
@@ -407,7 +479,7 @@ export default function CheckoutPage() {
                             <span className="text-[oklch(0.2475_0.0661_146.79)]/30 italic">truly begins</span> today.
                         </h1>
                         <p className="text-base md:text-[17px] opacity-55 max-w-md font-medium leading-relaxed">
-                            You're committing to a new version of yourself - guided, supported, and never alone.
+                            You&apos;re committing to a new version of yourself - guided, supported, and never alone.
                         </p>
                     </motion.div>
 
@@ -419,7 +491,7 @@ export default function CheckoutPage() {
                         className="mb-10"
                     >
                         <p className="text-[10px] uppercase tracking-[0.2em] font-bold opacity-25 mb-5">
-                            What's included
+                            What&apos;s included
                         </p>
                         <div className="grid sm:grid-cols-2 gap-x-8 gap-y-5">
                             <ValueFeature icon={Smartphone} title="Mobile Sync" desc="Access everywhere on iOS and Android" />

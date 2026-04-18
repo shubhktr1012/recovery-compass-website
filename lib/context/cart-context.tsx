@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from "react";
 import { nextCartItems, normalizeCartItems } from "@/lib/program-commerce-policy";
 
 export type ProgramItem = {
@@ -24,44 +24,51 @@ type CartContextType = {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-    const [items, setItems] = useState<ProgramItem[]>([]);
-    const [isCartOpen, setIsCartOpen] = useState(false);
-
-    // Optional: Persist cart to local storage so it survives page reloads
-    useEffect(() => {
-        const savedCart = localStorage.getItem("rc_cart");
-        if (savedCart) {
-            try {
-                const parsed = JSON.parse(savedCart);
-                if (Array.isArray(parsed)) {
-                    // Normalize any legacy multi-item cart down to the current
-                    // policy limit so the rule stays consistent on reload.
-                    setItems(normalizeCartItems(parsed));
-                }
-            } catch (e) {
-                console.error("Failed to parse cart", e);
-            }
+    const [items, setItems] = useState<ProgramItem[]>(() => {
+        if (typeof window === "undefined") {
+            return [];
         }
-    }, []);
+
+        const savedCart = localStorage.getItem("rc_cart");
+        if (!savedCart) {
+            return [];
+        }
+
+        try {
+            const parsed = JSON.parse(savedCart);
+            if (Array.isArray(parsed)) {
+                // Normalize any legacy multi-item cart down to the current
+                // policy limit so the rule stays consistent on reload.
+                return normalizeCartItems(parsed);
+            }
+        } catch (e) {
+            console.error("Failed to parse cart", e);
+        }
+
+        return [];
+    });
+    const [isCartOpen, setIsCartOpen] = useState(false);
 
     useEffect(() => {
         localStorage.setItem("rc_cart", JSON.stringify(items));
     }, [items]);
 
-    const addItem = (item: ProgramItem) => {
+    const addItem = useCallback((item: ProgramItem) => {
         setItems((prev) => nextCartItems(prev, item));
         setIsCartOpen(true); // Auto-open cart when adding an item
-    };
+    }, []);
 
-    const removeItem = (id: string) => {
+    const removeItem = useCallback((id: string) => {
         setItems((prev) => prev.filter((item) => item.id !== id));
-    };
+    }, []);
 
-    const isItemInCart = (id: string) => {
+    const isItemInCart = useCallback((id: string) => {
         return items.some((item) => item.id === id);
-    };
+    }, [items]);
 
-    const clearCart = () => setItems([]);
+    const clearCart = useCallback(() => {
+        setItems([]);
+    }, []);
 
     const cartTotal = items.reduce((total, item) => total + (item.price || 0), 0);
 

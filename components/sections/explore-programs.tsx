@@ -209,7 +209,7 @@ export function ExploreProgramsSection() {
     }, [activeCategoryIndex, isPaused]);
 
     return (
-        <section className="w-full bg-[#F9F9F9] py-16 md:py-24 overflow-visible">
+        <section id="programs" className="w-full bg-[#F9F9F9] py-16 md:py-24 overflow-visible">
             <div className="max-w-[1000px] mx-auto px-6 md:px-12">
                 <div className="flex flex-col mb-8 md:mb-10 gap-4 text-left md:text-center md:items-center">
                     <div className="space-y-4">
@@ -311,10 +311,10 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
     }, [isDrawerOpen, onDrawerStateChange]);
     const isDark = program.accent === "dark";
     const { addItem, removeItem, isItemInCart } = useCart();
-    const { ownedProgram, hasActiveProgram } = useUser();
+    const { ownedPrograms, hasActiveProgram } = useUser();
     
     const inCart = isItemInCart(program.id);
-    const isOwned = ownedProgram === program.id;
+    const isOwned = ownedPrograms.includes(program.id);
 
     useEffect(() => {
         if (isInView) {

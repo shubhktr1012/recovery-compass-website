@@ -122,8 +122,8 @@ export const metadata: Metadata = {
     creator: "@recoverycompass",
   },
   icons: {
-    icon: "/rc-logo-primary.svg",
-    apple: "/rc-logo-primary.svg",
+    icon: "/rc-logo-white.svg",
+    apple: "/rc-logo-white.svg",
   },
 };
 

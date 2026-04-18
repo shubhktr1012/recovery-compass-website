@@ -29,15 +29,22 @@ const cream = "oklch(0.9484 0.0251 149.08)";
 // Floating Particles (celebration effect)
 // ─────────────────────────────────────────────────────────────────────────────
 function CelebrationParticles() {
+    const particleValue = (index: number, offset: number, min: number, max: number) => {
+        const raw = Math.sin((index + 1) * 12.9898 + offset * 78.233) * 43758.5453;
+        const fraction = raw - Math.floor(raw);
+        return min + fraction * (max - min);
+    };
+
     const particles = useMemo(
         () =>
             Array.from({ length: 24 }, (_, i) => ({
                 id: i,
-                x: Math.random() * 100,
-                delay: Math.random() * 2,
-                duration: 3 + Math.random() * 4,
-                size: 3 + Math.random() * 5,
-                opacity: 0.08 + Math.random() * 0.12,
+                x: particleValue(i, 1, 0, 100),
+                delay: particleValue(i, 2, 0, 2),
+                duration: particleValue(i, 3, 3, 7),
+                size: particleValue(i, 4, 3, 8),
+                opacity: particleValue(i, 5, 0.08, 0.2),
+                drift: particleValue(i, 6, -30, 30),
             })),
         []
     );
@@ -58,7 +65,7 @@ function CelebrationParticles() {
                     }}
                     animate={{
                         y: [0, -800],
-                        x: [0, (Math.random() - 0.5) * 60],
+                        x: [0, p.drift],
                         opacity: [p.opacity, 0],
                     }}
                     transition={{
@@ -135,7 +142,7 @@ export default function SuccessPage() {
         // Small delay before showing content for dramatic effect
         const timer = setTimeout(() => setShowContent(true), 400);
         return () => clearTimeout(timer);
-    }, []);
+    }, [clearCart]);
 
     return (
         <div className="min-h-screen bg-[oklch(0.9484_0.0251_149.08)] text-[oklch(0.2475_0.0661_146.79)] font-satoshi flex flex-col">
@@ -240,111 +247,114 @@ export default function SuccessPage() {
                             <div className="h-px flex-1 bg-[oklch(0.2475_0.0661_146.79)]/[0.06]" />
                         </motion.div>
 
-                        {/* ── Check Inbox Banner (above cards) ── */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.15 }}
-                            className="max-w-4xl mx-auto flex items-center justify-center gap-3 mb-8"
-                        >
-                            <div className="size-8 rounded-full bg-[oklch(0.2475_0.0661_146.79)]/5 flex items-center justify-center text-[oklch(0.2475_0.0661_146.79)] border border-[oklch(0.2475_0.0661_146.79)]/10 shrink-0">
-                                <Mail className="size-3.5" />
-                            </div>
-                            <p className="text-[14px] text-[oklch(0.2475_0.0661_146.79)]/60 font-medium">
-                                Your receipt and onboarding guides are on their way to your email.
-                            </p>
-                        </motion.div>
-
-                        {/* ── Primary Action Blocks ── */}
-                        <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6 mb-16">
-
-                            {/* ── WhatsApp Community (Brand Native) ── */}
-                            <motion.a
-                                href="https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                initial={{ opacity: 0, y: 24 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.2 }}
-                                className="group relative rounded-[32px] p-8 md:p-10 overflow-hidden flex flex-col justify-between min-h-[320px] shadow-xl shadow-[#25D366]/20 hover:shadow-2xl hover:shadow-[#25D366]/30 transition-all duration-500 hover:-translate-y-1"
-                                style={{ backgroundColor: "#25D366" }}
-                            >
-                                <div className="relative z-10 flex flex-col h-full">
-                                    <div className="mb-6">
-                                        <FaWhatsapp className="size-12 text-white drop-shadow-sm" />
+                        {/* ── BENTO GRID LAYOUT ── */}
+                        <div className="max-w-[960px] mx-auto grid md:grid-cols-12 gap-5 md:gap-6 mb-16">
+                            
+                            {/* LEFT COLUMN */}
+                            <div className="md:col-span-7 flex flex-col gap-5 md:gap-6">
+                                
+                                {/* ── WhatsApp Community ── */}
+                                <motion.a
+                                    href="https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    initial={{ opacity: 0, y: 24 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.2 }}
+                                    className="group flex-1 rounded-[32px] p-8 md:p-10 bg-white/70 backdrop-blur-md border border-white/50 flex flex-col justify-between shadow-xl shadow-[oklch(0.2475_0.0661_146.79)]/5 hover:shadow-2xl transition-all duration-500 hover:-translate-y-1"
+                                >
+                                    <div className="mb-6 size-12 rounded-full bg-[#25D366]/10 flex items-center justify-center border border-[#25D366]/20">
+                                        <FaWhatsapp className="size-6 text-[#25D366]" />
                                     </div>
-                                    <div className="flex-1">
-                                        <p className="text-white/70 text-[11px] uppercase tracking-[0.2em] font-bold mb-2">Private Community</p>
-                                        <h3 className="text-[24px] md:text-[28px] font-bold mb-3 text-white leading-tight">
+                                    <div className="mb-8">
+                                        <h3 className="text-[28px] md:text-[32px] font-bold mb-3 text-[oklch(0.2475_0.0661_146.79)] leading-tight font-erode">
                                             Join the Inner Circle
                                         </h3>
-                                        <p className="text-[15px] text-white/75 font-medium leading-relaxed">
-                                            Connect with guides and fellow members walking the same path - in our private WhatsApp community.
+                                        <p className="text-[15px] md:text-[16px] text-[oklch(0.2475_0.0661_146.79)]/70 font-medium leading-relaxed max-w-sm">
+                                            Connect with guides and fellow members walking the same path, in our private WhatsApp community.
                                         </p>
                                     </div>
-                                    <div className="mt-8">
-                                        <span className="inline-flex items-center gap-2.5 text-[15px] font-bold text-[#25D366] bg-white px-5 py-3 rounded-full shadow-sm group-hover:shadow-md transition-all">
-                                            Open WhatsApp <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
+                                    <div>
+                                        <span className="inline-flex items-center gap-2.5 text-[14px] font-bold text-[#25D366] bg-[#25D366]/5 px-5 py-2.5 rounded-full ring-1 ring-[#25D366]/20 group-hover:bg-[#25D366]/10 transition-colors">
+                                            Join Now <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
                                         </span>
                                     </div>
-                                </div>
-                            </motion.a>
+                                </motion.a>
 
-                            {/* ── Calendly Booking (Brand Native) ── */}
-                            <motion.a
-                                href="https://calendly.com/anjan-recoverycompass/30min"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                initial={{ opacity: 0, y: 24 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.3 }}
-                                className="group relative rounded-[32px] p-8 md:p-10 overflow-hidden flex flex-col justify-between min-h-[320px] shadow-xl shadow-[#006BFF]/15 hover:shadow-2xl hover:shadow-[#006BFF]/25 transition-all duration-500 hover:-translate-y-1"
-                                style={{ backgroundColor: "#006BFF" }}
-                            >
-                                <div className="relative z-10 flex flex-col h-full">
-                                    <div className="mb-6 flex items-center gap-2">
-                                        <div className="size-12 rounded-xl bg-white/15 flex items-center justify-center border border-white/20">
-                                            <span className="text-white font-black text-[22px] leading-none" style={{ fontFamily: 'var(--font-erode, Georgia, serif)', letterSpacing: '-0.02em' }}>C</span>
-                                        </div>
-                                        <span className="text-white/60 text-[13px] font-bold tracking-wide">Calendly</span>
+                                {/* ── Check Inbox ── */}
+                                <motion.div
+                                    initial={{ opacity: 0, y: 24 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.25 }}
+                                    className="rounded-[32px] p-8 md:p-10 bg-[oklch(0.2475_0.0661_146.79)]/5 border border-[oklch(0.2475_0.0661_146.79)]/10"
+                                >
+                                    <div className="mb-5 size-12 rounded-full bg-white flex items-center justify-center shadow-sm">
+                                        <Mail className="size-5 text-[oklch(0.2475_0.0661_146.79)]" />
                                     </div>
-                                    <div className="flex-1">
-                                        <p className="text-white/70 text-[11px] uppercase tracking-[0.2em] font-bold mb-2">Included with your plan</p>
-                                        <h3 className="text-[24px] md:text-[28px] font-bold mb-3 text-white leading-tight">
+                                    <h4 className="text-[18px] font-bold mb-2 text-[oklch(0.2475_0.0661_146.79)]">Check Your Inbox</h4>
+                                    <p className="text-[14px] md:text-[15px] text-[oklch(0.2475_0.0661_146.79)]/70 font-medium leading-relaxed">
+                                        Your receipt and onboarding guides are on their way to your email.
+                                    </p>
+                                </motion.div>
+                            </div>
+
+                            {/* RIGHT COLUMN */}
+                            <div className="md:col-span-5 flex flex-col gap-5 md:gap-6">
+                                
+                                {/* ── App Store Banner ── */}
+                                <motion.div
+                                    initial={{ opacity: 0, y: 24 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.3 }}
+                                    className="rounded-[32px] p-8 md:p-10 bg-[oklch(0.2475_0.0661_146.79)] text-white overflow-hidden relative shadow-xl shadow-[oklch(0.2475_0.0661_146.79)]/20"
+                                >
+                                    <div className="relative z-10">
+                                        <div className="mb-6 size-12 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
+                                            <Sparkles className="size-5 text-[#E5D7B7]" />
+                                        </div>
+                                        <h3 className="text-[22px] font-bold mb-3 leading-tight font-erode">
+                                            Download the App
+                                        </h3>
+                                        <p className="text-[14px] md:text-[15px] text-white/70 font-medium leading-relaxed mb-6">
+                                            Your daily sessions, audios, and journal live natively on your phone.
+                                        </p>
+                                        <div className="flex flex-col gap-3 items-start">
+                                            <AppStoreBadge platform="ios" />
+                                            <AppStoreBadge platform="android" />
+                                        </div>
+                                    </div>
+                                </motion.div>
+
+                                {/* ── Calendly Booking ── */}
+                                <motion.a
+                                    href="https://calendly.com/anjan-recoverycompass/30min"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    initial={{ opacity: 0, y: 24 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.35 }}
+                                    className="group flex-1 rounded-[32px] p-8 md:p-10 bg-white/70 backdrop-blur-md border border-white/50 flex flex-col shadow-xl shadow-[oklch(0.2475_0.0661_146.79)]/5 hover:shadow-2xl transition-all duration-500 hover:-translate-y-1"
+                                >
+                                    <div className="mb-6 size-12 rounded-xl bg-[#F08000]/10 flex items-center justify-center border border-[#F08000]/20">
+                                        <Calendar className="size-5 text-[#F08000]" />
+                                    </div>
+                                    <div className="flex-1 mb-8">
+                                        <h3 className="text-[20px] md:text-[22px] font-bold mb-3 text-[oklch(0.2475_0.0661_146.79)] leading-tight font-erode">
                                             Book Your Free Call
                                         </h3>
-                                        <p className="text-[15px] text-white/75 font-medium leading-relaxed">
-                                            A 1-on-1 strategy session to set your baseline and fine-tune your routine - at no extra cost.
+                                        <p className="text-[14px] md:text-[15px] text-[oklch(0.2475_0.0661_146.79)]/70 font-medium leading-relaxed">
+                                            Every program includes a 1-on-1 strategy session to set your baseline.
                                         </p>
                                     </div>
-                                    <div className="mt-8">
-                                        <span className="inline-flex items-center gap-2.5 text-[15px] font-bold text-[#006BFF] bg-white px-5 py-3 rounded-full shadow-sm group-hover:shadow-md transition-all">
-                                            <Phone className="size-4" />
-                                            Schedule Now <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
+                                    <div>
+                                        <span className="inline-flex items-center gap-2.5 text-[13px] md:text-[14px] font-bold text-[#F08000] bg-[#F08000]/5 px-5 py-2.5 rounded-[16px] ring-1 ring-[#F08000]/20 group-hover:bg-[#F08000]/10 transition-colors">
+                                            <Phone className="size-3.5" />
+                                            Schedule on Calendly <ArrowRight className="size-3.5 group-hover:translate-x-1 transition-transform" />
                                         </span>
                                     </div>
-                                </div>
-                            </motion.a>
+                                </motion.a>
+                            </div>
                         </div>
-
-                        {/* ── App Banner (Centralized) ── */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.5 }}
-                            className="max-w-xl mx-auto flex flex-col items-center gap-5 text-center pb-6"
-                        >
-                            <div>
-                                <h4 className="font-bold text-[18px] mb-1.5 text-[oklch(0.2475_0.0661_146.79)]">Mobile App Incoming</h4>
-                                <p className="text-[14px] text-[oklch(0.2475_0.0661_146.79)]/60 font-medium leading-relaxed">
-                                    Your daily sessions and audio guides will automatically sync to our native app.
-                                </p>
-                            </div>
-                            <div className="flex items-center justify-center gap-4">
-                                <AppStoreBadge platform="ios" />
-                                <AppStoreBadge platform="android" />
-                            </div>
-                        </motion.div>
 
                         {/* ── Divider ── */}
                         <div className="max-w-3xl mx-auto mt-14 mb-10">

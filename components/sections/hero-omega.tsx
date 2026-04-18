@@ -16,10 +16,10 @@ interface HeroOmegaProps {
 
 export function HeroOmega({ onExploreClick, onActionClick }: HeroOmegaProps) {
     const { items, setIsCartOpen } = useCart();
-    const { user, openAuthModal, ownedProgram } = useUser();
+    const { user, openAuthModal, ownedPrograms } = useUser();
     
     // Guest with no cart and no program → prompt sign in. Everyone else → view their plan.
-    const isGuestWithEmptyCart = !user && items.length === 0 && !ownedProgram;
+    const isGuestWithEmptyCart = !user && items.length === 0 && ownedPrograms.length === 0;
     const secondaryLabel = isGuestWithEmptyCart ? "Sign In" : "View My Plan";
     const handleSecondaryClick = () => {
         if (onActionClick) {
