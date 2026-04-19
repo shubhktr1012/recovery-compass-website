@@ -1,55 +1,56 @@
-"use client";
+import type { Metadata } from "next";
+import HomePageClient from "@/app/home-page-client";
 
-import { NavbarSticky } from "@/components/navbar-sticky";
-import {
-  HeroOmega,
-  PhilosophySection,
-  ProblemSection,
-  SolutionSection,
-  ExploreProgramsSection,
-  CTASection,
-  FAQSection,
-  FooterVariantTwo,
-} from "@/components/sections";
+export const metadata: Metadata = {
+  title: "Recovery Compass | Guided Habit Reset, Sleep, and Energy Support",
+  description:
+    "Recovery Compass offers guided programs for habit reset, better sleep, steadier energy, and calmer daily balance through practical daily support.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Recovery Compass | Guided Habit Reset, Sleep, and Energy Support",
+    description:
+      "Guided programs for habit reset, better sleep, steadier energy, and calmer daily balance through practical daily support.",
+    url: "https://recoverycompass.co/",
+  },
+  twitter: {
+    title: "Recovery Compass | Guided Habit Reset, Sleep, and Energy Support",
+    description:
+      "Guided programs for habit reset, better sleep, steadier energy, and calmer daily balance.",
+  },
+};
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Recovery Compass",
+  url: "https://recoverycompass.co",
+  logo: "https://recoverycompass.co/rc-logo-white.svg",
+  sameAs: [],
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Recovery Compass",
+  url: "https://recoverycompass.co",
+  description:
+    "Guided support for habit reset, better sleep, steadier energy, and calmer daily routines.",
+};
 
 export default function Home() {
-  const scrollToPrograms = () => {
-    document.getElementById("programs")?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Navigation */}
-      <NavbarSticky />
-
-      {/* Page Sections */}
-      <main>
-        <HeroOmega
-          onExploreClick={scrollToPrograms}
-        />
-
-
-
-        <div id="why-us" className="scroll-mt-28">
-          <PhilosophySection />
-        </div>
-
-        <ProblemSection />
-
-        <div id="features" className="scroll-mt-28">
-          <SolutionSection />
-        </div>
-
-        <div id="programs" className="scroll-mt-28">
-          <ExploreProgramsSection />
-        </div>
-
-        <CTASection />
-
-        <FAQSection />
-
-        <FooterVariantTwo />
-      </main>
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
+      <HomePageClient />
+    </>
   );
 }
