@@ -16,6 +16,8 @@ describe("commerce slug normalization", () => {
     expect(canonicalizeProgramSlug("6-day-compass-reset")).toBe("six_day_reset");
     expect(canonicalizeProgramSlug("14-day-sleep-reset")).toBe("sleep_disorder_reset");
     expect(canonicalizeProgramSlug("21-day-energy-reset")).toBe("energy_vitality");
+    expect(canonicalizeProgramSlug("21-day-deep-sleep-reset")).toBe("sleep_disorder_reset");
+    expect(canonicalizeProgramSlug("14-day-energy-restore")).toBe("energy_vitality");
   });
 
   it("preserves canonical slugs and drops unknown slugs", () => {

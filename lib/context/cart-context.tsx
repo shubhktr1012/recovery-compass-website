@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from "react";
-import { nextCartItems, normalizeCartItems } from "@/lib/program-commerce-policy";
+import { canonicalizeWebsiteProgramId, nextCartItems, normalizeCartItems } from "@/lib/program-commerce-policy";
 
 export type ProgramItem = {
     id: string;
@@ -59,11 +59,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const removeItem = useCallback((id: string) => {
-        setItems((prev) => prev.filter((item) => item.id !== id));
+        const normalizedId = canonicalizeWebsiteProgramId(id);
+        setItems((prev) => prev.filter((item) => item.id !== normalizedId));
     }, []);
 
     const isItemInCart = useCallback((id: string) => {
-        return items.some((item) => item.id === id);
+        const normalizedId = canonicalizeWebsiteProgramId(id);
+        return items.some((item) => item.id === normalizedId);
     }, [items]);
 
     const clearCart = useCallback(() => {
