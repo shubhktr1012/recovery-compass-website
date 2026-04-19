@@ -179,9 +179,16 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                                             {user.email?.substring(0, 2).toUpperCase()}
                                         </AvatarFallback>
                                     </Avatar>
-                                    {uploading && (
+                                    {uploading ? (
                                         <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/60">
                                             <Loader2 className="size-4 animate-spin text-white" />
+                                        </div>
+                                    ) : (
+                                        <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                                                <circle cx="12" cy="13" r="4"/>
+                                            </svg>
                                         </div>
                                     )}
                                 </button>

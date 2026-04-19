@@ -116,6 +116,9 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                                 <li>
                                     <Link href="/support" className="hover:text-white transition-colors cursor-pointer">Contact Us</Link>
                                 </li>
+                                <li>
+                                    <Link href="/#programs" className="hover:text-white transition-colors cursor-pointer">View Programs</Link>
+                                </li>
                             </ul>
                         </div>
                     </div>

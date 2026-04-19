@@ -1,10 +1,11 @@
 "use client";
 
-import React, { createContext, useCallback, useContext, useEffect, useState, ReactNode } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useState, useRef, ReactNode } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import { AuthModal } from "@/components/auth-modal";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
 
 const dbToWebSlug: Record<string, string> = {
     "six_day_reset": "6-day-compass-reset",
@@ -38,6 +39,71 @@ type UserContextType = {
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
+
+/* ── Session-expiry toast ─────────────────────────── */
+function SessionToast({ title = "Session ended", message, onDismiss }: { title?: string; message: string; onDismiss: () => void }) {
+    const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+    useEffect(() => {
+        timerRef.current = setTimeout(onDismiss, 10_000);
+        return () => clearTimeout(timerRef.current);
+    }, [onDismiss]);
+
+    return (
+        <motion.div
+            role="alert"
+            initial={{ opacity: 0, y: -12, x: 24, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, x: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, x: 40, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 380, damping: 28 }}
+            className="fixed top-5 right-5 z-[120] w-[360px] max-w-[calc(100vw-2.5rem)] pointer-events-auto"
+        >
+            <div className="relative overflow-hidden rounded-2xl border border-[oklch(0.2475_0.0661_146.79)]/10 bg-white/90 shadow-xl shadow-black/[0.08] backdrop-blur-xl">
+                {/* Gradient accent bar */}
+                <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-[oklch(0.2475_0.0661_146.79)] via-[oklch(0.55_0.12_160)] to-[oklch(0.2475_0.0661_146.79)]/40" />
+
+                <div className="px-5 pt-5 pb-4">
+                    <div className="flex items-start gap-3">
+                        {/* Icon */}
+                        <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[oklch(0.2475_0.0661_146.79)]/[0.08]">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-[oklch(0.2475_0.0661_146.79)]">
+                                <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm0 3.5a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0v-3A.75.75 0 0 1 8 4.5ZM8 10a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z" fill="currentColor"/>
+                            </svg>
+                        </div>
+
+                        {/* Text */}
+                        <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-[oklch(0.2475_0.0661_146.79)]">
+                                {title}
+                            </p>
+                            <p className="mt-1 text-[13px] leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/60">
+                                {message}
+                            </p>
+                        </div>
+
+                        {/* Close */}
+                        <button
+                            type="button"
+                            onClick={onDismiss}
+                            className="shrink-0 rounded-lg p-1.5 text-[oklch(0.2475_0.0661_146.79)]/30 transition-colors hover:bg-[oklch(0.2475_0.0661_146.79)]/5 hover:text-[oklch(0.2475_0.0661_146.79)]/60"
+                            aria-label="Dismiss"
+                        >
+                            <X className="h-4 w-4" />
+                        </button>
+                    </div>
+                </div>
+
+                {/* Auto-dismiss progress bar */}
+                <motion.div
+                    className="h-[2px] bg-[oklch(0.2475_0.0661_146.79)]/20 origin-left"
+                    initial={{ scaleX: 1 }}
+                    animate={{ scaleX: 0 }}
+                    transition={{ duration: 10, ease: "linear" }}
+                />
+            </div>
+        </motion.div>
+    );
+}
 
 export function UserProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
@@ -224,7 +290,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     const signOut = async () => {
         await supabase.auth.signOut();
         clearAuthState();
-        setSessionNotice(null);
+        setSessionNotice("signed-out");
     };
 
     return (
@@ -243,30 +309,18 @@ export function UserProvider({ children }: { children: ReactNode }) {
             }}
         >
             {children}
-            {sessionNotice ? (
-                <div className="fixed inset-x-0 top-4 z-[120] flex justify-center px-4 pointer-events-none">
-                    <div className="w-full max-w-xl pointer-events-auto">
-                        <Alert className="border-forest/15 bg-white/95 shadow-lg backdrop-blur">
-                            <div className="pr-10">
-                                <AlertTitle className="font-satoshi-bold text-forest">
-                                    Session ended
-                                </AlertTitle>
-                                <AlertDescription className="font-satoshi text-forest/70">
-                                    <p>{sessionNotice}</p>
-                                </AlertDescription>
-                            </div>
-                            <button
-                                type="button"
-                                onClick={() => setSessionNotice(null)}
-                                className="absolute right-3 top-3 rounded-full px-2 py-1 text-xs font-satoshi-bold uppercase tracking-[1px] text-forest/45 transition hover:bg-forest/5 hover:text-forest"
-                                aria-label="Dismiss session notice"
-                            >
-                                Dismiss
-                            </button>
-                        </Alert>
-                    </div>
-                </div>
-            ) : null}
+            <AnimatePresence>
+                {sessionNotice && (() => {
+                    const isSignOut = sessionNotice === "signed-out";
+                    return (
+                        <SessionToast
+                            title={isSignOut ? "Signed out" : "Session ended"}
+                            message={isSignOut ? "You've been signed out successfully. Sign in again anytime." : sessionNotice}
+                            onDismiss={() => setSessionNotice(null)}
+                        />
+                    );
+                })()}
+            </AnimatePresence>
             <AuthModal 
                 isOpen={isAuthModalOpen} 
                 onClose={closeAuthModal} 
