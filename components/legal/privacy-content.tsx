@@ -25,7 +25,7 @@ export function PrivacyContent() {
                 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
             >
-                <p className="text-sm text-foreground/50 mb-4 font-sans">Last Updated: February 2026</p>
+                <p className="text-sm text-foreground/50 mb-4 font-sans">Last Updated: April 2026</p>
                 <h1 className="font-erode text-4xl md:text-5xl font-semibold text-foreground mb-8 tracking-tighter">
                     Privacy Policy
                 </h1>
@@ -79,6 +79,7 @@ export function PrivacyContent() {
                     <ul className="list-disc pl-6 space-y-2">
                         <li>Recovery Compass mobile application</li>
                         <li>Recovery Compass website</li>
+                        <li>Citations &amp; Sources page</li>
                         <li>Subscription services</li>
                         <li>Customer support interactions</li>
                     </ul>
@@ -265,7 +266,7 @@ export function PrivacyContent() {
                 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
             >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">10. Your Rights (India — DPDP Act 2023)</h2>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">10. Your Rights (India - DPDP Act 2023)</h2>
                 <div className="space-y-4">
                     <p>Under applicable Indian law, you have the right to:</p>
                     <ul className="list-disc pl-6 space-y-2">
@@ -291,11 +292,11 @@ export function PrivacyContent() {
                 <div className="space-y-4">
                     <p>We may share Personal Information with:</p>
                     <ul className="list-disc pl-6 space-y-2">
-                        <li><span className="font-medium text-foreground">Supabase</span> — Backend hosting provider</li>
-                        <li><span className="font-medium text-foreground">RevenueCat</span> — Subscription validation</li>
-                        <li><span className="font-medium text-foreground">Apple & Google</span> — Payment processing</li>
+                        <li><span className="font-medium text-foreground">Supabase</span> - Backend hosting provider</li>
+                        <li><span className="font-medium text-foreground">RevenueCat</span> - Subscription validation</li>
+                        <li><span className="font-medium text-foreground">Apple & Google</span> - Payment processing</li>
                         <li>Analytics service providers</li>
-                        <li>Law enforcement — If required by law</li>
+                        <li>Law enforcement - If required by law</li>
                     </ul>
                     <p className="font-bold">We do not sell or rent personal data.</p>
                 </div>
@@ -476,6 +477,31 @@ export function PrivacyContent() {
                     </div>
                     <p className="text-sm">
                         You can manage cookie preferences through your browser settings, though disabling essential cookies may impact app functionality.
+                    </p>
+                </div>
+            </motion.section>
+
+            <motion.section
+                className="space-y-6"
+                variants={{
+                    initial: { opacity: 0, y: 10 },
+                    animate: { opacity: 1, y: 0 }
+                }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+                <h2 className="font-erode text-2xl font-semibold text-foreground">22. Health &amp; Wellness Content</h2>
+                <div className="space-y-4">
+                    <p>
+                        Some Services include educational or wellness-related guidance intended to support habit change and daily balance.
+                    </p>
+                    <p>
+                        That content is provided for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment.
+                    </p>
+                    <p>
+                        Where we reference external research or clinical guidance, the supporting sources are made available in the app or on our <span className="font-medium text-foreground">Citations &amp; Sources</span> page.
+                    </p>
+                    <p>
+                        If you have a medical condition or a health emergency, consult a qualified healthcare professional or emergency services immediately.
                     </p>
                 </div>
             </motion.section>

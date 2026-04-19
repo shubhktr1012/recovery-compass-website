@@ -4,21 +4,30 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { TestimonialMarquee } from "./testimonials/testimonial-marquee";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useLenis } from "@/components/smooth-scroll-provider";
+import { useCart } from "@/lib/context/cart-context";
+import { useUser } from "@/lib/context/user-context";
 
 import { motion, Variants } from "framer-motion";
 
 interface HeroOmegaProps {
-    onSecondaryClick?: () => void;
+    onExploreClick?: () => void;
+    onActionClick?: () => void;
 }
 
-export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
-    const lenis = useLenis();
-    const scrollToWaitlist = () => {
-        if (lenis) {
-            lenis.scrollTo("#waitlist");
+export function HeroOmega({ onExploreClick, onActionClick }: HeroOmegaProps) {
+    const { items, setIsCartOpen } = useCart();
+    const { user, openAuthModal, ownedPrograms } = useUser();
+    
+    // Guest with no cart and no program → prompt sign in. Everyone else → view their plan.
+    const isGuestWithEmptyCart = !user && items.length === 0 && ownedPrograms.length === 0;
+    const secondaryLabel = isGuestWithEmptyCart ? "Sign In" : "View My Plan";
+    const handleSecondaryClick = () => {
+        if (onActionClick) {
+            onActionClick();
+        } else if (isGuestWithEmptyCart) {
+            openAuthModal("signin");
         } else {
-            document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
+            setIsCartOpen(true);
         }
     };
 
@@ -62,7 +71,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                         {/* Avatar Trust Bar - Centered */}
                         <motion.div variants={itemVariants} className="flex flex-row items-center justify-center gap-3">
                             <p className="text-sm md:text-base font-medium text-[oklch(0.2475_0.0661_146.79)]">
-                                Guided support for habits, sleep, and daily balance
+                                Guided support for daily balance
                             </p>
                             <div className="flex items-center">
                                 {[
@@ -95,7 +104,7 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
                                 </span>
                                 <span className="text-[10px] md:text-xs font-bold text-[oklch(0.2475_0.0661_146.79)]/80 tracking-wide uppercase">
-                                    Early Access <span className="hidden md:inline">— App launching soon</span>
+                                    Open Beta <span className="hidden md:inline"> - Native Apps Launching Soon</span>
                                 </span>
                             </div>
 
@@ -116,19 +125,19 @@ export function HeroOmega({ onSecondaryClick }: HeroOmegaProps) {
                                     "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 border border-transparent h-auto",
                                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2"
                                 )}
-                                onClick={scrollToWaitlist}
+                                onClick={onExploreClick}
                             >
-                                Get Early Access
+                                Explore Programs
                             </Button>
                             <Button
                                 className={cn(
                                     "rounded-full px-5 py-2.5 text-sm font-medium transition-all active:scale-95",
                                     "bg-white text-[oklch(0.2475_0.0661_146.79)] border border-[oklch(0.2475_0.0661_146.79)] hover:bg-[oklch(0.2475_0.0661_146.79)] hover:text-white h-auto",
-                                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2"
+                                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                                 )}
-                                onClick={onSecondaryClick}
+                                onClick={handleSecondaryClick}
                             >
-                                Explore Programs
+                                {secondaryLabel}
                             </Button>
                         </motion.div>
                     </motion.div>

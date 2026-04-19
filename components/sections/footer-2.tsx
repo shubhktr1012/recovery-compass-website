@@ -38,7 +38,7 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                             {/* Headline */}
                             <h3 className="text-2xl md:text-3xl font-medium leading-tight text-white/90">
                                 Find your direction again.<br />
-                                Get early access.
+                                Start your journey today.
                             </h3>
 
                             {/* Input Field Group */}
@@ -48,14 +48,14 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
 
                             {/* Disclaimer */}
                             <p className="text-xs text-white/40 leading-relaxed max-w-[320px]">
-                                By subscribing you agree to with our{" "}
+                                By sending an enquiry you agree to our{" "}
                                 <Link
                                     href="/privacy"
                                     className="underline hover:text-white transition-colors cursor-pointer"
                                 >
                                     Privacy Policy
                                 </Link>{" "}
-                                and provide consent to receive launch updates from Recovery Compass.
+                                and allow us to reply to your message.
                             </p>
                         </div>
                     </div>
@@ -80,6 +80,14 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                                         className="hover:text-white transition-colors cursor-pointer"
                                     >
                                         Privacy Policy
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        href="/citations"
+                                        className="hover:text-white transition-colors cursor-pointer"
+                                    >
+                                        Citations &amp; Sources
                                     </Link>
                                 </li>
                             </ul>
@@ -107,6 +115,9 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                             <ul className="space-y-4 text-sm text-white/60">
                                 <li>
                                     <Link href="/support" className="hover:text-white transition-colors cursor-pointer">Contact Us</Link>
+                                </li>
+                                <li>
+                                    <Link href="/#programs" className="hover:text-white transition-colors cursor-pointer">View Programs</Link>
                                 </li>
                             </ul>
                         </div>

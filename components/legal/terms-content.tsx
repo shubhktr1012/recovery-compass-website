@@ -25,7 +25,7 @@ export function TermsContent() {
                 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
             >
-                <p className="text-sm text-foreground/50 mb-4 font-sans">Last Updated: February 2026</p>
+                <p className="text-sm text-foreground/50 mb-4 font-sans">Last Updated: April 2026</p>
                 <h1 className="font-erode text-4xl md:text-5xl font-semibold text-foreground mb-8 tracking-tighter">
                     Terms & Conditions
                 </h1>
@@ -161,10 +161,13 @@ export function TermsContent() {
                         <li>Real-time monitoring of user behaviour</li>
                         <li>Management or treatment of withdrawal symptoms</li>
                     </ul>
-                    <p>
-                        The information and tools provided are for educational and wellness support purposes only. Use of the Platform does not create a therapist-client or medical relationship.
-                    </p>
-                </div>
+                <p>
+                    The information and tools provided are for educational and wellness support purposes only. Use of the Platform does not create a therapist-client or medical relationship.
+                </p>
+                <p>
+                    Where we provide supporting references for educational claims, they are available in the app or on our <span className="font-medium text-foreground">Citations &amp; Sources</span> page.
+                </p>
+            </div>
 
                 <div className="space-y-4">
                     <h3 className="text-xl font-medium text-foreground">No Guaranteed Outcomes</h3>
@@ -442,7 +445,29 @@ export function TermsContent() {
                 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
             >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">14. Third-Party Platforms</h2>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">14. Health Content &amp; References</h2>
+                <div className="space-y-4">
+                    <p>
+                        Some parts of the Platform may present educational health or wellness content with supporting references.
+                    </p>
+                    <p>
+                        Those references are informational only and do not replace professional medical judgment or individualized treatment advice.
+                    </p>
+                    <p>
+                        If you are making a health-related decision, you should consult a qualified healthcare professional before acting on any guidance in the Platform.
+                    </p>
+                </div>
+            </motion.section>
+
+            <motion.section
+                className="space-y-6"
+                variants={{
+                    initial: { opacity: 0, y: 10 },
+                    animate: { opacity: 1, y: 0 }
+                }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+                <h2 className="font-erode text-2xl font-semibold text-foreground">15. Third-Party Platforms</h2>
                 <div className="space-y-4">
                     <h3 className="text-xl font-medium text-foreground">Apple</h3>
                     <p>Apple is not responsible for addressing any claims relating to the App, including but not limited to:</p>
@@ -468,7 +493,7 @@ export function TermsContent() {
                 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
             >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">15. Communications</h2>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">16. Communications</h2>
                 <ul className="list-disc pl-6 space-y-2">
                     <li>You may receive service-related emails</li>
                     <li>Marketing emails require explicit opt-in</li>
@@ -483,7 +508,7 @@ export function TermsContent() {
                 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
             >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">16. Governing Law & Disputes</h2>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">17. Governing Law &amp; Disputes</h2>
                 <ul className="list-disc pl-6 space-y-2">
                     <li>These Terms are governed by the laws of India</li>
                     <li>Any disputes shall be subject to the exclusive jurisdiction of courts located in Bangalore, India</li>
@@ -500,7 +525,7 @@ export function TermsContent() {
                 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
             >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">17. Business Transfers</h2>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">18. Business Transfers</h2>
                 <p>
                     In the event of acquisition or merger, user data and services may transfer to the new entity.
                 </p>
@@ -514,7 +539,7 @@ export function TermsContent() {
                 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
             >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">18. Severability</h2>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">19. Severability</h2>
                 <p>
                     If any provision of these Terms is found invalid, the remainder of the Terms remain enforceable.
                 </p>
@@ -528,7 +553,7 @@ export function TermsContent() {
                 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
             >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">19. Entire Agreement</h2>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">20. Entire Agreement</h2>
                 <p>
                     These Terms constitute the entire agreement between you and Recovery Compass regarding your use of the Platform.
                 </p>
@@ -542,7 +567,7 @@ export function TermsContent() {
                 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
             >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">20. Contact Us</h2>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">21. Contact Us</h2>
                 <p>For questions, support, or concerns regarding these Terms, please contact us at:</p>
                 <p><span className="font-bold">Email:</span> support@recoverycompass.co</p>
             </motion.section>

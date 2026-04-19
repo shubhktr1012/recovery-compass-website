@@ -122,8 +122,8 @@ export const metadata: Metadata = {
     creator: "@recoverycompass",
   },
   icons: {
-    icon: "/rc-logo-primary.svg",
-    apple: "/rc-logo-primary.svg",
+    icon: "/rc-logo-white.svg",
+    apple: "/rc-logo-white.svg",
   },
 };
 
@@ -135,6 +135,9 @@ export const viewport = {
 
 import { PageTransition } from "@/components/page-transition";
 import { CookieBanner } from "@/components/cookie-banner";
+import { CartProvider } from "@/lib/context/cart-context";
+import { UserProvider } from "@/lib/context/user-context";
+import { MyPlanDrawer } from "@/components/my-plan-drawer";
 
 export default function RootLayout({
   children,
@@ -142,7 +145,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <script
@@ -162,12 +165,17 @@ export default function RootLayout({
       >
 
         <SmoothScrollProvider>
-          <Preloader />
-          <PageTransition>
-            {children}
-          </PageTransition>
-          <BackToTop />
-          <CookieBanner />
+          <UserProvider>
+            <CartProvider>
+              <Preloader />
+              <PageTransition>
+                {children}
+              </PageTransition>
+              <MyPlanDrawer />
+              <BackToTop />
+              <CookieBanner />
+            </CartProvider>
+          </UserProvider>
         </SmoothScrollProvider>
       </body>
     </html>

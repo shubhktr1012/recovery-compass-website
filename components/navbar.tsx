@@ -68,8 +68,8 @@ export function Navbar({ onCtaClick }: NavbarProps) {
                             "border-none shadow-none h-10"
                         )}
                     >
-                        <span className="hidden sm:inline">Join the Waitlist</span>
-                        <span className="sm:hidden">Join</span>
+                        <span className="hidden sm:inline">Send Enquiry</span>
+                        <span className="sm:hidden">Contact</span>
                     </Button>
                 </div>
             </motion.div>
