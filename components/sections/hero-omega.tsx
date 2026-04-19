@@ -104,7 +104,8 @@ export function HeroOmega({ onExploreClick, onActionClick }: HeroOmegaProps) {
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
                                 </span>
                                 <span className="text-[10px] md:text-xs font-bold text-[oklch(0.2475_0.0661_146.79)]/80 tracking-wide uppercase">
-                                    Open Beta <span className="hidden md:inline"> - Native Apps Launching Soon</span>
+                                    A Behavioral Guidance App <span className="hidden md:inline"> - Open Beta Launching Soon</span>
+                                    <span className="md:hidden"> - Open Beta Soon</span>
                                 </span>
                             </div>
 
@@ -113,7 +114,7 @@ export function HeroOmega({ onExploreClick, onActionClick }: HeroOmegaProps) {
                             </h1>
 
                             <p className="text-base md:text-xl text-[oklch(0.2475_0.0661_146.79)]/70 leading-snug font-medium max-w-2xl mx-auto">
-                                Find your direction again. Recovery Compass helps you gently reset habits, restore balance, and move toward a healthier daily rhythm.
+                                Recovery Compass is a behavioral guidance app that helps people regain control over smoking, alcohol, sleep, erections, age reversal, and more by teaching them how to respond to change in real time according to their lifestyle.
                             </p>
                         </div>
 

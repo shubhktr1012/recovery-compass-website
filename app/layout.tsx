@@ -80,12 +80,24 @@ const erode = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL("https://recoverycompass.co"),
   title: {
-    default: "Recovery Compass - Steady Progress Without Pressure",
+    default: "Recovery Compass | Habit Reset, Sleep, Energy, and Daily Balance",
     template: "%s | Recovery Compass",
   },
   description:
-    "Recovery Compass helps you gently reset habits, restore balance, and move toward a healthier daily rhythm through calm, structured daily guidance.",
-  keywords: ["habit reset", "nervous system regulation", "sleep reset", "wellness programs", "daily balance"],
+    "Recovery Compass is a guided wellness platform for habit reset, better sleep, steadier energy, and calmer daily routines through practical programs and daily support.",
+  keywords: [
+    "Recovery Compass",
+    "habit reset",
+    "sleep support",
+    "energy restore",
+    "daily balance",
+    "nervous system regulation",
+    "wellness programs",
+    "erection disorder",
+    "low libido",
+    "age reversal",
+
+  ],
   authors: [{ name: "Recovery Compass Team" }],
   creator: "Recovery Compass",
   publisher: "Recovery Compass",
@@ -93,16 +105,16 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  alternates: {
-    canonical: "/",
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
   },
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://recoverycompass.co",
-    title: "Recovery Compass - Steady Progress Without Pressure",
+    title: "Recovery Compass | Habit Reset, Sleep, Energy, and Daily Balance",
     description:
-      "Recovery Compass helps you gently reset habits, restore balance, and move toward a healthier daily rhythm.",
+      "Guided support for habit reset, better sleep, steadier energy, and calmer daily routines through practical programs and daily support.",
     siteName: "Recovery Compass",
     images: [
       {
@@ -115,9 +127,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Recovery Compass - Steady Progress Without Pressure",
+    title: "Recovery Compass | Habit Reset, Sleep, Energy, and Daily Balance",
     description:
-      "Recovery Compass helps you gently reset habits, restore balance, and move toward a healthier daily rhythm.",
+      "Guided support for habit reset, better sleep, steadier energy, and calmer daily routines.",
     images: ["/og-image.png"],
     creator: "@recoverycompass",
   },

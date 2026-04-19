@@ -80,6 +80,7 @@ cp .env.example .env.local
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+GOOGLE_SITE_VERIFICATION=your-google-site-verification-token
 RESEND_API_KEY=your-resend-api-key
 ENQUIRY_ALERT_EMAILS=anjan@your-company.com
 ```
@@ -124,6 +125,28 @@ The website collects:
 The frontend form posts to `app/api/enquiries/route.ts`, which inserts into
 Supabase and sends a best-effort notification email to the configured internal
 inbox.
+
+## SEO setup
+
+The site already includes:
+
+- root metadata with canonical and Open Graph tags
+- `app/robots.ts`
+- `app/sitemap.ts`
+- `metadataBase` set to the live domain
+
+For Google Search Console:
+
+1. Add `GOOGLE_SITE_VERIFICATION` to the hosting environment.
+2. Deploy the site.
+3. Verify the domain in Search Console.
+4. Submit `https://recoverycompass.co/sitemap.xml`.
+
+For Lighthouse:
+
+1. Run a local production build.
+2. Audit the homepage and a program page.
+3. Track the performance, accessibility, and SEO scores as a baseline.
 
 ## Design and content notes
 
