@@ -43,6 +43,18 @@ type FulfillmentAttemptResult = {
     reason?: string;
 };
 
+type CanonicalTransactionItem = TransactionItem & {
+    program_slug: CanonicalProgramSlug;
+};
+
+type CanonicalProgramSlug =
+    | "six_day_reset"
+    | "ninety_day_transform"
+    | "sleep_disorder_reset"
+    | "energy_vitality"
+    | "age_reversal"
+    | "male_sexual_health";
+
 export interface ReconcileFulfillmentOptions {
     limit?: number;
     maxAgeMinutes?: number;
@@ -68,6 +80,24 @@ export interface FulfillmentHealthSnapshot {
     } | null;
 }
 
+export const webToDbSlug: Record<string, CanonicalProgramSlug> = {
+    "6-day-compass-reset": "six_day_reset",
+    "90-day-smoke-free-journey": "ninety_day_transform",
+    "14-day-sleep-reset": "sleep_disorder_reset",
+    "21-day-energy-reset": "energy_vitality",
+    "mens-vitality-reset-program": "male_sexual_health",
+    "radiance-journey": "age_reversal",
+};
+
+const allowedProgramSlugs = new Set([
+    "six_day_reset",
+    "ninety_day_transform",
+    "sleep_disorder_reset",
+    "energy_vitality",
+    "age_reversal",
+    "male_sexual_health",
+] as const satisfies readonly CanonicalProgramSlug[]);
+
 function formatUnknownError(error: unknown) {
     if (error instanceof Error) {
         return error.message;
@@ -89,6 +119,8 @@ function formatUnknownError(error: unknown) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export async function createTransaction(params: CreateTransactionParams) {
+    const normalizedItems = canonicalizeTransactionItems(params.items);
+
     const { data, error } = await supabaseAdmin
         .from("transactions")
         .insert({
@@ -97,7 +129,7 @@ export async function createTransaction(params: CreateTransactionParams) {
             provider_order_id: params.providerOrderId,
             amount: params.amount,
             currency: params.currency,
-            items: params.items,
+            items: normalizedItems,
             payment_status: "created",
             fulfillment_status: "pending",
         })
@@ -187,45 +219,53 @@ export async function markTransactionFailed(providerOrderId: string, metadata?: 
 //    - Marks the transaction as fulfillment_failed on any error
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Mapping from the website marketing slugs to the actual database enums
-const webToDbSlug: Record<string, string> = {
-    "6-day-compass-reset": "six_day_reset",
-    "90-day-smoke-free-journey": "ninety_day_transform",
-    "14-day-sleep-reset": "sleep_disorder_reset",
-    "21-day-energy-reset": "energy_vitality",
-    "mens-vitality-reset-program": "male_sexual_health",
-    "radiance-journey": "age_reversal",
-};
+export function canonicalizeProgramSlug(programSlug: unknown): CanonicalProgramSlug | null {
+    if (typeof programSlug !== "string" || !programSlug.trim()) {
+        return null;
+    }
 
-const allowedProgramSlugs = new Set([
-    "six_day_reset",
-    "ninety_day_transform",
-    "sleep_disorder_reset",
-    "energy_vitality",
-    "age_reversal",
-    "male_sexual_health",
-]);
+    const normalizedSlug = webToDbSlug[programSlug.trim()] ?? programSlug.trim();
+    return allowedProgramSlugs.has(normalizedSlug as CanonicalProgramSlug)
+        ? (normalizedSlug as CanonicalProgramSlug)
+        : null;
+}
 
-function resolveProgramSlugs(items: unknown): string[] {
-    if (!Array.isArray(items) || items.length === 0) {
+export function canonicalizeTransactionItems(items: unknown): CanonicalTransactionItem[] {
+    if (!Array.isArray(items)) {
         return [];
     }
 
-    const slugs = items
-        .map((item) => {
-            if (!item || typeof item !== "object") {
-                return null;
-            }
+    return items.flatMap((item) => {
+        if (!item || typeof item !== "object") {
+            return [];
+        }
 
-            const rawProgramSlug = (item as { program_slug?: unknown }).program_slug;
-            if (typeof rawProgramSlug !== "string" || !rawProgramSlug.trim()) {
-                return null;
-            }
+        const programSlug = canonicalizeProgramSlug((item as { program_slug?: unknown }).program_slug);
+        if (!programSlug) {
+            return [];
+        }
 
-            const dbSlug = webToDbSlug[rawProgramSlug.trim()] ?? rawProgramSlug.trim();
-            return allowedProgramSlugs.has(dbSlug) ? dbSlug : null;
-        })
-        .filter((slug): slug is string => Boolean(slug));
+        const title = typeof (item as { title?: unknown }).title === "string"
+            ? (item as { title: string }).title
+            : "";
+        const priceInr = typeof (item as { price_inr?: unknown }).price_inr === "number"
+            ? (item as { price_inr: number }).price_inr
+            : 0;
+        const quantity = typeof (item as { quantity?: unknown }).quantity === "number"
+            ? (item as { quantity: number }).quantity
+            : 1;
+
+        return [{
+            program_slug: programSlug,
+            title,
+            price_inr: priceInr,
+            quantity,
+        }];
+    });
+}
+
+function resolveProgramSlugs(items: unknown): string[] {
+    const slugs = canonicalizeTransactionItems(items).map((item) => item.program_slug);
 
     return Array.from(new Set(slugs));
 }
