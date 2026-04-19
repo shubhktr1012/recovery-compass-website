@@ -10,8 +10,8 @@ import { X } from "lucide-react";
 const dbToWebSlug: Record<string, string> = {
     "six_day_reset": "6-day-compass-reset",
     "ninety_day_transform": "90-day-smoke-free-journey",
-    "sleep_disorder_reset": "14-day-sleep-reset",
-    "energy_vitality": "21-day-energy-reset",
+    "sleep_disorder_reset": "21-day-deep-sleep-reset",
+    "energy_vitality": "14-day-energy-restore",
     "age_reversal": "radiance-journey",
     "male_sexual_health": "mens-vitality-reset-program",
 };

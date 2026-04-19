@@ -84,7 +84,9 @@ export const webToDbSlug: Record<string, CanonicalProgramSlug> = {
     "6-day-compass-reset": "six_day_reset",
     "90-day-smoke-free-journey": "ninety_day_transform",
     "14-day-sleep-reset": "sleep_disorder_reset",
+    "21-day-deep-sleep-reset": "sleep_disorder_reset",
     "21-day-energy-reset": "energy_vitality",
+    "14-day-energy-restore": "energy_vitality",
     "mens-vitality-reset-program": "male_sexual_health",
     "radiance-journey": "age_reversal",
 };

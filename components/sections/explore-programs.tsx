@@ -87,7 +87,7 @@ const categoryPrograms: Record<string, Program[]> = {
     ],
     "Restore Balance": [
         {
-            id: "14-day-sleep-reset",
+            id: "21-day-deep-sleep-reset",
             tag: "Reset the Body Clock",
             title: "21-Day Deep Sleep Reset",
             cardDescription: "Reset the body clock and nervous system so the brain begins recognizing the signals for sleep again.",
@@ -111,7 +111,7 @@ const categoryPrograms: Record<string, Program[]> = {
             accent: "dark",
         },
         {
-            id: "21-day-energy-reset",
+            id: "14-day-energy-restore",
             tag: "Energy Reset Foundations",
             title: "14-Day Energy Restore",
             cardDescription: "Restore daily energy and mental clarity by rebuilding the body’s natural rhythm through simple daily missions.",

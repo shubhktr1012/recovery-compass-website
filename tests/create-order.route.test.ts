@@ -105,7 +105,7 @@ describe("POST /api/checkout/create-order", () => {
       buildRequest({
         amount: 1499,
         userId: "user-1",
-        items: [{ program_slug: "21-day-energy-reset", title: "Energy", price_inr: 1499, quantity: 1 }],
+        items: [{ program_slug: "14-day-energy-restore", title: "Energy", price_inr: 1499, quantity: 1 }],
       }) as never
     );
 
@@ -118,7 +118,7 @@ describe("POST /api/checkout/create-order", () => {
       buildRequest({
         amount: 1499,
         userId: "different-user",
-        items: [{ program_slug: "21-day-energy-reset", title: "Energy", price_inr: 1499, quantity: 1 }],
+        items: [{ program_slug: "14-day-energy-restore", title: "Energy", price_inr: 1499, quantity: 1 }],
       }) as never
     );
 
@@ -136,7 +136,7 @@ describe("POST /api/checkout/create-order", () => {
       buildRequest({
         amount: 1499,
         userId: "user-1",
-        items: [{ program_slug: "14-day-sleep-reset", title: "Sleep", price_inr: 1499, quantity: 1 }],
+        items: [{ program_slug: "21-day-deep-sleep-reset", title: "Sleep", price_inr: 1499, quantity: 1 }],
       }) as never
     );
 
@@ -152,7 +152,7 @@ describe("POST /api/checkout/create-order", () => {
     const response = await POST(
       buildRequest({
         amount: 1499,
-        items: [{ program_slug: "21-day-energy-reset", title: "Energy", price_inr: 1499, quantity: 1 }],
+        items: [{ program_slug: "14-day-energy-restore", title: "Energy", price_inr: 1499, quantity: 1 }],
       }) as never
     );
 
