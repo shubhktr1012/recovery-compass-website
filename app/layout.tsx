@@ -150,6 +150,7 @@ import { CookieBanner } from "@/components/cookie-banner";
 import { CartProvider } from "@/lib/context/cart-context";
 import { UserProvider } from "@/lib/context/user-context";
 import { MyPlanDrawer } from "@/components/my-plan-drawer";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default function RootLayout({
   children,
@@ -189,6 +190,7 @@ export default function RootLayout({
             </CartProvider>
           </UserProvider>
         </SmoothScrollProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
