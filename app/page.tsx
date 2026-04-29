@@ -42,7 +42,6 @@ const websiteJsonLd = {
 
 export default async function Home() {
   const testimonials = await getFeaturedHomepageTestimonials();
-
   return (
     <>
       <script
