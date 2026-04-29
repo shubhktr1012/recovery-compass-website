@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import HomePageClient from "@/app/home-page-client";
+import { getFeaturedHomepageTestimonials } from "@/lib/testimonials";
 
 export const metadata: Metadata = {
   title: "Recovery Compass | Guided Habit Reset, Sleep, and Energy Support",
@@ -39,7 +40,8 @@ const websiteJsonLd = {
     "Guided support for habit reset, better sleep, steadier energy, and calmer daily routines.",
 };
 
-export default function Home() {
+export default async function Home() {
+  const testimonials = await getFeaturedHomepageTestimonials();
   return (
     <>
       <script
@@ -50,7 +52,7 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
       />
-      <HomePageClient />
+      <HomePageClient testimonials={testimonials} />
     </>
   );
 }

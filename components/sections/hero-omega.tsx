@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { TestimonialMarquee } from "./testimonials/testimonial-marquee";
+import type { HomepageTestimonial } from "@/lib/testimonials";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useCart } from "@/lib/context/cart-context";
 import { useUser } from "@/lib/context/user-context";
@@ -10,11 +11,12 @@ import { useUser } from "@/lib/context/user-context";
 import { motion, Variants } from "framer-motion";
 
 interface HeroOmegaProps {
+    testimonials?: HomepageTestimonial[];
     onExploreClick?: () => void;
     onActionClick?: () => void;
 }
 
-export function HeroOmega({ onExploreClick, onActionClick }: HeroOmegaProps) {
+export function HeroOmega({ testimonials = [], onExploreClick, onActionClick }: HeroOmegaProps) {
     const { items, setIsCartOpen } = useCart();
     const { user, openAuthModal, ownedPrograms } = useUser();
     
@@ -146,14 +148,16 @@ export function HeroOmega({ onExploreClick, onActionClick }: HeroOmegaProps) {
             </div>
 
             {/* Testimonial Strip - Sitting organically below the content container */}
-            <motion.div
-                className="relative z-0 w-full mt-8 md:mt-10 overflow-hidden"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.8, duration: 1 }}
-            >
-                <TestimonialMarquee className="py-8" />
-            </motion.div>
+            {testimonials.length > 0 ? (
+                <motion.div
+                    className="relative z-0 w-full mt-8 md:mt-10 overflow-hidden"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.8, duration: 1 }}
+                >
+                    <TestimonialMarquee testimonials={testimonials} className="py-8" />
+                </motion.div>
+            ) : null}
 
         </section >
     );
