@@ -1,6 +1,7 @@
 "use client";
 
 import { NavbarSticky } from "@/components/navbar-sticky";
+import type { HomepageTestimonial } from "@/lib/testimonials";
 import {
   HeroOmega,
   PhilosophySection,
@@ -12,7 +13,11 @@ import {
   FooterVariantTwo,
 } from "@/components/sections";
 
-export default function HomePageClient() {
+interface HomePageClientProps {
+  testimonials: HomepageTestimonial[];
+}
+
+export default function HomePageClient({ testimonials }: HomePageClientProps) {
   const scrollToPrograms = () => {
     document.getElementById("programs")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -21,7 +26,7 @@ export default function HomePageClient() {
     <div className="min-h-screen bg-background text-foreground">
       <NavbarSticky />
       <main>
-        <HeroOmega onExploreClick={scrollToPrograms} />
+        <HeroOmega testimonials={testimonials} onExploreClick={scrollToPrograms} />
 
         <div id="why-us" className="scroll-mt-28">
           <PhilosophySection />
