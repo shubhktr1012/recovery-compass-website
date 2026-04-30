@@ -3,14 +3,18 @@
 import { useCart } from "@/lib/context/cart-context";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { XIcon } from "lucide-react";
+import { Check, XIcon } from "lucide-react";
 import { useUser } from "@/lib/context/user-context";
 import { useRouter } from "next/navigation";
+import { allPrograms } from "@/components/sections/explore-programs";
 
 export function MyPlanDrawer() {
     const { items, isCartOpen, setIsCartOpen, removeItem, cartTotal } = useCart();
-    const { user, openAuthModal, hasActiveProgram } = useUser();
+    const { user, openAuthModal, ownedPrograms } = useUser();
     const router = useRouter();
+    const ownedProgramDetails = ownedPrograms
+        .map((programId) => allPrograms.find((program) => program.id === programId))
+        .filter((program): program is NonNullable<typeof program> => Boolean(program));
 
     const handleFinalize = () => {
         setIsCartOpen(false);
@@ -33,44 +37,86 @@ export function MyPlanDrawer() {
                 </SheetHeader>
 
                 <div className="flex-1 overflow-y-auto p-6 pb-32 overscroll-contain" data-lenis-prevent="true">
-                    {items.length === 0 ? (
-                        hasActiveProgram ? (
-                            <div className="flex flex-col items-center justify-center h-full text-center space-y-4 opacity-70 mt-10">
-                                <div className="size-12 rounded-full bg-[oklch(0.2475_0.0661_146.79)]/10 flex items-center justify-center mb-2">
-                                    <span className="text-[oklch(0.2475_0.0661_146.79)]">✨</span>
+                    <div className="space-y-8">
+                        {ownedProgramDetails.length > 0 ? (
+                            <section className="space-y-4">
+                                <div>
+                                    <p className="font-satoshi text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2475_0.0661_146.79)]/45">
+                                        Unlocked Library
+                                    </p>
+                                    <p className="mt-1 font-satoshi text-sm text-[oklch(0.2475_0.0661_146.79)]/60">
+                                        Programs already available in your account.
+                                    </p>
                                 </div>
-                                <p className="font-erode text-2xl font-medium">Active Program in Progress</p>
-                                <p className="font-satoshi text-base text-[oklch(0.2475_0.0661_146.79)]/70 max-w-[250px]">Open your program in the app.</p>
-                            </div>
-                        ) : (
-                            <div className="flex flex-col items-center justify-center h-full text-center space-y-4 opacity-70 mt-20">
-                                <p className="font-satoshi text-lg">Your plan is empty.</p>
-                                <p className="font-satoshi text-sm">Select a program to begin your journey.</p>
-                            </div>
-                        )
-                    ) : (
-                        <div className="space-y-6">
-                            {items.map((item) => (
-                                <div key={item.id} className="flex justify-between items-start border-b border-[oklch(0.2475_0.0661_146.79)]/10 pb-4">
-                                    <div className="space-y-1 pr-4">
-                                        <div className="text-[10px] font-bold tracking-[0.2em] uppercase opacity-60">
-                                            {item.tag}
+                                <div className="space-y-3">
+                                    {ownedProgramDetails.map((program) => (
+                                        <div
+                                            key={program.id}
+                                            className="rounded-2xl border border-[oklch(0.2475_0.0661_146.79)]/10 bg-white/55 p-4"
+                                        >
+                                            <div className="flex items-start justify-between gap-4">
+                                                <div className="space-y-1">
+                                                    <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-[oklch(0.2475_0.0661_146.79)]/45">
+                                                        {program.tag}
+                                                    </p>
+                                                    <h4 className="font-erode text-lg font-medium leading-tight">
+                                                        {program.title}
+                                                    </h4>
+                                                </div>
+                                                <div className="flex shrink-0 items-center gap-1 rounded-full bg-[oklch(0.2475_0.0661_146.79)]/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[oklch(0.2475_0.0661_146.79)]/70">
+                                                    <Check className="size-3" />
+                                                    Owned
+                                                </div>
+                                            </div>
                                         </div>
-                                        <h4 className="font-erode text-lg font-medium">{item.title}</h4>
-                                        <div className="font-satoshi font-bold mt-2">
-                                            {item.price ? `₹${item.price.toLocaleString()}` : "TBD"}
-                                        </div>
-                                    </div>
-                                    <button 
-                                        onClick={() => removeItem(item.id)}
-                                        className="p-2 opacity-50 hover:opacity-100 transition-opacity rounded-full hover:bg-[oklch(0.2475_0.0661_146.79)]/5"
-                                    >
-                                        <XIcon className="w-4 h-4" />
-                                    </button>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
-                    )}
+                            </section>
+                        ) : null}
+
+                        <section className="space-y-4">
+                            <div>
+                                <p className="font-satoshi text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2475_0.0661_146.79)]/45">
+                                    Checkout Plan
+                                </p>
+                                <p className="mt-1 font-satoshi text-sm text-[oklch(0.2475_0.0661_146.79)]/60">
+                                    New programs selected for purchase.
+                                </p>
+                            </div>
+
+                            {items.length === 0 ? (
+                                <div className="rounded-2xl border border-dashed border-[oklch(0.2475_0.0661_146.79)]/15 p-5 text-center">
+                                    <p className="font-satoshi text-lg">Your checkout plan is empty.</p>
+                                    <p className="mt-1 font-satoshi text-sm text-[oklch(0.2475_0.0661_146.79)]/60">
+                                        Add another program when you are ready.
+                                    </p>
+                                </div>
+                            ) : (
+                                <div className="space-y-6">
+                                    {items.map((item) => (
+                                        <div key={item.id} className="flex justify-between items-start border-b border-[oklch(0.2475_0.0661_146.79)]/10 pb-4">
+                                            <div className="space-y-1 pr-4">
+                                                <div className="text-[10px] font-bold tracking-[0.2em] uppercase opacity-60">
+                                                    {item.tag}
+                                                </div>
+                                                <h4 className="font-erode text-lg font-medium">{item.title}</h4>
+                                                <div className="font-satoshi font-bold mt-2">
+                                                    {item.price ? `₹${item.price.toLocaleString()}` : "TBD"}
+                                                </div>
+                                            </div>
+                                            <button
+                                                onClick={() => removeItem(item.id)}
+                                                className="p-2 opacity-50 hover:opacity-100 transition-opacity rounded-full hover:bg-[oklch(0.2475_0.0661_146.79)]/5"
+                                                aria-label={`Remove ${item.title}`}
+                                            >
+                                                <XIcon className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </section>
+                    </div>
                 </div>
 
                 {items.length > 0 && (
