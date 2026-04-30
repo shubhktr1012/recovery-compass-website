@@ -8,19 +8,41 @@ import {
 } from "@/lib/program-commerce-policy";
 
 describe("program-commerce-policy", () => {
-  it("keeps cart single-slot under launch policy", () => {
-    expect(MAX_CART_ITEMS).toBe(1);
+  it("caps the cart at the configured multi-program limit", () => {
+    expect(MAX_CART_ITEMS).toBe(6);
     const normalized = normalizeCartItems([
       { id: "a" },
       { id: "b" },
       { id: "c" },
     ]);
-    expect(normalized).toEqual([{ id: "c" }]);
+    expect(normalized).toEqual([{ id: "a" }, { id: "b" }, { id: "c" }]);
   });
 
-  it("replaces existing cart item with next selection", () => {
+  it("appends new selections while preserving uniqueness", () => {
     const next = nextCartItems([{ id: "a" }], { id: "b" });
-    expect(next).toEqual([{ id: "b" }]);
+    expect(next).toEqual([{ id: "a" }, { id: "b" }]);
+  });
+
+  it("keeps the most recent unique items when cart exceeds the cap", () => {
+    const normalized = normalizeCartItems([
+      { id: "a" },
+      { id: "b" },
+      { id: "c" },
+      { id: "d" },
+      { id: "e" },
+      { id: "f" },
+      { id: "g" },
+      { id: "g" },
+    ]);
+
+    expect(normalized).toEqual([
+      { id: "b" },
+      { id: "c" },
+      { id: "d" },
+      { id: "e" },
+      { id: "f" },
+      { id: "g" },
+    ]);
   });
 
   it("formats user-facing count and payment labels", () => {

@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { MAX_CART_ITEMS } from "@/lib/program-commerce-policy";
 
 const mocks = vi.hoisted(() => {
   const createOrder = vi.fn();
@@ -9,42 +10,11 @@ const mocks = vi.hoisted(() => {
       getUser,
     },
   }));
-
-  const state = {
-    activeProgramsResponse: { data: [] as Array<{ owned_program: string }>, error: null as unknown },
-  };
-
-  const from = vi.fn((table: string) => {
-    if (table !== "program_access") {
-      throw new Error(`Unexpected table: ${table}`);
-    }
-
-    const query: {
-      select: ReturnType<typeof vi.fn>;
-      eq: ReturnType<typeof vi.fn>;
-    } = {
-      select: vi.fn(),
-      eq: vi.fn(),
-    };
-
-    query.select.mockReturnValue(query);
-    query.eq.mockImplementation(() => {
-      if (query.eq.mock.calls.length >= 2) {
-        return Promise.resolve(state.activeProgramsResponse);
-      }
-      return query;
-    });
-
-    return query;
-  });
-
   return {
     createOrder,
     createTransaction,
     getUser,
     createSupabaseServerClient,
-    state,
-    from,
   };
 });
 
@@ -62,9 +32,6 @@ vi.mock("@/lib/supabase-server", () => ({
 
 vi.mock("@/lib/commerce", () => ({
   createTransaction: mocks.createTransaction,
-  supabaseAdmin: {
-    from: mocks.from,
-  },
 }));
 
 import { POST } from "@/app/api/checkout/create-order/route";
@@ -80,8 +47,6 @@ describe("POST /api/checkout/create-order", () => {
     mocks.createOrder.mockReset();
     mocks.createTransaction.mockReset();
     mocks.getUser.mockReset();
-    mocks.from.mockClear();
-    mocks.state.activeProgramsResponse = { data: [], error: null };
 
     mocks.getUser.mockResolvedValue({
       data: { user: { id: "user-1" } },
@@ -126,28 +91,6 @@ describe("POST /api/checkout/create-order", () => {
     expect(await response.json()).toEqual({ message: "User mismatch" });
   });
 
-  it("blocks second purchase if active program already exists", async () => {
-    mocks.state.activeProgramsResponse = {
-      data: [{ owned_program: "energy_vitality" }],
-      error: null,
-    };
-
-    const response = await POST(
-      buildRequest({
-        amount: 1499,
-        userId: "user-1",
-        items: [{ program_slug: "21-day-deep-sleep-reset", title: "Sleep", price_inr: 1499, quantity: 1 }],
-      }) as never
-    );
-
-    expect(response.status).toBe(400);
-    expect(await response.json()).toEqual({
-      message: "You already have an active program. Please finish it before purchasing a new one.",
-    });
-    expect(mocks.createOrder).not.toHaveBeenCalled();
-    expect(mocks.createTransaction).not.toHaveBeenCalled();
-  });
-
   it("creates order + transaction with canonical authenticated user ID", async () => {
     const response = await POST(
       buildRequest({
@@ -174,5 +117,47 @@ describe("POST /api/checkout/create-order", () => {
         amount: 149900,
       })
     );
+  });
+
+  it("accepts a multi-program checkout payload within the configured limit", async () => {
+    const response = await POST(
+      buildRequest({
+        amount: 2998,
+        items: [
+          { program_slug: "14-day-energy-restore", title: "Energy", price_inr: 1499, quantity: 1 },
+          { program_slug: "21-day-deep-sleep-reset", title: "Sleep", price_inr: 1499, quantity: 1 },
+        ],
+      }) as never
+    );
+
+    expect(response.status).toBe(200);
+    expect(mocks.createTransaction).toHaveBeenCalledWith(
+      expect.objectContaining({
+        amount: 299800,
+        items: expect.arrayContaining([
+          expect.objectContaining({ program_slug: "14-day-energy-restore" }),
+          expect.objectContaining({ program_slug: "21-day-deep-sleep-reset" }),
+        ]),
+      })
+    );
+  });
+
+  it("rejects checkout payloads that exceed the configured cart limit", async () => {
+    const response = await POST(
+      buildRequest({
+        amount: 1499 * (MAX_CART_ITEMS + 1),
+        items: Array.from({ length: MAX_CART_ITEMS + 1 }, (_, index) => ({
+          program_slug: `program-${index + 1}`,
+          title: `Program ${index + 1}`,
+          price_inr: 1499,
+          quantity: 1,
+        })),
+      }) as never
+    );
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({
+      message: `You can purchase up to ${MAX_CART_ITEMS} programs at once.`,
+    });
   });
 });
