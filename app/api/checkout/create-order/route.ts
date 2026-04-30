@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Razorpay from "razorpay";
-import { createTransaction, TransactionItem, supabaseAdmin } from "@/lib/commerce";
+import { createTransaction, TransactionItem } from "@/lib/commerce";
 import { MAX_CART_ITEMS } from "@/lib/program-commerce-policy";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 
@@ -47,26 +47,7 @@ export async function POST(req: NextRequest) {
 
         if (items.length > MAX_CART_ITEMS) {
             return NextResponse.json(
-                { message: "This plan currently supports only one program at a time." },
-                { status: 400 }
-            );
-        }
-
-        // Server-Side Safety Net: Check if user already owns an active program
-        const { data: activePrograms, error: accessError } = await supabaseAdmin
-            .from("program_access")
-            .select("owned_program")
-            .eq("user_id", canonicalUserId)
-            .eq("purchase_state", "owned_active");
-
-        if (accessError) {
-            console.error("Supabase Error checking active program:", accessError);
-            return NextResponse.json({ message: "Unable to verify program eligibility" }, { status: 500 });
-        }
-
-        if (activePrograms && activePrograms.length > 0) {
-            return NextResponse.json(
-                { message: "You already have an active program. Please finish it before purchasing a new one." },
+                { message: `You can purchase up to ${MAX_CART_ITEMS} programs at once.` },
                 { status: 400 }
             );
         }

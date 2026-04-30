@@ -1,4 +1,4 @@
-export const MAX_CART_ITEMS = 1;
+export const MAX_CART_ITEMS = 6;
 
 export const WEBSITE_PROGRAM_ID_ALIASES: Record<string, string> = {
     "14-day-sleep-reset": "21-day-deep-sleep-reset",
