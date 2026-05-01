@@ -1,55 +1,111 @@
-import { render } from '@react-email/render';
-import puppeteer from 'puppeteer';
-import fs from 'fs';
-import path from 'path';
-import React from 'react';
+import fs from "node:fs";
+import path from "node:path";
 
-// Import components
-import JamesReceipt from '../components/emails/JamesReceipt';
-import PrajwalReceipt from '../components/emails/PrajwalReceipt';
-import TejasReceipt from '../components/emails/TejasReceipt';
-import MohitReceipt from '../components/emails/MohitReceipt';
-import VineethReceipt from '../components/emails/VineethReceipt';
-import PrishitaReceipt from '../components/emails/PrishitaReceipt';
-import ShubhReceipt from '../components/emails/ShubhReceipt';
-import DevReceipt from '../components/emails/DevReceipt';
+import { render } from "@react-email/render";
+import puppeteer from "puppeteer";
+import React from "react";
 
-const receipts = [
-    { component: JamesReceipt, orderId: "RC-INV-202601-001" },
-    { component: PrajwalReceipt, orderId: "RC-INV-202602-002" },
-    { component: TejasReceipt, orderId: "RC-INV-202602-003" },
-    { component: MohitReceipt, orderId: "RC-INV-202603-004" },
-    { component: VineethReceipt, orderId: "RC-INV-202603-005" },
-    { component: PrishitaReceipt, orderId: "RC-INV-202604-006" },
-    { component: ShubhReceipt, orderId: "RC-INV-202604-007" },
-    { component: DevReceipt, orderId: "RC-INV-202604-008" },
+import WelcomeReceiptEmail from "../components/emails/WelcomeReceiptEmail";
+
+type ReceiptSeed = {
+    customerName: string;
+    programName: string;
+    amountFormatted: string;
+    orderId: string;
+    receiptDate: string;
+};
+
+const receipts: ReceiptSeed[] = [
+    {
+        customerName: "James",
+        programName: "21-Day Deep Sleep Reset",
+        amountFormatted: "₹2,599.00",
+        orderId: "RC-INV-202601-001",
+        receiptDate: "2026-01-21T10:00:00Z",
+    },
+    {
+        customerName: "Prajwal",
+        programName: "6-Day Control",
+        amountFormatted: "₹599.00",
+        orderId: "RC-INV-202602-002",
+        receiptDate: "2026-02-12T10:00:00Z",
+    },
+    {
+        customerName: "Tejas",
+        programName: "14-Day Energy Restore",
+        amountFormatted: "₹1,499.00",
+        orderId: "RC-INV-202602-003",
+        receiptDate: "2026-02-18T10:00:00Z",
+    },
+    {
+        customerName: "Mohit",
+        programName: "6-Day Control",
+        amountFormatted: "₹599.00",
+        orderId: "RC-INV-202603-004",
+        receiptDate: "2026-03-02T10:00:00Z",
+    },
+    {
+        customerName: "Vineeth",
+        programName: "14-Day Energy Restore",
+        amountFormatted: "₹1,499.00",
+        orderId: "RC-INV-202603-005",
+        receiptDate: "2026-03-20T10:00:00Z",
+    },
+    {
+        customerName: "Prishita Agrawal",
+        programName: "90-Day Smoking Reset",
+        amountFormatted: "₹5,999.00",
+        orderId: "RC-INV-202604-006",
+        receiptDate: "2026-04-10T10:00:00Z",
+    },
+    {
+        customerName: "Shubh Khatri",
+        programName: "21-Day Deep Sleep Reset",
+        amountFormatted: "₹2,599.00",
+        orderId: "RC-INV-202604-007",
+        receiptDate: "2026-04-15T10:00:00Z",
+    },
+    {
+        customerName: "Dev",
+        programName: "30-Day Men's Vitality Reset",
+        amountFormatted: "₹4,999.00",
+        orderId: "RC-INV-202604-008",
+        receiptDate: "2026-04-18",
+    },
 ];
 
 async function generate() {
     const browser = await puppeteer.launch({ headless: true });
-    const outputDir = path.join(__dirname, '../generated/receipts');
-    
+    const outputDir = path.join(__dirname, "../generated/receipts");
+
     if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir, { recursive: true });
     }
 
-    for (const r of receipts) {
-        // @ts-ignore
-        const element = React.createElement(r.component);
+    for (const receipt of receipts) {
+        const element = React.createElement(WelcomeReceiptEmail, {
+            customerName: receipt.customerName,
+            programName: receipt.programName,
+            amountFormatted: receipt.amountFormatted,
+            orderId: receipt.orderId,
+            receiptDate: receipt.receiptDate,
+            whatsappLink: "https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0",
+            calendlyLink: "https://calendly.com/anjan-recoverycompass/30min",
+        });
+
         const html = await render(element);
         const page = await browser.newPage();
-        
-        // Wait until network is idle to make sure images (like the logo) are loaded
-        await page.setContent(html, { waitUntil: 'networkidle0' });
-        
-        const outputPath = path.join(outputDir, `${r.orderId}.pdf`);
-        await page.pdf({ 
-            path: outputPath, 
-            format: 'A4', 
+
+        await page.setContent(html, { waitUntil: "networkidle0" });
+
+        const outputPath = path.join(outputDir, `${receipt.orderId}.pdf`);
+        await page.pdf({
+            path: outputPath,
+            format: "A4",
             printBackground: true,
-            margin: { top: '20px', bottom: '20px' }
+            margin: { top: "20px", bottom: "20px" },
         });
-        console.log(`Generated ${r.orderId}.pdf`);
+        console.log(`Generated ${receipt.orderId}.pdf`);
         await page.close();
     }
 

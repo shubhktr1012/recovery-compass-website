@@ -6,8 +6,8 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 
 import { render } from "@react-email/render";
-import { build } from "esbuild";
 import React from "react";
+import WelcomeReceiptEmail from "../components/emails/WelcomeReceiptEmail";
 
 const execFileAsync = promisify(execFile);
 const __filename = fileURLToPath(import.meta.url);
@@ -20,15 +20,27 @@ const chromePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome
 
 const receiptEntries = [
   {
-    input: path.join(webRoot, "components", "emails", "PrishitaReceipt.tsx"),
+    customerName: "Prishita Agrawal",
+    programName: "90-Day Smoking Reset",
+    amountFormatted: "₹5,999.00",
+    orderId: "RC-INV-202604-006",
+    receiptDate: "2026-04-10T10:00:00Z",
     outputName: "PrishitaReceipt.pdf",
   },
   {
-    input: path.join(webRoot, "components", "emails", "ShubhReceipt.tsx"),
+    customerName: "Shubh Khatri",
+    programName: "21-Day Deep Sleep Reset",
+    amountFormatted: "₹2,599.00",
+    orderId: "RC-INV-202604-007",
+    receiptDate: "2026-04-15T10:00:00Z",
     outputName: "ShubhReceipt.pdf",
   },
   {
-    input: path.join(webRoot, "components", "emails", "DevReceipt.tsx"),
+    customerName: "Dev",
+    programName: "30-Day Men's Vitality Reset",
+    amountFormatted: "₹4,999.00",
+    orderId: "RC-INV-202604-008",
+    receiptDate: "2026-04-18",
     outputName: "DevReceipt.pdf",
   },
 ];
@@ -37,30 +49,16 @@ async function ensureChrome() {
   await fs.access(chromePath);
 }
 
-async function renderReceiptHtml(componentPath) {
-  const bundledPath = path.join(
-    tempDir,
-    `${path.basename(componentPath).replace(/\.[^.]+$/, "")}.mjs`,
-  );
-
-  await build({
-    entryPoints: [componentPath],
-    outfile: bundledPath,
-    bundle: true,
-    format: "esm",
-    platform: "node",
-    jsx: "automatic",
-    logLevel: "silent",
-  });
-
-  const mod = await import(`file://${bundledPath}?t=${Date.now()}`);
-  const Component = mod.default ?? Object.values(mod).find((value) => typeof value === "function");
-
-  if (!Component) {
-    throw new Error(`No React component export found in ${componentPath}`);
-  }
-
-  const html = await render(React.createElement(Component), {
+async function renderReceiptHtml(receipt) {
+  const html = await render(React.createElement(WelcomeReceiptEmail, {
+    customerName: receipt.customerName,
+    programName: receipt.programName,
+    amountFormatted: receipt.amountFormatted,
+    orderId: receipt.orderId,
+    receiptDate: receipt.receiptDate,
+    whatsappLink: "https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0",
+    calendlyLink: "https://calendly.com/anjan-recoverycompass/30min",
+  }), {
     pretty: true,
   });
 
@@ -85,7 +83,7 @@ async function main() {
   await fs.mkdir(outputDir, { recursive: true });
 
   for (const entry of receiptEntries) {
-    const html = await renderReceiptHtml(entry.input);
+    const html = await renderReceiptHtml(entry);
     const htmlPath = path.join(tempDir, `${path.basename(entry.outputName, ".pdf")}.html`);
     const pdfPath = path.join(outputDir, entry.outputName);
 
