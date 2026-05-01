@@ -2,7 +2,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => {
   const state = {
-    existingDelivery: null as null | { id: string; status: "pending" | "sent" | "failed" },
+    existingDelivery: null as null | {
+      id: string;
+      status: "pending" | "sent" | "failed";
+      updated_at?: string | null;
+      created_at?: string | null;
+    },
     existingDeliveryError: null as null | { message: string },
     createdDelivery: { id: "delivery_1" },
     createDeliveryError: null as null | { message: string; code?: string },
@@ -11,6 +16,7 @@ const mocks = vi.hoisted(() => {
       display_name: string | null;
     },
     profileError: null as null | { message: string },
+    updateErrors: [] as Array<null | { message: string }>,
     updateCalls: [] as Array<{ table: string; values: Record<string, unknown>; eq: Array<[string, string]> }>,
     insertCalls: [] as Array<{ table: string; values: Record<string, unknown> }>,
     sendAppPurchaseWelcomeEmail: vi.fn(),
@@ -61,7 +67,7 @@ const mocks = vi.hoisted(() => {
           return {
             eq(column: string, value: string) {
               call.eq.push([column, value]);
-              return Promise.resolve({ error: null });
+              return Promise.resolve({ error: state.updateErrors.shift() ?? null });
             },
           };
         },
@@ -94,6 +100,7 @@ describe("POST /api/internal/app-purchase-email", () => {
     mocks.state.createDeliveryError = null;
     mocks.state.profile = { email: "member@example.com", display_name: "Member" };
     mocks.state.profileError = null;
+    mocks.state.updateErrors = [];
     mocks.state.updateCalls = [];
     mocks.state.insertCalls = [];
     mocks.state.sendAppPurchaseWelcomeEmail.mockReset();
@@ -129,6 +136,62 @@ describe("POST /api/internal/app-purchase-email", () => {
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({ success: true, deduped: true });
     expect(mocks.state.sendAppPurchaseWelcomeEmail).not.toHaveBeenCalled();
+  });
+
+  it("dedupes a recent pending delivery", async () => {
+    mocks.state.existingDelivery = {
+      id: "delivery_1",
+      status: "pending",
+      updated_at: new Date().toISOString(),
+    };
+
+    const response = await POST(
+      new Request("http://localhost/api/internal/app-purchase-email", {
+        method: "POST",
+        headers: {
+          authorization: "Bearer secret_123",
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ userId: "user_1", programSlug: "six_day_reset", revenueCatEventId: "evt_1" }),
+      })
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ success: true, deduped: true });
+    expect(mocks.state.sendAppPurchaseWelcomeEmail).not.toHaveBeenCalled();
+  });
+
+  it("retries a stale pending delivery", async () => {
+    mocks.state.existingDelivery = {
+      id: "delivery_1",
+      status: "pending",
+      updated_at: new Date(Date.now() - 11 * 60 * 1000).toISOString(),
+    };
+
+    const response = await POST(
+      new Request("http://localhost/api/internal/app-purchase-email", {
+        method: "POST",
+        headers: {
+          authorization: "Bearer secret_123",
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ userId: "user_1", programSlug: "six_day_reset", revenueCatEventId: "evt_1" }),
+      })
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ success: true, emailId: "email_1" });
+    expect(mocks.state.sendAppPurchaseWelcomeEmail).toHaveBeenCalledTimes(1);
+    expect(mocks.state.insertCalls).toHaveLength(0);
+    expect(mocks.state.updateCalls[0]?.values).toMatchObject({
+      status: "pending",
+      last_error: null,
+    });
+    expect(mocks.state.updateCalls.at(-1)?.values).toMatchObject({
+      status: "sent",
+      last_error: null,
+      recipient_email: "member@example.com",
+    });
   });
 
   it("sends the email and marks the delivery as sent", async () => {
@@ -190,5 +253,27 @@ describe("POST /api/internal/app-purchase-email", () => {
       last_error: "blocked by provider",
       recipient_email: "member@example.com",
     });
+  });
+
+  it("returns 500 when marking the delivery as sent fails", async () => {
+    mocks.state.updateErrors = [{ message: "write blocked" }];
+
+    const response = await POST(
+      new Request("http://localhost/api/internal/app-purchase-email", {
+        method: "POST",
+        headers: {
+          authorization: "Bearer secret_123",
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ userId: "user_1", programSlug: "six_day_reset", revenueCatEventId: "evt_1" }),
+      })
+    );
+
+    expect(response.status).toBe(500);
+    expect(await response.json()).toEqual({
+      success: false,
+      error: "Failed to mark outbound_email_deliveries row delivery_1 as sent: write blocked",
+    });
+    expect(mocks.state.sendAppPurchaseWelcomeEmail).toHaveBeenCalledTimes(1);
   });
 });
