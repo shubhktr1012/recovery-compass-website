@@ -10,6 +10,7 @@ import {
     Text,
     Row,
     Column,
+    Img,
 } from "@react-email/components";
 import * as React from "react";
 
@@ -18,20 +19,46 @@ interface WelcomeReceiptEmailProps {
     programName: string;
     amountFormatted: string;
     orderId: string;
+    receiptDate?: string;
     whatsappLink: string;
     calendlyLink: string;
 }
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://recoverycompass.co";
 
+function formatReceiptDate(date?: string) {
+    if (!date) {
+        return new Date().toLocaleDateString("en-IN", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+        });
+    }
+
+    const parsedDate = new Date(date);
+
+    if (Number.isNaN(parsedDate.getTime())) {
+        return date;
+    }
+
+    return parsedDate.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
+}
+
 export const WelcomeReceiptEmail = ({
     customerName = "Seeker",
     programName = "Recovery Compass Program",
     amountFormatted = "₹4,999.00",
     orderId = "order_placeholder",
+    receiptDate,
     whatsappLink = "https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0",
     calendlyLink = "https://calendly.com/anjan-recoverycompass/30min",
 }: WelcomeReceiptEmailProps) => {
+    const formattedReceiptDate = formatReceiptDate(receiptDate);
+
     return (
         <Html lang="en">
             <Head />
@@ -41,6 +68,12 @@ export const WelcomeReceiptEmail = ({
 
                     {/* Header */}
                     <Section style={header}>
+                        <Img 
+                            src={`${baseUrl}/rc-logo-white.svg`}
+                            width="80"
+                            alt="Recovery Compass Logo"
+                            style={logo}
+                        />
                         <Text style={brandName}>Recovery Compass</Text>
                         <Text style={headerTagline}>Your journey begins now.</Text>
                     </Section>
@@ -99,6 +132,7 @@ export const WelcomeReceiptEmail = ({
                             <Column style={colLeftItem}>
                                 <Text style={itemName}>{programName}</Text>
                                 <Text style={itemSub}>Order: {orderId}</Text>
+                                <Text style={itemSub}>Date: {formattedReceiptDate}</Text>
                             </Column>
                             <Column style={colRightItem}>
                                 <Text style={itemAmount}>{amountFormatted}</Text>
@@ -108,6 +142,7 @@ export const WelcomeReceiptEmail = ({
                         <Row style={totalRow}>
                             <Column style={colLeftTotal}>
                                 <Text style={totalLabel}>Total Paid</Text>
+                                <Text style={gstText}>Includes GST (GSTIN: 29DUYPR5435M1ZC)</Text>
                             </Column>
                             <Column style={colRightTotal}>
                                 <Text style={totalAmount}>{amountFormatted}</Text>
@@ -149,56 +184,63 @@ const muted = "#6b7f77";
 const border = "#dde9e4";
 const cream = "#f2f7f5";
 
-const main = { backgroundColor: cream, padding: "20px 10px", fontFamily: ff };
+const main = { backgroundColor: cream, padding: "40px 10px", fontFamily: ff };
 
 const container = {
     backgroundColor: "#ffffff",
     margin: "0 auto",
     width: "100%",
     maxWidth: "560px",
-    borderRadius: "12px",
+    borderRadius: "16px",
     border: `1px solid ${border}`,
     overflow: "hidden" as const,
+    boxShadow: "0 4px 24px rgba(0, 0, 0, 0.04)",
 };
 
 const header = {
     backgroundColor: forest,
-    padding: "32px 24px",
+    padding: "40px 24px",
     textAlign: "center" as const,
+};
+
+const logo = {
+    margin: "0 auto 12px",
+    display: "block",
 };
 
 const brandName = {
     color: "#ffffff",
-    fontSize: "22px",
-    fontWeight: "700",
+    fontSize: "20px",
+    fontWeight: "600",
     margin: "0 0 6px",
-    letterSpacing: "-0.3px",
+    letterSpacing: "-0.2px",
     fontFamily: ff,
 };
 
 const headerTagline = {
-    color: "rgba(255,255,255,0.45)",
-    fontSize: "12px",
+    color: "rgba(255,255,255,0.6)",
+    fontSize: "13px",
     margin: "0",
-    letterSpacing: "0.1em",
+    letterSpacing: "0.15em",
     textTransform: "uppercase" as const,
     fontFamily: ff,
 };
 
-const section = { padding: "24px 24px 0" };
+const section = { padding: "32px 32px 0" };
 
 const h1 = {
     color: forest,
-    fontSize: "24px",
+    fontSize: "26px",
     fontWeight: "700",
-    margin: "0 0 14px",
+    margin: "0 0 16px",
     lineHeight: "1.3",
+    letterSpacing: "-0.5px",
     fontFamily: ff,
 };
 
 const p = {
     color: "#44554f",
-    fontSize: "15px",
+    fontSize: "16px",
     lineHeight: "1.6",
     margin: "0",
     fontFamily: ff,
@@ -206,45 +248,46 @@ const p = {
 
 // WhatsApp block
 const waBlock = {
-    margin: "24px 24px 0",
-    padding: "20px",
+    margin: "32px 32px 0",
+    padding: "24px",
     backgroundColor: "#edfaf3",
-    borderRadius: "8px",
+    borderRadius: "12px",
     borderLeft: "4px solid #25D366",
 };
 
 // Calendly block
 const calBlock = {
-    margin: "16px 24px 0",
-    padding: "20px",
+    margin: "16px 32px 0",
+    padding: "24px",
     backgroundColor: "#eef4ff",
-    borderRadius: "8px",
+    borderRadius: "12px",
     borderLeft: "4px solid #006BFF",
 };
 
 const ctaEyebrow = {
-    fontSize: "10px",
+    fontSize: "11px",
     fontWeight: "700",
     color: muted,
     textTransform: "uppercase" as const,
     letterSpacing: "0.12em",
-    margin: "0 0 4px",
+    margin: "0 0 6px",
     fontFamily: ff,
 };
 
 const ctaTitle = {
-    fontSize: "17px",
+    fontSize: "18px",
     fontWeight: "700",
     color: forest,
-    margin: "0 0 8px",
+    margin: "0 0 10px",
+    letterSpacing: "-0.3px",
     fontFamily: ff,
 };
 
 const ctaText = {
-    fontSize: "14px",
+    fontSize: "15px",
     color: "#44554f",
     lineHeight: "1.5",
-    margin: "0 0 16px",
+    margin: "0 0 20px",
     fontFamily: ff,
 };
 
@@ -254,7 +297,7 @@ const waBtn = {
     fontSize: "14px",
     fontWeight: "700",
     textDecoration: "none",
-    padding: "12px 20px",
+    padding: "14px 24px",
     borderRadius: "8px",
     display: "inline-block",
     fontFamily: ff,
@@ -266,7 +309,7 @@ const calBtn = {
     fontSize: "14px",
     fontWeight: "700",
     textDecoration: "none",
-    padding: "12px 20px",
+    padding: "14px 24px",
     borderRadius: "8px",
     display: "inline-block",
     fontFamily: ff,
@@ -275,10 +318,11 @@ const calBtn = {
 const hr = { borderColor: border, margin: "0" };
 
 const receiptTitle = {
-    fontSize: "16px",
+    fontSize: "18px",
     fontWeight: "700",
     color: forest,
-    margin: "0 0 16px",
+    margin: "0 0 20px",
+    letterSpacing: "-0.3px",
     fontFamily: ff,
 };
 
@@ -294,41 +338,41 @@ const totalRow = {
     // padding applied to columns instead
 };
 
-const colLeftHeader = { width: "65%", verticalAlign: "bottom" as const, borderBottom: `2px solid ${forest}`, paddingBottom: "8px" };
-const colRightHeader = { width: "35%", verticalAlign: "bottom" as const, textAlign: "right" as const, borderBottom: `2px solid ${forest}`, paddingBottom: "8px" };
+const colLeftHeader = { width: "65%", verticalAlign: "bottom" as const, borderBottom: `2px solid ${forest}`, paddingBottom: "12px" };
+const colRightHeader = { width: "35%", verticalAlign: "bottom" as const, textAlign: "right" as const, borderBottom: `2px solid ${forest}`, paddingBottom: "12px" };
 
-const colLeftItem = { width: "65%", verticalAlign: "top" as const, borderBottom: `1px solid ${border}`, paddingTop: "12px", paddingBottom: "12px"  };
-const colRightItem = { width: "35%", verticalAlign: "top" as const, textAlign: "right" as const, borderBottom: `1px solid ${border}`, paddingTop: "12px", paddingBottom: "12px" };
+const colLeftItem = { width: "65%", verticalAlign: "top" as const, borderBottom: `1px solid ${border}`, paddingTop: "16px", paddingBottom: "16px"  };
+const colRightItem = { width: "35%", verticalAlign: "top" as const, textAlign: "right" as const, borderBottom: `1px solid ${border}`, paddingTop: "16px", paddingBottom: "16px" };
 
-const colLeftTotal = { width: "65%", verticalAlign: "top" as const, paddingTop: "12px" };
-const colRightTotal = { width: "35%", verticalAlign: "top" as const, textAlign: "right" as const, paddingTop: "12px" };
-
+const colLeftTotal = { width: "65%", verticalAlign: "top" as const, paddingTop: "16px" };
+const colRightTotal = { width: "35%", verticalAlign: "top" as const, textAlign: "right" as const, paddingTop: "16px" };
 
 const tableHeaderText = {
-    fontSize: "10px",
+    fontSize: "11px",
     fontWeight: "700",
     color: muted,
     textTransform: "uppercase" as const,
-    letterSpacing: "0.08em",
+    letterSpacing: "0.1em",
     margin: "0",
     fontFamily: ff,
 };
 
-const itemName = { fontSize: "14px", fontWeight: "600", color: forest, margin: "0 0 3px", fontFamily: ff };
-const itemSub = { fontSize: "12px", color: muted, margin: "0", fontFamily: ff };
-const itemAmount = { fontSize: "14px", fontWeight: "600", color: forest, margin: "0", fontFamily: ff };
-const totalLabel = { fontSize: "15px", fontWeight: "700", color: forest, margin: "0", fontFamily: ff };
-const totalAmount = { fontSize: "17px", fontWeight: "700", color: forest, margin: "0", fontFamily: ff };
+const itemName = { fontSize: "15px", fontWeight: "600", color: forest, margin: "0 0 4px", fontFamily: ff };
+const itemSub = { fontSize: "13px", color: muted, margin: "0", fontFamily: ff };
+const itemAmount = { fontSize: "15px", fontWeight: "600", color: forest, margin: "0", fontFamily: ff };
+const totalLabel = { fontSize: "16px", fontWeight: "700", color: forest, margin: "0 0 4px", fontFamily: ff };
+const gstText = { fontSize: "12px", color: muted, margin: "0", fontFamily: ff };
+const totalAmount = { fontSize: "18px", fontWeight: "700", color: forest, margin: "0", fontFamily: ff };
 
-const receiptNote = { fontSize: "12px", color: muted, margin: "16px 0 0", fontStyle: "italic", fontFamily: ff, lineHeight: "1.4" };
+const receiptNote = { fontSize: "13px", color: muted, margin: "24px 0 0", fontStyle: "italic", fontFamily: ff, lineHeight: "1.5" };
 
 const footer = {
-    padding: "24px",
-    marginTop: "24px",
+    padding: "32px",
+    marginTop: "32px",
     borderTop: `1px solid ${border}`,
-    backgroundColor: cream,
+    backgroundColor: "#fafcfb",
 };
 
-const footerText = { fontSize: "14px", color: muted, margin: "0 0 8px", lineHeight: "1.5", fontFamily: ff };
-const footerMeta = { fontSize: "12px", color: muted, margin: "0", fontFamily: ff };
-const footerLink = { color: forest, textDecoration: "underline" };
+const footerText = { fontSize: "15px", color: muted, margin: "0 0 12px", lineHeight: "1.6", fontFamily: ff };
+const footerMeta = { fontSize: "13px", color: muted, margin: "0", fontFamily: ff };
+const footerLink = { color: forest, textDecoration: "underline", fontWeight: "500" };
