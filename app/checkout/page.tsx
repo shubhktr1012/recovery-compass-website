@@ -298,7 +298,7 @@ function CartItem({
 
 export default function CheckoutPage() {
     const { items, cartTotal, removeItem } = useCart();
-    const { user, isLoading: isAuthLoading, hasActiveProgram } = useUser();
+    const { user, isLoading: isAuthLoading } = useUser();
     const router = useRouter();
     const [isProcessing, setIsProcessing] = useState(false);
     const [promoCode, setPromoCode] = useState("");
@@ -317,7 +317,7 @@ export default function CheckoutPage() {
     // Redirect if not logged in or cart is empty (only after loading completes)
     useEffect(() => {
         if (!isAuthLoading) {
-            if (!user || hasActiveProgram) {
+            if (!user) {
                 router.push("/");
                 return;
             }
@@ -325,7 +325,7 @@ export default function CheckoutPage() {
         if (cartLoaded && items.length === 0) {
             router.push("/");
         }
-    }, [user, items, isAuthLoading, cartLoaded, router, hasActiveProgram]);
+    }, [user, items, isAuthLoading, cartLoaded, router]);
 
     const handlePromoApply = () => {
         setPromoError("");

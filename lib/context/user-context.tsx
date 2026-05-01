@@ -237,11 +237,27 @@ export function UserProvider({ children }: { children: ReactNode }) {
         }
     }, [clearStaleSession, isUnauthorizedAuthError]);
 
+    const hydrateAccountData = useCallback((userId: string) => {
+        void Promise.all([
+            fetchProfile(userId),
+            fetchOwnedPrograms(userId),
+        ]).catch((error) => {
+            console.error("Failed to hydrate account data:", error);
+        });
+    }, [fetchOwnedPrograms, fetchProfile]);
+
     const syncAuthenticatedState = useCallback(async (candidateSession: Session | null) => {
         if (!candidateSession) {
             clearAuthState();
             return;
         }
+
+        // The session has already been accepted by Supabase auth-js. Reflect it
+        // immediately so production latency in profile/program queries does not
+        // make the UI look signed out after login.
+        setSession(candidateSession);
+        setUser(candidateSession.user);
+        setIsLoading(false);
 
         const { data, error } = await supabase.auth.getUser();
 
@@ -252,29 +268,33 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
         setSession(candidateSession);
         setUser(data.user);
-        await Promise.all([
-            fetchProfile(data.user.id),
-            fetchOwnedPrograms(data.user.id),
-        ]);
-    }, [clearAuthState, clearStaleSession, fetchOwnedPrograms, fetchProfile]);
+        hydrateAccountData(data.user.id);
+    }, [clearAuthState, clearStaleSession, hydrateAccountData]);
 
     useEffect(() => {
         // Initial session check
-        supabase.auth.getSession().then(async ({ data: { session } }) => {
-            await syncAuthenticatedState(session);
-            setIsLoading(false);
-        });
+        supabase.auth.getSession()
+            .then(async ({ data: { session } }) => {
+                await syncAuthenticatedState(session);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                console.error("Failed to read initial auth session:", error);
+                clearAuthState();
+                setIsLoading(false);
+            });
 
         // Listen for auth changes
-        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-            await syncAuthenticatedState(session);
-            setIsLoading(false);
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+            void syncAuthenticatedState(session).finally(() => {
+                setIsLoading(false);
+            });
         });
 
         return () => {
             subscription.unsubscribe();
         };
-    }, [syncAuthenticatedState]);
+    }, [clearAuthState, syncAuthenticatedState]);
 
     const openAuthModal = (tab: "signin" | "signup" = "signin", onSuccess?: () => void) => {
         setAuthModalTab(tab);

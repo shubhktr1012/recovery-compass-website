@@ -22,7 +22,7 @@ type ProgramArticle = {
     curriculumOverview: string;
 };
 
-type Program = {
+export type Program = {
     id: string;
     tag: string;
     title: string;
@@ -34,7 +34,7 @@ type Program = {
     accent: "dark" | "light";
 };
 
-const categoryPrograms: Record<string, Program[]> = {
+export const categoryPrograms: Record<string, Program[]> = {
     "Break Habits": [
         {
             id: "6-day-compass-reset",
@@ -187,6 +187,8 @@ const categoryPrograms: Record<string, Program[]> = {
     ],
 };
 
+export const allPrograms = Object.values(categoryPrograms).flat();
+
 const categories = ["Break Habits", "Restore Balance", "Build Vitality"];
 const CATEGORY_VISIBLE_MS = 20000;
 
@@ -311,7 +313,7 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
     }, [isDrawerOpen, onDrawerStateChange]);
     const isDark = program.accent === "dark";
     const { addItem, removeItem, isItemInCart } = useCart();
-    const { ownedPrograms, hasActiveProgram } = useUser();
+    const { ownedPrograms } = useUser();
     
     const inCart = isItemInCart(program.id);
     const isOwned = ownedPrograms.includes(program.id);
@@ -418,16 +420,6 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
                                 )}
                             >
                                 <Check className="size-4 mr-2" /> Owned
-                            </Button>
-                        ) : hasActiveProgram ? (
-                            <Button
-                                disabled
-                                className={cn(
-                                    "w-full md:w-fit px-8 h-12 rounded-full font-bold text-sm md:text-base border-none transition-all duration-300 opacity-80",
-                                    isDark ? "bg-white/10 text-white/70" : "bg-[oklch(0.2475_0.0661_146.79)]/10 text-[oklch(0.2475_0.0661_146.79)]/70"
-                                )}
-                            >
-                                Active Program in Progress
                             </Button>
                         ) : (
                             <Button
@@ -561,13 +553,6 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
                                 className="w-full h-14 rounded-full font-bold text-lg border-none opacity-50 bg-[oklch(0.2475_0.0661_146.79)] text-white"
                             >
                                 <Check className="size-5 mr-2" /> Program Owned
-                            </Button>
-                        ) : hasActiveProgram ? (
-                            <Button
-                                disabled
-                                className="w-full h-14 rounded-full font-bold text-lg border-none opacity-60 bg-[oklch(0.2475_0.0661_146.79)]/80 text-white"
-                            >
-                                Active Program in Progress
                             </Button>
                         ) : (
                             <Button
