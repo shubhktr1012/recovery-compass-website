@@ -1,12 +1,43 @@
 import { Resend } from "resend";
+import AppPurchaseWelcomeEmail from "@/components/emails/AppPurchaseWelcomeEmail";
 import WelcomeReceiptEmail from "@/components/emails/WelcomeReceiptEmail";
 
 // We initialize resend lazily inside the function to prevent build-time errors
 // when the API key is missing.
 
-// User's verified sending domain handle or test handle
-// NOTE: Until you verify your domain in Resend, you MUST use onboarding@resend.dev
-const FROM_EMAIL = process.env.NEXT_PUBLIC_FROM_EMAIL || "onboarding@resend.dev";
+// NOTE: `NEXT_PUBLIC_FROM_EMAIL` remains only as a temporary fallback for older
+// local environments. New deployments should use server-only `FROM_EMAIL`.
+const FROM_EMAIL =
+    process.env.FROM_EMAIL ||
+    process.env.NEXT_PUBLIC_FROM_EMAIL ||
+    "onboarding@resend.dev";
+
+type MailSendResult = {
+    success: boolean;
+    id?: string | null;
+    error?: string;
+};
+
+const PROGRAM_DISPLAY_NAMES: Record<string, string> = {
+    six_day_reset: "6-Day Compass Reset",
+    ninety_day_transform: "90-Day Smoke-Free Journey",
+    sleep_disorder_reset: "21-Day Deep Sleep Reset",
+    energy_vitality: "14-Day Energy Restore",
+    age_reversal: "Radiance Journey",
+    male_sexual_health: "Men's Vitality Reset Program",
+};
+
+function getProgramDisplayName(programSlug: string) {
+    return PROGRAM_DISPLAY_NAMES[programSlug] || "Recovery Compass Program";
+}
+
+function getResendClient() {
+    if (!process.env.RESEND_API_KEY) {
+        return null;
+    }
+
+    return new Resend(process.env.RESEND_API_KEY);
+}
 
 export interface SendWelcomeEmailParams {
     to: string;
@@ -14,6 +45,7 @@ export interface SendWelcomeEmailParams {
     programName: string;
     amountFormatted: string;
     orderId: string;
+    receiptDate?: string;
 }
 
 /**
@@ -25,13 +57,15 @@ export async function sendWelcomeEmail({
     programName,
     amountFormatted,
     orderId,
+    receiptDate,
 }: SendWelcomeEmailParams) {
-    if (!process.env.RESEND_API_KEY) {
+    const resend = getResendClient();
+
+    if (!resend) {
         console.warn("[Mail] RESEND_API_KEY is not set. Email not sent.");
-        return null;
+        return { success: false, error: "RESEND_API_KEY is not set" } satisfies MailSendResult;
     }
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
     try {
         const { data, error } = await resend.emails.send({
             from: FROM_EMAIL,
@@ -43,6 +77,7 @@ export async function sendWelcomeEmail({
                 programName,
                 amountFormatted,
                 orderId,
+                receiptDate,
                 // Replace with Dynamic Links from DB later if needed, harding for Phase 1
                 whatsappLink: "https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0",
                 calendlyLink: "https://calendly.com/anjan-recoverycompass/30min", 
@@ -51,15 +86,68 @@ export async function sendWelcomeEmail({
 
         if (error) {
             console.error("[Mail] Failed to send welcome email via Resend:", error);
-            throw new Error(`Resend Mail Error: ${error.message}`);
+            return { success: false, error: error.message } satisfies MailSendResult;
         }
 
         console.log(`[Mail] Welcome email sent successfully to ${to}. Email ID: ${data?.id}`);
-        return data;
+        return { success: true, id: data?.id ?? null } satisfies MailSendResult;
     } catch (err: unknown) {
         console.error("[Mail] Exception sending welcome email:", err);
-        // We log it but usually do not want to crash the main transaction flow
-        // The webhook should still complete
+        return {
+            success: false,
+            error: err instanceof Error ? err.message : "Unknown email exception",
+        } satisfies MailSendResult;
+    }
+}
+
+export interface SendAppPurchaseWelcomeEmailParams {
+    to: string;
+    customerName: string;
+    programSlug: string;
+    store?: string | null;
+}
+
+export async function sendAppPurchaseWelcomeEmail({
+    to,
+    customerName,
+    programSlug,
+    store,
+}: SendAppPurchaseWelcomeEmailParams) {
+    const resend = getResendClient();
+
+    if (!resend) {
+        console.warn("[Mail] RESEND_API_KEY is not set. App purchase email not sent.");
+        return { success: false, error: "RESEND_API_KEY is not set" } satisfies MailSendResult;
+    }
+
+    try {
+        const programName = getProgramDisplayName(programSlug);
+        const { data, error } = await resend.emails.send({
+            from: FROM_EMAIL,
+            to: [to],
+            subject: `Your ${programName} is unlocked`,
+            react: AppPurchaseWelcomeEmail({
+                customerName,
+                programName,
+                store,
+                whatsappLink: "https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0",
+                calendlyLink: "https://calendly.com/anjan-recoverycompass/30min",
+            }),
+        });
+
+        if (error) {
+            console.error("[Mail] Failed to send app purchase welcome email via Resend:", error);
+            return { success: false, error: error.message } satisfies MailSendResult;
+        }
+
+        console.log(`[Mail] App purchase welcome email sent successfully to ${to}. Email ID: ${data?.id}`);
+        return { success: true, id: data?.id ?? null } satisfies MailSendResult;
+    } catch (err: unknown) {
+        console.error("[Mail] Exception sending app purchase welcome email:", err);
+        return {
+            success: false,
+            error: err instanceof Error ? err.message : "Unknown email exception",
+        } satisfies MailSendResult;
     }
 }
 
@@ -119,7 +207,11 @@ export async function sendOpsAlertEmail({
         return null;
     }
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    const resend = getResendClient();
+
+    if (!resend) {
+        return null;
+    }
 
     try {
         const { data, error } = await resend.emails.send({
@@ -159,7 +251,11 @@ export async function sendEnquiryNotificationEmail({
         return null;
     }
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    const resend = getResendClient();
+
+    if (!resend) {
+        return null;
+    }
 
     try {
         const { data, error } = await resend.emails.send({

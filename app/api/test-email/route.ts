@@ -29,7 +29,12 @@ export async function GET(request: Request) {
             programName: "The Inner Circle Routine",
             amountFormatted: "₹4,999.00",
             orderId: "order_rc_demo_987",
+            receiptDate: "2026-04-30",
         });
+
+        if (!result.success) {
+            return NextResponse.json({ success: false, error: result.error }, { status: 502 });
+        }
 
         return NextResponse.json({ success: true, result });
     } catch (error: unknown) {

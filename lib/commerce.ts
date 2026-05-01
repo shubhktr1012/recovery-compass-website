@@ -1,14 +1,6 @@
-import { createClient } from "@supabase/supabase-js";
 import { sendOpsAlertEmail, sendWelcomeEmail } from "@/lib/mail";
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Supabase Admin Client (server-only, service_role)
-// ─────────────────────────────────────────────────────────────────────────────
-
-export const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { supabaseAdmin } from "@/lib/supabase-admin";
+export { supabaseAdmin };
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -339,14 +331,22 @@ async function attemptFulfillment(transactionId: string, source: FulfillmentSour
                     ? items.map((item) => item.title).join(", ")
                     : "Recovery Compass Curriculum";
 
-                await sendWelcomeEmail({
+                const emailResult = await sendWelcomeEmail({
                     to: profile.email,
                     customerName: profile.display_name || "Seeker",
                     programName: programName,
                     amountFormatted: amountFormatted,
                     orderId: txn.provider_order_id,
+                    receiptDate: txn.created_at,
                 });
-                console.log(`[Commerce] Welcome email dispatched for txn ${transactionId}`);
+
+                if (emailResult.success) {
+                    console.log(`[Commerce] Welcome email dispatched for txn ${transactionId}`);
+                } else {
+                    console.error(
+                        `[Mail] Welcome email was not sent for txn ${transactionId}: ${emailResult.error ?? "Unknown mail error"}`
+                    );
+                }
             }
         } catch (emailErr) {
             // Log but don't fail fulfillment
