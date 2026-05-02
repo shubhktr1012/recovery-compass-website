@@ -98,13 +98,14 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                             <h4 className="text-sm font-medium text-white/90">Socials</h4>
                             <ul className="space-y-4 text-sm text-white/60">
                                 <li>
-                                    <a href="#" className="hover:text-white transition-colors">Twitter / X</a>
-                                </li>
-                                <li>
-                                    <a href="#" className="hover:text-white transition-colors">Instagram</a>
-                                </li>
-                                <li>
-                                    <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
+                                    <a
+                                        href="https://www.instagram.com/recovery_compass/?hl=en"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="hover:text-white transition-colors"
+                                    >
+                                        Instagram
+                                    </a>
                                 </li>
                             </ul>
                         </div>
