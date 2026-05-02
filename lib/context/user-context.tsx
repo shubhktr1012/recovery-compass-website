@@ -165,6 +165,26 @@ export function UserProvider({ children }: { children: ReactNode }) {
         );
     }, []);
 
+    const isRefreshTokenNotFoundError = useCallback((error: unknown) => {
+        if (!error || typeof error !== "object") {
+            return false;
+        }
+
+        const authError = error as {
+            code?: string;
+            message?: string;
+            name?: string;
+        };
+
+        const haystack = `${authError.code ?? ""} ${authError.name ?? ""} ${authError.message ?? ""}`.toLowerCase();
+
+        return (
+            authError.code === "refresh_token_not_found" ||
+            haystack.includes("refresh token not found") ||
+            haystack.includes("invalid refresh token")
+        );
+    }, []);
+
     const fetchOwnedPrograms = useCallback(async (userId: string) => {
         try {
             const { data, error } = await supabase
@@ -279,7 +299,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
                 setIsLoading(false);
             })
             .catch((error) => {
-                console.error("Failed to read initial auth session:", error);
+                if (!isRefreshTokenNotFoundError(error)) {
+                    console.error("Failed to read initial auth session:", error);
+                }
                 clearAuthState();
                 setIsLoading(false);
             });
@@ -294,7 +316,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         return () => {
             subscription.unsubscribe();
         };
-    }, [clearAuthState, syncAuthenticatedState]);
+    }, [clearAuthState, isRefreshTokenNotFoundError, syncAuthenticatedState]);
 
     const openAuthModal = (tab: "signin" | "signup" = "signin", onSuccess?: () => void) => {
         setAuthModalTab(tab);
