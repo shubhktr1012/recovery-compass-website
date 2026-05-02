@@ -28,7 +28,7 @@ const organizationJsonLd = {
   name: "Recovery Compass",
   url: "https://recoverycompass.co",
   logo: "https://recoverycompass.co/rc-logo-white.svg",
-  sameAs: [],
+  sameAs: ["https://www.instagram.com/recovery_compass/?hl=en"],
 };
 
 const websiteJsonLd = {
