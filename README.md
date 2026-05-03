@@ -47,6 +47,7 @@ Current repo state as of March 29, 2026:
 web/
 ├── app/                  Routes, metadata, sitemap, and API handlers
 ├── components/           Sections, forms, legal content, and UI primitives
+├── docs/                 Environment and operational notes
 ├── lib/                  Supabase client and shared helpers
 ├── public/               Logos, OG image, CTA art, and other assets
 ├── supabase/             Website schema migrations
@@ -55,6 +56,9 @@ web/
 ```
 
 ## Local development
+
+See [`docs/ENVIRONMENTS.md`](docs/ENVIRONMENTS.md) for the current
+`local/staging/production` environment plan and cross-repo staging contract.
 
 ### Prerequisites
 

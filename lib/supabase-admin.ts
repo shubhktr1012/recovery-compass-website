@@ -1,6 +1,32 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-export const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+let adminClient: SupabaseClient | null = null;
+
+export function getSupabaseAdmin(): SupabaseClient {
+    if (adminClient) {
+        return adminClient;
+    }
+
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl) {
+        throw new Error("NEXT_PUBLIC_SUPABASE_URL is not configured");
+    }
+
+    if (!serviceRoleKey) {
+        throw new Error("SUPABASE_SERVICE_ROLE_KEY is not configured");
+    }
+
+    adminClient = createClient(supabaseUrl, serviceRoleKey);
+    return adminClient;
+}
+
+export const supabaseAdmin: SupabaseClient = new Proxy({} as SupabaseClient, {
+    get(_target, prop) {
+        const client = getSupabaseAdmin();
+        const value = client[prop as keyof SupabaseClient];
+
+        return typeof value === "function" ? value.bind(client) : value;
+    },
+});

@@ -2,514 +2,353 @@
 
 import { motion } from "framer-motion";
 
+const sectionVariants = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+};
+
 export function PrivacyContent() {
-    return (
-        <motion.div
-            className="space-y-12 text-foreground/80 leading-relaxed max-w-4xl mx-auto pb-20"
-            initial="initial"
-            animate="animate"
-            variants={{
-                initial: { opacity: 0 },
-                animate: {
-                    opacity: 1,
-                    transition: {
-                        staggerChildren: 0.1
-                    }
-                }
-            }}
-        >
-            <motion.section
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <p className="text-sm text-foreground/50 mb-4 font-sans">Last Updated: April 2026</p>
-                <h1 className="font-erode text-4xl md:text-5xl font-semibold text-foreground mb-8 tracking-tighter">
-                    Privacy Policy
-                </h1>
-                <div className="h-px w-full bg-foreground/10 mb-12" />
-                <p className="italic mb-6">Please read this Privacy Policy carefully.</p>
-                <p className="mb-4">
-                    Recovery Compass (&quot;Recovery Compass&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is committed to protecting your privacy and carefully managing your personal data.
-                </p>
-                <p>
-                    By accessing or using the Recovery Compass mobile application, website, or related services (collectively, the &quot;Services&quot;), you agree to this Privacy Policy. If you do not agree, please do not use the Services.
-                </p>
-            </motion.section>
+  return (
+    <motion.div
+      className="space-y-12 text-foreground/80 leading-relaxed max-w-4xl mx-auto pb-20"
+      initial="initial"
+      animate="animate"
+      variants={{
+        initial: { opacity: 0 },
+        animate: {
+          opacity: 1,
+          transition: {
+            staggerChildren: 0.08,
+          },
+        },
+      }}
+    >
+      <motion.section variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <p className="text-sm text-foreground/50 mb-4 font-sans">Last Updated: May 2026</p>
+        <h1 className="font-erode text-4xl md:text-5xl font-semibold text-foreground mb-8 tracking-tighter">
+          Privacy Policy
+        </h1>
+        <div className="h-px w-full bg-foreground/10 mb-12" />
+        <p className="italic mb-6">Please read this Privacy Policy carefully.</p>
+        <p className="mb-4">
+          Recovery Compass (&quot;Recovery Compass&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) provides a mobile app,
+          website, and related services that support habit change, sleep, energy, daily wellness routines,
+          journaling, and subscription access.
+        </p>
+        <p>
+          This policy explains what data we collect, how we use it, which service providers help us run the
+          product, and what choices you have.
+        </p>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">1. Company Information</h2>
-                <div className="space-y-4">
-                    <p>Recovery Compass is operated by:</p>
-                    <p className="font-bold">Recovery Compass LLP</p>
-                    <p>Registered in India</p>
-                    <div className="space-y-1">
-                        <p className="font-bold">Registered Office:</p>
-                        <blockquote className="border-l-2 border-foreground/10 pl-4 italic text-foreground/70">
-                            292-94, 3rd Main, 5th Cross<br />
-                            New Thippasandra<br />
-                            Bangalore 560075<br />
-                            India
-                        </blockquote>
-                    </div>
-                    <p><span className="font-bold">Email:</span> support@recoverycompass.co</p>
-                </div>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">1. Company Information</h2>
+        <div className="space-y-4">
+          <p>Recovery Compass is operated by:</p>
+          <p className="font-bold">Recovery Compass LLP</p>
+          <p>Registered in India</p>
+          <div className="space-y-1">
+            <p className="font-bold">Registered Office:</p>
+            <blockquote className="border-l-2 border-foreground/10 pl-4 italic text-foreground/70">
+              292-94, 3rd Main, 5th Cross
+              <br />
+              New Thippasandra
+              <br />
+              Bangalore 560075
+              <br />
+              India
+            </blockquote>
+          </div>
+          <p>
+            <span className="font-bold">Email:</span> support@recoverycompass.co
+          </p>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">2. Scope of This Policy</h2>
-                <div className="space-y-4">
-                    <p>This Privacy Policy applies to:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                        <li>Recovery Compass mobile application</li>
-                        <li>Recovery Compass website</li>
-                        <li>Citations &amp; Sources page</li>
-                        <li>Subscription services</li>
-                        <li>Customer support interactions</li>
-                    </ul>
-                    <p>Your use of the Services is also governed by our <span className="font-medium text-foreground">Terms & Conditions</span>.</p>
-                </div>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">2. Scope of This Policy</h2>
+        <div className="space-y-4">
+          <p>This Privacy Policy applies to:</p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>the Recovery Compass mobile app</li>
+            <li>the Recovery Compass website</li>
+            <li>our account, subscription, support, and email flows</li>
+            <li>our educational citations and legal pages</li>
+          </ul>
+          <p>
+            Your use of the Services is also governed by our <span className="font-medium text-foreground">Terms &amp; Conditions</span>.
+          </p>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">3. Personal Information We Collect</h2>
-                <div className="space-y-4">
-                    <p>&quot;Personal Information&quot; means any information that can identify you directly or indirectly, including:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                        <li>Name</li>
-                        <li>Email address</li>
-                        <li>Phone number (if used for login)</li>
-                        <li>Profile image (optional)</li>
-                        <li>Account credentials</li>
-                        <li>Journal entries and reflections</li>
-                        <li>Programme usage data (e.g., urge check-ins, stress levels)</li>
-                    </ul>
-                    <p>We only collect the minimum information necessary to provide our Services.</p>
-                </div>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">3. Data We Collect</h2>
+        <div className="space-y-4">
+          <p>Depending on how you use the Services, we may collect:</p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>account data such as email address, display name, and login provider</li>
+            <li>optional profile image uploads</li>
+            <li>onboarding and questionnaire answers</li>
+            <li>recommended program or journey selections generated from your responses</li>
+            <li>program progress, completion state, and active program preferences</li>
+            <li>journal entries, reflections, moods, cravings, physical symptoms, and related check-in data</li>
+            <li>step-count and movement data if you enable Motion &amp; Fitness or Health Connect features</li>
+            <li>notification preferences, push opt-in state, and push token identifiers</li>
+            <li>subscription and purchase state, including store product identifiers and RevenueCat customer identifiers</li>
+            <li>support messages, enquiry submissions, and operational email records</li>
+            <li>website checkout information for web purchases, including order and payment verification details</li>
+          </ul>
+          <p>We do not store your Apple, Google, card, or bank passwords.</p>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">4. How We Collect Information</h2>
-                <div className="space-y-4">
-                    <p>We collect information when you:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                        <li>Register for an account</li>
-                        <li>Use the app features</li>
-                        <li>Subscribe to a programme</li>
-                        <li>Contact customer support</li>
-                        <li>Use social login (e.g., Google login)</li>
-                    </ul>
-                    <p>
-                        Authentication and account management are processed securely via <span className="font-medium text-foreground">Supabase</span>. We do not store your third-party passwords.
-                    </p>
-                </div>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">4. How We Collect Data</h2>
+        <div className="space-y-4">
+          <p>We collect data when you:</p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>create an account or sign in with email, Google, or Apple</li>
+            <li>complete onboarding, questionnaires, and journal prompts</li>
+            <li>use program content, reminders, and progress features</li>
+            <li>enable profile photo upload, notifications, or step tracking</li>
+            <li>purchase a program through the app stores or the website</li>
+            <li>contact us through support or enquiry forms</li>
+          </ul>
+          <p>
+            Authentication and primary app data storage are handled through <span className="font-medium text-foreground">Supabase</span>.
+          </p>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">5. Automatically Collected Information</h2>
-                <div className="space-y-4">
-                    <p>When you access the Services, we may automatically collect:</p>
-                    <ul className="list-disc pl-6 space-y-2 flex flex-wrap gap-x-8 gap-y-2">
-                        <li>Device type</li>
-                        <li>Operating system</li>
-                        <li>App version</li>
-                        <li>IP address</li>
-                        <li>Usage activity</li>
-                        <li>Crash logs</li>
-                        <li>Device identifiers</li>
-                    </ul>
-                    <p>This data helps improve app performance and security.</p>
-                </div>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">5. Automatically Collected Technical Data</h2>
+        <div className="space-y-4">
+          <p>We may automatically collect technical information such as:</p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>device type, operating system, app version, and browser details</li>
+            <li>IP address and basic request metadata</li>
+            <li>session and authentication state needed to keep you signed in</li>
+            <li>website performance and usage telemetry used to improve reliability</li>
+            <li>server-side logs for security, fraud prevention, debugging, and webhook processing</li>
+          </ul>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">6. Subscription & Payment Information</h2>
-                <div className="space-y-4">
-                    <p>Subscriptions are processed through:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                        <li>Apple App Store</li>
-                        <li>Google Play Store</li>
-                    </ul>
-                    <p>Revenue management and subscription validation are handled via <span className="font-medium text-foreground">RevenueCat</span>.</p>
-                    <div className="p-6 bg-foreground/[0.03] border border-foreground/5 rounded-2xl">
-                        <p className="font-bold mb-2">We do not store:</p>
-                        <ul className="flex flex-wrap gap-x-6 text-sm text-foreground/60">
-                            <li>• Credit card details</li>
-                            <li>• Debit card details</li>
-                            <li>• Full payment information</li>
-                        </ul>
-                    </div>
-                    <p className="text-sm">All billing is managed by Apple and Google under their respective policies.</p>
-                </div>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">6. Permissions and Sensitive Features</h2>
+        <div className="space-y-4">
+          <p>The app may request access to selected device capabilities:</p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li><span className="font-medium text-foreground">Photos</span> to let you choose a profile image</li>
+            <li><span className="font-medium text-foreground">Notifications</span> to deliver reminders if you opt in</li>
+            <li><span className="font-medium text-foreground">Motion &amp; Fitness / Health Connect step data</span> to show daily movement progress if you enable step tracking</li>
+          </ul>
+          <p>
+            We do not request camera access for core app use, and microphone access is disabled in the current build.
+          </p>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">7. How We Use Your Information</h2>
-                <div className="space-y-4">
-                    <p>We use Personal Information to:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                        <li>Provide access to programmes</li>
-                        <li>Deliver subscription services</li>
-                        <li>Personalize your experience</li>
-                        <li>Improve app features</li>
-                        <li>Provide customer support</li>
-                        <li>Send service-related updates</li>
-                        <li>Prevent fraud and misuse</li>
-                        <li>Comply with legal obligations</li>
-                    </ul>
-                    <p className="font-bold">We do not sell your Personal Information.</p>
-                </div>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">7. Subscription and Payment Information</h2>
+        <div className="space-y-4">
+          <p>Subscriptions and program purchases may be processed through:</p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>Apple App Store</li>
+            <li>Google Play Store</li>
+            <li>Razorpay for website purchases</li>
+          </ul>
+          <p>
+            Subscription validation and entitlement syncing are handled through <span className="font-medium text-foreground">RevenueCat</span>.
+          </p>
+          <div className="p-6 bg-foreground/[0.03] border border-foreground/5 rounded-2xl">
+            <p className="font-bold mb-2">We do not store:</p>
+            <ul className="flex flex-wrap gap-x-6 text-sm text-foreground/60">
+              <li>• full card numbers</li>
+              <li>• bank credentials</li>
+              <li>• App Store or Google Play passwords</li>
+            </ul>
+          </div>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">8. Data Storage & Security</h2>
-                <div className="space-y-4">
-                    <p>Recovery Compass uses <span className="font-medium text-foreground">Supabase</span> for secure cloud hosting and database services.</p>
-                    <p>We rely on industry-standard safeguards, including:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                        <li>Encrypted data transmission (HTTPS/TLS)</li>
-                        <li>Secure authentication systems</li>
-                        <li>Role-based access control</li>
-                        <li>Encrypted database storage</li>
-                    </ul>
-                    <p className="text-sm italic">
-                        However, no digital platform can guarantee absolute security. You are responsible for maintaining the security of your login credentials and device.
-                    </p>
-                </div>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">8. How We Use Data</h2>
+        <div className="space-y-4">
+          <p>We use data to:</p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>create and manage your account</li>
+            <li>deliver onboarding, program access, journal history, and progress features</li>
+            <li>generate recommendations and personalize your experience</li>
+            <li>restore purchases and validate subscription access</li>
+            <li>send service-related emails and reminders</li>
+            <li>provide support and respond to deletion requests</li>
+            <li>detect abuse, prevent fraud, and secure the platform</li>
+            <li>improve product quality, stability, and operational visibility</li>
+            <li>comply with legal obligations</li>
+          </ul>
+          <p className="font-bold">We do not sell your personal data.</p>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">9. Data Retention</h2>
-                <div className="space-y-4">
-                    <p>We retain Personal Information:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                        <li>While your account remains active</li>
-                        <li>As required for legal compliance</li>
-                        <li>For resolving disputes</li>
-                    </ul>
-                    <p>
-                        You may request deletion of your account at any time by contacting: <span className="font-medium text-foreground">support@recoverycompass.co</span>
-                    </p>
-                </div>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">9. Service Providers and Data Sharing</h2>
+        <div className="space-y-4">
+          <p>We share data only as needed to run the Services, including with:</p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li><span className="font-medium text-foreground">Supabase</span> for authentication, database, storage, and server-side functions</li>
+            <li><span className="font-medium text-foreground">RevenueCat</span> for subscription and entitlement management</li>
+            <li><span className="font-medium text-foreground">Apple and Google</span> for in-app purchase processing</li>
+            <li><span className="font-medium text-foreground">Razorpay</span> for website payment processing</li>
+            <li><span className="font-medium text-foreground">Resend</span> for transactional email delivery</li>
+            <li><span className="font-medium text-foreground">Vercel</span> for website hosting and performance telemetry</li>
+            <li>law enforcement or regulators where required by law</li>
+          </ul>
+          <p>We do not rent or broker personal data.</p>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">10. Your Rights (India - DPDP Act 2023)</h2>
-                <div className="space-y-4">
-                    <p>Under applicable Indian law, you have the right to:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                        <li>Access your personal data</li>
-                        <li>Request correction of inaccurate data</li>
-                        <li>Request deletion of personal data</li>
-                        <li>Withdraw consent</li>
-                        <li>Raise grievances</li>
-                    </ul>
-                    <p>To exercise your rights, contact: <span className="font-medium text-foreground">support@recoverycompass.co</span></p>
-                </div>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">10. Cookies, Local Storage, and Similar Technologies</h2>
+        <div className="space-y-4">
+          <p>On the website, we use cookies, local storage, and related technologies for:</p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>authentication and session continuity</li>
+            <li>security and fraud prevention</li>
+            <li>basic functional preferences</li>
+            <li>site performance measurement and operational insights</li>
+          </ul>
+          <p>
+            You can manage cookie settings through your browser, but blocking essential cookies may affect sign-in or checkout flows.
+          </p>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">11. Data Sharing</h2>
-                <div className="space-y-4">
-                    <p>We may share Personal Information with:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                        <li><span className="font-medium text-foreground">Supabase</span> - Backend hosting provider</li>
-                        <li><span className="font-medium text-foreground">RevenueCat</span> - Subscription validation</li>
-                        <li><span className="font-medium text-foreground">Apple & Google</span> - Payment processing</li>
-                        <li>Analytics service providers</li>
-                        <li>Law enforcement - If required by law</li>
-                    </ul>
-                    <p className="font-bold">We do not sell or rent personal data.</p>
-                </div>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">11. Data Retention</h2>
+        <div className="space-y-4">
+          <p>We retain data for as long as needed to operate the Services, including:</p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>while your account remains active</li>
+            <li>to preserve subscription, financial, fraud-prevention, and audit records where required</li>
+            <li>to resolve disputes and support requests</li>
+          </ul>
+          <p>
+            When you request deletion, we delete or de-identify data unless limited retention is required for legal, billing, security, or fraud-prevention purposes.
+          </p>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">12. User-Generated Content</h2>
-                <div className="space-y-4">
-                    <p>
-                        If you choose to share content publicly within the app (where applicable), such content may be visible to other users.
-                    </p>
-                    <p>
-                        Recovery Compass is not responsible for how other users use information you voluntarily make public. Please use discretion when sharing information.
-                    </p>
-                </div>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">12. Your Rights and Choices</h2>
+        <div className="space-y-4">
+          <p>Subject to applicable law, you may have the right to:</p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>access your personal data</li>
+            <li>request correction of inaccurate information</li>
+            <li>request deletion of your account and associated data</li>
+            <li>withdraw consent for optional permissions such as notifications, photos, or step tracking</li>
+            <li>raise a support or privacy complaint</li>
+          </ul>
+          <p>
+            You can manage some permissions directly through your device settings. You can also contact <span className="font-medium text-foreground">support@recoverycompass.co</span>.
+          </p>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">13. Third-Party Links & Services</h2>
-                <p>
-                    The Services may contain links to third-party websites or services. We are not responsible for their privacy practices. Please review their privacy policies separately.
-                </p>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">13. Account Deletion</h2>
+        <div className="space-y-4">
+          <p>You can request deletion in either of these ways:</p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>inside the app through Account → Settings → Permanently Delete Account</li>
+            <li>through our public deletion instructions page at <span className="font-medium text-foreground">/delete-account</span></li>
+          </ul>
+          <p>
+            If you cannot access the app, email <span className="font-medium text-foreground">support@recoverycompass.co</span> from the email address linked to your account.
+          </p>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">14. Children&apos;s Privacy</h2>
-                <div className="space-y-4">
-                    <p>Recovery Compass is intended for individuals aged 18 years and above.</p>
-                    <p>
-                        We do not knowingly collect Personal Information from individuals under 18. If such information is discovered, we will delete it promptly.
-                    </p>
-                </div>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">14. Security</h2>
+        <div className="space-y-4">
+          <p>We use reasonable technical and organizational safeguards, including:</p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>HTTPS/TLS for data in transit</li>
+            <li>authenticated access controls</li>
+            <li>role-based backend access</li>
+            <li>managed cloud infrastructure and secure storage controls</li>
+          </ul>
+          <p className="text-sm italic">
+            No system can guarantee absolute security, so you should also protect your device and account credentials.
+          </p>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">15. Business Transfers</h2>
-                <p>
-                    In the event of merger, acquisition, restructuring, or asset sale, Personal Information may be transferred as part of business assets.
-                </p>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">15. International Transfers</h2>
+        <div className="space-y-4">
+          <p>
+            Some of our service providers may process data outside your state or country. Where this happens, we rely on the provider’s standard protections and contractual safeguards as applicable.
+          </p>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">16. International Data Transfers</h2>
-                <div className="space-y-4">
-                    <p>If service providers store data outside India, appropriate safeguards are implemented.</p>
-                    <p>
-                        By using the Services, you consent to processing of your data in accordance with this Privacy Policy.
-                    </p>
-                </div>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">16. Children&apos;s Privacy</h2>
+        <div className="space-y-4">
+          <p>Recovery Compass is intended for adults and is not designed for children under 18.</p>
+          <p>
+            If we learn that we have collected personal data from a child in violation of applicable law, we will delete that data promptly.
+          </p>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">17. Grievance Officer (India)</h2>
-                <div className="space-y-4">
-                    <p>For data-related grievances, contact:</p>
-                    <div className="space-y-1">
-                        <p className="font-bold">Grievance Officer</p>
-                        <p><span className="font-medium text-foreground">Email:</span> support@recoverycompass.co</p>
-                    </div>
-                    <p className="text-sm text-foreground/50">
-                        We aim to respond within reasonable timeframes as required under applicable Indian law.
-                    </p>
-                </div>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">17. Health and Wellness Content</h2>
+        <div className="space-y-4">
+          <p>
+            Recovery Compass provides educational and wellness-oriented content. It is not a substitute for professional medical advice, diagnosis, or treatment.
+          </p>
+          <p>
+            If you have a medical condition, urgent symptoms, or a health emergency, consult a qualified healthcare professional or emergency services.
+          </p>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">18. Opting Out & Account Deletion</h2>
-                <div className="space-y-4">
-                    <p>You may:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                        <li>Disable notifications in device settings</li>
-                        <li>Delete your account by contacting support</li>
-                        <li>Withdraw consent by emailing support@recoverycompass.co</li>
-                    </ul>
-                    <p className="text-sm italic">Certain data may be retained where legally required.</p>
-                </div>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">18. Public Sharing</h2>
+        <div className="space-y-4">
+          <p>
+            The current Services do not include a public social feed or public journal-posting feature. If we add public sharing features in the future, we will update this policy and the related in-app disclosures.
+          </p>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">19. Updates to This Privacy Policy</h2>
-                <div className="space-y-4">
-                    <p>
-                        We may update this Privacy Policy periodically. Updated versions will be posted within the app or website.
-                    </p>
-                    <p>Continued use of the Services constitutes acceptance of changes.</p>
-                </div>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">19. Updates to This Policy</h2>
+        <div className="space-y-4">
+          <p>
+            We may update this Privacy Policy from time to time. When we do, we will post the updated version on our website and may also surface updated disclosures in the app where appropriate.
+          </p>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">20. Contact Information</h2>
-                <p>For questions regarding this Privacy Policy:</p>
-                <p><span className="font-bold">Email:</span> support@recoverycompass.co</p>
-            </motion.section>
+      <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">20. Contact Information</h2>
+        <div className="space-y-4">
+          <p>For questions about this Privacy Policy or your data:</p>
+          <p>
+            <span className="font-bold">Email:</span> support@recoverycompass.co
+          </p>
+        </div>
+      </motion.section>
 
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">21. Cookies & Tracking Technologies</h2>
-                <div className="space-y-4">
-                    <p>
-                        We use cookies and similar technologies (such as local storage) to provide, protect, and improve our services.
-                    </p>
-                    <div className="space-y-3">
-                        <h3 className="text-xl font-medium text-foreground">Types of Cookies We Use</h3>
-                        <ul className="list-disc pl-6 space-y-2">
-                            <li><span className="font-bold">Essential Cookies:</span> Necessary for authentication and security. We use <span className="font-medium text-foreground">Supabase</span> to manage sessions; these cookies ensure you stay logged in.</li>
-                            <li><span className="font-bold">Analytical Cookies:</span> Used to understand how users interact with our platform so we can improve the experience.</li>
-                            <li><span className="font-bold">Functional Cookies:</span> To remember your preferences, such as language or display settings.</li>
-                        </ul>
-                    </div>
-                    <p className="text-sm">
-                        You can manage cookie preferences through your browser settings, though disabling essential cookies may impact app functionality.
-                    </p>
-                </div>
-            </motion.section>
-
-            <motion.section
-                className="space-y-6"
-                variants={{
-                    initial: { opacity: 0, y: 10 },
-                    animate: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h2 className="font-erode text-2xl font-semibold text-foreground">22. Health &amp; Wellness Content</h2>
-                <div className="space-y-4">
-                    <p>
-                        Some Services include educational or wellness-related guidance intended to support habit change and daily balance.
-                    </p>
-                    <p>
-                        That content is provided for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment.
-                    </p>
-                    <p>
-                        Where we reference external research or clinical guidance, the supporting sources are made available in the app or on our <span className="font-medium text-foreground">Citations &amp; Sources</span> page.
-                    </p>
-                    <p>
-                        If you have a medical condition or a health emergency, consult a qualified healthcare professional or emergency services immediately.
-                    </p>
-                </div>
-            </motion.section>
-
-            <div className="h-px w-full bg-foreground/10 mt-12 mb-8" />
-            <p className="text-center text-sm text-foreground/50 italic">
-                By using Recovery Compass, you acknowledge that you have read and understood this Privacy Policy.
-            </p>
-        </motion.div>
-    );
+      <div className="h-px w-full bg-foreground/10 mt-12 mb-8" />
+      <p className="text-center text-sm text-foreground/50 italic">
+        By using Recovery Compass, you acknowledge that you have read and understood this Privacy Policy.
+      </p>
+    </motion.div>
+  );
 }
