@@ -79,6 +79,7 @@ const erode = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://recoverycompass.co"),
+  applicationName: "Recovery Compass",
   title: {
     default: "Recovery Compass | Habit Reset, Sleep, Energy, and Daily Balance",
     template: "%s | Recovery Compass",
