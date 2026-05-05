@@ -60,9 +60,10 @@ export function CTASection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                        className="lg:col-span-5 w-full max-w-md mx-auto lg:ml-auto"
+                        className="lg:col-span-5 w-full max-w-md mx-auto lg:ml-auto flex flex-col gap-4"
                     >
                         <DefaultNewsletterForm />
+
                     </motion.div>
 
                 </div>

@@ -1,13 +1,13 @@
 "use client";
 
 import { motion, AnimatePresence, useScroll, useVelocity, useSpring, useTransform } from "framer-motion";
-import { cn } from "@/lib/utils";
 import { useLenis } from "@/components/smooth-scroll-provider";
+import { cn } from "@/lib/utils";
 
 export function BackToTop() {
     const lenis = useLenis();
-    // Scroll Physics for Compass Rotation
-    const { scrollY } = useScroll();
+    // Scroll Physics for Compass Rotation & Progress
+    const { scrollY, scrollYProgress } = useScroll();
     const scrollVelocity = useVelocity(scrollY);
     const smoothVelocity = useSpring(scrollVelocity, {
         damping: 50,
@@ -42,13 +42,28 @@ export function BackToTop() {
                     "fixed bottom-4 right-4 md:bottom-8 md:right-8 z-50 p-0 rounded-full shadow-lg",
                     "bg-white/90 backdrop-blur-md border border-white/20",
                     "text-[oklch(0.2475_0.0661_146.79)]", // Primary Deep Moss
-                    "hover:bg-white hover:shadow-xl hover:border-white/40 transition-all duration-300",
+                    "hover:bg-white hover:shadow-xl transition-all duration-300",
                     "group flex items-center justify-center w-10 h-10 md:w-14 md:h-14"
                 )}
                 aria-label="Back to top"
             >
-                {/* Static Compass Ring & North Dot */}
-                <div className="absolute inset-0 rounded-full border border-current opacity-20" />
+                {/* Scroll Progress Ring Overlay */}
+                <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none" viewBox="0 0 100 100">
+                    {/* Background Track */}
+                    <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="2" className="opacity-20" />
+                    
+                    {/* Dynamic Progress Fill */}
+                    <motion.circle
+                        cx="50"
+                        cy="50"
+                        r="48"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                        strokeLinecap="round"
+                        style={{ pathLength: scrollYProgress }}
+                    />
+                </svg>
 
                 {/* Red North Dot (Fixed at 12 o'clock) */}
                 <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-red-500 rounded-full shadow-[0_0_4px_rgba(239,68,68,0.6)]" />
