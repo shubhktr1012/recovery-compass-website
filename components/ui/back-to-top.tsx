@@ -1,8 +1,8 @@
 "use client";
 
 import { motion, AnimatePresence, useScroll, useVelocity, useSpring, useTransform } from "framer-motion";
-import { cn } from "@/lib/utils";
 import { useLenis } from "@/components/smooth-scroll-provider";
+import { cn } from "@/lib/utils";
 
 export function BackToTop() {
     const lenis = useLenis();

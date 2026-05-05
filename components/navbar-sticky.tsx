@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useLenis } from "@/components/smooth-scroll-provider";
@@ -13,7 +13,7 @@ import Link from "next/link";
 
 import { usePathname } from "next/navigation";
 import { useUser } from "@/lib/context/user-context";
-import { LogOut, User as UserIcon, Loader2 } from "lucide-react";
+import { LogOut, Loader2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface NavbarStickyProps {
@@ -31,13 +31,6 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
     const pathname = usePathname();
     const { items, setIsCartOpen } = useCart();
     const { user, profile, openAuthModal, signOut } = useUser();
-
-    const { scrollYProgress } = useScroll();
-    const scaleX = useSpring(scrollYProgress, {
-        stiffness: 100,
-        damping: 30,
-        restDelta: 0.001
-    });
 
     React.useEffect(() => {
         if (profile?.avatar_url) {
@@ -114,11 +107,8 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
     ];
 
     return (
-        <motion.header
+        <header
             className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-black/5"
-            initial={pathname === "/" ? { y: -20, opacity: 0 } : false}
-            animate={pathname === "/" ? { y: 0, opacity: 1 } : false}
-            transition={{ duration: 0.8, ease: "easeOut" }}
         >
             <div className="flex items-center justify-between px-6 md:px-12 py-2.5 max-w-[1200px] mx-auto">
 
@@ -345,6 +335,6 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </motion.header>
+        </header>
     );
 }

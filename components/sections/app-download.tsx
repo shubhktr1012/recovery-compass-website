@@ -1,27 +1,40 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import QRCode from "react-qr-code";
+import Image from "next/image";
 
 export function AppDownloadSection() {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "end start"]
+    });
+
+    const leftPhoneY = useTransform(scrollYProgress, [0, 0.5, 1], ["35%", "25%", "15%"]);
+    const rightPhoneY = useTransform(scrollYProgress, [0, 0.5, 1], ["-35%", "-25%", "-15%"]);
+    const phoneOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+
     return (
-        <section className="py-16 md:py-24 px-6 md:px-12 max-w-[1400px] mx-auto scroll-mt-24">
+        <section ref={containerRef} className="py-16 md:py-24 px-6 md:px-12 max-w-[1400px] mx-auto scroll-mt-24">
             <div className="relative w-full rounded-[40px] overflow-hidden bg-[oklch(0.97_0.01_150)] dark:bg-[oklch(0.2_0.05_150)] shadow-sm border border-black/5 dark:border-white/5">
                 
                 {/* Background Details */}
                 <div className="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-[oklch(0.2475_0.0661_146.79)]/10 blur-[100px] rounded-full pointer-events-none" />
                 <div className="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-[oklch(0.2475_0.0661_146.79)]/5 blur-[80px] rounded-full pointer-events-none" />
 
-                <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 p-8 md:p-16 lg:p-20 items-center">
+                <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 items-center h-full">
                     
                     {/* Left Content */}
-                    <motion.div 
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="space-y-8 max-w-xl mx-auto lg:mx-0 text-center lg:text-left"
-                    >
+                    <div className="lg:col-span-5 p-8 md:p-16 lg:p-20 lg:pr-0">
+                        <motion.div 
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                            className="space-y-8 max-w-xl mx-auto lg:mx-0 text-center lg:text-left"
+                        >
                         <div className="space-y-4">
                             <h2 className="text-4xl md:text-5xl lg:text-6xl font-erode font-medium tracking-tighter text-foreground leading-[1.10]">
                                 Your journey,<br />
@@ -67,74 +80,61 @@ export function AppDownloadSection() {
                                 </div>
                             </div>
                         </div>
-                    </motion.div>
+                        </motion.div>
+                    </div>
 
-                    {/* Right Content - iPhone Mockup */}
-                    <motion.div 
-                        initial={{ opacity: 0, y: 40 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-                        className="flex justify-center lg:justify-end"
-                    >
-                        {/* Premium iPhone Frame */}
-                        <div className="relative w-[300px] h-[600px] bg-black rounded-[50px] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] border-[8px] border-black overflow-hidden flex items-center justify-center transform rotate-[-2deg] hover:rotate-0 transition-transform duration-700 ease-out">
-                            
-                            {/* Screen Area */}
-                            <div className="w-full h-full bg-zinc-950 overflow-hidden relative">
-                                
-                                {/* Placeholder Abstract UI */}
-                                <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.2475_0.0661_146.79)]/40 to-zinc-950 p-6 flex flex-col pt-16">
-                                    
-                                    {/* Header Mock */}
-                                    <div className="flex gap-4 items-center mb-8">
-                                        <div className="w-12 h-12 bg-white/20 rounded-2xl animate-pulse"></div>
-                                        <div className="space-y-2">
-                                            <div className="h-4 w-24 bg-white/20 rounded-full"></div>
-                                            <div className="h-3 w-16 bg-white/10 rounded-full"></div>
-                                        </div>
-                                    </div>
-                                    
-                                    {/* Grid Widgets */}
-                                    <div className="grid grid-cols-2 gap-4 mb-4">
-                                        <div className="h-28 bg-white/10 rounded-3xl border border-white/5 backdrop-blur-sm p-4 flex flex-col justify-between">
-                                            <div className="w-8 h-8 rounded-full bg-[oklch(0.2475_0.0661_146.79)]/50"></div>
-                                            <div className="h-2 w-16 bg-white/20 rounded-full"></div>
-                                        </div>
-                                        <div className="h-28 bg-[oklch(0.2475_0.0661_146.79)]/20 rounded-3xl border border-[oklch(0.2475_0.0661_146.79)]/20 backdrop-blur-sm p-4 flex flex-col justify-between">
-                                            <div className="w-8 h-8 rounded-full bg-white/20"></div>
-                                            <div className="h-2 w-16 bg-white/30 rounded-full"></div>
-                                        </div>
-                                    </div>
-                                    
-                                    {/* Large Widget */}
-                                    <div className="h-36 bg-white/5 rounded-3xl border border-white/5 backdrop-blur-sm p-5 space-y-4">
-                                         <div className="h-3 w-20 bg-white/20 rounded-full"></div>
-                                         <div className="space-y-2">
-                                            <div className="h-2 w-full bg-white/10 rounded-full"></div>
-                                            <div className="h-2 w-4/5 bg-white/10 rounded-full"></div>
-                                            <div className="h-2 w-full bg-white/10 rounded-full"></div>
-                                         </div>
-                                    </div>
-
-                                    {/* Bottom Nav Mock */}
-                                    <div className="absolute bottom-6 inset-x-6 h-16 bg-white/10 rounded-full backdrop-blur-md border border-white/10 flex items-center justify-around px-4">
-                                        <div className="w-6 h-6 rounded-full bg-white/30"></div>
-                                        <div className="w-6 h-6 rounded-full bg-white/10"></div>
-                                        <div className="w-6 h-6 rounded-full bg-white/10"></div>
-                                        <div className="w-6 h-6 rounded-full bg-white/10"></div>
-                                    </div>
-
+                    {/* Right Content - iPhone Mockups */}
+                    <div className="relative h-[500px] md:h-[600px] lg:col-span-7 flex items-center justify-center gap-6 md:gap-8 lg:pt-0">
+                        
+                        {/* Left Phone (Appears from bottom, 1/4 cut off at bottom) */}
+                        <motion.div 
+                            style={{ y: leftPhoneY, opacity: phoneOpacity }}
+                            className="relative z-20 shadow-2xl rounded-[40px]"
+                        >
+                            <div className="relative w-[240px] md:w-[280px] h-[500px] md:h-[580px] bg-black rounded-[40px] border-[8px] border-black overflow-hidden flex items-center justify-center">
+                                {/* Dynamic Island / Notch */}
+                                <div className="absolute top-2 inset-x-0 h-6 bg-black rounded-full w-[90px] mx-auto z-20"></div>
+                                {/* Screen Area */}
+                                <div className="w-full h-full bg-zinc-950 overflow-hidden relative">
+                                    <Image 
+                                        src="/app-dashboard.png" 
+                                        alt="Recovery Compass Dashboard" 
+                                        fill 
+                                        className="object-cover"
+                                        priority
+                                        unoptimized
+                                    />
                                 </div>
+                                {/* Reflection overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
                             </div>
+                        </motion.div>
 
-                            {/* Dynamic Island / Notch */}
-                            <div className="absolute top-2 inset-x-0 h-7 bg-black rounded-full w-[120px] mx-auto z-20"></div>
-                            
-                            {/* Reflection overlay for realism */}
-                            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
-                        </div>
-                    </motion.div>
+                        {/* Right Phone (Appears from top, 1/4 cut off at top) */}
+                        <motion.div 
+                            style={{ y: rightPhoneY, opacity: phoneOpacity }}
+                            className="relative z-10 shadow-2xl rounded-[40px] hidden sm:block"
+                        >
+                            <div className="relative w-[240px] md:w-[280px] h-[500px] md:h-[580px] bg-black rounded-[40px] border-[8px] border-black overflow-hidden flex items-center justify-center">
+                                {/* Dynamic Island / Notch */}
+                                <div className="absolute top-2 inset-x-0 h-6 bg-black rounded-full w-[90px] mx-auto z-20"></div>
+                                {/* Screen Area */}
+                                <div className="w-full h-full bg-zinc-950 overflow-hidden relative">
+                                    <Image 
+                                        src="/app-widget.png" 
+                                        alt="Recovery Compass Widget" 
+                                        fill 
+                                        className="object-cover"
+                                        priority
+                                        unoptimized
+                                    />
+                                </div>
+                                {/* Reflection overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
+                            </div>
+                        </motion.div>
+
+                    </div>
 
                 </div>
             </div>

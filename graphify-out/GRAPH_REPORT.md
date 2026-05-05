@@ -1,16 +1,16 @@
-# Graph Report - web  (2026-05-04)
+# Graph Report - web  (2026-05-05)
 
 ## Corpus Check
-- 111 files · ~755,521 words
+- 113 files · ~756,407 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 246 nodes · 288 edges · 15 communities detected
-- Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 20 edges (avg confidence: 0.8)
+- 262 nodes · 320 edges · 16 communities detected
+- Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 31 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `9ebf8b98`
+- Built from commit: `f07c8d90`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -30,64 +30,69 @@
 - [[_COMMUNITY_Community 12|Community 12]]
 - [[_COMMUNITY_Community 13|Community 13]]
 - [[_COMMUNITY_Community 14|Community 14]]
+- [[_COMMUNITY_Community 15|Community 15]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `cn()` - 25 edges
-2. `POST()` - 7 edges
-3. `Badge()` - 7 edges
-4. `attemptFulfillment()` - 7 edges
-5. `sendWelcomeEmail()` - 7 edges
-6. `useCart()` - 7 edges
-7. `markTransactionPaid()` - 6 edges
-8. `sendAppPurchaseWelcomeEmail()` - 6 edges
-9. `POST()` - 5 edges
-10. `POST()` - 5 edges
+2. `fetchContentful()` - 9 edges
+3. `POST()` - 7 edges
+4. `Badge()` - 7 edges
+5. `attemptFulfillment()` - 7 edges
+6. `sendWelcomeEmail()` - 7 edges
+7. `useCart()` - 7 edges
+8. `Home()` - 6 edges
+9. `markTransactionPaid()` - 6 edges
+10. `sendAppPurchaseWelcomeEmail()` - 6 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `proxy()` --calls--> `updateSession()`  [INFERRED]
   proxy.ts → lib/supabase-middleware.ts
+- `RootLayout()` --calls--> `getPrograms()`  [INFERRED]
+  app/layout.tsx → lib/programs.ts
 - `Home()` --calls--> `getFeaturedHomepageTestimonials()`  [INFERRED]
   app/page.tsx → lib/testimonials.ts
-- `POST()` --calls--> `sendAppPurchaseWelcomeEmail()`  [INFERRED]
-  app/api/internal/app-purchase-email/route.ts → lib/mail.ts
-- `POST()` --calls--> `markTransactionPaid()`  [INFERRED]
-  app/api/checkout/webhook/route.ts → lib/commerce.ts
-- `POST()` --calls--> `markTransactionFailed()`  [INFERRED]
-  app/api/checkout/webhook/route.ts → lib/commerce.ts
+- `Home()` --calls--> `getHeroSection()`  [INFERRED]
+  app/page.tsx → lib/page-content.ts
+- `Home()` --calls--> `getFaqItems()`  [INFERRED]
+  app/page.tsx → lib/page-content.ts
 
-## Communities (50 total, 4 thin omitted)
+## Communities (51 total, 4 thin omitted)
 
 ### Community 0 - "Community 0"
-Cohesion: 0.06
-Nodes (10): handleAvatarUpload(), cn(), Accordion(), AccordionItem(), AccordionTrigger(), Alert(), Badge(), CardDescription() (+2 more)
+Cohesion: 0.05
+Nodes (10): handleAvatarUpload(), SmoothScrollProvider(), useLenis(), cn(), Alert(), CardDescription(), CardFooter(), Dialog() (+2 more)
 
 ### Community 1 - "Community 1"
-Cohesion: 0.11
-Nodes (15): Home(), getErrorMessage(), POST(), attemptFulfillment(), canonicalizeProgramSlug(), canonicalizeTransactionItems(), createTransaction(), formatUnknownError() (+7 more)
+Cohesion: 0.1
+Nodes (7): handleFinalize(), useCart(), ProgramProvider(), usePrograms(), openAuthModal(), handleSecondaryClick(), Sheet()
 
 ### Community 2 - "Community 2"
 Cohesion: 0.16
 Nodes (16): getDedupeKey(), isRecoverablePendingDelivery(), markDeliveryStatus(), POST(), unauthorized(), AppPurchaseWelcomeEmail(), formatStoreLabel(), isValidEmail() (+8 more)
 
 ### Community 3 - "Community 3"
-Cohesion: 0.12
-Nodes (5): handleFinalize(), useCart(), openAuthModal(), handleSecondaryClick(), Sheet()
+Cohesion: 0.15
+Nodes (12): GET(), isAuthorizedRequest(), attemptFulfillment(), canonicalizeProgramSlug(), canonicalizeTransactionItems(), countTransactions(), formatUnknownError(), getFulfillmentHealthSnapshot() (+4 more)
+
+### Community 4 - "Community 4"
+Cohesion: 0.21
+Nodes (12): RootLayout(), Home(), PageTransition(), CartProvider(), fetchContentful(), getCtaSection(), getFaqItems(), getHeroSection() (+4 more)
 
 ### Community 5 - "Community 5"
+Cohesion: 0.15
+Nodes (4): Accordion(), AccordionItem(), AccordionTrigger(), Badge()
+
+### Community 6 - "Community 6"
 Cohesion: 0.22
 Nodes (6): markTransactionFailed(), markTransactionPaid(), getErrorMessage(), POST(), getErrorMessage(), POST()
 
-### Community 6 - "Community 6"
+### Community 7 - "Community 7"
 Cohesion: 0.3
 Nodes (6): canonicalizeWebsiteProgramId(), dedupeById(), formatPaymentDescription(), formatProgramCountLabel(), nextCartItems(), normalizeCartItems()
 
-### Community 7 - "Community 7"
-Cohesion: 0.2
-Nodes (4): PageTransition(), SmoothScrollProvider(), useLenis(), CartProvider()
-
 ### Community 8 - "Community 8"
-Cohesion: 0.38
-Nodes (4): GET(), isAuthorizedRequest(), countTransactions(), getFulfillmentHealthSnapshot()
+Cohesion: 0.24
+Nodes (5): getErrorMessage(), POST(), createTransaction(), createSupabaseServerClient(), formatTestimonialAttribution()
 
 ### Community 9 - "Community 9"
 Cohesion: 0.43
@@ -107,17 +112,13 @@ Nodes (4): ensureChrome(), main(), printHtmlToPdf(), renderReceiptHtml()
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `cn()` connect `Community 0` to `Community 3`, `Community 4`, `Community 6`, `Community 7`, `Community 11`?**
-  _High betweenness centrality (0.121) - this node is a cross-community bridge._
-- **Why does `useCart()` connect `Community 3` to `Community 0`, `Community 6`?**
-  _High betweenness centrality (0.030) - this node is a cross-community bridge._
-- **Why does `sendWelcomeEmail()` connect `Community 9` to `Community 1`, `Community 2`?**
-  _High betweenness centrality (0.029) - this node is a cross-community bridge._
+- **Why does `getFeaturedHomepageTestimonials()` connect `Community 4` to `Community 8`?**
+  _High betweenness centrality (0.244) - this node is a cross-community bridge._
+- **Are the 6 inferred relationships involving `fetchContentful()` (e.g. with `getHeroSection()` and `getFaqItems()`) actually correct?**
+  _`fetchContentful()` has 6 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 2 inferred relationships involving `attemptFulfillment()` (e.g. with `sendWelcomeEmail()` and `sendOpsAlertEmail()`) actually correct?**
   _`attemptFulfillment()` has 2 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 3 inferred relationships involving `sendWelcomeEmail()` (e.g. with `GET()` and `attemptFulfillment()`) actually correct?**
-  _`sendWelcomeEmail()` has 3 INFERRED edges - model-reasoned connections that need verification._
 - **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.06 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
-  _Cohesion score 0.11 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.1 - nodes in this community are weakly interconnected._

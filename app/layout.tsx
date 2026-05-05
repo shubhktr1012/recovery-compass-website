@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { LayoutClientExtras } from "@/components/layout-client-extras";
+import { PageTransition } from "@/components/page-transition";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
-import { BackToTop } from "@/components/ui/back-to-top";
 import { Preloader } from "@/components/ui/preloader";
 
 import "./globals.css";
@@ -146,11 +147,8 @@ export const viewport = {
   initialScale: 1,
 };
 
-import { PageTransition } from "@/components/page-transition";
-import { CookieBanner } from "@/components/cookie-banner";
 import { CartProvider } from "@/lib/context/cart-context";
 import { UserProvider } from "@/lib/context/user-context";
-import { MyPlanDrawer } from "@/components/my-plan-drawer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default function RootLayout({
@@ -177,17 +175,12 @@ export default function RootLayout({
       <body
         className={`${satoshi.variable} ${erode.variable} font-sans antialiased`}
       >
-
         <SmoothScrollProvider>
           <UserProvider>
             <CartProvider>
               <Preloader />
-              <PageTransition>
-                {children}
-              </PageTransition>
-              <MyPlanDrawer />
-              <BackToTop />
-              <CookieBanner />
+              <PageTransition>{children}</PageTransition>
+              <LayoutClientExtras />
             </CartProvider>
           </UserProvider>
         </SmoothScrollProvider>

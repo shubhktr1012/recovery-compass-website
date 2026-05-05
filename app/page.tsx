@@ -1,5 +1,17 @@
 import type { Metadata } from "next";
-import HomePageClient from "@/app/home-page-client";
+import { AnnouncementBanner } from "@/components/announcement-banner";
+import { NavbarSticky } from "@/components/navbar-sticky";
+import {
+  HeroOmega,
+  PhilosophySection,
+  ProblemSection,
+  SolutionSection,
+  ExploreProgramsSection,
+  CTASection,
+  FAQSection,
+  AppDownloadSection,
+  FooterVariantTwo,
+} from "@/components/sections";
 import { getFeaturedHomepageTestimonials } from "@/lib/testimonials";
 
 export const metadata: Metadata = {
@@ -52,7 +64,32 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
       />
-      <HomePageClient testimonials={testimonials} />
+      <div className="min-h-screen bg-background text-foreground">
+        <AnnouncementBanner />
+        <NavbarSticky />
+        <main>
+          <HeroOmega testimonials={testimonials} />
+
+          <div id="why-us" className="scroll-mt-28">
+            <PhilosophySection />
+          </div>
+
+          <ProblemSection />
+
+          <div id="features" className="scroll-mt-28">
+            <SolutionSection />
+          </div>
+
+          <div id="programs" className="scroll-mt-28">
+            <ExploreProgramsSection />
+          </div>
+
+          <AppDownloadSection />
+          <FAQSection />
+          <CTASection />
+          <FooterVariantTwo />
+        </main>
+      </div>
     </>
   );
 }
