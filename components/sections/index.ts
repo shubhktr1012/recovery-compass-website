@@ -9,3 +9,4 @@ export { CTASection } from "./cta";
 export { FAQSection } from "./faq";
 export { FooterSection } from "./footer";
 export { FooterVariantTwo } from "./footer-2";
+export { AppDownloadSection } from "./app-download";

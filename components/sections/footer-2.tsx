@@ -5,7 +5,6 @@ import { Separator } from "@/components/ui/separator";
 
 import { MinimalNewsletterForm } from "@/components/newsletter-form";
 import Link from "next/link";
-
 interface FooterVariantTwoProps {
     onCtaClick?: () => void; // Deprecated
 }
@@ -45,6 +44,8 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                             <div className="pt-2">
                                 <MinimalNewsletterForm alignment="left" className="mx-0 lg:ml-0" />
                             </div>
+
+
 
                             {/* Disclaimer */}
                             <p className="text-xs text-white/40 leading-relaxed max-w-[320px]">

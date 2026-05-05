@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useLenis } from "@/components/smooth-scroll-provider";
@@ -31,6 +31,13 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
     const pathname = usePathname();
     const { items, setIsCartOpen } = useCart();
     const { user, profile, openAuthModal, signOut } = useUser();
+
+    const { scrollYProgress } = useScroll();
+    const scaleX = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    });
 
     React.useEffect(() => {
         if (profile?.avatar_url) {
@@ -151,6 +158,7 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
 
                     {/* Desktop CTA & Auth */}
                     <div className="hidden md:flex items-center gap-4">
+
                         {!user ? (
                             <button 
                                 onClick={() => openAuthModal("signin")}

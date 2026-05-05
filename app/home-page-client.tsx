@@ -10,8 +10,10 @@ import {
   ExploreProgramsSection,
   CTASection,
   FAQSection,
+  AppDownloadSection,
   FooterVariantTwo,
 } from "@/components/sections";
+import { AnnouncementBanner } from "@/components/announcement-banner";
 
 interface HomePageClientProps {
   testimonials: HomepageTestimonial[];
@@ -24,6 +26,7 @@ export default function HomePageClient({ testimonials }: HomePageClientProps) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <AnnouncementBanner />
       <NavbarSticky />
       <main>
         <HeroOmega testimonials={testimonials} onExploreClick={scrollToPrograms} />
@@ -44,6 +47,7 @@ export default function HomePageClient({ testimonials }: HomePageClientProps) {
 
         <CTASection />
         <FAQSection />
+        <AppDownloadSection />
         <FooterVariantTwo />
       </main>
     </div>
