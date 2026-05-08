@@ -150,6 +150,7 @@ export const viewport = {
 import { CartProvider } from "@/lib/context/cart-context";
 import { UserProvider } from "@/lib/context/user-context";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ClarityInit } from "@/components/clarity-init";
 
 export default function RootLayout({
   children,
@@ -178,6 +179,7 @@ export default function RootLayout({
         <SmoothScrollProvider>
           <UserProvider>
             <CartProvider>
+              <ClarityInit />
               <Preloader />
               <PageTransition>{children}</PageTransition>
               <LayoutClientExtras />
