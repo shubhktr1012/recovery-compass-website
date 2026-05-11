@@ -114,6 +114,7 @@ function FeatureCard({ feature }: { feature: Feature }) {
                         fill
                         className="object-cover"
                         unoptimized
+                        priority
                     />
                 </div>
             </div>
@@ -339,6 +340,7 @@ export function SolutionSection() {
                                             fill
                                             className="object-cover"
                                             unoptimized
+                                            priority={index === 0}
                                         />
                                     </motion.div>
                                 ))}

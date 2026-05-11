@@ -5,14 +5,14 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: "Privacy Policy | Recovery Compass App",
-    description: "Learn how Recovery Compass App collects, uses, and protects your personal data. We are committed to full transparency about your privacy rights.",
+    description: "Learn how Recovery Compass App collects, uses, and strictly protects your personal data. We are committed to full transparency about your privacy rights and security.",
     keywords: ["Recovery Compass privacy policy", "wellness app privacy", "health app data policy", "Recovery Compass data"],
     alternates: {
         canonical: "/privacy",
     },
     openGraph: {
         title: "Privacy Policy | Recovery Compass App",
-        description: "Learn how Recovery Compass App collects, uses, and protects your personal data. We are committed to full transparency about your privacy rights.",
+        description: "Learn how Recovery Compass App collects, uses, and strictly protects your personal data. We are committed to full transparency about your privacy rights and security.",
         url: "https://recoverycompass.co/privacy",
     },
 };

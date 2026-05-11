@@ -116,7 +116,7 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                 <Link href="/" className="flex items-center gap-2 text-[oklch(0.2475_0.0661_146.79)] hover:opacity-80 transition-opacity">
                     <Image
                         src="/rc-logo-primary.svg"
-                        alt="Recovery Compass"
+                        alt=""
                         width={28}
                         height={28}
                         className="size-7"
