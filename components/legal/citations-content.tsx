@@ -46,7 +46,7 @@ const CITATION_GROUPS: CitationGroup[] = [
             },
             {
                 title: "National Institute on Drug Abuse (NIDA) – Tobacco, Nicotine, and E-Cigarettes Research Report",
-                url: "https://nida.nih.gov/research-topics/tobacco-nicotine-e-cigarettes",
+                url: "https://nida.nih.gov/publications/research-reports/tobacco-nicotine-e-cigarettes",
             },
         ],
     },
@@ -63,11 +63,11 @@ const CITATION_GROUPS: CitationGroup[] = [
             },
             {
                 title: "National Health Service (NHS) – Pelvic Floor Exercises for Men",
-                url: "https://www.nhs.uk/live-well/exercise/strength-and-flexibility-exercises/pelvic-floor-exercises/",
+                url: "https://www.nhs.uk/conditions/urinary-incontinence/treatment/",
             },
             {
-                title: "International Society for Sexual Medicine (ISSM) – What are Pelvic Floor Exercises?",
-                url: "https://www.issm.info/sexual-health-qa/what-are-pelvic-floor-exercises/",
+                title: "International Society for Sexual Medicine (ISSM) – Male Sexual Health Resources",
+                url: "https://www.issm.info/sexual-health-qa/",
             },
             {
                 title: "European Association of Urology – EAU Guidelines on Erectile Dysfunction",
@@ -80,7 +80,7 @@ const CITATION_GROUPS: CitationGroup[] = [
         citations: [
             {
                 title: "Harvard Health Publishing – Exercise and Sexual Function",
-                url: "https://www.health.harvard.edu/mens-health/exercise-and-sexual-function",
+                url: "https://www.health.harvard.edu/staying-healthy/exercise-and-sexual-health",
             },
             {
                 title: "American Heart Association – Physical Activity Improves Quality of Life",
@@ -97,7 +97,7 @@ const CITATION_GROUPS: CitationGroup[] = [
             },
             {
                 title: "Cleveland Clinic – Relaxation Techniques",
-                url: "https://my.clevelandclinic.org/health/articles/6409-relaxation-techniques",
+                url: "https://health.clevelandclinic.org/relaxation-techniques/",
             },
             {
                 title: "National Institutes of Health (NIH) – Relaxation Techniques for Health",
