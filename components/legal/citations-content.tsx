@@ -45,8 +45,8 @@ const CITATION_GROUPS: CitationGroup[] = [
                 url: "https://www.mayoclinic.org/diseases-conditions/nicotine-dependence/in-depth/nicotine-craving/art-20045454",
             },
             {
-                title: "Journal of Addiction Research – Craving and Urge Management in Addiction Behaviour",
-                url: "https://www.addictionresearch.com",
+                title: "National Institute on Drug Abuse (NIDA) – Tobacco, Nicotine, and E-Cigarettes Research Report",
+                url: "https://nida.nih.gov/research-topics/tobacco-nicotine-e-cigarettes",
             },
         ],
     },
@@ -54,24 +54,24 @@ const CITATION_GROUPS: CitationGroup[] = [
         heading: "Male Sexual Health & Pelvic Floor Training",
         citations: [
             {
-                title: "Mayo Clinic – Pelvic Floor Muscle Exercises",
-                url: "https://www.mayoclinic.org",
+                title: "Mayo Clinic – Kegel Exercises: A How-To Guide for Men",
+                url: "https://www.mayoclinic.org/healthy-lifestyle/mens-health/in-depth/kegel-exercises-for-men/art-20045074",
             },
             {
-                title: "Cleveland Clinic – Pelvic Floor Exercises: Benefits for Sexual Function",
-                url: "https://my.clevelandclinic.org",
+                title: "Cleveland Clinic – Kegel Exercises for Men: Benefits & How-To",
+                url: "https://my.clevelandclinic.org/health/articles/14611-kegel-exercises",
             },
             {
                 title: "National Health Service (NHS) – Pelvic Floor Exercises for Men",
-                url: "https://www.nhs.uk",
+                url: "https://www.nhs.uk/live-well/exercise/strength-and-flexibility-exercises/pelvic-floor-exercises/",
             },
             {
-                title: "International Society for Sexual Medicine (ISSM) – Pelvic Floor Exercises and Erectile Function",
-                url: "https://www.issm.info",
+                title: "International Society for Sexual Medicine (ISSM) – What are Pelvic Floor Exercises?",
+                url: "https://www.issm.info/sexual-health-qa/what-are-pelvic-floor-exercises/",
             },
             {
-                title: "European Association of Urology – Pelvic Floor Training in ED Management Guidelines",
-                url: "https://www.uroweb.org",
+                title: "European Association of Urology – EAU Guidelines on Erectile Dysfunction",
+                url: "https://uroweb.org/guidelines/sexual-and-reproductive-health/",
             },
         ],
     },
@@ -79,12 +79,12 @@ const CITATION_GROUPS: CitationGroup[] = [
         heading: "Exercise, Circulation & Cardiovascular Health",
         citations: [
             {
-                title: "Harvard Medical School – Physical Activity and Sexual Health",
-                url: "https://www.health.harvard.edu",
+                title: "Harvard Health Publishing – Exercise and Sexual Function",
+                url: "https://www.health.harvard.edu/mens-health/exercise-and-sexual-function",
             },
             {
-                title: "American Heart Association – Walking and Vascular Function",
-                url: "https://www.heart.org",
+                title: "American Heart Association – Physical Activity Improves Quality of Life",
+                url: "https://www.heart.org/en/healthy-living/fitness/fitness-basics/why-is-physical-activity-so-important-for-health-and-wellbeing",
             },
         ],
     },
@@ -92,16 +92,16 @@ const CITATION_GROUPS: CitationGroup[] = [
         heading: "Stress Reduction & Breathing Techniques",
         citations: [
             {
-                title: "American Psychological Association – Breathing Exercises and Stress Control",
-                url: "https://www.apa.org",
+                title: "American Psychological Association – Stress Effects on the Body",
+                url: "https://www.apa.org/topics/stress/body",
             },
             {
-                title: "Cleveland Clinic – Relaxation Techniques and the Nervous System",
-                url: "https://my.clevelandclinic.org",
+                title: "Cleveland Clinic – Relaxation Techniques",
+                url: "https://my.clevelandclinic.org/health/articles/6409-relaxation-techniques",
             },
             {
-                title: "National Institutes of Health (NIH) – Balanced Muscle Training and Recovery",
-                url: "https://www.nih.gov",
+                title: "National Institutes of Health (NIH) – Relaxation Techniques for Health",
+                url: "https://www.nccih.nih.gov/health/relaxation-techniques-what-you-need-to-know",
             },
         ],
     },
@@ -117,8 +117,8 @@ const CITATION_GROUPS: CitationGroup[] = [
                 url: "https://www.mayoclinic.org/healthy-lifestyle/adult-health/in-depth/sleep/art-20048379",
             },
             {
-                title: "National Sleep Foundation – Sleep Hygiene and Tips",
-                url: "https://www.thensf.org/sleep-tips/",
+                title: "National Sleep Foundation – Sleep Hygiene Tips",
+                url: "https://www.sleepfoundation.org/sleep-hygiene",
             },
         ],
     },
@@ -147,12 +147,12 @@ const CITATION_GROUPS: CitationGroup[] = [
                 url: "https://www.nia.nih.gov/health/healthy-aging",
             },
             {
-                title: "Harvard Medical School – Longevity: Lifestyle Strategies for a Healthy, Long Life",
+                title: "Harvard Health Publishing – Longevity: Lifestyle Strategies for a Healthy, Long Life",
                 url: "https://www.health.harvard.edu/topics/longevity",
             },
             {
                 title: "American Academy of Dermatology (AAD) – Anti-Aging Skin Care",
-                url: "https://www.aad.org/public/everyday-care/skin-care-basics/ant-aging",
+                url: "https://www.aad.org/public/everyday-care/skin-care-basics/anti-aging-skin-care",
             },
         ],
     },
