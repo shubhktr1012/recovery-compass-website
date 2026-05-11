@@ -101,7 +101,6 @@ export function AppDownloadSection() {
                                         alt="Recovery Compass Dashboard" 
                                         fill 
                                         className="object-cover"
-                                        priority
                                         unoptimized
                                     />
                                 </div>
@@ -125,7 +124,6 @@ export function AppDownloadSection() {
                                         alt="Recovery Compass Widget" 
                                         fill 
                                         className="object-cover"
-                                        priority
                                         unoptimized
                                     />
                                 </div>
