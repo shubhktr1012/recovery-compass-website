@@ -1,8 +1,21 @@
-"use client";
-
 import { TermsContent } from "@/components/legal/terms-content";
 import { FooterVariantTwo } from "@/components/sections/footer-2";
 import { NavbarSticky } from "@/components/navbar-sticky";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Terms & Conditions",
+    description: "Read the Terms & Conditions governing your use of Recovery Compass App covering subscriptions, program access, limitations of liability, and your rights.",
+    keywords: ["Recovery Compass terms", "wellness app terms of service", "Recovery Compass conditions", "app usage agreement"],
+    alternates: {
+        canonical: "/terms",
+    },
+    openGraph: {
+        title: "Terms & Conditions | Recovery Compass",
+        description: "Read the Terms & Conditions governing your use of Recovery Compass App covering subscriptions, program access, limitations of liability, and your rights.",
+        url: "https://recoverycompass.co/terms",
+    },
+};
 
 export default function TermsPage() {
     return (

@@ -15,20 +15,20 @@ import {
 import { getFeaturedHomepageTestimonials } from "@/lib/testimonials";
 
 export const metadata: Metadata = {
-  title: "Recovery Compass | Guided Habit Reset, Sleep, and Energy Support",
+  title: "Recovery Compass App | Guided Habit Reset & Wellness",
   description:
-    "Recovery Compass offers guided programs for habit reset, better sleep, steadier energy, and calmer daily balance through practical daily support.",
+    "Recovery Compass App offers guided programs for habit reset, better sleep, steadier energy, and calmer daily balance through practical daily support.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Recovery Compass | Guided Habit Reset, Sleep, and Energy Support",
+    title: "Recovery Compass App | Guided Habit Reset & Wellness",
     description:
       "Guided programs for habit reset, better sleep, steadier energy, and calmer daily balance through practical daily support.",
     url: "https://recoverycompass.co/",
   },
   twitter: {
-    title: "Recovery Compass | Guided Habit Reset, Sleep, and Energy Support",
+    title: "Recovery Compass App | Guided Habit Reset & Wellness",
     description:
       "Guided programs for habit reset, better sleep, steadier energy, and calmer daily balance.",
   },
