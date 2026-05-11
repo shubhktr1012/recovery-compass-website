@@ -52,7 +52,7 @@ export function Preloader() {
             >
               <Image
                 src="/rc-logo-white.svg"
-                alt=""
+                alt="Recovery Compass Logo"
                 fill
                 className="object-contain"
                 priority
@@ -72,9 +72,9 @@ export function Preloader() {
                 ease: [0.76, 0, 0.24, 1],
               }}
             >
-              <h1 className="whitespace-nowrap pt-1 pl-4 font-erode text-3xl font-medium leading-none text-white md:text-4xl">
+              <div className="whitespace-nowrap pt-1 pl-4 font-erode text-3xl font-medium leading-none text-white md:text-4xl">
                 Recovery Compass
-              </h1>
+              </div>
             </motion.div>
           </div>
         </motion.div>

@@ -41,7 +41,7 @@ const features: Feature[] = [
             { title: "Trend snapshots", desc: "Notice recurring patterns without obsessing over data." },
             { title: "Gentle reflection", desc: "Observe progress with clarity instead of judgment." },
         ],
-        imageSrc: "/pointer-1.png",
+        imageSrc: "/pointer-1.webp",
         imageAlt: "Daily awareness and check-in interface",
     },
     {
@@ -56,7 +56,7 @@ const features: Feature[] = [
             { title: "Grounding routines", desc: "Shift attention from spiraling thoughts back to the present." },
             { title: "Restorative pauses", desc: "Support that fits real life, not perfect conditions." },
         ],
-        imageSrc: "/pointer-2.png",
+        imageSrc: "/pointer-2.webp",
         imageAlt: "Guided regulation and grounding audio tools",
     },
     {
@@ -71,7 +71,7 @@ const features: Feature[] = [
             { title: "Flexible progress", desc: "One missed day does not cancel momentum." },
             { title: "Confidence through repetition", desc: "Self-trust grows by returning, not by being perfect." },
         ],
-        imageSrc: "/pointer-3(1).png",
+        imageSrc: "/pointer-3.webp",
         imageAlt: "Structured daily support and routines",
     },
 ];
@@ -113,6 +113,7 @@ function FeatureCard({ feature }: { feature: Feature }) {
                         alt={feature.imageAlt}
                         fill
                         className="object-cover"
+                        unoptimized
                     />
                 </div>
             </div>
@@ -337,6 +338,7 @@ export function SolutionSection() {
                                             alt={feature.imageAlt}
                                             fill
                                             className="object-cover"
+                                            unoptimized
                                         />
                                     </motion.div>
                                 ))}

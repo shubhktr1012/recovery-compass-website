@@ -97,7 +97,7 @@ export function AppDownloadSection() {
                                 {/* Screen Area */}
                                 <div className="w-full h-full bg-zinc-950 overflow-hidden relative">
                                     <Image 
-                                        src="/app-dashboard.png" 
+                                        src="/app-dashboard.webp" 
                                         alt="Recovery Compass Dashboard" 
                                         fill 
                                         className="object-cover"
@@ -121,7 +121,7 @@ export function AppDownloadSection() {
                                 {/* Screen Area */}
                                 <div className="w-full h-full bg-zinc-950 overflow-hidden relative">
                                     <Image 
-                                        src="/app-widget.png" 
+                                        src="/app-widget.webp" 
                                         alt="Recovery Compass Widget" 
                                         fill 
                                         className="object-cover"
