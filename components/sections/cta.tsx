@@ -17,6 +17,7 @@ export function CTASection() {
                         fill
                         className="object-cover pointer-events-none select-none"
                         sizes="(max-width: 768px) 100vw, 1400px"
+                        unoptimized
                     />
                     {/* Subtle Overlay for Readability */}
                     <div className="absolute inset-0 bg-black/10 lg:bg-gradient-to-r lg:from-black/20 lg:via-transparent lg:to-transparent" />

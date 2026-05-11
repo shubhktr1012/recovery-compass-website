@@ -83,62 +83,79 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://recoverycompass.co"),
   applicationName: "Recovery Compass",
   title: {
-    default: "Recovery Compass | Habit Reset, Sleep, Energy, and Daily Balance",
-    template: "%s | Recovery Compass",
+    default: "Recovery Compass App | Guided Habit Reset & Wellness",
+    template: "%s | Recovery Compass App",
   },
   description:
-    "Recovery Compass is a guided wellness platform for habit reset, better sleep, steadier energy, and calmer daily routines through practical programs and daily support.",
+    "Recovery Compass is a guided wellness platform for habit reset, better sleep, steadier energy, and calmer daily routines through practical daily support.",
   keywords: [
-    "Recovery Compass",
+    "Recovery Compass App",
     "habit reset",
     "sleep support",
     "energy restore",
     "daily balance",
     "nervous system regulation",
     "wellness programs",
-    "erection disorder",
-    "low libido",
-    "age reversal",
-
+    "behavioral guidance India",
+    "science-backed wellness",
   ],
-  authors: [{ name: "Recovery Compass Team" }],
+  authors: [{ name: "Recovery Compass Team", url: "https://recoverycompass.co/about" }],
   creator: "Recovery Compass",
   publisher: "Recovery Compass",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION,
+  },
+  alternates: {
+    canonical: "/",
   },
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://recoverycompass.co",
-    title: "Recovery Compass | Habit Reset, Sleep, Energy, and Daily Balance",
+    title: "Recovery Compass App | Habit Reset & Wellness",
     description:
-      "Guided support for habit reset, better sleep, steadier energy, and calmer daily routines through practical programs and daily support.",
+      "Guided support for habit reset, better sleep, steadier energy, and calmer daily routines.",
     siteName: "Recovery Compass",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Recovery Compass - Steady Progress Without Pressure",
+        alt: "Recovery Compass App - Steady Progress Without Pressure",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Recovery Compass | Habit Reset, Sleep, Energy, and Daily Balance",
+    title: "Recovery Compass App | Habit Reset & Wellness",
     description:
       "Guided support for habit reset, better sleep, steadier energy, and calmer daily routines.",
     images: ["/og-image.png"],
     creator: "@recoverycompass",
   },
   icons: {
-    icon: "/rc-logo-white.svg",
-    apple: "/rc-logo-white.svg",
+    icon: [
+      { url: "/rc-logo-white.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/rc-logo-white.svg", type: "image/svg+xml" },
+    ],
   },
 };
 
@@ -161,6 +178,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
+        <link rel="preload" href="/rc-logo-white.svg" as="image" />
         {process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID && (
           <script
             id="microsoft-clarity"

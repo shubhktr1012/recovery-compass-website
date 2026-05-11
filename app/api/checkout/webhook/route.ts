@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
                 });
 
                 console.log(
-                    `[Webhook] payment.captured for order ${orderId} — ` +
+                    `[Webhook] payment.captured for order ${orderId} - ` +
                     `${alreadyProcessed ? "already processed" : "newly marked paid"}`
                 );
                 break;

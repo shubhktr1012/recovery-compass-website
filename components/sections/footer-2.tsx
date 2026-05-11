@@ -23,7 +23,7 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                         <div className="flex items-center gap-2 text-white">
                             <Image
                                 src="/rc-logo-white.svg"
-                                alt=""
+                                alt="Recovery Compass"
                                 width={32}
                                 height={32}
                                 className="size-8"
@@ -115,6 +115,9 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                         <div className="space-y-6">
                             <h4 className="text-sm font-medium text-white/90">Company</h4>
                             <ul className="space-y-4 text-sm text-white/60">
+                                <li>
+                                    <Link href="/about" className="hover:text-white transition-colors cursor-pointer">About Us</Link>
+                                </li>
                                 <li>
                                     <Link href="/support" className="hover:text-white transition-colors cursor-pointer">Contact Us</Link>
                                 </li>
