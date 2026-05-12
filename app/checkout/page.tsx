@@ -31,6 +31,7 @@ import Image from "next/image";
 import { FooterVariantTwo } from "@/components/sections";
 import { NavbarSticky } from "@/components/navbar-sticky";
 import { formatPaymentDescription, formatProgramCountLabel } from "@/lib/program-commerce-policy";
+import { APP_STORE_BADGE_URL, APP_STORE_URL, PLAY_STORE_BADGE_URL, PLAY_STORE_URL } from "@/lib/constants";
 import type { LucideIcon } from "lucide-react";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -524,30 +525,38 @@ export default function CheckoutPage() {
                         transition={{ delay: 0.45 }}
                     >
                         <p className="text-[10px] uppercase tracking-[0.2em] font-bold opacity-25 mb-4">
-                            Available soon on mobile
+                            Available now on mobile
                         </p>
                         <div className="flex flex-wrap gap-2 items-center">
                             {/* Official Apple App Store Badge */}
-                            <div className="relative">
+                            <a
+                                href={APP_STORE_URL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="relative transition-transform active:scale-95"
+                            >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
-                                    src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                                    src={APP_STORE_BADGE_URL}
                                     alt="Download on the App Store"
-                                    className="h-[44px] w-auto cursor-not-allowed opacity-90 hover:opacity-100 transition-opacity"
+                                    className="h-[44px] w-auto opacity-90 hover:opacity-100 transition-opacity"
                                 />
-                                <div className="absolute -top-1.5 -right-1 px-1.5 py-0.5 rounded-full bg-amber-400 text-[oklch(0.2475_0.0661_146.79)] text-[7px] font-bold uppercase tracking-widest shadow-md">Soon</div>
-                            </div>
+                            </a>
                             {/* Official Google Play Badge - Adjusted height to visually match Apple Badge */}
-                            <div className="relative">
+                            <a
+                                href={PLAY_STORE_URL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="relative transition-transform active:scale-95"
+                            >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
-                                    src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+                                    src={PLAY_STORE_BADGE_URL}
                                     alt="Get it on Google Play"
-                                    className="h-[68px] w-auto cursor-not-allowed opacity-90 hover:opacity-100 transition-opacity translate-x-[-8px]"
+                                    className="h-[68px] w-auto opacity-90 hover:opacity-100 transition-opacity translate-x-[-8px]"
                                     style={{ marginTop: "-12px", marginBottom: "-12px" }}
                                 />
-                                <div className="absolute top-0 right-1 px-1.5 py-0.5 rounded-full bg-amber-400 text-[oklch(0.2475_0.0661_146.79)] text-[7px] font-bold uppercase tracking-widest shadow-md">Soon</div>
-                            </div>
+                            </a>
                         </div>
                     </motion.div>
                 </div>

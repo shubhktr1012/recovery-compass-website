@@ -420,7 +420,7 @@ export function AboutPageContent() {
                                     Hello & Support
                                 </h3>
                                 <p className="text-base text-white/60 leading-relaxed font-satoshi mb-10">
-                                    Recovery Compass is an Open Beta product. We are a small, dedicated team committed to building the best evidence-backed wellness tools available.
+                                    Recovery Compass is available on iOS and Android. We are a small, dedicated team committed to building the best evidence-backed wellness tools available.
                                 </p>
                                 <a
                                     href="mailto:support@recoverycompass.co"

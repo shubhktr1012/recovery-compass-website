@@ -1,20 +1,17 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { TestimonialMarquee } from "./testimonials/testimonial-marquee";
-import type { HomepageTestimonial } from "@/lib/testimonials";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getDownloadHref, isExternalDownloadPlatform } from "@/lib/constants";
+import { useDownloadPlatform } from "@/lib/use-download-platform";
 
-interface HeroOmegaProps {
-    testimonials?: HomepageTestimonial[];
-}
+export function HeroOmega() {
+    const platform = useDownloadPlatform();
+    const downloadHref = getDownloadHref(platform);
+    const isExternalLink = isExternalDownloadPlatform(platform);
 
-
-const APP_STORE_URL = "https://apps.apple.com/in/app/recovery-compass-wellness/id6761656102";
-
-export function HeroOmega({ testimonials = [] }: HeroOmegaProps) {
     return (
-        <section className="relative flex flex-col justify-start pt-12 pb-0 md:pt-16 md:pb-2 overflow-hidden bg-white text-[oklch(0.2475_0.0661_146.79)]">
+        <section className="relative flex flex-col justify-start pt-12 pb-8 md:pt-16 md:pb-10 bg-white text-[oklch(0.2475_0.0661_146.79)]">
             {/* Content Container */}
             <div className="relative z-20 w-full max-w-[1200px] mx-auto px-6 md:px-12 lg:px-24 flex flex-col justify-start pt-0 pb-0">
                 <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-y-6 lg:gap-x-12 items-center">
@@ -58,8 +55,8 @@ export function HeroOmega({ testimonials = [] }: HeroOmegaProps) {
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
                                 </span>
                                 <span className="text-[10px] md:text-xs font-bold text-[oklch(0.2475_0.0661_146.79)]/80 tracking-wide uppercase">
-                                    A Behavioral Guidance App <span className="hidden md:inline"> - Open Beta Launching Soon</span>
-                                    <span className="md:hidden"> - Open Beta Soon</span>
+                                    A Behavioral Guidance App <span className="hidden md:inline"> - Available Now on iOS &amp; Android</span>
+                                    <span className="md:hidden"> - Available Now</span>
                                 </span>
                             </div>
 
@@ -72,30 +69,45 @@ export function HeroOmega({ testimonials = [] }: HeroOmegaProps) {
                             </p>
                         </div>
 
-                        {/* CTAs - Centered & Customized */}
+                        {/* CTAs - Centered & Smart */}
                         <div className="flex flex-col sm:flex-row gap-3 justify-center items-center w-full pt-2 md:pt-4">
-                            {/* App Store Primary CTA */}
+                            {/* Smart Download CTA */}
                             <a
-                                href={APP_STORE_URL}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                id="hero-app-store-cta"
+                                href={downloadHref}
+                                {...(isExternalLink ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                                id="hero-download-cta"
                                 className={cn(
                                     "inline-flex items-center gap-2.5 rounded-full px-5 py-2.5 transition-all active:scale-95",
                                     "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 border border-transparent",
                                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2"
                                 )}
                             >
-                                {/* Apple Logo */}
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 814 1000"
-                                    className="w-4 h-4 shrink-0 fill-white"
-                                    aria-hidden="true"
-                                >
-                                    <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76.5 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.5 135.4-317.3 268.5-317.3 71 0 130.1 46.4 175 46.4 42.3 0 109.1-49.1 185.6-49.1 29.8 0 108.2 2.6 168.4 79.3zm-234-181.5c31.1-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.5 32.4-55.1 83.6-55.1 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.4 0 102.5-30.4 135.5-71.3z" />
-                                </svg>
-                                <span className="text-sm font-medium">Download our app</span>
+                                {/* Platform-aware icon */}
+                                {platform === "desktop" ? (
+                                    <div className="flex items-center gap-1.5 mr-1">
+                                        {/* Apple Logo */}
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 814 1000" className="w-4 h-4 shrink-0 fill-white relative z-10" aria-hidden="true">
+                                            <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76.5 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.5 135.4-317.3 268.5-317.3 71 0 130.1 46.4 175 46.4 42.3 0 109.1-49.1 185.6-49.1 29.8 0 108.2 2.6 168.4 79.3zm-234-181.5c31.1-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.5 32.4-55.1 83.6-55.1 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.4 0 102.5-30.4 135.5-71.3z" />
+                                        </svg>
+                                        {/* Google Play Logo */}
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-[14px] h-[14px] shrink-0 fill-white relative z-0" aria-hidden="true">
+                                            <path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/>
+                                        </svg>
+                                    </div>
+                                ) : platform === "android" ? (
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-4 h-4 shrink-0 fill-white" aria-hidden="true">
+                                        <path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/>
+                                    </svg>
+                                ) : (
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 814 1000" className="w-4 h-4 shrink-0 fill-white" aria-hidden="true">
+                                        <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76.5 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.5 135.4-317.3 268.5-317.3 71 0 130.1 46.4 175 46.4 42.3 0 109.1-49.1 185.6-49.1 29.8 0 108.2 2.6 168.4 79.3zm-234-181.5c31.1-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.5 32.4-55.1 83.6-55.1 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.4 0 102.5-30.4 135.5-71.3z" />
+                                    </svg>
+                                )}
+                                <span className="text-sm font-medium">
+                                    {platform === "android" ? "Get it on Google Play"
+                                        : platform === "ios" ? "Download on App Store"
+                                            : "Download our app"}
+                                </span>
                             </a>
 
                             {/* Explore Programs Secondary */}
@@ -113,13 +125,6 @@ export function HeroOmega({ testimonials = [] }: HeroOmegaProps) {
                     </div>
                 </div>
             </div>
-
-            {/* Testimonial Strip - Sitting organically below the content container */}
-            {testimonials.length > 0 ? (
-                <div className="relative z-0 w-full mt-8 md:mt-10 overflow-hidden">
-                    <TestimonialMarquee testimonials={testimonials} className="py-8" />
-                </div>
-            ) : null}
 
         </section >
     );

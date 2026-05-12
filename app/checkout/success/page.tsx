@@ -18,6 +18,7 @@ import Image from "next/image";
 import { FooterVariantTwo } from "@/components/sections";
 import { NavbarSticky } from "@/components/navbar-sticky";
 import { cn } from "@/lib/utils";
+import { APP_STORE_BADGE_URL, APP_STORE_URL, PLAY_STORE_BADGE_URL, PLAY_STORE_URL } from "@/lib/constants";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Design Tokens
@@ -101,30 +102,29 @@ function StepBadge({ number, delay }: { number: number; delay: number }) {
 // ─────────────────────────────────────────────────────────────────────────────
 function AppStoreBadge({ platform }: { platform: "ios" | "android" }) {
     const isIOS = platform === "ios";
+    const href = isIOS ? APP_STORE_URL : PLAY_STORE_URL;
+
     return (
-        <div className="relative">
+        <a 
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative transition-transform active:scale-95 inline-block"
+        >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
                 src={
                     isIOS
-                        ? "https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
-                        : "https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+                        ? APP_STORE_BADGE_URL
+                        : PLAY_STORE_BADGE_URL
                 }
                 alt={isIOS ? "Download on the App Store" : "Get it on Google Play"}
                 className={cn(
-                    "w-auto cursor-not-allowed opacity-80 hover:opacity-100 transition-opacity",
+                    "w-auto opacity-80 hover:opacity-100 transition-opacity",
                     isIOS ? "h-[40px]" : "h-[60px] translate-x-[-8px] -my-[10px]"
                 )}
             />
-            <div
-                className={cn(
-                    "absolute px-1.5 py-0.5 rounded-full bg-amber-400 text-[oklch(0.2475_0.0661_146.79)] text-[7px] font-bold uppercase tracking-widest shadow-md",
-                    isIOS ? "-right-1.5 -top-1.5" : "right-1 top-0"
-                )}
-            >
-                Soon
-            </div>
-        </div>
+        </a>
     );
 }
 

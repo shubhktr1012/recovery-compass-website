@@ -126,7 +126,7 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                         Recovery Compass
                     </span>
                     <span className="ml-2 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.15em] rounded-full border border-[oklch(0.2475_0.0661_146.79)]/20 text-[oklch(0.2475_0.0661_146.79)]/50 bg-[oklch(0.2475_0.0661_146.79)]/5">
-                        Open Beta
+                        Now Live
                     </span>
                 </Link>
 
