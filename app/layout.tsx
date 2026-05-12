@@ -171,6 +171,9 @@ export default function RootLayout({
       <head>
         <meta charSet="utf-8" />
         <link rel="preload" href="/rc-logo-white.svg" as="image" />
+        <link rel="icon" href="/icon.png" type="image/png" sizes="1024x1024" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-icon.png" sizes="180x180" />
         {process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID && (
           <script
             id="microsoft-clarity"
