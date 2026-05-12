@@ -6,6 +6,14 @@ import { NavbarSticky } from "@/components/navbar-sticky";
 export const metadata: Metadata = {
     title: "Delete Your Recovery Compass Account",
     description: "Learn how to permanently delete your Recovery Compass account and associated app data.",
+    alternates: {
+        canonical: "/delete-account",
+    },
+    openGraph: {
+        title: "Delete Your Recovery Compass Account | Recovery Compass",
+        description: "Learn how to permanently delete your Recovery Compass account and associated app data.",
+        url: "https://recoverycompass.co/delete-account",
+    },
 };
 
 export default function DeleteAccountPage() {
