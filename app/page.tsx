@@ -12,7 +12,7 @@ import {
   AppDownloadSection,
   FooterVariantTwo,
 } from "@/components/sections";
-import { getFeaturedHomepageTestimonials } from "@/lib/testimonials";
+
 
 export const metadata: Metadata = {
   title: "Recovery Compass App | Guided Habit Reset & Wellness",
@@ -52,8 +52,7 @@ const websiteJsonLd = {
     "Guided support for habit reset, better sleep, steadier energy, and calmer daily routines.",
 };
 
-export default async function Home() {
-  const testimonials = await getFeaturedHomepageTestimonials();
+export default function Home() {
   return (
     <>
       <script
@@ -68,7 +67,7 @@ export default async function Home() {
         <AnnouncementBanner />
         <NavbarSticky />
         <main>
-          <HeroOmega testimonials={testimonials} />
+          <HeroOmega />
 
           <div id="why-us" className="scroll-mt-28">
             <PhilosophySection />
