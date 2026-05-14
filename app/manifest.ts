@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Recovery Compass",
-    short_name: "Recovery Compass",
+    name: "Recovery Compass Wellness",
+    short_name: "Recovery Compass Wellness",
     description:
       "Recovery Compass offers guided programs for habit reset, better sleep, steadier energy, and calmer daily balance through practical daily support.",
     start_url: "/",

@@ -81,15 +81,15 @@ const erode = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://recoverycompass.co"),
-  applicationName: "Recovery Compass",
+  applicationName: "Recovery Compass Wellness",
   title: {
-    default: "Recovery Compass App | Guided Habit Reset & Wellness",
-    template: "%s | Recovery Compass App",
+    default: "Recovery Compass Wellness | Guided Habit Reset & Wellness",
+    template: "%s | Recovery Compass Wellness",
   },
   description:
     "Recovery Compass is a guided wellness platform for habit reset, better sleep, steadier energy, and calmer daily routines through practical daily support.",
   keywords: [
-    "Recovery Compass App",
+    "Recovery Compass Wellness",
     "habit reset",
     "sleep support",
     "energy restore",
@@ -128,22 +128,22 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://recoverycompass.co",
-    title: "Recovery Compass App | Habit Reset & Wellness",
+    title: "Recovery Compass Wellness | Habit Reset & Wellness",
     description:
       "Guided support for habit reset, better sleep, steadier energy, and calmer daily routines.",
-    siteName: "Recovery Compass",
+    siteName: "Recovery Compass Wellness",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Recovery Compass App - Steady Progress Without Pressure",
+        alt: "Recovery Compass Wellness - Steady Progress Without Pressure",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Recovery Compass App | Habit Reset & Wellness",
+    title: "Recovery Compass Wellness | Habit Reset & Wellness",
     description:
       "Guided support for habit reset, better sleep, steadier energy, and calmer daily routines.",
     images: ["/og-image.png"],

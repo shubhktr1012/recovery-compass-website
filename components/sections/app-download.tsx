@@ -43,7 +43,7 @@ export function AppDownloadSection() {
                                 <span className="text-[oklch(0.2475_0.0661_146.79)]">now in your pocket.</span>
                             </h2>
                             <p className="text-lg md:text-xl text-muted-foreground font-satoshi leading-relaxed">
-                                Experience the full power of Recovery Compass on the go. Track progress, access programs, and stay connected—anytime, anywhere.
+                                Experience the full power of Recovery Compass on the go. Track progress, access programs, and stay connected anytime, anywhere.
                             </p>
                         </div>
 

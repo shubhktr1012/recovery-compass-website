@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: "Citations & Research Sources",
-    description: "Recovery Compass App is built on evidence. Browse our cited sources from WHO, NIH, Mayo Clinic, NHS, and other authoritative health institutions.",
+    description: "Recovery Compass Wellness is built on evidence. Browse our cited sources from WHO, NIH, Mayo Clinic, NHS, and other authoritative health institutions.",
     keywords: ["Recovery Compass citations", "wellness app research", "health program evidence", "nicotine cessation research", "pelvic floor citations"],
 };
 

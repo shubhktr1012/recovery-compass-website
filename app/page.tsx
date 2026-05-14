@@ -5,7 +5,6 @@ import {
   HeroOmega,
   PhilosophySection,
   ProblemSection,
-  SolutionSection,
   ExploreProgramsSection,
   CTASection,
   FAQSection,
@@ -15,20 +14,20 @@ import {
 
 
 export const metadata: Metadata = {
-  title: "Recovery Compass App | Guided Habit Reset & Wellness",
+  title: "Recovery Compass Wellness | Guided Habit Reset & Wellness",
   description:
-    "Recovery Compass App offers guided programs for habit reset, better sleep, steadier energy, and calmer daily balance through practical daily support.",
+    "Recovery Compass Wellness offers guided programs for habit reset, better sleep, steadier energy, and calmer daily balance through practical daily support.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Recovery Compass App | Guided Habit Reset & Wellness",
+    title: "Recovery Compass Wellness | Guided Habit Reset & Wellness",
     description:
       "Guided programs for habit reset, better sleep, steadier energy, and calmer daily balance through practical daily support.",
     url: "https://recoverycompass.co/",
   },
   twitter: {
-    title: "Recovery Compass App | Guided Habit Reset & Wellness",
+    title: "Recovery Compass Wellness | Guided Habit Reset & Wellness",
     description:
       "Guided programs for habit reset, better sleep, steadier energy, and calmer daily balance.",
   },
@@ -37,7 +36,7 @@ export const metadata: Metadata = {
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Recovery Compass",
+  name: "Recovery Compass Wellness",
   url: "https://recoverycompass.co",
   logo: "https://recoverycompass.co/rc-logo-white.svg",
   sameAs: ["https://www.instagram.com/recovery_compass/?hl=en"],
@@ -46,7 +45,7 @@ const organizationJsonLd = {
 const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Recovery Compass",
+  name: "Recovery Compass Wellness",
   url: "https://recoverycompass.co",
   description:
     "Guided support for habit reset, better sleep, steadier energy, and calmer daily routines.",
@@ -74,11 +73,6 @@ export default function Home() {
           </div>
 
           <ProblemSection />
-
-          <div id="features" className="scroll-mt-28">
-            <SolutionSection />
-          </div>
-
           <div id="programs" className="scroll-mt-28">
             <ExploreProgramsSection />
           </div>

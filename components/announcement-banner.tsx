@@ -1,5 +1,4 @@
 "use client";
-
 import { ArrowRight } from "lucide-react";
 import { getDownloadHref, isExternalDownloadPlatform } from "@/lib/constants";
 import { useDownloadPlatform } from "@/lib/use-download-platform";
@@ -13,13 +12,8 @@ export function AnnouncementBanner() {
     <div className="bg-[oklch(0.2475_0.0661_146.79)] text-white px-4 py-2 text-sm text-center relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
       <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 font-satoshi font-medium">
-        <span className="flex items-center gap-2">
-          <span className="relative flex h-2 w-2 shrink-0">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
-          </span>
-          <span className="opacity-90">Recovery Compass App — Now on iOS & Android</span>
-        </span>
+        <a 
+        <span className="opacity-90">Recovery Compass Wellness. Now on iOS & Android</span>
         <a 
           href={downloadHref}
           {...(isExternalLink ? { target: "_blank", rel: "noopener noreferrer" } : {})}
