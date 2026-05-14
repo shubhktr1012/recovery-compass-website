@@ -12,7 +12,6 @@ export function AnnouncementBanner() {
     <div className="bg-[oklch(0.2475_0.0661_146.79)] text-white px-4 py-2 text-sm text-center relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
       <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 font-satoshi font-medium">
-        <a 
         <span className="opacity-90">Recovery Compass Wellness. Now on iOS & Android</span>
         <a 
           href={downloadHref}

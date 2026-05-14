@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AnnouncementBanner } from "@/components/announcement-banner";
 import { NavbarSticky } from "@/components/navbar-sticky";
+import { getHomepageCommunityData } from "@/lib/homepage-community";
 import {
   HeroOmega,
   PhilosophySection,
@@ -51,7 +52,9 @@ const websiteJsonLd = {
     "Guided support for habit reset, better sleep, steadier energy, and calmer daily routines.",
 };
 
-export default function Home() {
+export default async function Home() {
+  const communityData = await getHomepageCommunityData();
+
   return (
     <>
       <script
@@ -66,7 +69,10 @@ export default function Home() {
         <AnnouncementBanner />
         <NavbarSticky />
         <main>
-          <HeroOmega />
+          <HeroOmega
+            memberCount={communityData.memberCount}
+            latestMembers={communityData.latestMembers}
+          />
 
           <div id="why-us" className="scroll-mt-28">
             <PhilosophySection />

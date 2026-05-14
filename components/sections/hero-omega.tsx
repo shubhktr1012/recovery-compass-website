@@ -4,11 +4,23 @@ import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getDownloadHref, isExternalDownloadPlatform } from "@/lib/constants";
 import { useDownloadPlatform } from "@/lib/use-download-platform";
+import type { HomepageCommunityMember } from "@/lib/homepage-community";
 
-export function HeroOmega() {
+interface HeroOmegaProps {
+    memberCount?: number | null;
+    latestMembers?: HomepageCommunityMember[];
+}
+
+export function HeroOmega({
+    memberCount = null,
+    latestMembers = [],
+}: HeroOmegaProps) {
     const platform = useDownloadPlatform();
     const downloadHref = getDownloadHref(platform);
     const isExternalLink = isExternalDownloadPlatform(platform);
+    const communityLabel = memberCount && memberCount > 0
+        ? `${new Intl.NumberFormat("en-US").format(memberCount)} members on Recovery Compass Wellness`
+        : "Guided support for daily balance";
 
     return (
         <section className="relative flex flex-col justify-start pt-12 pb-8 md:pt-16 md:pb-10 bg-white text-[oklch(0.2475_0.0661_146.79)]">
@@ -24,22 +36,23 @@ export function HeroOmega() {
                         {/* Avatar Trust Bar - Centered */}
                         <div className="flex flex-row items-center justify-center gap-3">
                             <p className="text-sm md:text-base font-medium text-[oklch(0.2475_0.0661_146.79)]">
-                                Guided support for daily balance
+                                {communityLabel}
                             </p>
                             <div className="flex items-center">
-                                {[
-                                    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=64&h=64",
-                                    "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=64&h=64",
-                                    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=64&h=64",
-                                    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=64&h=64"
-                                ].map((src, i) => (
+                                {latestMembers.map((member, i) => (
                                     <div
-                                        key={i}
+                                        key={member.id}
                                         className="relative -ml-2 first:ml-0 z-0 hover:z-10 transition-transform duration-300 ease-out hover:-translate-y-1"
                                     >
                                         <Avatar className="w-7 h-7 border-2 border-[oklch(0.2475_0.0661_146.79)] cursor-pointer">
-                                            <AvatarImage src={src} alt="Community member" className="object-cover" />
-                                            <AvatarFallback className="bg-[oklch(0.2475_0.0661_146.79)] text-white text-[8px]">M</AvatarFallback>
+                                            <AvatarImage
+                                                src={member.avatarUrl ?? undefined}
+                                                alt={member.displayName || `Community member ${i + 1}`}
+                                                className="object-cover"
+                                            />
+                                            <AvatarFallback className="bg-[oklch(0.2475_0.0661_146.79)] text-white text-[8px]">
+                                                {member.initials}
+                                            </AvatarFallback>
                                         </Avatar>
                                     </div>
                                 ))}
