@@ -5,10 +5,10 @@ import { AboutPageContent } from "@/components/sections/about-page-content";
 
 export const metadata: Metadata = {
     title: "About Us",
-    description: "Recovery Compass App helps you quit smoking, improve sexual health, and build lasting habits with science-backed programs from WHO and Mayo Clinic.",
+    description: "Recovery Compass Wellness helps you quit smoking, improve sexual health, and build lasting habits with science-backed programs from WHO and Mayo Clinic.",
     keywords: [
         "about Recovery Compass",
-        "Recovery Compass App",
+        "Recovery Compass Wellness",
         "wellness habit change app",
         "quit smoking app",
         "pelvic floor training app",

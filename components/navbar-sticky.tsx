@@ -102,8 +102,8 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
 
     const navLinks = simple ? [{ label: "Home", href: "/" }] : [
         { label: "Why Us?", href: "#why-us" },
-        { label: "Features", href: "#features" },
         { label: "Programs", href: "#programs" },
+        { label: "Download", href: "#app-download" },
     ];
 
     return (

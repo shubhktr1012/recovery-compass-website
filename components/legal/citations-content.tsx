@@ -126,7 +126,7 @@ const CITATION_GROUPS: CitationGroup[] = [
         heading: "Nutrition, Energy & Fatigue Management",
         citations: [
             {
-                title: "Harvard Health Publishing – 9 Tips to Boost Your Energy — Naturally",
+                title: "Harvard Health Publishing – 9 Tips to Boost Your Energy: Naturally",
                 url: "https://www.health.harvard.edu/energy-and-fatigue/9-tips-to-boost-your-energy-naturally",
             },
             {

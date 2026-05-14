@@ -5,14 +5,14 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: "Terms & Conditions",
-    description: "Read the Terms & Conditions governing your use of Recovery Compass App covering subscriptions, program access, limitations of liability, and your rights.",
+    description: "Read the Terms & Conditions governing your use of Recovery Compass Wellness covering subscriptions, program access, limitations of liability, and your rights.",
     keywords: ["Recovery Compass terms", "wellness app terms of service", "Recovery Compass conditions", "app usage agreement"],
     alternates: {
         canonical: "/terms",
     },
     openGraph: {
-        title: "Terms & Conditions | Recovery Compass",
-        description: "Read the Terms & Conditions governing your use of Recovery Compass App covering subscriptions, program access, limitations of liability, and your rights.",
+        title: "Terms & Conditions | Recovery Compass Wellness",
+        description: "Read the Terms & Conditions governing your use of Recovery Compass Wellness covering subscriptions, program access, limitations of liability, and your rights.",
         url: "https://recoverycompass.co/terms",
     },
 };
