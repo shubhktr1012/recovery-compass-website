@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 
-import { MinimalNewsletterForm } from "@/components/newsletter-form";
 import Link from "next/link";
 interface FooterVariantTwoProps {
     onCtaClick?: () => void; // Deprecated
@@ -17,7 +16,7 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                 {/* Main Content Area */}
                 <div className="flex flex-col lg:flex-row justify-between gap-12 lg:gap-24 mb-20">
 
-                    {/* Left Column: Brand & Subscribe */}
+                    {/* Left Column: Brand */}
                     <div className="lg:max-w-md space-y-8">
                         {/* Brand */}
                         <div className="flex items-center gap-2 text-white">
@@ -33,31 +32,12 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                             </span>
                         </div>
 
-                        <div className="space-y-8">
+                        <div className="space-y-4">
                             {/* Headline */}
                             <h3 className="text-2xl md:text-3xl font-medium leading-tight text-white/90">
-                                Find your direction again.<br />
-                                Start your journey today.
+                                Structured daily programs<br />
+                                for practical change.
                             </h3>
-
-                            {/* Input Field Group */}
-                            <div className="pt-2">
-                                <MinimalNewsletterForm alignment="left" className="mx-0 lg:ml-0" />
-                            </div>
-
-
-
-                            {/* Disclaimer */}
-                            <p className="text-xs text-white/40 leading-relaxed max-w-[320px]">
-                                By sending an enquiry you agree to our{" "}
-                                <Link
-                                    href="/privacy"
-                                    className="underline hover:text-white transition-colors cursor-pointer"
-                                >
-                                    Privacy Policy
-                                </Link>{" "}
-                                and allow us to reply to your message.
-                            </p>
                         </div>
                     </div>
 
@@ -132,7 +112,7 @@ export function FooterVariantTwo({ }: FooterVariantTwoProps) {
                 <div className="mb-10 max-w-3xl">
                     <p className="text-[11px] uppercase tracking-[0.25em] text-white/35 mb-3">Disclaimer</p>
                     <p className="text-sm text-white/55 leading-relaxed max-w-2xl">
-                        Recovery Compass provides educational guidance and wellness practices designed to support healthier habits and daily balance. It is not intended to diagnose, treat, or replace professional medical advice.
+                        Recovery Compass provides educational wellness programs for healthier habits and routines. It is not intended to diagnose, treat, or replace professional medical advice.
                     </p>
                 </div>
 

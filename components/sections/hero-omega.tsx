@@ -20,7 +20,7 @@ export function HeroOmega({
     const isExternalLink = isExternalDownloadPlatform(platform);
     const communityLabel = memberCount && memberCount > 0
         ? `${new Intl.NumberFormat("en-US").format(memberCount)} members on Recovery Compass Wellness`
-        : "Guided support for daily balance";
+        : "Structured daily programs";
 
     return (
         <section className="relative flex flex-col justify-start pt-12 pb-8 md:pt-16 md:pb-10 bg-white text-[oklch(0.2475_0.0661_146.79)]">

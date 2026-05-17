@@ -29,15 +29,15 @@ const features = [
     },
     {
         id: "data",
-        title: "Progress, not perfection.",
-        description: "Gentle check-ins and reflection help you learn from patterns without guilt, streak pressure, or all-or-nothing thinking.",
+        title: "Use data as feedback.",
+        description: "Check-ins and reflections show what changed, what repeated, and what to adjust next.",
         Visual: DataInsight,
         duration: 12000,
     },
     {
         id: "structure",
-        title: "Small steps build trust.",
-        description: "Structured daily guidance supports healthier routines over time, helping progress feel steady, practical, and sustainable.",
+        title: "Structure makes change repeatable.",
+        description: "Daily cards turn broad goals into specific routines, reflections, and checkpoints.",
         Visual: StructurePath,
         duration: 14000,
     }

@@ -64,7 +64,7 @@ const features: Feature[] = [
         label: "Momentum",
         headline: "Build a Better Rhythm",
         desktopLines: ["Build a", "Better Rhythm"],
-        description: "Each programme turns change into a manageable daily rhythm, so healthier choices feel repeatable instead of overwhelming.",
+        description: "Each program turns change into a manageable daily rhythm, so healthier choices feel repeatable instead of overwhelming.",
         bullets: [
             { title: "Daily actions", desc: "Simple steps that fit around real schedules." },
             { title: "Routine anchors", desc: "Gentle cues for mornings, evenings, and difficult moments." },

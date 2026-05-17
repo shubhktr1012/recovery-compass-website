@@ -21,7 +21,7 @@ export function SupportPageContent() {
                             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                             className="text-4xl md:text-5xl lg:text-6xl font-erode font-medium tracking-tight text-foreground mb-6 text-balance"
                         >
-                            How can we support your <span className="text-primary italic">journey?</span>
+                            How can we <span className="text-primary italic">help?</span>
                         </motion.h1>
 
                         <motion.p
@@ -30,16 +30,7 @@ export function SupportPageContent() {
                             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                             className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-6"
                         >
-                            Whether you&apos;re facing technical bumps, billing questions, or just need guidance finding your footing, our team is ready to help you navigate it.
-                        </motion.p>
-                        
-                        <motion.p
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                            className="text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto"
-                        >
-                            At Recovery Compass, we believe that true progress requires a reliable support system. We know that taking the first step towards behavioral change is challenging enough without worrying about technical glitches or confusing account settings. That&apos;s why our support team is dedicated to providing you with clear, timely, and compassionate assistance whenever you need it. We treat every inquiry with the utmost privacy and care, ensuring you can focus on what truly matters: your recovery and growth.
+                            Email us for account, billing, technical, or program-selection questions. Include a few details so we can reply with the right next step.
                         </motion.p>
                     </div>
 
@@ -57,7 +48,7 @@ export function SupportPageContent() {
                             <div className="bg-secondary/10 border border-border/50 rounded-[2rem] p-8">
                                 <h3 className="text-2xl font-erode font-semibold mb-4 text-foreground">Get in Touch</h3>
                                 <p className="text-muted-foreground mb-6 leading-relaxed">
-                                    The fastest way to reach our support team is via email. We monitor our inbox closely and strive to reply to all inquiries as quickly as possible.
+                                    Email is the fastest way to reach us. We usually reply within 24 hours.
                                 </p>
                                 <a
                                     href="mailto:support@recoverycompass.co"
@@ -70,9 +61,9 @@ export function SupportPageContent() {
 
                             {/* What to include */}
                             <div className="bg-secondary/10 border border-border/50 rounded-[2rem] p-8">
-                                <h3 className="text-2xl font-erode font-semibold mb-4 text-foreground">How to Help Us Help You</h3>
+                                <h3 className="text-2xl font-erode font-semibold mb-4 text-foreground">What to Include</h3>
                                 <p className="text-muted-foreground mb-4 leading-relaxed">
-                                    To help us resolve your issue swiftly, please include the following details in your email:
+                                    These details help us answer faster:
                                 </p>
                                 <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
                                     <li>The email address associated with your account.</li>

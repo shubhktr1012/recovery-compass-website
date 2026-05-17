@@ -4,7 +4,6 @@ import { LayoutClientExtras } from "@/components/layout-client-extras";
 import { PageTransition } from "@/components/page-transition";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 import { Preloader } from "@/components/ui/preloader";
-import Script from "next/script";
 
 import "./globals.css";
 
@@ -87,13 +86,13 @@ export const metadata: Metadata = {
     template: "%s | Recovery Compass Wellness",
   },
   description:
-    "Recovery Compass is a guided wellness platform for habit reset, better sleep, steadier energy, and calmer daily routines through practical daily support.",
+    "Recovery Compass is a wellness app with structured daily programs for habit reset, sleep, energy, men's vitality, and biohacking.",
   keywords: [
     "Recovery Compass Wellness",
     "habit reset",
     "sleep support",
     "energy restore",
-    "daily balance",
+    "daily routines",
     "nervous system regulation",
     "wellness programs",
     "behavioral guidance India",
@@ -130,7 +129,7 @@ export const metadata: Metadata = {
     url: "https://recoverycompass.co",
     title: "Recovery Compass Wellness | Habit Reset & Wellness",
     description:
-      "Guided support for habit reset, better sleep, steadier energy, and calmer daily routines.",
+      "Structured daily programs for habit reset, sleep, energy, men's vitality, and biohacking.",
     siteName: "Recovery Compass Wellness",
     images: [
       {
@@ -145,7 +144,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Recovery Compass Wellness | Habit Reset & Wellness",
     description:
-      "Guided support for habit reset, better sleep, steadier energy, and calmer daily routines.",
+      "Structured daily programs for habit reset, sleep, energy, men's vitality, and biohacking.",
     images: ["/og-image.png"],
     creator: "@recoverycompass",
   },
