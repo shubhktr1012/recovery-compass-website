@@ -28,6 +28,7 @@ export type Program = {
     title: string;
     cardDescription: string;
     article: ProgramArticle;
+    facts: string[];
     metaValue: string;
     metaLabel: string;
     highlights: ProgramHighlight[];
@@ -50,6 +51,7 @@ export const categoryPrograms: Record<string, Program[]> = {
                 whoIsItFor: "Designed for those who feel trapped in an automatic, unconscious smoking pattern and need a structured, low-pressure way to prove to themselves that they are in control.",
                 curriculumOverview: "Six days of progressive behavioral disruption. You will throw away visual triggers, change physical routines associated with smoking, and learn grounding protocols to manage acute cravings in real-time."
             },
+            facts: ["6 days", "2 phases", "10-12 min/day"],
             metaValue: "₹599",
             metaLabel: "Launch price",
             highlights: [
@@ -64,7 +66,7 @@ export const categoryPrograms: Record<string, Program[]> = {
             id: "90-day-smoke-free-journey",
             tag: "Daily Guided Modules",
             title: "90-Day Smoking Reset",
-            cardDescription: "A longer journey designed to support lasting change by strengthening awareness, resilience, and consistency over time.",
+            cardDescription: "A 90-day reset for pattern recognition, emotional steadiness, low-pressure journaling, and long-term smoking recovery.",
             article: {
                 subtitle: "Rewiring the deeply ingrained neural pathways.",
                 philosophy: [
@@ -72,8 +74,9 @@ export const categoryPrograms: Record<string, Program[]> = {
                     "Through daily guided audio prompts and psychological framing, the program moves you away from the identity of a 'smoker who is quitting' into the identity of someone who simply no longer relies on that crutch for peace."
                 ],
                 whoIsItFor: "For those ready to commit to long-term behavioral change, seeking daily guidance to help stabilize their nervous system during the crucial 3-month rewiring phase.",
-                curriculumOverview: "Daily 2-4 minute audio modules focused on pattern recognition, resilience building, optional low-pressure journaling, and long-term stabilization."
+                curriculumOverview: "Daily guided modules focused on pattern recognition, resilience building, optional low-pressure journaling, and long-term stabilization."
             },
+            facts: ["90 days", "4 phases", "About 7 min/day", "Audio-led"],
             metaValue: "₹5,999",
             metaLabel: "Launch price",
             highlights: [
@@ -90,7 +93,7 @@ export const categoryPrograms: Record<string, Program[]> = {
             id: "21-day-deep-sleep-reset",
             tag: "Reset the Body Clock",
             title: "21-Day Deep Sleep Reset",
-            cardDescription: "Reset the body clock and nervous system so the brain begins recognizing the signals for sleep again.",
+            cardDescription: "A 21-day sleep protocol that rebuilds morning light, caffeine cut-off, breathing, downshift, and sleep-prep cues.",
             article: {
                 subtitle: "Calming the hyperactive nervous system.",
                 philosophy: [
@@ -100,11 +103,12 @@ export const categoryPrograms: Record<string, Program[]> = {
                 whoIsItFor: "For those caught in the frustrating cycle of waking up exhausted, feeling wired all day, and lying awake at night.",
                 curriculumOverview: "Sunlight protocols, precise caffeine management, physiological sigh techniques, and guided sleep audios designed to lower heart rate variability before bed."
             },
+            facts: ["21 days", "3 phases", "13-21 min/day", "Includes sleep audio"],
             metaValue: "₹2,599",
             metaLabel: "Launch price",
             highlights: [
                 { label: "Morning Signal", text: "Sunlight exposure within 30 minutes of waking" },
-                { label: "Calm", text: "Hydration plus 10 cycles of physiological sigh" },
+                { label: "Breathing", text: "Hydration plus 10 cycles of physiological sigh" },
                 { label: "Sleep Pressure", text: "Light morning movement to make the body naturally tired at night" },
                 { label: "Night Routine", text: "No caffeine after 2 PM and guided sleep meditation before bed" },
             ],
@@ -114,7 +118,7 @@ export const categoryPrograms: Record<string, Program[]> = {
             id: "14-day-energy-restore",
             tag: "Energy Reset Foundations",
             title: "14-Day Energy Restore",
-            cardDescription: "Restore daily energy and mental clarity by rebuilding the body’s natural rhythm through simple daily missions.",
+            cardDescription: "A 14-day physical rhythm reset for hydration, sunlight, cold activation, movement, pressure points, and evening reflection.",
             article: {
                 subtitle: "Reclaiming your natural momentum.",
                 philosophy: [
@@ -124,6 +128,7 @@ export const categoryPrograms: Record<string, Program[]> = {
                 whoIsItFor: "For individuals feeling chronically sluggish, dealing with mid-afternoon slumps, or struggling to find the physical motivation to accomplish daily goals.",
                 curriculumOverview: "Hydration protocols, light-exposure timing, strict activity windows, and biological sleep cues."
             },
+            facts: ["14 days", "2 phases", "13-19 min/day", "Movement-led"],
             metaValue: "₹1,499",
             metaLabel: "Launch price",
             highlights: [
@@ -145,15 +150,16 @@ export const categoryPrograms: Record<string, Program[]> = {
                 subtitle: "Physical activation and psychological calm.",
                 philosophy: [
                     "Optimal sexual health requires both a relaxed mind and strong, conditioned physiological systems. Performance anxiety acts as a sudden block to blood flow, while automatic negative habits drain vital energy.",
-                    "By combining targeted physical movement (core and pelvic conditioning) with the proprietary CALM protocol to down-regulate anxiety in real-time, this program addresses both the mechanical and psychological barriers."
+                    "By combining targeted physical movement (core and pelvic conditioning) with guided breathing and regulation practices, this program addresses both the mechanical and psychological barriers."
                 ],
                 whoIsItFor: "Men seeking to overcome performance anxiety, break negative compulsive habits, and restore physical confidence through natural regulation.",
                 curriculumOverview: "Daily pelvic strength exercises, rapid-calming breathing techniques (4-2-6), and hormone-supporting night routines."
             },
+            facts: ["30 days", "3 phases", "12-20 min/day", "Breathing + strength"],
             metaValue: "₹4,999",
             metaLabel: "Launch price",
             highlights: [
-                { label: "Urge Control", text: "Use CALM when the urge appears and let it pass in 5–10 minutes" },
+                { label: "Urge Control", text: "Use a breathing reset when the urge appears and let it pass in 5-10 minutes" },
                 { label: "Performance Anxiety", text: "4-2-6 breathing to activate the relaxation response" },
                 { label: "Vitality Exercise", text: "Pelvic strength, glute bridges, squats, and a brisk walk" },
                 { label: "Recovery", text: "Night routine to support hormones and physical recovery" },
@@ -164,7 +170,7 @@ export const categoryPrograms: Record<string, Program[]> = {
             id: "radiance-journey",
             tag: "Rejuvenation Journey",
             title: "90-Day Biohacking Reset",
-            cardDescription: "Activate the body’s natural rejuvenation process by improving circulation, stimulating facial muscles, and calming the nervous system.",
+            cardDescription: "A 90-day longevity protocol for relaxed walking, facial activation, regulation practices, sleep prep, and recovery routines.",
             article: {
                 subtitle: "Cellular renewal through rhythm and blood flow.",
                 philosophy: [
@@ -172,14 +178,15 @@ export const categoryPrograms: Record<string, Program[]> = {
                     "This program focuses on activating the parasympathetic nervous system (rest and digest) to allow the body to heal itself, combined with targeted routines that maximize nutrient delivery to facial tissues."
                 ],
                 whoIsItFor: "For those looking to move beyond superficial skincare treatments into deep, systemic lifestyle restoration for lasting vitality and appearance.",
-                curriculumOverview: "Circulation-boosting movements, targeted facial activation, deep nervous-system calming audio, and sleep-enhancing repair protocols."
+                curriculumOverview: "Circulation-boosting walks, targeted facial activation, nervous-system regulation, and sleep-enhancing repair protocols."
             },
+            facts: ["90 days", "4 phases", "25-30 min/day", "Facial + walking routines"],
             metaValue: "₹6,999",
             metaLabel: "Launch price",
             highlights: [
                 { label: "Circulation", text: "20-minute relaxed walk to improve blood flow and cellular energy" },
                 { label: "Face Exercise", text: "Daily facial muscle activation to support firmness and lift" },
-                { label: "Calm", text: "Guided calm session to relax the nervous system and lower cortisol" },
+                { label: "Regulation", text: "Guided calming practice to relax the nervous system and lower cortisol" },
                 { label: "Sleep Preparation", text: "Consistent sleep routine to support hormone balance and repair" },
             ],
             accent: "light",
@@ -361,6 +368,21 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
                     )}>
                         {program.cardDescription}
                     </p>
+                    <div className="flex flex-wrap gap-2">
+                        {program.facts.map((fact) => (
+                            <span
+                                key={fact}
+                                className={cn(
+                                    "rounded-full px-3 py-1 text-[11px] font-bold tracking-wide",
+                                    isDark
+                                        ? "bg-white/10 text-white/70"
+                                        : "bg-white/70 text-[oklch(0.2475_0.0661_146.79)]/60"
+                                )}
+                            >
+                                {fact}
+                            </span>
+                        ))}
+                    </div>
                 </div>
 
                 <div className="space-y-4 mb-10 flex-grow">
@@ -497,6 +519,16 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
                                 <p className="text-[oklch(0.2475_0.0661_146.79)] font-medium text-xl leading-relaxed italic font-erode">
                                     &ldquo;{program.article.subtitle}&rdquo;
                                 </p>
+                                <div className="flex flex-wrap gap-2">
+                                    {program.facts.map((fact) => (
+                                        <span
+                                            key={fact}
+                                            className="rounded-full bg-white/70 px-3 py-1 text-[11px] font-bold tracking-wide text-[oklch(0.2475_0.0661_146.79)]/60"
+                                        >
+                                            {fact}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
 
                             {/* Philosophy */}

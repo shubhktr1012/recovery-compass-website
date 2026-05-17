@@ -78,7 +78,7 @@ export function HeroOmega({
                             </h1>
 
                             <p className="text-base md:text-xl text-[oklch(0.2475_0.0661_146.79)]/70 leading-snug font-medium max-w-2xl mx-auto">
-                                Recovery Compass is a behavioral guidance app that helps people regain control over smoking, alcohol, sleep, erections, age reversal, and more by teaching them how to respond to change in real time according to their lifestyle.
+                                Recovery Compass turns difficult behavior change into structured daily programs: timed cards, practical routines, breathing practices, reflections, and progress tracking for smoking, sleep, energy, men&apos;s vitality, and biohacking.
                             </p>
                         </div>
 

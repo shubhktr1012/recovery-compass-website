@@ -28,7 +28,7 @@ const PILLARS = [
     {
         icon: Zap,
         title: "Actionable, Not Overwhelming",
-        body: "Short daily sessions, guided audio, and smart progress tracking keep you moving forward without burning you out.",
+        body: "Daily cards, program-specific routines, reflection prompts, and progress tracking keep you moving forward without burning you out.",
     },
     {
         icon: ShieldCheck,
@@ -43,12 +43,12 @@ const PILLARS = [
 ];
 
 const PROGRAMMES = [
-    "Smoking Cessation & Nicotine Recovery",
-    "Male Pelvic Floor & Sexual Health",
-    "Sleep Hygiene & Circadian Optimisation",
-    "Energy & Fatigue Restoration",
-    "Healthy Ageing & Longevity",
-    "Stress Management & Breathing",
+    "6-Day Control",
+    "90-Day Smoking Reset",
+    "21-Day Deep Sleep Reset",
+    "14-Day Energy Restore",
+    "30-Day Men's Vitality Reset",
+    "90-Day Biohacking Reset",
 ];
 
 const STATS = [
@@ -102,7 +102,7 @@ export function AboutPageContent() {
                             transition={{ duration: 0.8, delay: 0.15 }}
                             className="text-lg md:text-2xl text-[oklch(0.2475_0.0661_146.79)]/70 leading-relaxed font-medium max-w-2xl mx-auto font-satoshi"
                         >
-                            Recovery Compass is a science-backed behavioural wellness app that guides you through evidence-based programmes for smoking cessation, sleep, sexual health, stress management, and healthy ageing: built with compassion, not hype.
+                            Recovery Compass is a science-backed behavioural wellness app that guides you through evidence-based programs for smoking cessation, sleep, energy, men&apos;s vitality, and healthy ageing: built with compassion, not hype.
                         </motion.p>
 
                         {/* Stats Row */}
@@ -181,7 +181,7 @@ export function AboutPageContent() {
                                 with thoughtful product design to create programmes that are structured, compassionate, and actually work in a busy life.
                             </p>
                             <p>
-                                Today Recovery Compass serves users across iOS and Android, helping them track progress, complete daily exercises, listen to guided audio sessions, and journal their journey: all in one place, all backed by science.
+                                Today Recovery Compass serves users across iOS and Android, helping them track progress, complete daily exercises, follow reflections, and journal their journey: all in one place, all backed by science.
                             </p>
                         </motion.div>
                     </div>

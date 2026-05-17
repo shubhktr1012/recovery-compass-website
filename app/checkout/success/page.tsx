@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useCart } from "@/lib/context/cart-context";
 import {
     CheckCircle2,
@@ -10,21 +10,14 @@ import {
     Calendar,
     Phone,
 } from "lucide-react";
-import { FaApple, FaGooglePlay, FaWhatsapp } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+import { FaWhatsapp } from "react-icons/fa";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import Image from "next/image";
 import { FooterVariantTwo } from "@/components/sections";
 import { NavbarSticky } from "@/components/navbar-sticky";
 import { cn } from "@/lib/utils";
 import { APP_STORE_BADGE_URL, APP_STORE_URL, PLAY_STORE_BADGE_URL, PLAY_STORE_URL } from "@/lib/constants";
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Design Tokens
-// ─────────────────────────────────────────────────────────────────────────────
-const forest = "oklch(0.2475 0.0661 146.79)";
-const cream = "oklch(0.9484 0.0251 149.08)";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Floating Particles (celebration effect)
@@ -78,22 +71,6 @@ function CelebrationParticles() {
                 />
             ))}
         </div>
-    );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Step Number Badge
-// ─────────────────────────────────────────────────────────────────────────────
-function StepBadge({ number, delay }: { number: number; delay: number }) {
-    return (
-        <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", damping: 15, stiffness: 300, delay }}
-            className="absolute -left-3 -top-3 z-20 size-7 rounded-full bg-[oklch(0.2475_0.0661_146.79)] text-white flex items-center justify-center text-[11px] font-bold shadow-lg ring-3 ring-[oklch(0.9484_0.0251_149.08)]"
-        >
-            {number}
-        </motion.div>
     );
 }
 
@@ -310,7 +287,7 @@ export default function SuccessPage() {
                                     Download the App
                                 </h3>
                                 <p className="text-[14px] md:text-[15px] text-white/70 font-medium leading-relaxed mb-6">
-                                    Your daily sessions, audios, and journal live natively on your phone.
+                                    Your daily cards, routines, and reflections live natively on your phone.
                                 </p>
                                 <div className="flex flex-col gap-3 items-start">
                                     <AppStoreBadge platform="ios" />
