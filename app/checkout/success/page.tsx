@@ -356,7 +356,7 @@ export default function SuccessPage() {
                         </Link>
                     </Button>
                     <p className="text-[12px] text-[oklch(0.2475_0.0661_146.79)]/30 font-medium">
-                        Thank you for trusting us with your journey.
+                        Thank you for trusting Recovery Compass.
                     </p>
                 </motion.div>
             </motion.main>

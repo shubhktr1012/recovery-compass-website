@@ -62,7 +62,7 @@ export default function AppPurchaseWelcomeEmail({
                             style={logo}
                         />
                         <Text style={brandName}>Recovery Compass</Text>
-                        <Text style={headerTagline}>Your journey begins now.</Text>
+                        <Text style={headerTagline}>Your program is ready.</Text>
                     </Section>
 
                     <Section style={section}>
@@ -75,7 +75,7 @@ export default function AppPurchaseWelcomeEmail({
 
                     <Section style={card}>
                         <Text style={eyebrow}>Next Step</Text>
-                        <Text style={cardTitle}>Open the app and start your journey</Text>
+                        <Text style={cardTitle}>Open the app and start your program</Text>
                         <Text style={cardText}>
                             Your access is already attached to this account. If you own multiple programs, choose the one
                             you want active inside the app.

@@ -19,12 +19,12 @@ type MailSendResult = {
 };
 
 const PROGRAM_DISPLAY_NAMES: Record<string, string> = {
-    six_day_reset: "6-Day Compass Reset",
-    ninety_day_transform: "90-Day Smoke-Free Journey",
+    six_day_reset: "6-Day Control",
+    ninety_day_transform: "90-Day Smoking Reset",
     sleep_disorder_reset: "21-Day Deep Sleep Reset",
     energy_vitality: "14-Day Energy Restore",
-    age_reversal: "Radiance Journey",
-    male_sexual_health: "Men's Vitality Reset Program",
+    age_reversal: "90-Day Biohacking Reset",
+    male_sexual_health: "30-Day Men's Vitality Reset",
 };
 
 function getProgramDisplayName(programSlug: string) {
