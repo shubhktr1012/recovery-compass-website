@@ -148,6 +148,13 @@ export const metadata: Metadata = {
     images: ["/og-image.png"],
     creator: "@recoverycompass",
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.png", type: "image/png" },
+    ],
+    apple: "/apple-icon.png",
+  },
 };
 
 export const viewport = {
