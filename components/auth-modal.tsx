@@ -8,7 +8,6 @@ import {
     DialogTitle,
     DialogDescription
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/lib/supabase";
 import { Loader2, AlertCircle, Eye, EyeOff, CheckCircle2, ArrowLeft } from "lucide-react";
@@ -418,7 +417,7 @@ export function AuthModal({ isOpen, onClose, onSuccess, defaultTab = "signin" }:
                                     <motion.div variants={fadeUp} className="mb-2">
                                         <DialogHeader>
                                             <DialogTitle className="font-erode text-[28px] font-semibold tracking-tight text-[oklch(0.2475_0.0661_146.79)] leading-tight">
-                                                Start your journey.
+                                                Start your program.
                                             </DialogTitle>
                                             <DialogDescription className="text-zinc-500 text-sm mt-1">
                                                 Your programs travel with you, on any device.

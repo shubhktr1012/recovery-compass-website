@@ -20,7 +20,7 @@ export function HeroOmega({
     const isExternalLink = isExternalDownloadPlatform(platform);
     const communityLabel = memberCount && memberCount > 0
         ? `${new Intl.NumberFormat("en-US").format(memberCount)} members on Recovery Compass Wellness`
-        : "Guided support for daily balance";
+        : "Structured daily programs";
 
     return (
         <section className="relative flex flex-col justify-start pt-12 pb-8 md:pt-16 md:pb-10 bg-white text-[oklch(0.2475_0.0661_146.79)]">
@@ -78,7 +78,7 @@ export function HeroOmega({
                             </h1>
 
                             <p className="text-base md:text-xl text-[oklch(0.2475_0.0661_146.79)]/70 leading-snug font-medium max-w-2xl mx-auto">
-                                Recovery Compass is a behavioral guidance app that helps people regain control over smoking, alcohol, sleep, erections, age reversal, and more by teaching them how to respond to change in real time according to their lifestyle.
+                                Recovery Compass turns difficult behavior change into structured daily programs: timed cards, practical routines, breathing practices, reflections, and progress tracking for smoking, sleep, energy, men&apos;s vitality, and biohacking.
                             </p>
                         </div>
 

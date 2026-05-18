@@ -49,7 +49,7 @@ export function CTASection() {
                                 <span className="font-medium text-white/90">you get started?</span>
                             </h2>
                             <p className="text-lg md:text-xl text-white font-satoshi max-w-xl leading-relaxed font-normal drop-shadow-sm">
-                                Questions about the programs, the app, or where to begin? Send us a note and we&apos;ll point you in the right direction.
+                                Tell us your goal, and we&apos;ll help you choose the right program or answer your app question.
                             </p>
                         </div>
                     </motion.div>

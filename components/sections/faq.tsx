@@ -14,7 +14,7 @@ const faqs = [
         question: "What if I’m not sure where to begin?",
         answer: (
             <>
-                Recovery Compass is designed to <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">meet you where you are</strong>. Some programmes offer a short reset when you need immediate direction, while others support longer-term change around habits, sleep, energy, and daily balance. You don&apos;t need to have everything figured out before you start.
+                Start with the program that matches your current goal. Short resets give immediate structure; longer programs give a day-by-day path for deeper change.
             </>
         ),
     },
@@ -22,7 +22,7 @@ const faqs = [
         question: "Will this feel like another app that pressures me to stay perfect?",
         answer: (
             <>
-                No. Recovery Compass is built around <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">steady awareness, small daily actions, and compassionate progress</strong>. There&apos;s no streak pressure, no guilt-based tracking, and no expectation that change has to happen in a straight line.
+                No. The app uses flexible progress, practical cards, and reflections. Missing a day does not erase the program.
             </>
         ),
     },
@@ -30,7 +30,7 @@ const faqs = [
         question: "What does daily support actually look like?",
         answer: (
             <>
-                It looks like <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">simple guided steps, calm routines, supportive check-ins, and practical tools for real-life moments</strong>. The goal is to help you pause, reset, and move forward without making the process feel heavy or overwhelming.
+                It looks like timed cards, breathing or movement routines, journal prompts, and progress checkpoints. The exact mix depends on the program.
             </>
         ),
     },
@@ -38,7 +38,7 @@ const faqs = [
         question: "What if I have a difficult day or fall back into an old pattern?",
         answer: (
             <>
-                A difficult day doesn&apos;t erase progress. It usually points to a trigger, a stress point, or an unmet need. Recovery Compass is built to help you <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">notice what happened, reset without shame, and keep going with more awareness</strong>.
+                Use it as information. The next card helps you notice the trigger, reset the routine, and continue from where you are.
             </>
         ),
     },
@@ -46,7 +46,7 @@ const faqs = [
         question: "Do I need a lot of time every day for this to work?",
         answer: (
             <>
-                No. The programmes are built around <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">manageable daily practices</strong>, not long routines or intense effort. The focus is on consistency, clarity, and small steps that feel realistic enough to keep returning to.
+                No. Each program shows its daily time range before you start, from short resets to heavier protocols.
             </>
         ),
     },
@@ -54,7 +54,7 @@ const faqs = [
         question: "Is Recovery Compass a medical treatment?",
         answer: (
             <>
-                No. Recovery Compass provides <strong className="font-semibold text-[oklch(0.2475_0.0661_146.79)]">educational guidance and wellness practices</strong> designed to support healthier habits and daily balance. It is not intended to diagnose, treat, or replace professional medical advice.
+                No. Recovery Compass provides educational wellness programs. It does not diagnose, treat, or replace professional medical advice.
             </>
         ),
     },
@@ -65,7 +65,7 @@ export function FAQSection() {
         <section className="py-16 md:py-24 px-6 md:px-12 max-w-[1200px] mx-auto">
             <div className="flex flex-col md:flex-row gap-16 lg:gap-24">
 
-                {/* Left Column: Header & CTA */}
+                {/* Left Column: Header */}
                 <div className="flex-1 space-y-8 md:sticky md:top-32 h-fit">
                     {/* Badge */}
                     <Badge
@@ -82,17 +82,9 @@ export function FAQSection() {
                             <span className="text-[oklch(0.2475_0.0661_146.79)] italic"> questions</span>.
                         </h2>
                         <p className="text-lg text-[oklch(0.2475_0.0661_146.79)]/70 max-w-sm">
-                            Got more questions? Reach out to us using the button below.
+                            Quick answers before you choose a program.
                         </p>
                     </div>
-
-                    {/* CTA Button */}
-                    <a
-                        href="mailto:info@recoverycompass.co"
-                        className="inline-flex items-center justify-center bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 rounded-full h-12 px-8 text-base font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2 transition-colors"
-                    >
-                        Reach out
-                    </a>
                 </div>
 
                 {/* Right Column: Accordion Questions */}

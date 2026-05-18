@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Recovery Compass Wellness",
     short_name: "Recovery Compass Wellness",
     description:
-      "Recovery Compass offers guided programs for habit reset, better sleep, steadier energy, and calmer daily balance through practical daily support.",
+      "Recovery Compass offers structured daily programs for habit reset, sleep, energy, men's vitality, and biohacking.",
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",

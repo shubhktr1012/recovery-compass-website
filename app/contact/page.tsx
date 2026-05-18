@@ -5,14 +5,14 @@ import { SupportPageContent } from "@/components/sections/support-page-content";
 
 export const metadata: Metadata = {
     title: "Contact Us",
-    description: "Get in touch with the Recovery Compass Wellness support team. Reach us at support@recoverycompass.co - we typically reply within 24 hours.",
-    keywords: ["Recovery Compass contact", "contact us", "wellness app help", "behavioral health app support"],
+    description: "Contact Recovery Compass for account, billing, technical, or program-selection questions. We typically reply within 24 hours.",
+    keywords: ["Recovery Compass contact", "contact Recovery Compass", "wellness program help", "program selection support"],
     alternates: {
         canonical: "/support",
     },
     openGraph: {
         title: "Contact Us | Recovery Compass Wellness",
-        description: "Get in touch with the Recovery Compass Wellness support team. Reach us at support@recoverycompass.co - we typically reply within 24 hours.",
+        description: "Contact Recovery Compass for account, billing, technical, or program-selection questions.",
         url: "https://recoverycompass.co/contact",
     },
 };

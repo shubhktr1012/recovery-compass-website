@@ -75,14 +75,14 @@ export const WelcomeReceiptEmail = ({
                             style={logo}
                         />
                         <Text style={brandName}>Recovery Compass</Text>
-                        <Text style={headerTagline}>Your journey begins now.</Text>
+                        <Text style={headerTagline}>Your program is ready.</Text>
                     </Section>
 
                     {/* Welcome */}
                     <Section style={section}>
                         <Text style={h1}>Welcome, {customerName}.</Text>
                         <Text style={p}>
-                            Your payment is confirmed and your spot is locked in. We are honoured to walk this road with you. Here is everything you need to get started right now:
+                            Your payment is confirmed and your program access is ready. Here is everything you need to get started right now:
                         </Text>
                     </Section>
 

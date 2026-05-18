@@ -23,7 +23,7 @@ type Feature = {
 const sectionIntro = {
     badge: "How It Works",
     title: "Recovery Compass keeps the process simple.",
-    mobileBody: "Choose the support that fits your goal, follow calm daily guidance, and build a healthier rhythm without pressure.",
+    mobileBody: "Choose the program that fits your goal, follow concrete daily guidance, and build a healthier rhythm without pressure.",
     desktopLead: "From check-ins to guided routines, every part of the app is designed to help you understand yourself more clearly, respond more calmly, and stay consistent for longer.",
     scrollCue: "Keep scrolling to explore",
 };
@@ -47,24 +47,24 @@ const features: Feature[] = [
     {
         index: "02",
         label: "Regulation",
-        headline: "Return to Calm",
-        desktopLines: ["Return", "to Calm"],
-        description: "Guided audio, breathwork, and grounding routines help settle the body when stress is high, sleep is off, or the day feels noisy.",
+        headline: "Regulate First",
+        desktopLines: ["Regulate", "First"],
+        description: "Breathwork, grounding routines, and program-specific practices help settle the body when stress is high, sleep is off, or the day feels noisy.",
         bullets: [
-            { title: "Audio sessions", desc: "Short guided support for tense or unsteady moments." },
             { title: "Breathing patterns", desc: "Regulate first, then decide what comes next." },
             { title: "Grounding routines", desc: "Shift attention from spiraling thoughts back to the present." },
+            { title: "Practical resets", desc: "Short actions for tense or unsteady moments." },
             { title: "Restorative pauses", desc: "Support that fits real life, not perfect conditions." },
         ],
         imageSrc: "/pointer-2.webp",
-        imageAlt: "Guided regulation and grounding audio tools",
+        imageAlt: "Guided regulation and grounding tools",
     },
     {
         index: "03",
         label: "Momentum",
         headline: "Build a Better Rhythm",
         desktopLines: ["Build a", "Better Rhythm"],
-        description: "Each programme turns change into a manageable daily rhythm, so healthier choices feel repeatable instead of overwhelming.",
+        description: "Each program turns change into a manageable daily rhythm, so healthier choices feel repeatable instead of overwhelming.",
         bullets: [
             { title: "Daily actions", desc: "Simple steps that fit around real schedules." },
             { title: "Routine anchors", desc: "Gentle cues for mornings, evenings, and difficult moments." },

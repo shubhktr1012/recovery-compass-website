@@ -340,8 +340,7 @@ export function ProblemSection() {
                         shows up in <span className="text-primary italic">patterns.</span>
                     </h2>
                     <p className="text-lg text-black/50 font-satoshi max-w-[42rem] mx-auto leading-relaxed">
-                        Sleep disruption, low movement, tobacco use, metabolic strain, and untreated distress are widespread.
-                        Recovery Compass is built around these patterns, not around guilt.
+                        Sleep disruption, low movement, tobacco use, metabolic strain, and untreated distress are widespread. Recovery Compass turns these patterns into daily protocols: morning signals, evening downshifts, urge delays, breathing cycles, movement routines, and reflection.
                     </p>
                 </div>
 

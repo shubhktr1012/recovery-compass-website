@@ -17,20 +17,20 @@ import {
 export const metadata: Metadata = {
   title: "Recovery Compass Wellness | Guided Habit Reset & Wellness",
   description:
-    "Recovery Compass Wellness offers guided programs for habit reset, better sleep, steadier energy, and calmer daily balance through practical daily support.",
+    "Recovery Compass Wellness offers structured daily programs for habit reset, sleep, energy, men's vitality, and biohacking.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: "Recovery Compass Wellness | Guided Habit Reset & Wellness",
     description:
-      "Guided programs for habit reset, better sleep, steadier energy, and calmer daily balance through practical daily support.",
+      "Structured daily programs for habit reset, sleep, energy, men's vitality, and biohacking.",
     url: "https://recoverycompass.co/",
   },
   twitter: {
     title: "Recovery Compass Wellness | Guided Habit Reset & Wellness",
     description:
-      "Guided programs for habit reset, better sleep, steadier energy, and calmer daily balance.",
+      "Structured daily programs for habit reset, sleep, energy, men's vitality, and biohacking.",
   },
 };
 
@@ -49,7 +49,7 @@ const websiteJsonLd = {
   name: "Recovery Compass Wellness",
   url: "https://recoverycompass.co",
   description:
-    "Guided support for habit reset, better sleep, steadier energy, and calmer daily routines.",
+    "Structured daily programs for habit reset, sleep, energy, men's vitality, and biohacking.",
 };
 
 export default async function Home() {

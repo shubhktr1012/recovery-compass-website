@@ -1,10 +1,10 @@
 export const PROGRAM_OPTIONS = [
-  { slug: "six_day_reset", label: "6-Day Compass Reset" },
-  { slug: "ninety_day_transform", label: "90-Day Smoke-Free Journey" },
+  { slug: "six_day_reset", label: "6-Day Control" },
+  { slug: "ninety_day_transform", label: "90-Day Smoking Reset" },
   { slug: "sleep_disorder_reset", label: "21-Day Deep Sleep Reset" },
   { slug: "energy_vitality", label: "14-Day Energy Restore" },
-  { slug: "age_reversal", label: "Radiance Journey" },
-  { slug: "male_sexual_health", label: "Men's Vitality Reset Program" },
+  { slug: "age_reversal", label: "90-Day Biohacking Reset" },
+  { slug: "male_sexual_health", label: "30-Day Men's Vitality Reset" },
 ] as const;
 
 export type ProgramSlug = (typeof PROGRAM_OPTIONS)[number]["slug"];

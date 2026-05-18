@@ -39,11 +39,11 @@ export function AppDownloadSection() {
                         >
                         <div className="space-y-4">
                             <h2 className="text-4xl md:text-5xl lg:text-6xl font-erode font-medium tracking-tighter text-foreground leading-[1.10]">
-                                Your journey,<br />
-                                <span className="text-[oklch(0.2475_0.0661_146.79)]">now in your pocket.</span>
+                                Today&apos;s cards,<br />
+                                <span className="text-[oklch(0.2475_0.0661_146.79)]">ready on your phone.</span>
                             </h2>
                             <p className="text-lg md:text-xl text-muted-foreground font-satoshi leading-relaxed">
-                                Experience the full power of Recovery Compass on the go. Track progress, access programs, and stay connected anytime, anywhere.
+                                Open your daily cards, follow the program timeline, save reflections, and continue from the app or widget.
                             </p>
                         </div>
 

@@ -18,7 +18,7 @@ const PILLARS = [
     {
         icon: BookOpen,
         title: "Evidence-First",
-        body: "Every programme is rooted in peer-reviewed research from WHO, NIH, Mayo Clinic, NHS, and leading medical institutions, not trends.",
+        body: "Every program is rooted in peer-reviewed research from WHO, NIH, Mayo Clinic, NHS, and leading medical institutions, not trends.",
     },
     {
         icon: Heart,
@@ -28,7 +28,7 @@ const PILLARS = [
     {
         icon: Zap,
         title: "Actionable, Not Overwhelming",
-        body: "Short daily sessions, guided audio, and smart progress tracking keep you moving forward without burning you out.",
+        body: "Daily cards, program-specific routines, reflection prompts, and progress tracking keep you moving forward without burning you out.",
     },
     {
         icon: ShieldCheck,
@@ -42,18 +42,18 @@ const PILLARS = [
     },
 ];
 
-const PROGRAMMES = [
-    "Smoking Cessation & Nicotine Recovery",
-    "Male Pelvic Floor & Sexual Health",
-    "Sleep Hygiene & Circadian Optimisation",
-    "Energy & Fatigue Restoration",
-    "Healthy Ageing & Longevity",
-    "Stress Management & Breathing",
+const PROGRAMS = [
+    "6-Day Control",
+    "90-Day Smoking Reset",
+    "21-Day Deep Sleep Reset",
+    "14-Day Energy Restore",
+    "30-Day Men's Vitality Reset",
+    "90-Day Biohacking Reset",
 ];
 
 const STATS = [
-    { value: "6", label: "Programmes" },
-    { value: "90+", label: "Daily modules" },
+    { value: "6", label: "Programs" },
+    { value: "90+", label: "Guided days" },
     { value: "2", label: "Platforms" },
 ];
 
@@ -102,7 +102,7 @@ export function AboutPageContent() {
                             transition={{ duration: 0.8, delay: 0.15 }}
                             className="text-lg md:text-2xl text-[oklch(0.2475_0.0661_146.79)]/70 leading-relaxed font-medium max-w-2xl mx-auto font-satoshi"
                         >
-                            Recovery Compass is a science-backed behavioural wellness app that guides you through evidence-based programmes for smoking cessation, sleep, sexual health, stress management, and healthy ageing: built with compassion, not hype.
+                            Recovery Compass is a science-backed behavioural wellness app that guides you through evidence-based programs for smoking cessation, sleep, energy, men&apos;s vitality, and healthy ageing: built with compassion, not hype.
                         </motion.p>
 
                         {/* Stats Row */}
@@ -170,7 +170,7 @@ export function AboutPageContent() {
                             className="space-y-8 text-xl text-[oklch(0.2475_0.0661_146.79)]/70 font-satoshi leading-relaxed"
                         >
                             <p className="first-letter:text-5xl first-letter:font-erode first-letter:mr-3 first-letter:float-left first-letter:text-[oklch(0.2475_0.0661_146.79)]">
-                                We noticed that millions of people wanted to change their habits (quit smoking, sleep better, feel stronger) but the resources available to them were either dry medical PDFs or overpriced coaching programmes that felt out of reach.
+                                We noticed that millions of people wanted to change their habits (quit smoking, sleep better, feel stronger) but the resources available to them were either dry medical PDFs or overpriced coaching programs that felt out of reach.
                             </p>
                             <p>
                                 Recovery Compass was founded to close that gap. We combined the latest research from institutions like the{" "}
@@ -178,10 +178,10 @@ export function AboutPageContent() {
                                 <span className="font-medium text-[oklch(0.2475_0.0661_146.79)] underline underline-offset-4 decoration-[oklch(0.2475_0.0661_146.79)]/20">Mayo Clinic</span>, the{" "}
                                 <span className="font-medium text-[oklch(0.2475_0.0661_146.79)] underline underline-offset-4 decoration-[oklch(0.2475_0.0661_146.79)]/20">National Institutes of Health</span>, and the{" "}
                                 <span className="font-medium text-[oklch(0.2475_0.0661_146.79)] underline underline-offset-4 decoration-[oklch(0.2475_0.0661_146.79)]/20">NHS</span>{" "}
-                                with thoughtful product design to create programmes that are structured, compassionate, and actually work in a busy life.
+                                with thoughtful product design to create programs that are structured, compassionate, and actually work in a busy life.
                             </p>
                             <p>
-                                Today Recovery Compass serves users across iOS and Android, helping them track progress, complete daily exercises, listen to guided audio sessions, and journal their journey: all in one place, all backed by science.
+                                Today Recovery Compass serves users across iOS and Android, helping them track progress, complete daily exercises, follow reflections, and save journal entries: all in one place, all backed by science.
                             </p>
                         </motion.div>
                     </div>
@@ -267,7 +267,7 @@ export function AboutPageContent() {
                 </div>
             </section>
 
-            {/* ── Programmes ────────────────────────────── */}
+            {/* ── Programs ────────────────────────────── */}
             <section className="relative bg-[oklch(0.2475_0.0661_146.79)] py-16 md:py-24 overflow-hidden">
                 {/* Background decor */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(123,167,151,0.18)_0%,transparent_68%)] opacity-80" />
@@ -287,7 +287,7 @@ export function AboutPageContent() {
                                 variant="secondary"
                                 className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide border-none bg-white/10 text-white/80 hover:bg-white/10 uppercase"
                             >
-                                Our Programmes
+                                Our Programs
                             </Badge>
                             <h2 className="text-4xl md:text-5xl font-erode font-medium tracking-tighter leading-[1.1] text-white">
                                 Structured paths for{" "}
@@ -297,7 +297,7 @@ export function AboutPageContent() {
                                 </span>
                             </h2>
                             <p className="text-lg text-white/60 font-satoshi leading-relaxed max-w-md">
-                                Each programme is grounded in evidence-based frameworks. Review our{" "}
+                                Each program is grounded in evidence-based frameworks. Review our{" "}
                                 <Link
                                     href="/citations"
                                     className="text-white/90 underline underline-offset-4 hover:text-white transition-colors"
@@ -311,12 +311,12 @@ export function AboutPageContent() {
                                 href="/#programs"
                                 className="inline-flex items-center gap-2 text-sm font-medium text-white/70 hover:text-white transition-colors group mt-4"
                             >
-                                Explore all programmes
+                                Explore all programs
                                 <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </motion.div>
 
-                        {/* Right: Programme list */}
+                        {/* Right: Program list */}
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -324,7 +324,7 @@ export function AboutPageContent() {
                             transition={{ duration: 0.8, delay: 0.15 }}
                             className="space-y-3"
                         >
-                            {PROGRAMMES.map((prog, i) => (
+                            {PROGRAMS.map((prog, i) => (
                                 <motion.div
                                     key={prog}
                                     initial={{ opacity: 0, x: 20 }}

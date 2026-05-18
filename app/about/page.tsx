@@ -5,13 +5,13 @@ import { AboutPageContent } from "@/components/sections/about-page-content";
 
 export const metadata: Metadata = {
     title: "About Us",
-    description: "Recovery Compass Wellness helps you quit smoking, improve sexual health, and build lasting habits with science-backed programs from WHO and Mayo Clinic.",
+    description: "Recovery Compass offers structured daily programs for smoking reset, sleep, energy, men's vitality, and biohacking.",
     keywords: [
         "about Recovery Compass",
         "Recovery Compass Wellness",
-        "wellness habit change app",
-        "quit smoking app",
-        "pelvic floor training app",
+        "structured wellness programs",
+        "smoking reset program",
+        "men's vitality program",
         "evidence-based wellness",
         "behavioral health app India",
     ],

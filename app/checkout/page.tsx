@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useCart } from "@/lib/context/cart-context";
 import { useUser } from "@/lib/context/user-context";
 import { useRouter } from "next/navigation";
@@ -9,38 +9,22 @@ import {
     ShieldCheck,
     Smartphone,
     Timer,
-    ArrowLeft,
     Lock,
     Zap,
     Headphones,
-    Heart,
     ChevronDown,
     ChevronUp,
-    Trash2,
     Tag,
-    CheckCircle2,
-    CreditCard,
     X,
 } from "lucide-react";
-import { FaApple, FaGooglePlay } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
 import Script from "next/script";
-import Image from "next/image";
 import { FooterVariantTwo } from "@/components/sections";
 import { NavbarSticky } from "@/components/navbar-sticky";
 import { formatPaymentDescription, formatProgramCountLabel } from "@/lib/program-commerce-policy";
 import { APP_STORE_BADGE_URL, APP_STORE_URL, PLAY_STORE_BADGE_URL, PLAY_STORE_URL } from "@/lib/constants";
 import type { LucideIcon } from "lucide-react";
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Design Tokens (Warm Luxury)
-// ─────────────────────────────────────────────────────────────────────────────
-const T = {
-    forest: "oklch(0.2475 0.0661 146.79)",
-    cream: "oklch(0.9484 0.0251 149.08)",
-};
 
 type CreateOrderResponse = {
     id: string;
@@ -127,10 +111,10 @@ const TESTIMONIALS = [
         stars: 5,
     },
     {
-        quote: "The guided audio sessions became my morning ritual. I genuinely look forward to them now - never thought I'd say that.",
+        quote: "The daily cards gave me a clear next step instead of another vague habit tracker.",
         name: "Arjun R.",
         initials: "AR",
-        label: "Completed Calm & Reset",
+        label: "Completed Daily Reset",
         stars: 5,
     },
     {
@@ -252,6 +236,56 @@ function PaymentLogos() {
     );
 }
 
+const AUDIO_PROGRAM_IDS = new Set([
+    "90-day-smoke-free-journey",
+    "21-day-deep-sleep-reset",
+]);
+
+const NINETY_DAY_PROGRAM_IDS = new Set([
+    "90-day-smoke-free-journey",
+    "radiance-journey",
+]);
+
+function getValueFeatures(items: { id: string }[]) {
+    const hasAudioProgram = items.some((item) => AUDIO_PROGRAM_IDS.has(item.id));
+    const hasNinetyDayProgram = items.some((item) => NINETY_DAY_PROGRAM_IDS.has(item.id));
+
+    return [
+        {
+            icon: Smartphone,
+            title: "App Access",
+            desc: "Use your purchased programs on iOS and Android",
+        },
+        {
+            icon: Timer,
+            title: "Daily Guided Cards",
+            desc: "Follow the routines, steps, and reflections included in your selected program",
+        },
+        hasAudioProgram
+            ? {
+                icon: Headphones,
+                title: "Guided Audio",
+                desc: "Included for selected audio-led programs",
+            }
+            : {
+                icon: Zap,
+                title: "Practice Routines",
+                desc: "Movement, breathing, or reflection steps based on the program you selected",
+            },
+        hasNinetyDayProgram
+            ? {
+                icon: Zap,
+                title: "Long-Form Timeline",
+                desc: "Your selected 90-day program is structured for sustained change",
+            }
+            : {
+                icon: Timer,
+                title: "Program Timeline",
+                desc: "Each selected program follows its own day-by-day path",
+            },
+    ];
+}
+
 function CartItem({
     item,
     onRemove,
@@ -303,10 +337,10 @@ export default function CheckoutPage() {
     const router = useRouter();
     const [isProcessing, setIsProcessing] = useState(false);
     const [promoCode, setPromoCode] = useState("");
-    const [promoApplied, setPromoApplied] = useState(false);
     const [promoError, setPromoError] = useState("");
     const [showPromo, setShowPromo] = useState(false);
     const [cartLoaded, setCartLoaded] = useState(false);
+    const valueFeatures = getValueFeatures(items);
 
     // Wait for cart to hydrate from localStorage before evaluating guards
     useEffect(() => {
@@ -476,11 +510,11 @@ export default function CheckoutPage() {
                         className="mb-10"
                     >
                         <h1 className="font-erode text-3xl md:text-4xl lg:text-[44px] font-semibold tracking-tight leading-[1.15] mb-4">
-                            Your journey{" "}
-                            <span className="text-[oklch(0.2475_0.0661_146.79)]/30 italic">truly begins</span> today.
+                            Your program{" "}
+                            <span className="text-[oklch(0.2475_0.0661_146.79)]/30 italic">begins</span> today.
                         </h1>
                         <p className="text-base md:text-[17px] opacity-55 max-w-md font-medium leading-relaxed">
-                            You&apos;re committing to a new version of yourself - guided, supported, and never alone.
+                            You&apos;re buying structured app access for the program{items.length === 1 ? "" : "s"} selected in your order.
                         </p>
                     </motion.div>
 
@@ -495,10 +529,14 @@ export default function CheckoutPage() {
                             What&apos;s included
                         </p>
                         <div className="grid sm:grid-cols-2 gap-x-8 gap-y-5">
-                            <ValueFeature icon={Smartphone} title="Mobile Sync" desc="Access everywhere on iOS and Android" />
-                            <ValueFeature icon={Headphones} title="Expert Audio" desc="New guided sessions every day" />
-                            <ValueFeature icon={Timer} title="90-Day Path" desc="Designed for long-term transformation" />
-                            <ValueFeature icon={Zap} title="Personalized" desc="Adapts to your questionnaire answers" />
+                            {valueFeatures.map((feature) => (
+                                <ValueFeature
+                                    key={feature.title}
+                                    icon={feature.icon}
+                                    title={feature.title}
+                                    desc={feature.desc}
+                                />
+                            ))}
                         </div>
                     </motion.div>
 
