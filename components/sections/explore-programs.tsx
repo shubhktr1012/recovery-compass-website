@@ -1,7 +1,8 @@
 'use client'
 
 import { motion, useInView } from "framer-motion";
-import { Check, Zap } from "lucide-react";
+import { Check, Zap, ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -107,6 +108,42 @@ export function ExploreProgramsSection() {
                             }}
                         />
                     ))}
+                </div>
+
+                {/* ── Companion Plan: Custom Diet Plan ── */}
+                <div className="mt-12 md:mt-16 rounded-[28px] bg-[oklch(0.9484_0.0251_149.08)]/60 border border-[oklch(0.2475_0.0661_146.79)]/[0.05] p-7 md:p-10">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 md:gap-10">
+                        {/* Left: Editorial copy */}
+                        <div className="flex-1 min-w-0">
+                            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2475_0.0661_146.79)]/35 mb-3">
+                                Companion Plan
+                            </p>
+                            <h3 className="font-erode text-[22px] md:text-2xl font-medium tracking-tight leading-snug text-[oklch(0.2475_0.0661_146.79)] mb-2">
+                                Need food support too?
+                            </h3>
+                            <p className="text-[14px] md:text-[15px] font-satoshi font-medium leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/55 max-w-md">
+                                A personalised PDF diet plan built around your health conditions, regional cuisine, eating habits, disliked foods, goals, and family cooking setup.
+                            </p>
+                        </div>
+
+                        {/* Right: Price + CTA */}
+                        <div className="shrink-0 flex flex-col items-start md:items-end gap-4">
+                            <div className="flex items-baseline gap-2">
+                                <span className="font-erode text-2xl font-semibold text-[oklch(0.2475_0.0661_146.79)] tabular-nums tracking-tight">₹599</span>
+                                <span className="text-[12px] font-bold text-[oklch(0.2475_0.0661_146.79)]/35">standalone</span>
+                            </div>
+                            <Link
+                                href="/diet-plan"
+                                className="group inline-flex items-center gap-2 rounded-full bg-[oklch(0.2475_0.0661_146.79)] px-6 py-3 text-[14px] font-bold text-white shadow-lg shadow-[oklch(0.2475_0.0661_146.79)]/10 transition-all hover:shadow-xl hover:shadow-[oklch(0.2475_0.0661_146.79)]/15 active:scale-[0.97]"
+                            >
+                                Get My Diet Plan
+                                <ArrowRight className="size-4 opacity-60 transition-transform group-hover:translate-x-0.5" />
+                            </Link>
+                            <p className="text-[11px] font-medium text-[oklch(0.2475_0.0661_146.79)]/35 md:text-right leading-relaxed">
+                                ₹399 when added during checkout with any program.
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Free Video Consultation CTA */}
