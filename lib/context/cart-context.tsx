@@ -12,7 +12,7 @@ export type ProgramItem = {
 
 type CartContextType = {
     items: ProgramItem[];
-    addItem: (item: ProgramItem) => void;
+    addItem: (item: ProgramItem, options?: { openCart?: boolean }) => void;
     removeItem: (id: string) => void;
     isItemInCart: (id: string) => boolean;
     clearCart: () => void;
@@ -53,9 +53,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
         localStorage.setItem("rc_cart", JSON.stringify(items));
     }, [items]);
 
-    const addItem = useCallback((item: ProgramItem) => {
+    const addItem = useCallback((item: ProgramItem, options?: { openCart?: boolean }) => {
         setItems((prev) => nextCartItems(prev, item));
-        setIsCartOpen(true); // Auto-open cart when adding an item
+        if (options?.openCart !== false) {
+            setIsCartOpen(true); // Auto-open cart when adding an item
+        }
     }, []);
 
     const removeItem = useCallback((id: string) => {

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { publicProgramStats, publicPrograms } from "@/lib/public-programs";
 import {
     ShieldCheck,
     Zap,
@@ -42,19 +43,12 @@ const PILLARS = [
     },
 ];
 
-const PROGRAMS = [
-    "6-Day Control",
-    "90-Day Smoking Reset",
-    "21-Day Deep Sleep Reset",
-    "14-Day Energy Restore",
-    "30-Day Men's Vitality Reset",
-    "90-Day Biohacking Reset",
-];
+const PROGRAMS = publicPrograms.map((program) => program.title);
 
 const STATS = [
-    { value: "6", label: "Programs" },
-    { value: "90+", label: "Guided days" },
-    { value: "2", label: "Platforms" },
+    { value: String(publicProgramStats.programCount), label: "Programs" },
+    { value: String(publicProgramStats.guidedDays), label: "Guided days" },
+    { value: String(publicProgramStats.platformCount), label: "Platforms" },
 ];
 
 export function AboutPageContent() {
@@ -102,7 +96,7 @@ export function AboutPageContent() {
                             transition={{ duration: 0.8, delay: 0.15 }}
                             className="text-lg md:text-2xl text-[oklch(0.2475_0.0661_146.79)]/70 leading-relaxed font-medium max-w-2xl mx-auto font-satoshi"
                         >
-                            Recovery Compass is a science-backed behavioural wellness app that guides you through evidence-based programs for smoking cessation, sleep, energy, men&apos;s vitality, and healthy ageing: built with compassion, not hype.
+                            Recovery Compass turns evidence-informed behaviour change into structured daily programs for smoking cessation, sleep, energy, men&apos;s vitality, and healthy ageing: practical, private, and built without hype.
                         </motion.p>
 
                         {/* Stats Row */}
@@ -181,7 +175,7 @@ export function AboutPageContent() {
                                 with thoughtful product design to create programs that are structured, compassionate, and actually work in a busy life.
                             </p>
                             <p>
-                                Today Recovery Compass serves users across iOS and Android, helping them track progress, complete daily exercises, follow reflections, and save journal entries: all in one place, all backed by science.
+                                Today Recovery Compass gives users a program timeline, time-aware cards, practical exercises, reflections, journals, and progress tracking across iOS and Android.
                             </p>
                         </motion.div>
                     </div>
@@ -227,17 +221,6 @@ export function AboutPageContent() {
                                     : "bg-white border border-[oklch(0.2475_0.0661_146.79)]/5 text-[oklch(0.2475_0.0661_146.79)] shadow-sm"
                                 }`}
                         >
-                            <div
-                                className={`flex-shrink-0 size-14 rounded-2xl flex items-center justify-center mb-8 ${i === 0
-                                        ? "bg-white/10"
-                                        : "bg-[oklch(0.2475_0.0661_146.79)]/5"
-                                    }`}
-                            >
-                                <pillar.icon
-                                    className={`size-6 ${i === 0 ? "text-white" : "text-[oklch(0.2475_0.0661_146.79)]"}`}
-                                    strokeWidth={1.5}
-                                />
-                            </div>
                             <h3
                                 className={`font-erode text-2xl md:text-3xl font-medium tracking-tighter mb-4 ${i === 0 ? "text-white" : "text-[oklch(0.2475_0.0661_146.79)]"
                                     }`}

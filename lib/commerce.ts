@@ -1,4 +1,16 @@
+import crypto from "crypto";
 import { sendOpsAlertEmail, sendWelcomeEmail } from "@/lib/mail";
+import {
+    CANONICAL_PROGRAM_SLUGS,
+    WEB_TO_DB_PROGRAM_SLUG,
+    type CanonicalProgramSlug,
+} from "@/lib/public-programs";
+import {
+    DIET_PLAN_CART_ID,
+    DIET_PLAN_CHECKOUT_SLUG,
+    isDietPlanCheckoutSlug,
+    type DietPlanCheckoutSlug,
+} from "@/lib/diet-plan-product";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 export { supabaseAdmin };
 
@@ -35,17 +47,16 @@ type FulfillmentAttemptResult = {
     reason?: string;
 };
 
+type CheckoutItemSlug = CanonicalProgramSlug | DietPlanCheckoutSlug;
+
 type CanonicalTransactionItem = TransactionItem & {
-    program_slug: CanonicalProgramSlug;
+    program_slug: CheckoutItemSlug;
 };
 
-type CanonicalProgramSlug =
-    | "six_day_reset"
-    | "ninety_day_transform"
-    | "sleep_disorder_reset"
-    | "energy_vitality"
-    | "age_reversal"
-    | "male_sexual_health";
+export type DietPlanCheckoutClaim = {
+    orderId: string;
+    claimToken: string;
+};
 
 export interface ReconcileFulfillmentOptions {
     limit?: number;
@@ -72,25 +83,31 @@ export interface FulfillmentHealthSnapshot {
     } | null;
 }
 
-export const webToDbSlug: Record<string, CanonicalProgramSlug> = {
-    "6-day-compass-reset": "six_day_reset",
-    "90-day-smoke-free-journey": "ninety_day_transform",
-    "14-day-sleep-reset": "sleep_disorder_reset",
-    "21-day-deep-sleep-reset": "sleep_disorder_reset",
-    "21-day-energy-reset": "energy_vitality",
-    "14-day-energy-restore": "energy_vitality",
-    "mens-vitality-reset-program": "male_sexual_health",
-    "radiance-journey": "age_reversal",
+export const webToDbSlug: Readonly<Record<string, CheckoutItemSlug>> = {
+    ...WEB_TO_DB_PROGRAM_SLUG,
+    [DIET_PLAN_CART_ID]: DIET_PLAN_CHECKOUT_SLUG,
 };
 
-const allowedProgramSlugs = new Set([
-    "six_day_reset",
-    "ninety_day_transform",
-    "sleep_disorder_reset",
-    "energy_vitality",
-    "age_reversal",
-    "male_sexual_health",
-] as const satisfies readonly CanonicalProgramSlug[]);
+const allowedCheckoutSlugs = new Set<CheckoutItemSlug>([
+    ...CANONICAL_PROGRAM_SLUGS,
+    DIET_PLAN_CHECKOUT_SLUG,
+]);
+
+function createClaimToken() {
+    return crypto.randomBytes(32).toString("base64url");
+}
+
+function hashClaimToken(token: string) {
+    return crypto.createHash("sha256").update(token).digest("hex");
+}
+
+function formatInr(amountInPaise: number) {
+    return `₹${(amountInPaise / 100).toFixed(2)}`;
+}
+
+function formatItemAmountInr(item: TransactionItem) {
+    return formatInr((item.price_inr || 0) * (item.quantity || 1) * 100);
+}
 
 function formatUnknownError(error: unknown) {
     if (error instanceof Error) {
@@ -183,6 +200,40 @@ export async function markTransactionPaid(params: MarkPaidParams): Promise<{
     return { alreadyProcessed: false, transactionId: existing.id };
 }
 
+export async function createDietPlanClaimForTransaction(
+    transactionId: string | null
+): Promise<DietPlanCheckoutClaim | null> {
+    if (!transactionId) {
+        return null;
+    }
+
+    const claimToken = createClaimToken();
+    const { data: order, error } = await supabaseAdmin
+        .from("diet_plan_orders")
+        .update({
+            claim_token_hash: hashClaimToken(claimToken),
+            error_message: null,
+        })
+        .eq("source", "checkout_addon")
+        .eq("source_transaction_id", transactionId)
+        .eq("status", "awaiting_questionnaire")
+        .select("id")
+        .maybeSingle();
+
+    if (error) {
+        throw new Error(`Failed to create diet plan claim token: ${error.message}`);
+    }
+
+    if (!order) {
+        return null;
+    }
+
+    return {
+        orderId: order.id,
+        claimToken,
+    };
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 3. Mark Transaction as Failed
 // ─────────────────────────────────────────────────────────────────────────────
@@ -213,14 +264,14 @@ export async function markTransactionFailed(providerOrderId: string, metadata?: 
 //    - Marks the transaction as fulfillment_failed on any error
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function canonicalizeProgramSlug(programSlug: unknown): CanonicalProgramSlug | null {
+export function canonicalizeProgramSlug(programSlug: unknown): CheckoutItemSlug | null {
     if (typeof programSlug !== "string" || !programSlug.trim()) {
         return null;
     }
 
     const normalizedSlug = webToDbSlug[programSlug.trim()] ?? programSlug.trim();
-    return allowedProgramSlugs.has(normalizedSlug as CanonicalProgramSlug)
-        ? (normalizedSlug as CanonicalProgramSlug)
+    return allowedCheckoutSlugs.has(normalizedSlug as CheckoutItemSlug)
+        ? (normalizedSlug as CheckoutItemSlug)
         : null;
 }
 
@@ -290,15 +341,19 @@ async function attemptFulfillment(transactionId: string, source: FulfillmentSour
         }
 
         // 1. Read the transaction's items to get the purchased program slugs
-        const dbSlugs = resolveProgramSlugs(txn.items);
+        const allSlugs = resolveProgramSlugs(txn.items);
+        const programSlugs = allSlugs.filter(
+            (slug): slug is CanonicalProgramSlug => !isDietPlanCheckoutSlug(slug)
+        );
+        const hasDietPlan = allSlugs.includes(DIET_PLAN_CHECKOUT_SLUG);
 
-        if (dbSlugs.length === 0) {
+        if (allSlugs.length === 0) {
             throw new Error(`Unable to resolve program slug for transaction ${transactionId}`);
         }
 
         // 2. Grant entitlements in program_access FIRST (Mission Critical)
         // This ensures the user definitely has access before we bother with notifications.
-        for (const dbSlug of dbSlugs) {
+        for (const dbSlug of programSlugs) {
             const { error: accessError } = await supabaseAdmin
                 .from("program_access")
                 .upsert({
@@ -314,27 +369,98 @@ async function attemptFulfillment(transactionId: string, source: FulfillmentSour
             }
         }
 
+        const { data: profile } = await supabaseAdmin
+            .from("profiles")
+            .select("display_name, email")
+            .eq("id", txn.user_id)
+            .maybeSingle();
+
+        // 2b. Create the paid diet-plan add-on order. The questionnaire is
+        // submitted later through an order-specific claim token.
+        if (hasDietPlan && profile?.email) {
+            // Find the price from items if available
+            const items = txn.items as TransactionItem[];
+            const dietPlanItem = items.find(item => item.program_slug === DIET_PLAN_CHECKOUT_SLUG);
+            const priceInr = dietPlanItem?.price_inr ? dietPlanItem.price_inr * 100 : 39900; // in paise
+            const providerDietOrderId = txn.provider_order_id || `txn_${transactionId}`;
+
+            const { data: existingDietPlan, error: existingDietPlanError } = await supabaseAdmin
+                .from("diet_plan_orders")
+                .select("id, status")
+                .eq("razorpay_order_id", providerDietOrderId)
+                .maybeSingle();
+
+            if (existingDietPlanError) {
+                console.error(`[Commerce] Failed to inspect diet plan order for txn ${transactionId}:`, existingDietPlanError);
+                throw existingDietPlanError;
+            }
+
+            if (existingDietPlan) {
+                if (existingDietPlan.status === "awaiting_questionnaire") {
+                    const { error: dietPlanUpdateError } = await supabaseAdmin
+                        .from("diet_plan_orders")
+                        .update({
+                            email: profile.email,
+                            name: profile.display_name || null,
+                            razorpay_payment_id: txn.provider_payment_id,
+                            razorpay_signature: txn.provider_signature,
+                            amount: priceInr,
+                            currency: "INR",
+                            source: "checkout_addon",
+                            source_transaction_id: transactionId,
+                        })
+                        .eq("id", existingDietPlan.id);
+
+                    if (dietPlanUpdateError) {
+                        console.error(`[Commerce] Failed to update diet plan order for txn ${transactionId}:`, dietPlanUpdateError);
+                        throw dietPlanUpdateError;
+                    }
+                }
+            } else {
+                const { error: dietPlanError } = await supabaseAdmin
+                    .from("diet_plan_orders")
+                    .insert({
+                        email: profile.email,
+                        name: profile.display_name || null,
+                        razorpay_order_id: providerDietOrderId,
+                        razorpay_payment_id: txn.provider_payment_id,
+                        razorpay_signature: txn.provider_signature,
+                        amount: priceInr,
+                        currency: "INR",
+                        questionnaire_data: {},
+                        status: "awaiting_questionnaire",
+                        source: "checkout_addon",
+                        source_transaction_id: transactionId,
+                    });
+
+                if (dietPlanError) {
+                    console.error(`[Commerce] Failed to write diet plan order for txn ${transactionId}:`, dietPlanError);
+                    throw dietPlanError;
+                }
+            }
+        }
+
         // 3. Dispatch Welcome Email (Best Effort)
         // Wrapped in try-catch so email failure doesn't rollback entitlements.
         try {
-            const { data: profile } = await supabaseAdmin
-                .from("profiles")
-                .select("display_name, email")
-                .eq("id", txn.user_id)
-                .maybeSingle();
-
             if (profile && profile.email) {
-                const amountInr = (txn.amount / 100).toFixed(2);
-                const amountFormatted = `₹${amountInr}`;
+                const amountFormatted = formatInr(txn.amount);
                 const items = txn.items as TransactionItem[];
                 const programName = items && items.length > 0
                     ? items.map((item) => item.title).join(", ")
                     : "Recovery Compass Curriculum";
+                const lineItems = items && items.length > 0
+                    ? items.map((item) => ({
+                        title: item.title,
+                        amountFormatted: formatItemAmountInr(item),
+                    }))
+                    : undefined;
 
                 const emailResult = await sendWelcomeEmail({
                     to: profile.email,
                     customerName: profile.display_name || "Seeker",
                     programName: programName,
+                    lineItems,
                     amountFormatted: amountFormatted,
                     orderId: txn.provider_order_id,
                     receiptDate: txn.created_at,

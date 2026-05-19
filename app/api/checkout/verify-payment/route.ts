@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-import { markTransactionPaid } from "@/lib/commerce";
+import { createDietPlanClaimForTransaction, markTransactionPaid } from "@/lib/commerce";
 
 function getErrorMessage(error: unknown) {
     if (error instanceof Error) {
@@ -40,12 +40,14 @@ export async function POST(req: NextRequest) {
             providerPaymentId: razorpay_payment_id,
             providerSignature: razorpay_signature,
         });
+        const dietPlanClaim = await createDietPlanClaimForTransaction(transactionId);
 
         return NextResponse.json({
             message: alreadyProcessed
                 ? "Payment already processed"
                 : "Payment verified successfully",
             transactionId,
+            ...(dietPlanClaim ? { dietPlan: dietPlanClaim } : {}),
         });
     } catch (error: unknown) {
         console.error("Payment Verification Error:", error);

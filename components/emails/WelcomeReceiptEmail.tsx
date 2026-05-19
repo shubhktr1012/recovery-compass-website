@@ -17,6 +17,10 @@ import * as React from "react";
 interface WelcomeReceiptEmailProps {
     customerName: string;
     programName: string;
+    lineItems?: Array<{
+        title: string;
+        amountFormatted: string;
+    }>;
     amountFormatted: string;
     orderId: string;
     receiptDate?: string;
@@ -51,6 +55,7 @@ function formatReceiptDate(date?: string) {
 export const WelcomeReceiptEmail = ({
     customerName = "Seeker",
     programName = "Recovery Compass Program",
+    lineItems,
     amountFormatted = "₹4,999.00",
     orderId = "order_placeholder",
     receiptDate,
@@ -58,6 +63,10 @@ export const WelcomeReceiptEmail = ({
     calendlyLink = "https://calendly.com/anjan-recoverycompass/30min",
 }: WelcomeReceiptEmailProps) => {
     const formattedReceiptDate = formatReceiptDate(receiptDate);
+    const receiptLineItems =
+        lineItems && lineItems.length > 0
+            ? lineItems
+            : [{ title: programName, amountFormatted }];
 
     return (
         <Html lang="en">
@@ -128,16 +137,22 @@ export const WelcomeReceiptEmail = ({
                             </Column>
                         </Row>
 
-                        <Row style={tableRow}>
-                            <Column style={colLeftItem}>
-                                <Text style={itemName}>{programName}</Text>
-                                <Text style={itemSub}>Order: {orderId}</Text>
-                                <Text style={itemSub}>Date: {formattedReceiptDate}</Text>
-                            </Column>
-                            <Column style={colRightItem}>
-                                <Text style={itemAmount}>{amountFormatted}</Text>
-                            </Column>
-                        </Row>
+                        {receiptLineItems.map((item, index) => (
+                            <Row key={`${item.title}-${index}`} style={tableRow}>
+                                <Column style={colLeftItem}>
+                                    <Text style={itemName}>{item.title}</Text>
+                                    {index === 0 ? (
+                                        <>
+                                            <Text style={itemSub}>Order: {orderId}</Text>
+                                            <Text style={itemSub}>Date: {formattedReceiptDate}</Text>
+                                        </>
+                                    ) : null}
+                                </Column>
+                                <Column style={colRightItem}>
+                                    <Text style={itemAmount}>{item.amountFormatted}</Text>
+                                </Column>
+                            </Row>
+                        ))}
 
                         <Row style={totalRow}>
                             <Column style={colLeftTotal}>

@@ -9,176 +9,16 @@ import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/lib/context/cart-context";
 import { useUser } from "@/lib/context/user-context";
+import {
+    PROGRAM_CATEGORIES,
+    categoryPrograms,
+    formatProgramPrice,
+    getProgramFacts,
+    toCartItem,
+    type PublicProgram,
+} from "@/lib/public-programs";
 
-type ProgramHighlight = {
-    label: string;
-    text: string;
-};
-
-type ProgramArticle = {
-    subtitle: string;
-    whoIsItFor: string;
-    curriculumOverview: string;
-    dailyRhythm: string;
-};
-
-export type Program = {
-    id: string;
-    tag: string;
-    title: string;
-    cardDescription: string;
-    article: ProgramArticle;
-    facts: string[];
-    metaValue: string;
-    metaLabel: string;
-    highlights: ProgramHighlight[];
-    accent: "dark" | "light";
-};
-
-export const categoryPrograms: Record<string, Program[]> = {
-    "Break Habits": [
-        {
-            id: "6-day-compass-reset",
-            tag: "Decision & Reset",
-            title: "6-Day Control",
-            cardDescription: "Break autopilot, make smoking inconvenient and conscious, and regain control through interruption instead of perfection.",
-            article: {
-                subtitle: "The bridge between intention and action.",
-                whoIsItFor: "Designed for those who feel trapped in an automatic, unconscious smoking pattern and need a structured, low-pressure way to prove to themselves that they are in control.",
-                curriculumOverview: "Six days of progressive behavioral disruption using urge delay, trigger removal, routine changes, grounding, and reflection.",
-                dailyRhythm: "Each day gives one clear interruption task, one trigger-level action, and one reflection so the habit becomes conscious before it becomes negotiable."
-            },
-            facts: ["6 days", "2 phases", "10-12 min/day"],
-            metaValue: "₹599",
-            metaLabel: "Launch price",
-            highlights: [
-                { label: "Core Rule", text: "Delay every urge by 10 minutes" },
-                { label: "Reset", text: "Throw away cigarettes, lighters, and ashtrays" },
-                { label: "Disruption", text: "Change one trigger routine to break the loop" },
-                { label: "Urge Protocol", text: "Grounding and light movement while the timer runs" },
-            ],
-            accent: "dark",
-        },
-        {
-            id: "90-day-smoke-free-journey",
-            tag: "Daily Guided Modules",
-            title: "90-Day Smoking Reset",
-            cardDescription: "A 90-day reset for pattern recognition, emotional steadiness, low-pressure journaling, and long-term smoking recovery.",
-            article: {
-                subtitle: "Rewiring the deeply ingrained neural pathways.",
-                whoIsItFor: "For those ready to commit to long-term behavioral change, seeking daily guidance to help stabilize their nervous system during the crucial 3-month rewiring phase.",
-                curriculumOverview: "Daily guided modules focused on pattern recognition, resilience building, optional low-pressure journaling, and long-term stabilization.",
-                dailyRhythm: "Each day combines a short guided practice, a pattern-awareness prompt, and a journal cue to keep the reset steady over 90 days."
-            },
-            facts: ["90 days", "4 phases", "About 7 min/day", "Audio-led"],
-            metaValue: "₹5,999",
-            metaLabel: "Launch price",
-            highlights: [
-                { label: "Daily Focus", text: "Notice patterns without trying to change everything at once" },
-                { label: "Guided Exercise", text: "Short 2–4 minute daily practice" },
-                { label: "Journal", text: "Optional prompts for reflection without pressure" },
-                { label: "Long-Term Shift", text: "Pattern-level awareness, resilience, and sustained confidence" },
-            ],
-            accent: "light",
-        },
-    ],
-    "Restore Balance": [
-        {
-            id: "21-day-deep-sleep-reset",
-            tag: "Reset the Body Clock",
-            title: "21-Day Deep Sleep Reset",
-            cardDescription: "A 21-day sleep protocol that rebuilds morning light, caffeine cut-off, breathing, downshift, and sleep-prep cues.",
-            article: {
-                subtitle: "Calming the hyperactive nervous system.",
-                whoIsItFor: "For those caught in the frustrating cycle of waking up exhausted, feeling wired all day, and lying awake at night.",
-                curriculumOverview: "Sunlight protocols, caffeine timing, physiological sigh techniques, evening downshifts, and guided sleep audio.",
-                dailyRhythm: "Each day builds sleep pressure from morning light and movement, then narrows the evening toward breathing, wind-down, and sleep preparation."
-            },
-            facts: ["21 days", "3 phases", "13-21 min/day", "Includes sleep audio"],
-            metaValue: "₹2,599",
-            metaLabel: "Launch price",
-            highlights: [
-                { label: "Morning Signal", text: "Sunlight exposure within 30 minutes of waking" },
-                { label: "Breathing", text: "Hydration plus 10 cycles of physiological sigh" },
-                { label: "Sleep Pressure", text: "Light morning movement to make the body naturally tired at night" },
-                { label: "Night Routine", text: "No caffeine after 2 PM and guided sleep meditation before bed" },
-            ],
-            accent: "dark",
-        },
-        {
-            id: "14-day-energy-restore",
-            tag: "Energy Reset Foundations",
-            title: "14-Day Energy Restore",
-            cardDescription: "A 14-day physical rhythm reset for hydration, sunlight, cold activation, movement, pressure points, and evening reflection.",
-            article: {
-                subtitle: "Reclaiming your natural momentum.",
-                whoIsItFor: "For individuals feeling chronically sluggish, dealing with mid-afternoon slumps, or struggling to find the physical motivation to accomplish daily goals.",
-                curriculumOverview: "Hydration, light exposure, cold activation, full-body movement, pressure-point work, and evening reflection.",
-                dailyRhythm: "Each day starts with water and light, adds manageable activation, and closes with recovery cues that make energy more predictable."
-            },
-            facts: ["14 days", "2 phases", "13-19 min/day", "Movement-led"],
-            metaValue: "₹1,499",
-            metaLabel: "Launch price",
-            highlights: [
-                { label: "Foundation", text: "500 ml water within 10 minutes of waking" },
-                { label: "Circadian Reset", text: "10–15 minutes of morning sunlight" },
-                { label: "Activation", text: "10 minutes of movement plus a light walk" },
-                { label: "Recovery", text: "Deep breathing before bed and a fixed sleep time" },
-            ],
-            accent: "light",
-        },
-    ],
-    "Build Vitality": [
-        {
-            id: "mens-vitality-reset-program",
-            tag: "Reset & Activation",
-            title: "30-Day Men's Vitality Reset",
-            cardDescription: "Break automatic habits, calm performance anxiety, and activate the muscles that support blood flow and sexual strength.",
-            article: {
-                subtitle: "Physical activation and psychological calm.",
-                whoIsItFor: "Men seeking to overcome performance anxiety, break negative compulsive habits, and restore physical confidence through natural regulation.",
-                curriculumOverview: "Pelvic strength work, glute bridges, squats, brisk walking, 4-2-6 breathing, and recovery-focused night routines.",
-                dailyRhythm: "Each day pairs a physical activation block with a breathing reset and recovery cue, so confidence is trained through repeatable actions."
-            },
-            facts: ["30 days", "3 phases", "12-20 min/day", "Breathing + strength"],
-            metaValue: "₹4,999",
-            metaLabel: "Launch price",
-            highlights: [
-                { label: "Urge Control", text: "Use a breathing reset when the urge appears and let it pass in 5-10 minutes" },
-                { label: "Performance Anxiety", text: "4-2-6 breathing to activate the relaxation response" },
-                { label: "Vitality Exercise", text: "Pelvic strength, glute bridges, squats, and a brisk walk" },
-                { label: "Recovery", text: "Night routine to support hormones and physical recovery" },
-            ],
-            accent: "dark",
-        },
-        {
-            id: "radiance-journey",
-            tag: "Rejuvenation Journey",
-            title: "90-Day Biohacking Reset",
-            cardDescription: "A 90-day longevity protocol for relaxed walking, facial activation, regulation practices, sleep prep, and recovery routines.",
-            article: {
-                subtitle: "Cellular renewal through rhythm and blood flow.",
-                whoIsItFor: "For those looking to move beyond superficial skincare treatments into deep, systemic lifestyle restoration for lasting vitality and appearance.",
-                curriculumOverview: "Relaxed walking, facial activation, nervous-system regulation, sleep preparation, and recovery routines.",
-                dailyRhythm: "Each day combines circulation, facial work, regulation, and sleep preparation so the protocol stays physical, visible, and repeatable."
-            },
-            facts: ["90 days", "4 phases", "25-30 min/day", "Facial + walking routines"],
-            metaValue: "₹6,999",
-            metaLabel: "Launch price",
-            highlights: [
-                { label: "Circulation", text: "20-minute relaxed walk to improve blood flow and cellular energy" },
-                { label: "Face Exercise", text: "Daily facial muscle activation to support firmness and lift" },
-                { label: "Regulation", text: "Guided calming practice to relax the nervous system and lower cortisol" },
-                { label: "Sleep Preparation", text: "Consistent sleep routine to support hormone balance and repair" },
-            ],
-            accent: "light",
-        },
-    ],
-};
-
-export const allPrograms = Object.values(categoryPrograms).flat();
-
-const categories = ["Break Habits", "Restore Balance", "Build Vitality"];
+const categories = PROGRAM_CATEGORIES;
 const CATEGORY_VISIBLE_MS = 20000;
 
 
@@ -287,7 +127,7 @@ export function ExploreProgramsSection() {
     );
 }
 
-function ProgramCard({ program, index, onDrawerStateChange }: { program: Program; index: number; onDrawerStateChange?: (isOpen: boolean) => void }) {
+function ProgramCard({ program, index, onDrawerStateChange }: { program: PublicProgram; index: number; onDrawerStateChange?: (isOpen: boolean) => void }) {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: "-50px" });
     const [hasAppeared, setHasAppeared] = useState(false);
@@ -350,7 +190,7 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
                         {program.cardDescription}
                     </p>
                     <div className="flex flex-wrap gap-2">
-                        {program.facts.map((fact) => (
+                        {getProgramFacts(program).map((fact) => (
                             <span
                                 key={fact}
                                 className={cn(
@@ -403,13 +243,13 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
                             "text-4xl font-sans font-bold",
                             isDark ? "text-white" : "text-[oklch(0.2475_0.0661_146.79)]"
                         )}>
-                            {program.metaValue}
+                            {formatProgramPrice(program)}
                         </div>
                         <p className={cn(
                             "text-xs font-satoshi",
                             isDark ? "text-white/60" : "text-[oklch(0.2475_0.0661_146.79)]/60"
                         )}>
-                            {program.metaLabel}
+                            {program.priceLabel}
                         </p>
                     </div>
                     
@@ -431,12 +271,7 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
                                     if (inCart) {
                                         removeItem(program.id);
                                     } else {
-                                        addItem({
-                                            id: program.id,
-                                            title: program.title,
-                                            price: program.metaValue === "TBD" ? null : parseInt(program.metaValue.replace(/[^0-9]/g, '')),
-                                            tag: program.tag
-                                        });
+                                        addItem(toCartItem(program));
                                     }
                                 }}
                                 className={cn(
@@ -486,9 +321,9 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
                             </SheetTitle>
                             <div className="flex items-end gap-3 mt-4">
                                 <div className="text-3xl font-sans font-bold">
-                                    {program.metaValue}
+                                    {formatProgramPrice(program)}
                                 </div>
-                                <span className="text-sm font-medium opacity-60 mb-1">{program.metaLabel}</span>
+                                <span className="text-sm font-medium opacity-60 mb-1">{program.priceLabel}</span>
                             </div>
                         </SheetHeader>
 
@@ -501,7 +336,7 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
                                     &ldquo;{program.article.subtitle}&rdquo;
                                 </p>
                                 <div className="flex flex-wrap gap-2">
-                                    {program.facts.map((fact) => (
+                                    {getProgramFacts(program).map((fact) => (
                                         <span
                                             key={fact}
                                             className="rounded-full bg-white/70 px-3 py-1 text-[11px] font-bold tracking-wide text-[oklch(0.2475_0.0661_146.79)]/60"
@@ -564,12 +399,7 @@ function ProgramCard({ program, index, onDrawerStateChange }: { program: Program
                             <Button
                                 variant="default"
                                 onClick={() => {
-                                    addItem({
-                                        id: program.id,
-                                        title: program.title,
-                                        price: program.metaValue === "TBD" ? null : parseInt(program.metaValue.replace(/[^0-9]/g, '')),
-                                        tag: program.tag
-                                    });
+                                    addItem(toCartItem(program));
                                     setIsDrawerOpen(false);
                                 }}
                                 className="w-full h-14 rounded-full font-bold text-lg border-none transition-transform hover:scale-[0.98] active:scale-95 bg-[oklch(0.2475_0.0661_146.79)] text-white shadow-xl"

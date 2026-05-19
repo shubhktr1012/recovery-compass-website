@@ -25,12 +25,17 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
     const [isOpen, setIsOpen] = React.useState(false);
     const [avatarUrl, setAvatarUrl] = React.useState<string | null>(null);
     const [uploading, setUploading] = React.useState(false);
+    const [hasMounted, setHasMounted] = React.useState(false);
     const fileInputRef = React.useRef<HTMLInputElement>(null);
 
     const lenis = useLenis();
     const pathname = usePathname();
     const { items, setIsCartOpen } = useCart();
     const { user, profile, openAuthModal, signOut } = useUser();
+
+    React.useEffect(() => {
+        setHasMounted(true);
+    }, []);
 
     React.useEffect(() => {
         if (profile?.avatar_url) {
@@ -150,77 +155,83 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                     {/* Desktop CTA & Auth */}
                     <div className="hidden md:flex items-center gap-4">
 
-                        {!user ? (
-                            <button 
-                                onClick={() => openAuthModal("signin")}
-                                className="text-sm font-bold text-[oklch(0.2475_0.0661_146.79)] hover:opacity-70 transition-all px-2"
-                            >
-                                Login
-                            </button>
-                        ) : (
-                            <div className="flex items-center gap-3 pr-2 border-r border-black/5 mr-2">
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    ref={fileInputRef}
-                                    onChange={handleAvatarUpload}
-                                    style={{ display: 'none' }}
-                                />
-                                <button
-                                    onClick={() => fileInputRef.current?.click()}
-                                    className="relative group rounded-full disabled:opacity-50 transition-opacity"
-                                    disabled={uploading}
-                                    title="Upload Profile Picture"
-                                >
-                                    <Avatar className="size-8 rounded-full border border-[oklch(0.2475_0.0661_146.79)]/10 transition-transform group-hover:scale-105">
-                                        <AvatarImage src={avatarUrl || undefined} alt="Profile Picture" className="object-cover" />
-                                        <AvatarFallback className="bg-[oklch(0.2475_0.0661_146.79)]/5 text-[oklch(0.2475_0.0661_146.79)] text-[10px] font-bold">
-                                            {user.email?.substring(0, 2).toUpperCase()}
-                                        </AvatarFallback>
-                                    </Avatar>
-                                    {uploading ? (
-                                        <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/60">
-                                            <Loader2 className="size-4 animate-spin text-white" />
-                                        </div>
-                                    ) : (
-                                        <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                                                <circle cx="12" cy="13" r="4"/>
-                                            </svg>
-                                        </div>
-                                    )}
-                                </button>
-                                <button 
-                                    onClick={() => signOut()}
-                                    className="p-2 rounded-full hover:bg-black/5 transition-colors"
-                                    title="Sign Out"
-                                >
-                                    <LogOut className="size-4 text-[oklch(0.2475_0.0661_146.79)]/60" />
-                                </button>
-                            </div>
-                        )}
-
-                        {(user || items.length > 0) && (
-                            <Button
-                                onClick={() => setIsCartOpen(true)}
-                                className={cn(
-                                    "rounded-full px-6 text-sm font-bold transition-all active:scale-[0.98] relative",
-                                    "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/95 hover:shadow-lg",
-                                    "border-none h-10 shadow-sm transition-all duration-300"
-                                )}
-                            >
-                                My Plan
-                                {items.length > 0 && (
-                                    <motion.span 
-                                        initial={{ scale: 0 }}
-                                        animate={{ scale: 1 }}
-                                        className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[oklch(0.55_0.15_25)] text-[10px] font-bold text-white shadow-md ring-2 ring-white"
+                        {hasMounted ? (
+                            <>
+                                {!user ? (
+                                    <button
+                                        onClick={() => openAuthModal("signin")}
+                                        className="text-sm font-bold text-[oklch(0.2475_0.0661_146.79)] hover:opacity-70 transition-all px-2"
                                     >
-                                        {items.length}
-                                    </motion.span>
+                                        Login
+                                    </button>
+                                ) : (
+                                    <div className="flex items-center gap-3 pr-2 border-r border-black/5 mr-2">
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            ref={fileInputRef}
+                                            onChange={handleAvatarUpload}
+                                            style={{ display: 'none' }}
+                                        />
+                                        <button
+                                            onClick={() => fileInputRef.current?.click()}
+                                            className="relative group rounded-full disabled:opacity-50 transition-opacity"
+                                            disabled={uploading}
+                                            title="Upload Profile Picture"
+                                        >
+                                            <Avatar className="size-8 rounded-full border border-[oklch(0.2475_0.0661_146.79)]/10 transition-transform group-hover:scale-105">
+                                                <AvatarImage src={avatarUrl || undefined} alt="Profile Picture" className="object-cover" />
+                                                <AvatarFallback className="bg-[oklch(0.2475_0.0661_146.79)]/5 text-[oklch(0.2475_0.0661_146.79)] text-[10px] font-bold">
+                                                    {user.email?.substring(0, 2).toUpperCase()}
+                                                </AvatarFallback>
+                                            </Avatar>
+                                            {uploading ? (
+                                                <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/60">
+                                                    <Loader2 className="size-4 animate-spin text-white" />
+                                                </div>
+                                            ) : (
+                                                <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                                                        <circle cx="12" cy="13" r="4"/>
+                                                    </svg>
+                                                </div>
+                                            )}
+                                        </button>
+                                        <button
+                                            onClick={() => signOut()}
+                                            className="p-2 rounded-full hover:bg-black/5 transition-colors"
+                                            title="Sign Out"
+                                        >
+                                            <LogOut className="size-4 text-[oklch(0.2475_0.0661_146.79)]/60" />
+                                        </button>
+                                    </div>
                                 )}
-                            </Button>
+
+                                {(user || items.length > 0) && (
+                                    <Button
+                                        onClick={() => setIsCartOpen(true)}
+                                        className={cn(
+                                            "rounded-full px-6 text-sm font-bold transition-all active:scale-[0.98] relative",
+                                            "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/95 hover:shadow-lg",
+                                            "border-none h-10 shadow-sm transition-all duration-300"
+                                        )}
+                                    >
+                                        My Plan
+                                        {items.length > 0 && (
+                                            <motion.span
+                                                initial={{ scale: 0 }}
+                                                animate={{ scale: 1 }}
+                                                className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[oklch(0.55_0.15_25)] text-[10px] font-bold text-white shadow-md ring-2 ring-white"
+                                            >
+                                                {items.length}
+                                            </motion.span>
+                                        )}
+                                    </Button>
+                                )}
+                            </>
+                        ) : (
+                            <div className="h-10 w-[154px]" aria-hidden="true" />
                         )}
                     </div>
 

@@ -2,13 +2,19 @@ import { supabaseAdmin } from "@/lib/commerce";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Printer, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import React from "react";
 
 import { Metadata } from "next";
 
 // Client component for the print button
 import { PrintButton } from "./print-button";
+
+type ReceiptItem = {
+    title?: string;
+    quantity?: number;
+    price_inr?: number;
+};
 
 export const metadata: Metadata = {
     title: "Payment Receipt | Recovery Compass",
@@ -42,7 +48,7 @@ export default async function ReceiptPage(props: { params: Promise<{ orderId: st
     const amountFormatted = `₹${amountInr}`;
     
     // items is a JSONB array, fallback to default if missing
-    const items = Array.isArray(txn.items) ? txn.items : [];
+    const items: ReceiptItem[] = Array.isArray(txn.items) ? txn.items : [];
     
     // Format date
     const datePaid = txn.created_at ? new Date(txn.created_at).toLocaleDateString('en-IN', {
@@ -101,7 +107,7 @@ export default async function ReceiptPage(props: { params: Promise<{ orderId: st
 
                     <div className="py-2">
                         {items.length > 0 ? (
-                            items.map((item: any, i: number) => (
+                            items.map((item, i) => (
                                 <div key={i} className="grid grid-cols-12 gap-4 py-4 border-b border-neutral-100">
                                     <div className="col-span-8 sm:col-span-9">
                                         <p className="font-medium text-neutral-900">{item.title || "Program Access"}</p>
