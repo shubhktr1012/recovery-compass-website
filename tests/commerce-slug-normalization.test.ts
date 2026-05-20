@@ -18,10 +18,12 @@ describe("commerce slug normalization", () => {
     expect(canonicalizeProgramSlug("21-day-energy-reset")).toBe("energy_vitality");
     expect(canonicalizeProgramSlug("21-day-deep-sleep-reset")).toBe("sleep_disorder_reset");
     expect(canonicalizeProgramSlug("14-day-energy-restore")).toBe("energy_vitality");
+    expect(canonicalizeProgramSlug("custom-diet-plan")).toBe("custom_diet_plan");
   });
 
   it("preserves canonical slugs and drops unknown slugs", () => {
     expect(canonicalizeProgramSlug("male_sexual_health")).toBe("male_sexual_health");
+    expect(canonicalizeProgramSlug("custom_diet_plan")).toBe("custom_diet_plan");
     expect(canonicalizeProgramSlug("unknown-program")).toBeNull();
   });
 
@@ -33,11 +35,18 @@ describe("commerce slug normalization", () => {
           title: "21-Day Deep Sleep Reset",
           price_inr: 2599,
           quantity: 1,
+          queue_rank: 2,
         },
         {
           program_slug: "energy_vitality",
           title: "14-Day Energy Restore",
           price_inr: 1499,
+          quantity: 1,
+        },
+        {
+          program_slug: "custom-diet-plan",
+          title: "Custom Diet Plan",
+          price_inr: 1299,
           quantity: 1,
         },
         {
@@ -53,11 +62,18 @@ describe("commerce slug normalization", () => {
         title: "21-Day Deep Sleep Reset",
         price_inr: 2599,
         quantity: 1,
+        queue_rank: 2,
       },
       {
         program_slug: "energy_vitality",
         title: "14-Day Energy Restore",
         price_inr: 1499,
+        quantity: 1,
+      },
+      {
+        program_slug: "custom_diet_plan",
+        title: "Custom Diet Plan",
+        price_inr: 1299,
         quantity: 1,
       },
     ]);

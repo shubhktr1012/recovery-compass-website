@@ -57,7 +57,6 @@ async function renderReceiptHtml(receipt) {
     orderId: receipt.orderId,
     receiptDate: receipt.receiptDate,
     whatsappLink: "https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0",
-    calendlyLink: "https://calendly.com/anjan-recoverycompass/30min",
   }), {
     pretty: true,
   });

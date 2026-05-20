@@ -63,6 +63,24 @@ Purpose:
 - local checkout and auth testing
 - email flow testing against safe recipients or staging domains
 
+Local website/app QA should use the app Supabase stack as the integration
+database. Point `web/.env.local` at the app local Supabase API
+(`http://127.0.0.1:54321` for Mac/simulator, or the Mac LAN IP for physical
+devices). The app migration track includes an integration migration that mirrors
+website-owned commerce/contact tables into the shared local database:
+
+- `transactions`
+- `diet_plan_orders`
+- `enquiries`
+- `testimonials`
+- `outbound_email_deliveries`
+- `waitlist`
+
+Do not apply the `web/supabase/migrations` folder directly onto the app local
+database. The web and app migration tracks have independent histories and can
+reuse timestamps, so local integration schema changes should be ported into the
+app migration track with fresh app-side migration versions.
+
 ### Staging
 
 Purpose:

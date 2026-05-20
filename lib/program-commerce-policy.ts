@@ -1,12 +1,15 @@
+import { canonicalizePublicProgramId } from "@/lib/public-programs";
+import { DIET_PLAN_CART_ID, isDietPlanCartId } from "@/lib/diet-plan-product";
+
 export const MAX_CART_ITEMS = 6;
 
-export const WEBSITE_PROGRAM_ID_ALIASES: Record<string, string> = {
-    "14-day-sleep-reset": "21-day-deep-sleep-reset",
-    "21-day-energy-reset": "14-day-energy-restore",
-};
-
 export function canonicalizeWebsiteProgramId(id: string): string {
-    return WEBSITE_PROGRAM_ID_ALIASES[id] ?? id;
+    const canonicalProgramId = canonicalizePublicProgramId(id);
+    if (canonicalProgramId) {
+        return canonicalProgramId;
+    }
+
+    return isDietPlanCartId(id) ? DIET_PLAN_CART_ID : id;
 }
 
 export type CartLikeItem = {

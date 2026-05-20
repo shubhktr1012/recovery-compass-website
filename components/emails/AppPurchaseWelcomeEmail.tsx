@@ -6,18 +6,21 @@ import {
     Hr,
     Html,
     Img,
+    Link,
     Preview,
+    Row,
+    Column,
     Section,
     Text,
 } from "@react-email/components";
 import * as React from "react";
+import { APP_STORE_BADGE_URL, APP_STORE_URL, PLAY_STORE_BADGE_URL, PLAY_STORE_URL } from "@/lib/constants";
 
 interface AppPurchaseWelcomeEmailProps {
     customerName: string;
     programName: string;
     store?: string | null;
     whatsappLink: string;
-    calendlyLink: string;
 }
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://recoverycompass.co";
@@ -44,7 +47,6 @@ export default function AppPurchaseWelcomeEmail({
     programName = "Recovery Compass Program",
     store,
     whatsappLink,
-    calendlyLink,
 }: AppPurchaseWelcomeEmailProps) {
     const storeLabel = formatStoreLabel(store);
 
@@ -75,24 +77,43 @@ export default function AppPurchaseWelcomeEmail({
 
                     <Section style={card}>
                         <Text style={eyebrow}>Next Step</Text>
-                        <Text style={cardTitle}>Open the app and start your program</Text>
+                        <Text style={cardTitle}>Download the app and start your program</Text>
                         <Text style={cardText}>
                             Your access is already attached to this account. If you own multiple programs, choose the one
                             you want active inside the app.
                         </Text>
+                        <Row>
+                            <Column style={badgeCol}>
+                                <Link href={APP_STORE_URL}>
+                                    <Img
+                                        src={APP_STORE_BADGE_URL}
+                                        width="132"
+                                        alt="Download on the App Store"
+                                        style={storeBadge}
+                                    />
+                                </Link>
+                            </Column>
+                            <Column style={badgeCol}>
+                                <Link href={PLAY_STORE_URL}>
+                                    <Img
+                                        src={PLAY_STORE_BADGE_URL}
+                                        width="148"
+                                        alt="Get it on Google Play"
+                                        style={storeBadge}
+                                    />
+                                </Link>
+                            </Column>
+                        </Row>
                     </Section>
 
                     <Section style={supportCard}>
                         <Text style={eyebrow}>Included Support</Text>
-                        <Text style={cardTitle}>Join the community and book your strategy call</Text>
+                        <Text style={cardTitle}>Join the community</Text>
                         <Text style={cardText}>
-                            Stay close to the team, ask questions, and get your plan aligned early.
+                            Stay close to the team, ask questions, and move with other members inside the private WhatsApp community.
                         </Text>
                         <Button href={whatsappLink} style={primaryButton}>
                             Open WhatsApp Community
-                        </Button>
-                        <Button href={calendlyLink} style={secondaryButton}>
-                            Book Strategy Call
                         </Button>
                     </Section>
 
@@ -240,17 +261,15 @@ const primaryButton = {
     marginRight: "12px",
 };
 
-const secondaryButton = {
-    backgroundColor: forest,
-    borderRadius: "999px",
-    color: "#ffffff",
-    display: "inline-block",
-    fontSize: "14px",
-    fontWeight: "700",
-    padding: "12px 18px",
-    textDecoration: "none",
-    fontFamily: ff,
-    marginTop: "12px",
+const badgeCol = {
+    width: "50%",
+    verticalAlign: "middle" as const,
+    paddingRight: "10px",
+};
+
+const storeBadge = {
+    display: "block",
+    border: "0",
 };
 
 const hr = {

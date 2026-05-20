@@ -1,14 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { useCart } from "@/lib/context/cart-context";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Check, Dumbbell, Moon, Plus, Sparkles, Timer, Wind, XIcon, Zap } from "lucide-react";
+import { Check, ChevronDown, Dumbbell, Moon, Plus, Sparkles, Timer, Wind, XIcon, Zap } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useUser } from "@/lib/context/user-context";
 import { useRouter } from "next/navigation";
-import { allPrograms } from "@/components/sections/explore-programs";
 import { MAX_CART_ITEMS } from "@/lib/program-commerce-policy";
+import { allPrograms, formatProgramPrice, toCartItem } from "@/lib/public-programs";
+import { cn } from "@/lib/utils";
 
 // Stable icon map — defined outside the component so it's never re-created on render
 const PROGRAM_ICON_MAP: Record<string, LucideIcon> = {
@@ -24,6 +26,7 @@ export function MyPlanDrawer() {
     const { items, isCartOpen, setIsCartOpen, removeItem, addItem, isItemInCart, cartTotal } = useCart();
     const { user, openAuthModal, ownedPrograms } = useUser();
     const router = useRouter();
+    const [checkoutPlanExpanded, setCheckoutPlanExpanded] = useState(false);
 
     const ownedProgramDetails = ownedPrograms
         .map((programId) => allPrograms.find((p) => p.id === programId))
@@ -36,6 +39,10 @@ export function MyPlanDrawer() {
 
     // Don't show quick-add at all if cart is already at max capacity
     const cartIsFull = items.length >= MAX_CART_ITEMS;
+    const hasVisibleQuickAddPrograms = quickAddPrograms.length > 0 && !cartIsFull;
+    const shouldCollapseCheckoutPlan = items.length > 0 && hasVisibleQuickAddPrograms;
+    const showCheckoutItems = items.length > 0 && (!shouldCollapseCheckoutPlan || checkoutPlanExpanded);
+    const checkoutSummaryLabel = `${items.length} selected · ₹${cartTotal.toLocaleString()}`;
 
     const handleFinalize = () => {
         setIsCartOpen(false);
@@ -49,180 +56,221 @@ export function MyPlanDrawer() {
     };
 
     const handleQuickAdd = (program: (typeof allPrograms)[number]) => {
-        addItem({
-            id: program.id,
-            title: program.title,
-            price: program.metaValue === "TBD" ? null : parseInt(program.metaValue.replace(/[^0-9]/g, "")),
-            tag: program.tag,
-        });
+        addItem(toCartItem(program));
     };
 
     return (
         <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
-            <SheetContent side="right" className="w-full sm:max-w-md bg-[oklch(0.9484_0.0251_149.08)] text-[oklch(0.2475_0.0661_146.79)] border-l border-[oklch(0.2475_0.0661_146.79)]/10 p-0 flex flex-col h-full max-h-screen overflow-hidden shadow-2xl">
-                <SheetHeader className="p-6 border-b border-[oklch(0.2475_0.0661_146.79)]/10 bg-[oklch(0.9484_0.0251_149.08)] backdrop-blur-md">
-                    <SheetTitle className="font-erode text-2xl text-[oklch(0.2475_0.0661_146.79)] tracking-tight">
-                        My Plan
-                    </SheetTitle>
+            <SheetContent side="right" className="w-full sm:max-w-md bg-white text-[oklch(0.2475_0.0661_146.79)] border-l border-[oklch(0.2475_0.0661_146.79)]/[0.06] p-0 flex flex-col h-full max-h-screen overflow-hidden shadow-2xl">
+                {/* ── Header ── */}
+                <SheetHeader className="px-6 pt-7 pb-5">
+                    <div className="flex items-center justify-between">
+                        <SheetTitle className="font-erode text-[22px] font-medium text-[oklch(0.2475_0.0661_146.79)] tracking-tight">
+                            My Plan
+                        </SheetTitle>
+                        {items.length > 0 && (
+                            <span className="inline-flex items-center justify-center size-7 rounded-full bg-[oklch(0.2475_0.0661_146.79)] text-white text-[11px] font-bold tabular-nums">
+                                {items.length}
+                            </span>
+                        )}
+                    </div>
                 </SheetHeader>
 
-                <div className="flex-1 overflow-y-auto p-6 pb-36 overscroll-contain" data-lenis-prevent="true">
-                    <div className="space-y-8">
+                <div className="flex-1 overflow-y-auto px-6 pb-44 overscroll-contain" data-lenis-prevent="true">
 
-                        {/* ── Owned / Unlocked Library ── */}
-                        {ownedProgramDetails.length > 0 && (
-                            <section className="space-y-4">
-                                <div>
-                                    <p className="font-satoshi text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2475_0.0661_146.79)]/45">
-                                        Unlocked Library
-                                    </p>
-                                    <p className="mt-1 font-satoshi text-sm text-[oklch(0.2475_0.0661_146.79)]/60">
-                                        Programs already available in your account.
-                                    </p>
-                                </div>
-                                <div className="space-y-3">
-                                    {ownedProgramDetails.map((program) => (
+                    {/* ── Owned / Unlocked Library ── */}
+                    {ownedProgramDetails.length > 0 && (
+                        <section className="mb-8">
+                            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2475_0.0661_146.79)]/35 mb-3">
+                                Unlocked
+                            </p>
+                            <div className="space-y-2">
+                                {ownedProgramDetails.map((program) => {
+                                    const Icon = PROGRAM_ICON_MAP[program.id];
+                                    return (
                                         <div
                                             key={program.id}
-                                            className="rounded-2xl border border-[oklch(0.2475_0.0661_146.79)]/10 bg-white/55 p-4"
+                                            className="flex items-center gap-3 py-2.5"
                                         >
-                                            <div className="flex items-start justify-between gap-4">
-                                                <div className="space-y-1">
-                                                    <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-[oklch(0.2475_0.0661_146.79)]/45">
-                                                        {program.tag}
-                                                    </p>
-                                                    <h4 className="font-erode text-lg font-medium leading-tight">
-                                                        {program.title}
-                                                    </h4>
-                                                </div>
-                                                <div className="flex shrink-0 items-center gap-1 rounded-full bg-[oklch(0.2475_0.0661_146.79)]/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[oklch(0.2475_0.0661_146.79)]/70">
-                                                    <Check className="size-3" />
-                                                    Owned
-                                                </div>
+                                            <div className="shrink-0 size-8 rounded-xl bg-[oklch(0.2475_0.0661_146.79)]/[0.04] flex items-center justify-center">
+                                                {Icon && <Icon className="size-4 text-[oklch(0.2475_0.0661_146.79)]/40" />}
                                             </div>
+                                            <div className="flex-1 min-w-0">
+                                                <p className="font-bold text-[13px] text-[oklch(0.2475_0.0661_146.79)] truncate leading-tight">{program.title}</p>
+                                            </div>
+                                            <span className="shrink-0 flex items-center gap-1 text-[10px] font-bold text-[oklch(0.2475_0.0661_146.79)]/35 uppercase tracking-widest">
+                                                <Check className="size-3" />
+                                                Owned
+                                            </span>
                                         </div>
-                                    ))}
-                                </div>
-                            </section>
-                        )}
+                                    );
+                                })}
+                            </div>
+                        </section>
+                    )}
 
-                        {/* ── Checkout Plan ── */}
-                        <section className="space-y-4">
-                            <div>
-                                <p className="font-satoshi text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2475_0.0661_146.79)]/45">
-                                    Checkout Plan
+                    {/* ── Checkout Items ── */}
+                    <section className="mb-8">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2475_0.0661_146.79)]/35 mb-3">
+                            {items.length > 0 ? "Your Selection" : "Your Plan"}
+                        </p>
+
+                        {items.length === 0 ? (
+                            <div className="rounded-2xl border border-dashed border-[oklch(0.2475_0.0661_146.79)]/10 py-10 px-6 text-center">
+                                <p className="font-erode text-[17px] font-medium text-[oklch(0.2475_0.0661_146.79)]/70">
+                                    No programs selected yet
                                 </p>
-                                <p className="mt-1 font-satoshi text-sm text-[oklch(0.2475_0.0661_146.79)]/60">
-                                    New programs selected for purchase.
+                                <p className="mt-1.5 text-[12px] font-medium text-[oklch(0.2475_0.0661_146.79)]/40 max-w-[200px] mx-auto leading-relaxed">
+                                    Browse below and tap + to add a program to your plan.
                                 </p>
                             </div>
-
-                            {items.length === 0 ? (
-                                <div className="rounded-2xl border border-dashed border-[oklch(0.2475_0.0661_146.79)]/15 p-5 text-center">
-                                    <p className="font-satoshi text-lg">Your checkout plan is empty.</p>
-                                    <p className="mt-1 font-satoshi text-sm text-[oklch(0.2475_0.0661_146.79)]/60">
-                                        Add a program below to get started.
-                                    </p>
-                                </div>
-                            ) : (
-                                <div className="space-y-6">
-                                    {items.map((item) => (
-                                        <div key={item.id} className="flex justify-between items-start border-b border-[oklch(0.2475_0.0661_146.79)]/10 pb-4">
-                                            <div className="space-y-1 pr-4">
-                                                <div className="text-[10px] font-bold tracking-[0.2em] uppercase opacity-60">
-                                                    {item.tag}
-                                                </div>
-                                                <h4 className="font-erode text-lg font-medium">{item.title}</h4>
-                                                <div className="font-satoshi font-bold mt-2">
-                                                    {item.price ? `₹${item.price.toLocaleString()}` : "TBD"}
-                                                </div>
+                        ) : (
+                            <div className="rounded-2xl bg-[oklch(0.9484_0.0251_149.08)]/40 border border-[oklch(0.2475_0.0661_146.79)]/[0.04]">
+                                {/* Collapsed summary toggle */}
+                                {shouldCollapseCheckoutPlan && (
+                                    <button
+                                        type="button"
+                                        onClick={() => setCheckoutPlanExpanded((v) => !v)}
+                                        className="flex w-full items-center justify-between px-4 py-3.5 transition-colors hover:bg-[oklch(0.2475_0.0661_146.79)]/[0.02]"
+                                        aria-expanded={checkoutPlanExpanded}
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <div className="flex -space-x-1.5">
+                                                {items.slice(0, 3).map((item) => {
+                                                    const Icon = PROGRAM_ICON_MAP[item.id];
+                                                    return (
+                                                        <div key={item.id} className="size-6 rounded-lg bg-[oklch(0.2475_0.0661_146.79)] text-white flex items-center justify-center ring-2 ring-white">
+                                                            {Icon && <Icon className="size-3" />}
+                                                        </div>
+                                                    );
+                                                })}
                                             </div>
-                                            <button
-                                                onClick={() => removeItem(item.id)}
-                                                className="p-2 opacity-50 hover:opacity-100 transition-opacity rounded-full hover:bg-[oklch(0.2475_0.0661_146.79)]/5"
-                                                aria-label={`Remove ${item.title}`}
+                                            <span className="text-[13px] font-bold text-[oklch(0.2475_0.0661_146.79)]/70">
+                                                {checkoutSummaryLabel}
+                                            </span>
+                                        </div>
+                                        <ChevronDown
+                                            className={cn(
+                                                "size-4 shrink-0 text-[oklch(0.2475_0.0661_146.79)]/35 transition-transform duration-200",
+                                                checkoutPlanExpanded && "rotate-180"
+                                            )}
+                                        />
+                                    </button>
+                                )}
+
+                                {/* Expanded item list */}
+                                {showCheckoutItems && (
+                                    <div className={cn(
+                                        "px-4 pb-3",
+                                        shouldCollapseCheckoutPlan && "pt-1 border-t border-[oklch(0.2475_0.0661_146.79)]/[0.04]"
+                                    )}>
+                                        {items.map((item, i) => {
+                                            const Icon = PROGRAM_ICON_MAP[item.id];
+                                            return (
+                                                <div
+                                                    key={item.id}
+                                                    className={cn(
+                                                        "group flex items-center gap-3 py-3.5",
+                                                        i < items.length - 1 && "border-b border-[oklch(0.2475_0.0661_146.79)]/[0.05]"
+                                                    )}
+                                                >
+                                                    <div className={cn(
+                                                        "shrink-0 size-9 rounded-xl flex items-center justify-center",
+                                                        "bg-[oklch(0.2475_0.0661_146.79)] text-white"
+                                                    )}>
+                                                        {Icon && <Icon className="size-4" />}
+                                                    </div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <p className="font-bold text-[14px] text-[oklch(0.2475_0.0661_146.79)] truncate leading-tight">
+                                                            {item.title}
+                                                        </p>
+                                                        <p className="text-[12px] font-bold text-[oklch(0.2475_0.0661_146.79)]/45 mt-0.5 tabular-nums">
+                                                            {item.price ? `₹${item.price.toLocaleString()}` : "TBD"}
+                                                        </p>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => removeItem(item.id)}
+                                                        className="shrink-0 size-7 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 focus:opacity-100 transition-all hover:bg-red-50 text-[oklch(0.2475_0.0661_146.79)]/30 hover:text-red-500"
+                                                        aria-label={`Remove ${item.title}`}
+                                                    >
+                                                        <XIcon className="size-3.5" />
+                                                    </button>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </section>
+
+                    {/* ── Quick Add ── */}
+                    {hasVisibleQuickAddPrograms && (
+                        <section>
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="h-px flex-1 bg-[oklch(0.2475_0.0661_146.79)]/[0.06]" />
+                                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2475_0.0661_146.79)]/30 whitespace-nowrap">
+                                    Also Add
+                                </p>
+                                <div className="h-px flex-1 bg-[oklch(0.2475_0.0661_146.79)]/[0.06]" />
+                            </div>
+
+                            <div className="space-y-1.5">
+                                {quickAddPrograms.map((program) => {
+                                    const Icon = PROGRAM_ICON_MAP[program.id];
+                                    return (
+                                        <div
+                                            key={program.id}
+                                            className="group flex items-center gap-3 rounded-2xl p-3 transition-colors hover:bg-[oklch(0.9484_0.0251_149.08)]/60"
+                                        >
+                                            <div
+                                                className={cn(
+                                                    "shrink-0 size-9 rounded-xl flex items-center justify-center",
+                                                    program.accent === "dark"
+                                                        ? "bg-[oklch(0.2475_0.0661_146.79)] text-white"
+                                                        : "bg-[oklch(0.2475_0.0661_146.79)]/[0.06] text-[oklch(0.2475_0.0661_146.79)]"
+                                                )}
                                             >
-                                                <XIcon className="w-4 h-4" />
+                                                {Icon && <Icon className="size-4" />}
+                                            </div>
+
+                                            <div className="flex-1 min-w-0">
+                                                <p className="font-bold text-[13px] text-[oklch(0.2475_0.0661_146.79)] truncate leading-tight">
+                                                    {program.title}
+                                                </p>
+                                                <p className="text-[11px] font-bold text-[oklch(0.2475_0.0661_146.79)]/40 mt-0.5 tabular-nums">
+                                                    {formatProgramPrice(program)}
+                                                </p>
+                                            </div>
+
+                                            <button
+                                                onClick={() => handleQuickAdd(program)}
+                                                aria-label={`Add ${program.title} to plan`}
+                                                className="shrink-0 size-8 rounded-full bg-[oklch(0.2475_0.0661_146.79)]/[0.05] text-[oklch(0.2475_0.0661_146.79)] flex items-center justify-center group-hover:bg-[oklch(0.2475_0.0661_146.79)] group-hover:text-white active:scale-90 transition-all duration-150"
+                                            >
+                                                <Plus className="size-4" strokeWidth={2.5} />
                                             </button>
                                         </div>
-                                    ))}
-                                </div>
-                            )}
+                                    );
+                                })}
+                            </div>
                         </section>
+                    )}
 
-                        {/* ── Quick Add ── only shown when there are addable programs and cart isn't full */}
-                        {quickAddPrograms.length > 0 && !cartIsFull && (
-                            <section className="space-y-4">
-                                <div className="flex items-center gap-3">
-                                    <div className="h-px flex-1 bg-[oklch(0.2475_0.0661_146.79)]/10" />
-                                    <p className="font-satoshi text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.2475_0.0661_146.79)]/40 whitespace-nowrap">
-                                        Also Add
-                                    </p>
-                                    <div className="h-px flex-1 bg-[oklch(0.2475_0.0661_146.79)]/10" />
-                                </div>
-
-                                <div className="space-y-2.5">
-                                    {quickAddPrograms.map((program) => {
-                                        const Icon = PROGRAM_ICON_MAP[program.id];
-                                        return (
-                                            <div
-                                                key={program.id}
-                                                className="group flex items-center gap-3 rounded-2xl border border-[oklch(0.2475_0.0661_146.79)]/8 bg-white/40 hover:bg-white/70 transition-all duration-200 p-3"
-                                            >
-                                                {/* Program icon */}
-                                                <div
-                                                    className={`shrink-0 size-8 rounded-xl flex items-center justify-center ${
-                                                        program.accent === "dark"
-                                                            ? "bg-[oklch(0.2475_0.0661_146.79)] text-white"
-                                                            : "bg-[oklch(0.2475_0.0661_146.79)]/10 text-[oklch(0.2475_0.0661_146.79)]"
-                                                    }`}
-                                                >
-                                                    {Icon && <Icon className="size-4" />}
-                                                </div>
-
-                                                {/* Program info */}
-                                                <div className="flex-1 min-w-0">
-                                                    <p className="text-[9px] font-bold tracking-[0.2em] uppercase text-[oklch(0.2475_0.0661_146.79)]/40 truncate">
-                                                        {program.tag}
-                                                    </p>
-                                                    <p className="font-erode text-sm font-medium leading-tight text-[oklch(0.2475_0.0661_146.79)] truncate">
-                                                        {program.title}
-                                                    </p>
-                                                    <p className="font-satoshi text-xs font-bold text-[oklch(0.2475_0.0661_146.79)]/60 mt-0.5">
-                                                        {program.metaValue}
-                                                    </p>
-                                                </div>
-
-                                                {/* Quick add button */}
-                                                <button
-                                                    onClick={() => handleQuickAdd(program)}
-                                                    aria-label={`Add ${program.title} to plan`}
-                                                    className="shrink-0 size-8 rounded-full bg-[oklch(0.2475_0.0661_146.79)] text-white flex items-center justify-center opacity-70 group-hover:opacity-100 hover:scale-110 active:scale-95 transition-all duration-150 shadow-sm"
-                                                >
-                                                    <Plus className="size-4" />
-                                                </button>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </section>
-                        )}
-
-                    </div>
                 </div>
 
-                {/* ── Sticky Footer: Total + Finalize ── */}
+                {/* ── Sticky Footer ── */}
                 {items.length > 0 && (
-                    <div className="absolute flex flex-col items-center justify-center bottom-0 w-full p-6 bg-gradient-to-t from-[oklch(0.9484_0.0251_149.08)] via-[oklch(0.9484_0.0251_149.08)] to-transparent pt-12 border-t border-[oklch(0.2475_0.0661_146.79)]/5">
-                        <div className="flex justify-between items-center w-full mb-4 px-2">
-                            <span className="font-satoshi font-semibold">Total Investment</span>
-                            <span className="font-satoshi font-bold text-xl">₹{cartTotal.toLocaleString()}</span>
+                    <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-[oklch(0.2475_0.0661_146.79)]/[0.06] p-6 shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
+                        <div className="flex justify-between items-baseline mb-5 px-0.5">
+                            <span className="text-[13px] font-bold text-[oklch(0.2475_0.0661_146.79)]/50 uppercase tracking-widest">Total</span>
+                            <span className="font-erode font-semibold text-2xl tabular-nums text-[oklch(0.2475_0.0661_146.79)] tracking-tight">₹{cartTotal.toLocaleString()}</span>
                         </div>
                         <Button
-                            className="w-full bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 h-14 rounded-full font-bold text-lg shadow-xl hover:scale-[0.98] transition-transform"
+                            className="w-full bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 h-[52px] rounded-2xl font-bold text-[15px] shadow-lg shadow-[oklch(0.2475_0.0661_146.79)]/10 active:scale-[0.98] transition-all"
                             onClick={handleFinalize}
                         >
-                            Finalize Plan
+                            Continue to Checkout
                         </Button>
                     </div>
                 )}

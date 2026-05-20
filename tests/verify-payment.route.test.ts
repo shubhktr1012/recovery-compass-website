@@ -3,10 +3,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   markTransactionPaid: vi.fn(),
+  createDietPlanClaimForTransaction: vi.fn(),
 }));
 
 vi.mock("@/lib/commerce", () => ({
   markTransactionPaid: mocks.markTransactionPaid,
+  createDietPlanClaimForTransaction: mocks.createDietPlanClaimForTransaction,
 }));
 
 import { POST } from "@/app/api/checkout/verify-payment/route";
@@ -22,6 +24,8 @@ describe("POST /api/checkout/verify-payment", () => {
   beforeEach(() => {
     process.env.RAZORPAY_KEY_SECRET = "test_secret";
     mocks.markTransactionPaid.mockReset();
+    mocks.createDietPlanClaimForTransaction.mockReset();
+    mocks.createDietPlanClaimForTransaction.mockResolvedValue(null);
   });
 
   it("rejects invalid payment signatures", async () => {
