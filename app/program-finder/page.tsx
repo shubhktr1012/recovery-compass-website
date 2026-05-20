@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { Suspense, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -192,6 +192,14 @@ function OptionButton({
 }
 
 export default function ProgramFinderPage() {
+  return (
+    <Suspense fallback={null}>
+      <ProgramFinderContent />
+    </Suspense>
+  );
+}
+
+function ProgramFinderContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const returnTo = searchParams.get("returnTo") || "/checkout";
