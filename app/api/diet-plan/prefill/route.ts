@@ -1,15 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { CANONICAL_PROGRAM_DISPLAY_NAMES } from "@/lib/public-programs";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
-
-const DB_PROGRAM_TO_DIET_FORM_VALUE: Record<string, string> = {
-    six_day_reset: "6-Day Control",
-    ninety_day_transform: "90-Day Master",
-    sleep_disorder_reset: "Sleep Reset",
-    energy_vitality: "Energy Vitality",
-    age_reversal: "Female Age Reversal",
-    male_sexual_health: "Men's Vitality",
-};
 
 function getErrorMessage(error: unknown) {
     if (error instanceof Error) {
@@ -31,7 +23,9 @@ function mapProgramSlugToDietFormValue(slug: unknown) {
         return null;
     }
 
-    return DB_PROGRAM_TO_DIET_FORM_VALUE[slug] ?? null;
+    return CANONICAL_PROGRAM_DISPLAY_NAMES[
+        slug as keyof typeof CANONICAL_PROGRAM_DISPLAY_NAMES
+    ] ?? null;
 }
 
 function extractTransactionProgramValues(items: unknown) {

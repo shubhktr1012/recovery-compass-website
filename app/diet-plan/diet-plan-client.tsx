@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { NavbarSticky } from "@/components/navbar-sticky";
 import { FooterVariantTwo } from "@/components/sections";
 import { DIET_PLAN_STANDALONE_PRICE_INR } from "@/lib/diet-plan-product";
+import { publicPrograms } from "@/lib/public-programs";
 import { cn } from "@/lib/utils";
 
 type QuestionnaireData = {
@@ -154,6 +155,14 @@ const LOCAL_DRAFT_VERSION = 1;
 const LOCAL_STANDALONE_DRAFT_KEY = "rc:diet-plan-draft:standalone";
 const DRAFT_SAVE_DELAY_MS = 700;
 const QUESTIONNAIRE_KEYS = Object.keys(INITIAL_DATA) as Array<keyof QuestionnaireData>;
+const PROGRAM_OPTION_VALUES = publicPrograms.map((program) => program.title);
+const LEGACY_PROGRAM_VALUE_BY_NAME: Record<string, string> = {
+    "Sleep Reset": "21-Day Deep Sleep Reset",
+    "Energy Vitality": "14-Day Energy Restore",
+    "Men's Vitality": "30-Day Men's Vitality Reset",
+    "Female Age Reversal": "90-Day Biohacking Reset",
+    "90-Day Master": "90-Day Smoking Reset",
+};
 
 type LocalDietPlanDraft = {
     version?: number;
@@ -190,7 +199,8 @@ function normalizeQuestionnaireDraft(value: unknown): Partial<QuestionnaireData>
 
         if (Array.isArray(expected)) {
             if (Array.isArray(incoming)) {
-                draft[key] = incoming.filter((item): item is string => typeof item === "string") as never;
+                const values = incoming.filter((item): item is string => typeof item === "string");
+                draft[key] = (key === "programs" ? normalizeProgramValues(values) : values) as never;
             }
             continue;
         }
@@ -201,6 +211,14 @@ function normalizeQuestionnaireDraft(value: unknown): Partial<QuestionnaireData>
     }
 
     return draft;
+}
+
+function normalizeProgramValues(values: string[]) {
+    return Array.from(
+        new Set(
+            values.map((value) => LEGACY_PROGRAM_VALUE_BY_NAME[value] ?? value)
+        )
+    );
 }
 
 function fillMissingQuestionnaireData(
@@ -353,12 +371,7 @@ const activityOptions = [
 ];
 
 const programOptions = [
-    { label: "6-Day Control", value: "6-Day Control" },
-    { label: "Sleep Reset", value: "Sleep Reset" },
-    { label: "Energy Vitality", value: "Energy Vitality" },
-    { label: "Men's Vitality", value: "Men's Vitality" },
-    { label: "Female Age Reversal", value: "Female Age Reversal" },
-    { label: "90-Day Master", value: "90-Day Master" },
+    ...PROGRAM_OPTION_VALUES.map((programName) => ({ label: programName, value: programName })),
     { label: "None yet", value: "None yet" },
 ];
 
