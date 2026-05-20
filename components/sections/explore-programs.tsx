@@ -10,6 +10,11 @@ import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/lib/context/cart-context";
 import { useUser } from "@/lib/context/user-context";
+import { isProgramFinderEnabled } from "@/lib/features";
+import {
+    DIET_PLAN_ADDON_PRICE_INR,
+    DIET_PLAN_STANDALONE_PRICE_INR,
+} from "@/lib/diet-plan-product";
 import {
     PROGRAM_CATEGORIES,
     categoryPrograms,
@@ -21,12 +26,15 @@ import {
 
 const categories = PROGRAM_CATEGORIES;
 const CATEGORY_VISIBLE_MS = 20000;
+const dietPlanStandalonePriceLabel = `₹${DIET_PLAN_STANDALONE_PRICE_INR.toLocaleString("en-IN")}`;
+const dietPlanAddonPriceLabel = `₹${DIET_PLAN_ADDON_PRICE_INR.toLocaleString("en-IN")}`;
 
 
 
 export function ExploreProgramsSection() {
     const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
+    const programFinderEnabled = isProgramFinderEnabled();
     
     const activeCategory = categories[activeCategoryIndex];
     const visiblePrograms = categoryPrograms[activeCategory] ?? categoryPrograms[categories[0]];
@@ -59,6 +67,15 @@ export function ExploreProgramsSection() {
                     <p className="text-lg text-[oklch(0.2475_0.0661_146.79)]/60 font-satoshi max-w-sm leading-relaxed md:mx-auto">
                         Compare the structure, time, and daily rhythm before you choose.
                     </p>
+                    {programFinderEnabled ? (
+                        <Link
+                            href="/program-finder"
+                            className="inline-flex w-fit items-center gap-2 rounded-full bg-[oklch(0.2475_0.0661_146.79)] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[oklch(0.2475_0.0661_146.79)]/10 transition hover:bg-[oklch(0.2475_0.0661_146.79)]/92 active:scale-[0.98] md:mx-auto"
+                        >
+                            Help me choose
+                            <ArrowRight className="size-4 opacity-70" />
+                        </Link>
+                    ) : null}
                     <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-medium text-[oklch(0.2475_0.0661_146.79)]/70 md:mt-5 md:justify-center md:text-base">
                         {categories.map((category) => (
                             <button
@@ -129,8 +146,8 @@ export function ExploreProgramsSection() {
                         {/* Right: Price + CTA */}
                         <div className="shrink-0 flex flex-col items-start md:items-end gap-4">
                             <div className="flex items-baseline gap-2">
-                                <span className="font-erode text-2xl font-semibold text-[oklch(0.2475_0.0661_146.79)] tabular-nums tracking-tight">₹599</span>
-                                <span className="text-[12px] font-bold text-[oklch(0.2475_0.0661_146.79)]/35">standalone</span>
+                                <span className="font-erode text-2xl font-semibold text-[oklch(0.2475_0.0661_146.79)] tabular-nums tracking-tight">{dietPlanStandalonePriceLabel}</span>
+                                <span className="text-[12px] font-bold text-[oklch(0.2475_0.0661_146.79)]/35">diet plan</span>
                             </div>
                             <Link
                                 href="/diet-plan"
@@ -140,25 +157,12 @@ export function ExploreProgramsSection() {
                                 <ArrowRight className="size-4 opacity-60 transition-transform group-hover:translate-x-0.5" />
                             </Link>
                             <p className="text-[11px] font-medium text-[oklch(0.2475_0.0661_146.79)]/35 md:text-right leading-relaxed">
-                                ₹399 when added during checkout with any program.
+                                {dietPlanAddonPriceLabel} standalone or with any program.
                             </p>
                         </div>
                     </div>
                 </div>
 
-                {/* Free Video Consultation CTA */}
-                <div className="mt-16 text-center">
-                    <p className="text-lg md:text-xl font-satoshi font-normal text-[oklch(0.2475_0.0661_146.79)]/70">
-                        Not sure which program is right for you? <a
-                            href="https://calendly.com/anjan-recoverycompass/30min"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-medium text-[oklch(0.2475_0.0661_146.79)] underline underline-offset-4 hover:text-[oklch(0.2475_0.0661_146.79)]/80 transition-colors"
-                        >
-                            Book a free consultation.
-                        </a>
-                    </p>
-                </div>
             </div>
         </section>
     );

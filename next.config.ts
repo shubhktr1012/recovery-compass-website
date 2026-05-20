@@ -1,5 +1,19 @@
 import type { NextConfig } from "next";
 
+const isDevelopment = process.env.NODE_ENV === "development";
+
+function getWebSocketOrigin(origin: string) {
+  if (origin.startsWith("http://")) {
+    return origin.replace("http://", "ws://");
+  }
+
+  if (origin.startsWith("https://")) {
+    return origin.replace("https://", "wss://");
+  }
+
+  return null;
+}
+
 const nextConfig: NextConfig = {
   serverExternalPackages: ["@sparticuz/chromium", "puppeteer-core"],
   experimental: {
@@ -9,6 +23,52 @@ const nextConfig: NextConfig = {
     root: __dirname,
   },
   async headers() {
+    const connectSrc = [
+      "'self'",
+      "*.supabase.co",
+      "https://vitals.vercel-insights.com",
+      "cdn.jsdelivr.net",
+      "*.razorpay.com",
+      "https://lumberjack.razorpay.com",
+      "https://*.clarity.ms",
+      "https://*.bing.com",
+      "https://*.google-analytics.com",
+      "https://*.analytics.google.com",
+      "https://*.googletagmanager.com",
+    ];
+
+    if (isDevelopment) {
+      const localSupabaseOrigin = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
+      const localSupabaseWsOrigin = localSupabaseOrigin ? getWebSocketOrigin(localSupabaseOrigin) : null;
+
+      connectSrc.push("http://127.0.0.1:54321", "http://localhost:54321");
+
+      if (localSupabaseOrigin) {
+        connectSrc.push(localSupabaseOrigin);
+      }
+
+      connectSrc.push("ws://127.0.0.1:54321", "ws://localhost:54321");
+
+      if (localSupabaseWsOrigin) {
+        connectSrc.push(localSupabaseWsOrigin);
+      }
+    }
+
+    const cspDirectives = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' cdn.jsdelivr.net checkout.razorpay.com https://www.clarity.ms https://*.clarity.ms https://www.googletagmanager.com",
+      "style-src 'self' 'unsafe-inline' cdn.jsdelivr.net",
+      "img-src 'self' data: https: *.supabase.co https://*.clarity.ms https://*.bing.com https://*.google-analytics.com https://*.googletagmanager.com",
+      "font-src 'self' data: https:",
+      `connect-src ${connectSrc.join(" ")}`,
+      "frame-src https://api.razorpay.com https://checkout.razorpay.com",
+      "frame-ancestors 'none'",
+    ];
+
+    if (!isDevelopment) {
+      cspDirectives.push("upgrade-insecure-requests");
+    }
+
     return [
       {
         source: "/:path*",
@@ -19,17 +79,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value: [
-              "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' cdn.jsdelivr.net checkout.razorpay.com https://www.clarity.ms https://*.clarity.ms https://www.googletagmanager.com",
-              "style-src 'self' 'unsafe-inline' cdn.jsdelivr.net",
-              "img-src 'self' data: https: *.supabase.co https://*.clarity.ms https://*.bing.com https://*.google-analytics.com https://*.googletagmanager.com",
-              "font-src 'self' data: https:",
-              "connect-src 'self' *.supabase.co https://vitals.vercel-insights.com cdn.jsdelivr.net *.razorpay.com https://lumberjack.razorpay.com https://*.clarity.ms https://*.bing.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
-              "frame-src https://api.razorpay.com https://checkout.razorpay.com",
-              "frame-ancestors 'none'",
-              "upgrade-insecure-requests",
-            ].join("; "),
+            value: cspDirectives.join("; "),
           },
           {
             key: "X-Content-Type-Options",

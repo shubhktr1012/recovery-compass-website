@@ -1,8 +1,8 @@
 export const DIET_PLAN_CART_ID = "custom-diet-plan";
 export const DIET_PLAN_CHECKOUT_SLUG = "custom_diet_plan";
 
-export const DIET_PLAN_STANDALONE_PRICE_INR = 599;
-export const DIET_PLAN_ADDON_PRICE_INR = 399;
+export const DIET_PLAN_STANDALONE_PRICE_INR = 1299;
+export const DIET_PLAN_ADDON_PRICE_INR = 1299;
 
 export const DIET_PLAN_ADDON_CART_ITEM = {
     id: DIET_PLAN_CART_ID,

@@ -8,8 +8,6 @@ import {
     Mail,
     ArrowRight,
     Sparkles,
-    Calendar,
-    Phone,
     ClipboardList,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
@@ -18,8 +16,10 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { FooterVariantTwo } from "@/components/sections";
 import { NavbarSticky } from "@/components/navbar-sticky";
+import { useUser } from "@/lib/context/user-context";
 import { cn } from "@/lib/utils";
 import { APP_STORE_BADGE_URL, APP_STORE_URL, PLAY_STORE_BADGE_URL, PLAY_STORE_URL } from "@/lib/constants";
+import { isProgramFinderEnabled } from "@/lib/features";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Floating Particles (celebration effect)
@@ -113,19 +113,26 @@ function AppStoreBadge({ platform }: { platform: "ios" | "android" }) {
 
 function SuccessPageContent() {
     const { clearCart } = useCart();
+    const { user, profile, refreshAccountData } = useUser();
     const searchParams = useSearchParams();
     const dietOrderId = searchParams.get("diet_order_id")?.trim() ?? "";
     const dietClaimToken = searchParams.get("token")?.trim() ?? "";
+    const successQuery = searchParams.toString();
+    const successReturnPath = `/checkout/success${successQuery ? `?${successQuery}` : ""}`;
+    const programFinderHref = `/program-finder?returnTo=${encodeURIComponent(successReturnPath)}`;
     const dietPlanHref = dietOrderId && dietClaimToken
         ? `/diet-plan?cart_checkout=true&diet_order_id=${encodeURIComponent(dietOrderId)}&token=${encodeURIComponent(dietClaimToken)}`
         : null;
+    const programFinderEnabled = isProgramFinderEnabled();
 
     const showDietPlanCta = Boolean(dietPlanHref);
+    const showProgramFinderCta = programFinderEnabled && Boolean(user && profile && !profile.onboarding_complete);
 
     // Clear cart on success
     useEffect(() => {
         clearCart();
-    }, [clearCart]);
+        void refreshAccountData();
+    }, [clearCart, refreshAccountData]);
 
     return (
         <div className="min-h-screen bg-[oklch(0.9484_0.0251_149.08)] text-[oklch(0.2475_0.0661_146.79)] font-satoshi flex flex-col">
@@ -263,6 +270,34 @@ function SuccessPageContent() {
                             </motion.a>
                         )}
 
+                        {/* ── Program Finder completion ── */}
+                        {showProgramFinderCta && (
+                            <motion.a
+                                href={programFinderHref}
+                                initial={{ opacity: 0, y: 24 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: showDietPlanCta ? 0.58 : 0.55 }}
+                                className="group flex-1 rounded-[32px] p-8 md:p-10 bg-white/75 backdrop-blur-md border border-white/60 flex flex-col justify-between shadow-xl shadow-[oklch(0.2475_0.0661_146.79)]/5 hover:shadow-2xl transition-all duration-500 hover:-translate-y-1"
+                            >
+                                <div className="mb-6 size-12 rounded-full bg-[oklch(0.2475_0.0661_146.79)]/6 flex items-center justify-center border border-[oklch(0.2475_0.0661_146.79)]/10">
+                                    <ClipboardList className="size-6 text-[oklch(0.2475_0.0661_146.79)]" />
+                                </div>
+                                <div className="mb-8">
+                                    <h3 className="text-[28px] md:text-[32px] font-bold mb-3 text-[oklch(0.2475_0.0661_146.79)] leading-tight font-erode">
+                                        Complete Program Finder
+                                    </h3>
+                                    <p className="text-[15px] md:text-[16px] text-[oklch(0.2475_0.0661_146.79)]/62 font-medium leading-relaxed max-w-sm">
+                                        Finish your profile so the app can personalize setup before Day 1 starts.
+                                    </p>
+                                </div>
+                                <div>
+                                    <span className="inline-flex items-center gap-2.5 text-[14px] font-bold text-white bg-[oklch(0.2475_0.0661_146.79)] px-5 py-2.5 rounded-full shadow-lg shadow-[oklch(0.2475_0.0661_146.79)]/10 transition-colors group-hover:bg-[oklch(0.2475_0.0661_146.79)]/92">
+                                        Finish Profile <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
+                                    </span>
+                                </div>
+                            </motion.a>
+                        )}
+
                         {/* ── WhatsApp Community ── */}
                         <motion.a
                             href="https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0"
@@ -337,34 +372,6 @@ function SuccessPageContent() {
                             </div>
                         </motion.div>
 
-                        {/* ── Calendly Booking ── */}
-                        <motion.a
-                            href="https://calendly.com/anjan-recoverycompass/30min"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            initial={{ opacity: 0, y: 24 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.75 }}
-                            className="group flex-1 rounded-[32px] p-8 md:p-10 bg-white/70 backdrop-blur-md border border-white/50 flex flex-col shadow-xl shadow-[oklch(0.2475_0.0661_146.79)]/5 hover:shadow-2xl transition-all duration-500 hover:-translate-y-1"
-                        >
-                            <div className="mb-6 size-12 rounded-xl bg-[#F08000]/10 flex items-center justify-center border border-[#F08000]/20">
-                                <Calendar className="size-5 text-[#F08000]" />
-                            </div>
-                            <div className="flex-1 mb-8">
-                                <h3 className="text-[20px] md:text-[22px] font-bold mb-3 text-[oklch(0.2475_0.0661_146.79)] leading-tight font-erode">
-                                    Book Your Free Call
-                                </h3>
-                                <p className="text-[14px] md:text-[15px] text-[oklch(0.2475_0.0661_146.79)]/70 font-medium leading-relaxed">
-                                    Every program includes a 1-on-1 strategy session to set your baseline.
-                                </p>
-                            </div>
-                            <div>
-                                <span className="inline-flex items-center gap-2.5 text-[13px] md:text-[14px] font-bold text-[#F08000] bg-[#F08000]/5 px-5 py-2.5 rounded-[16px] ring-1 ring-[#F08000]/20 group-hover:bg-[#F08000]/10 transition-colors">
-                                    <Phone className="size-3.5" />
-                                    Schedule on Calendly <ArrowRight className="size-3.5 group-hover:translate-x-1 transition-transform" />
-                                </span>
-                            </div>
-                        </motion.a>
                     </div>
                 </div>
 

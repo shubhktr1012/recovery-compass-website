@@ -15,6 +15,69 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
+const publicDir = join(process.cwd(), "public");
+const assetDataUriCache = new Map<string, string | null>();
+
+function getPublicAssetDataUri(assetPath: string, mimeType: string) {
+    const cacheKey = `${mimeType}:${assetPath}`;
+    if (assetDataUriCache.has(cacheKey)) {
+        return assetDataUriCache.get(cacheKey);
+    }
+
+    try {
+        const buffer = readFileSync(join(publicDir, assetPath));
+        const dataUri = `data:${mimeType};base64,${buffer.toString("base64")}`;
+        assetDataUriCache.set(cacheKey, dataUri);
+        return dataUri;
+    } catch {
+        assetDataUriCache.set(cacheKey, null);
+        return null;
+    }
+}
+
+function renderFontFace({
+    family,
+    file,
+    mimeType,
+    weight,
+    style = "normal",
+}: {
+    family: string;
+    file: string;
+    mimeType: string;
+    weight: number;
+    style?: "normal" | "italic";
+}) {
+    const dataUri = getPublicAssetDataUri(`fonts/${file}`, mimeType);
+
+    if (!dataUri) {
+        return "";
+    }
+
+    return `@font-face {
+  font-family: '${family}';
+  src: url('${dataUri}') format('${file.endsWith(".woff2") ? "woff2" : "opentype"}');
+  font-weight: ${weight};
+  font-style: ${style};
+  font-display: swap;
+}`;
+}
+
+function renderBrandFontCss() {
+    return [
+        renderFontFace({ family: "Satoshi", file: "Satoshi-Regular.otf", mimeType: "font/otf", weight: 400 }),
+        renderFontFace({ family: "Satoshi", file: "Satoshi-Medium.otf", mimeType: "font/otf", weight: 500 }),
+        renderFontFace({ family: "Satoshi", file: "Satoshi-Bold.otf", mimeType: "font/otf", weight: 700 }),
+        renderFontFace({ family: "Erode", file: "Erode-Regular.woff2", mimeType: "font/woff2", weight: 400 }),
+        renderFontFace({ family: "Erode", file: "Erode-Medium.woff2", mimeType: "font/woff2", weight: 500 }),
+        renderFontFace({ family: "Erode", file: "Erode-SemiBold.woff2", mimeType: "font/woff2", weight: 600 }),
+        renderFontFace({ family: "Erode", file: "Erode-Bold.woff2", mimeType: "font/woff2", weight: 700 }),
+    ].filter(Boolean).join("\n");
+}
+
 export function renderDietPlanHtml(
     plan: Record<string, any>,
     q: Record<string, any>
@@ -27,10 +90,9 @@ export function renderDietPlanHtml(
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+${renderBrandFontCss()}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -46,8 +108,8 @@ export function renderDietPlanHtml(
   --border: #d8e8da;
   --white: #ffffff;
   --page-pad: 18mm;
-  --font-serif: 'Playfair Display', Georgia, serif;
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Erode', Georgia, serif;
+  --font-sans: 'Satoshi', system-ui, sans-serif;
 }
 
 body {
@@ -90,6 +152,19 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0;
+}
+
+.rc-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rc-header-logo-mark {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
 }
 
 .rc-header-logo {
@@ -717,8 +792,13 @@ function renderPageHeader(meta: Record<string, any>, page: number): string {
 }
 
 function renderRCHeader(page: number): string {
+    const logoDataUri = getPublicAssetDataUri("rc-logo-white.svg", "image/svg+xml");
+    const logoMarkup = logoDataUri
+        ? `<span class="rc-header-brand"><img class="rc-header-logo-mark" src="${logoDataUri}" alt="" /><span class="rc-header-logo">Recovery Compass</span></span>`
+        : `<span class="rc-header-logo">Recovery Compass</span>`;
+
     return `<div class="rc-header">
-    <span class="rc-header-logo">RECOVERY COMPASS</span>
+    ${logoMarkup}
     <span class="rc-header-page">Page ${page}</span>
   </div>`;
 }

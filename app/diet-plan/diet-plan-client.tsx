@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { NavbarSticky } from "@/components/navbar-sticky";
 import { FooterVariantTwo } from "@/components/sections";
+import { DIET_PLAN_STANDALONE_PRICE_INR } from "@/lib/diet-plan-product";
 import { cn } from "@/lib/utils";
 
 type QuestionnaireData = {
@@ -49,6 +50,7 @@ type QuestionnaireData = {
 
 type CreateOrderResponse = {
     orderId: string;
+    keyId?: string;
     amount: number;
     currency: string;
     message?: string;
@@ -640,6 +642,7 @@ export function DietPlanClientContent() {
         [dietOrderId, isCartCheckout]
     );
     const normalizedEmail = email.trim().toLowerCase();
+    const dietPlanPriceLabel = `₹${DIET_PLAN_STANDALONE_PRICE_INR.toLocaleString("en-IN")}`;
     const hasProgress = useMemo(
         () => hasDraftProgress(data, email, step),
         [data, email, step]
@@ -921,6 +924,9 @@ export function DietPlanClientContent() {
             if (!createResponse.ok) {
                 throw new Error(orderData.message || "Failed to create payment order");
             }
+            if (!orderData.orderId || !orderData.keyId) {
+                throw new Error("Payment order is missing Razorpay configuration. Please refresh and try again.");
+            }
 
             const Razorpay = (window as RazorpayWindow).Razorpay;
             if (!Razorpay) {
@@ -928,7 +934,7 @@ export function DietPlanClientContent() {
             }
 
             const rzp = new Razorpay({
-                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+                key: orderData.keyId,
                 amount: orderData.amount,
                 currency: orderData.currency,
                 name: "Recovery Compass",
@@ -1260,7 +1266,7 @@ export function DietPlanClientContent() {
                                                 {cartCheckoutRequested ? "Payment" : "Total Price"}
                                             </span>
                                             <span className="font-erode text-[32px] font-medium text-[#06290C]">
-                                                {cartCheckoutRequested ? "Paid" : "₹599"}
+                                                {cartCheckoutRequested ? "Paid" : dietPlanPriceLabel}
                                             </span>
                                         </div>
                                         <div className="flex gap-4 rounded-3xl bg-[#F5F5F7] px-6 py-5">
@@ -1317,7 +1323,7 @@ export function DietPlanClientContent() {
                                         <div className="flex items-center justify-between">
                                             <div>
                                                 <p className="text-[13px] font-bold uppercase tracking-wider text-[#06290C]/40">Total</p>
-                                                <p className="mt-1 font-erode text-2xl font-semibold">₹599</p>
+                                                <p className="mt-1 font-erode text-2xl font-semibold">{dietPlanPriceLabel}</p>
                                             </div>
                                             <div className="flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-[12px] font-bold text-emerald-600">
                                                 <ShieldCheck className="size-4" /> Secured
@@ -1334,7 +1340,7 @@ export function DietPlanClientContent() {
                                     {isProcessing ? (
                                         <span className="flex items-center gap-2"><Loader2 className="size-5 animate-spin" /> {cartCheckoutRequested ? "Submitting..." : "Processing..."}</span>
                                     ) : (
-                                        <span className="flex items-center gap-2">{cartCheckoutRequested ? "Submit Profile" : "Pay ₹599 & Generate Plan"} <ArrowRight className="size-5" /></span>
+                                        <span className="flex items-center gap-2">{cartCheckoutRequested ? "Submit Profile" : `Pay ${dietPlanPriceLabel} & Generate Plan`} <ArrowRight className="size-5" /></span>
                                     )}
                                 </Button>
                             </div>

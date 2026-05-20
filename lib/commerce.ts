@@ -6,6 +6,7 @@ import {
     type CanonicalProgramSlug,
 } from "@/lib/public-programs";
 import {
+    DIET_PLAN_ADDON_PRICE_INR,
     DIET_PLAN_CART_ID,
     DIET_PLAN_CHECKOUT_SLUG,
     isDietPlanCheckoutSlug,
@@ -23,6 +24,7 @@ export interface TransactionItem {
     title: string;
     price_inr: number;
     quantity: number;
+    queue_rank?: number | null;
 }
 
 export interface CreateTransactionParams {
@@ -51,6 +53,15 @@ type CheckoutItemSlug = CanonicalProgramSlug | DietPlanCheckoutSlug;
 
 type CanonicalTransactionItem = TransactionItem & {
     program_slug: CheckoutItemSlug;
+};
+
+type ProgramAccessRow = {
+    owned_program: string;
+    purchase_state: string | null;
+    completion_state: string | null;
+    scheduled_start_date: string | null;
+    paused_at: string | null;
+    completed_at: string | null;
 };
 
 export type DietPlanCheckoutClaim = {
@@ -299,20 +310,109 @@ export function canonicalizeTransactionItems(items: unknown): CanonicalTransacti
         const quantity = typeof (item as { quantity?: unknown }).quantity === "number"
             ? (item as { quantity: number }).quantity
             : 1;
+        const queueRank = typeof (item as { queue_rank?: unknown }).queue_rank === "number"
+            && Number.isFinite((item as { queue_rank: number }).queue_rank)
+            && (item as { queue_rank: number }).queue_rank > 0
+            ? Math.trunc((item as { queue_rank: number }).queue_rank)
+            : null;
 
         return [{
             program_slug: programSlug,
             title,
             price_inr: priceInr,
             quantity,
+            ...(queueRank ? { queue_rank: queueRank } : {}),
         }];
     });
 }
 
 function resolveProgramSlugs(items: unknown): string[] {
-    const slugs = canonicalizeTransactionItems(items).map((item) => item.program_slug);
+    const slugs = canonicalizeTransactionItems(items)
+        .map((item, index) => ({ item, index }))
+        .sort((a, b) => {
+            const aRank = a.item.queue_rank ?? Number.MAX_SAFE_INTEGER;
+            const bRank = b.item.queue_rank ?? Number.MAX_SAFE_INTEGER;
+            return aRank - bRank || a.index - b.index;
+        })
+        .map(({ item }) => item.program_slug);
 
     return Array.from(new Set(slugs));
+}
+
+function shouldPreserveExistingAccess(row: ProgramAccessRow | undefined) {
+    if (!row) {
+        return false;
+    }
+
+    return (
+        row.purchase_state === "owned_completed" ||
+        row.completion_state === "completed" ||
+        row.completion_state === "in_progress" ||
+        Boolean(row.completed_at) ||
+        Boolean(row.scheduled_start_date) ||
+        Boolean(row.paused_at)
+    );
+}
+
+async function grantProgramEntitlements(userId: string, programSlugs: CanonicalProgramSlug[]) {
+    if (programSlugs.length === 0) {
+        return;
+    }
+
+    const { data: existingRows, error: existingRowsError } = await supabaseAdmin
+        .from("program_access")
+        .select("owned_program, purchase_state, completion_state, scheduled_start_date, paused_at, completed_at")
+        .eq("user_id", userId)
+        .in("owned_program", programSlugs);
+
+    if (existingRowsError) {
+        throw existingRowsError;
+    }
+
+    const existingByProgram = new Map(
+        (existingRows ?? []).map((row) => [row.owned_program, row as ProgramAccessRow])
+    );
+
+    for (const [index, dbSlug] of programSlugs.entries()) {
+        const existing = existingByProgram.get(dbSlug);
+
+        if (shouldPreserveExistingAccess(existing)) {
+            continue;
+        }
+
+        const priorityRank = index + 1;
+        const payload = {
+            user_id: userId,
+            owned_program: dbSlug,
+            purchase_state: "owned_active",
+            completion_state: "not_started",
+            priority_rank: priorityRank,
+        };
+
+        const { error: accessError } = existing
+            ? await supabaseAdmin
+                .from("program_access")
+                .update(payload)
+                .eq("user_id", userId)
+                .eq("owned_program", dbSlug)
+            : await supabaseAdmin
+                .from("program_access")
+                .insert(payload);
+
+        if (accessError) {
+            console.error(`[Commerce] Failed to write entitlement for ${dbSlug}:`, accessError);
+            throw accessError;
+        }
+    }
+
+    const { error: normalizeError } = await supabaseAdmin.rpc(
+        "normalize_owned_program_priority_queue",
+        { p_user_id: userId }
+    );
+
+    if (normalizeError) {
+        throw normalizeError;
+    }
 }
 
 async function attemptFulfillment(transactionId: string, source: FulfillmentSource): Promise<FulfillmentAttemptResult> {
@@ -353,21 +453,7 @@ async function attemptFulfillment(transactionId: string, source: FulfillmentSour
 
         // 2. Grant entitlements in program_access FIRST (Mission Critical)
         // This ensures the user definitely has access before we bother with notifications.
-        for (const dbSlug of programSlugs) {
-            const { error: accessError } = await supabaseAdmin
-                .from("program_access")
-                .upsert({
-                    user_id: txn.user_id,
-                    owned_program: dbSlug,
-                    purchase_state: 'owned_active',
-                    completion_state: 'not_started'
-                }, { onConflict: 'user_id, owned_program' });
-
-            if (accessError) {
-                console.error(`[Commerce] Failed to write entitlement for txn ${transactionId}:`, accessError);
-                throw accessError; // Still fail if DB write fails
-            }
-        }
+        await grantProgramEntitlements(txn.user_id, programSlugs);
 
         const { data: profile } = await supabaseAdmin
             .from("profiles")
@@ -381,7 +467,7 @@ async function attemptFulfillment(transactionId: string, source: FulfillmentSour
             // Find the price from items if available
             const items = txn.items as TransactionItem[];
             const dietPlanItem = items.find(item => item.program_slug === DIET_PLAN_CHECKOUT_SLUG);
-            const priceInr = dietPlanItem?.price_inr ? dietPlanItem.price_inr * 100 : 39900; // in paise
+            const priceInr = dietPlanItem?.price_inr ? dietPlanItem.price_inr * 100 : DIET_PLAN_ADDON_PRICE_INR * 100;
             const providerDietOrderId = txn.provider_order_id || `txn_${transactionId}`;
 
             const { data: existingDietPlan, error: existingDietPlanError } = await supabaseAdmin

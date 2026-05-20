@@ -1,6 +1,7 @@
 import { Resend } from "resend";
 import AppPurchaseWelcomeEmail from "@/components/emails/AppPurchaseWelcomeEmail";
 import WelcomeReceiptEmail from "@/components/emails/WelcomeReceiptEmail";
+import { APP_STORE_BADGE_URL, APP_STORE_URL, PLAY_STORE_BADGE_URL, PLAY_STORE_URL } from "@/lib/constants";
 import { CANONICAL_PROGRAM_DISPLAY_NAMES } from "@/lib/public-programs";
 
 // We initialize resend lazily inside the function to prevent build-time errors
@@ -80,9 +81,8 @@ export async function sendWelcomeEmail({
                 amountFormatted,
                 orderId,
                 receiptDate,
-                // Replace with Dynamic Links from DB later if needed, harding for Phase 1
+                // Replace with dynamic links from DB later if needed; hardcoded for Phase 1.
                 whatsappLink: "https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0",
-                calendlyLink: "https://calendly.com/anjan-recoverycompass/30min", 
             }),
         });
 
@@ -133,7 +133,6 @@ export async function sendAppPurchaseWelcomeEmail({
                 programName,
                 store,
                 whatsappLink: "https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0",
-                calendlyLink: "https://calendly.com/anjan-recoverycompass/30min",
             }),
         });
 
@@ -330,16 +329,24 @@ export async function sendDietPlanEmail({
       <li>The plan is built entirely around your regional foods and eating habits.</li>
       <li>Start with one meal — usually breakfast — and build from there.</li>
       <li>The 7-day planner at the end is a guide, not a rigid schedule.</li>
-      <li>This is a wellness plan. Please consult your doctor before making major dietary changes, especially if you're on medication.</li>
+      <li>This is a wellness plan. Please consult your doctor before making major dietary changes, especially if you have any injuries or allergies.</li>
     </ul>
   </div>
 
   <p style="font-size: 13px; color: #444; margin: 0 0 16px;">
     If you have questions about the plan, or if anything doesn't look right for your situation, you can reach us at
-    <a href="https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0" style="color: #3D7A4A; text-decoration: none;">WhatsApp</a>
-    or book a quick call with Anjan at
-    <a href="https://calendly.com/anjan-recoverycompass/30min" style="color: #3D7A4A; text-decoration: none;">calendly.com/anjan-recoverycompass</a>.
+    <a href="https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0" style="color: #3D7A4A; text-decoration: none;">WhatsApp</a>.
   </p>
+
+  <div style="background: #F5FAF8; border: 1px solid #d8e8da; border-radius: 10px; padding: 16px 18px; margin: 0 0 24px;">
+    <p style="font-size: 13px; color: #06290C; margin: 0 0 12px; font-weight: 600;">Use Recovery Compass on your phone</p>
+    <a href="${APP_STORE_URL}" style="display: inline-block; margin-right: 10px;">
+      <img src="${APP_STORE_BADGE_URL}" width="132" alt="Download on the App Store" style="display: block; border: 0;" />
+    </a>
+    <a href="${PLAY_STORE_URL}" style="display: inline-block;">
+      <img src="${PLAY_STORE_BADGE_URL}" width="148" alt="Get it on Google Play" style="display: block; border: 0;" />
+    </a>
+  </div>
 
   <p style="font-size: 13px; color: #888; border-top: 1px solid #d8e8da; padding-top: 16px; margin: 0;">
     Recovery Compass · Guided Wellness<br>

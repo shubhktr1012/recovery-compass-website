@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse, after } from "next/server";
 import crypto from "crypto";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { DIET_PLAN_STANDALONE_PRICE_INR } from "@/lib/diet-plan-product";
 
-const DIET_PLAN_PRICE_PAISE = 59900;
+const DIET_PLAN_PRICE_PAISE = DIET_PLAN_STANDALONE_PRICE_INR * 100;
 
 function getErrorMessage(error: unknown) {
     if (error instanceof Error) {

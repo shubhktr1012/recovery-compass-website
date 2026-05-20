@@ -30,9 +30,13 @@ vi.mock("@/lib/supabase-server", () => ({
   createSupabaseServerClient: mocks.createSupabaseServerClient,
 }));
 
-vi.mock("@/lib/commerce", () => ({
-  createTransaction: mocks.createTransaction,
-}));
+vi.mock("@/lib/commerce", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/commerce")>();
+  return {
+    ...actual,
+    createTransaction: mocks.createTransaction,
+  };
+});
 
 import { POST } from "@/app/api/checkout/create-order/route";
 
@@ -44,6 +48,9 @@ function buildRequest(body: unknown) {
 
 describe("POST /api/checkout/create-order", () => {
   beforeEach(() => {
+    process.env.RAZORPAY_KEY_ID = "rzp_test_unit";
+    process.env.RAZORPAY_KEY_SECRET = "test_secret";
+
     mocks.createOrder.mockReset();
     mocks.createTransaction.mockReset();
     mocks.getUser.mockReset();
@@ -115,14 +122,21 @@ describe("POST /api/checkout/create-order", () => {
         userId: "user-1",
         providerOrderId: "order_123",
         amount: 149900,
+        items: [
+          expect.objectContaining({
+            program_slug: "energy_vitality",
+            queue_rank: 1,
+          }),
+        ],
       })
     );
   });
 
-  it("accepts a multi-program checkout payload within the configured limit", async () => {
+  it("accepts a multi-program checkout payload and persists queue priority", async () => {
     const response = await POST(
       buildRequest({
         amount: 2998,
+        programOrder: ["21-day-deep-sleep-reset", "14-day-energy-restore"],
         items: [
           { program_slug: "14-day-energy-restore", title: "Energy", price_inr: 1499, quantity: 1 },
           { program_slug: "21-day-deep-sleep-reset", title: "Sleep", price_inr: 1499, quantity: 1 },
@@ -134,12 +148,30 @@ describe("POST /api/checkout/create-order", () => {
     expect(mocks.createTransaction).toHaveBeenCalledWith(
       expect.objectContaining({
         amount: 299800,
-        items: expect.arrayContaining([
-          expect.objectContaining({ program_slug: "14-day-energy-restore" }),
-          expect.objectContaining({ program_slug: "21-day-deep-sleep-reset" }),
-        ]),
+        items: [
+          expect.objectContaining({ program_slug: "energy_vitality", queue_rank: 2 }),
+          expect.objectContaining({ program_slug: "sleep_disorder_reset", queue_rank: 1 }),
+        ],
       })
     );
+  });
+
+  it("rejects a queue priority payload that does not match the cart", async () => {
+    const response = await POST(
+      buildRequest({
+        amount: 2998,
+        programOrder: ["21-day-deep-sleep-reset"],
+        items: [
+          { program_slug: "14-day-energy-restore", title: "Energy", price_inr: 1499, quantity: 1 },
+          { program_slug: "21-day-deep-sleep-reset", title: "Sleep", price_inr: 1499, quantity: 1 },
+        ],
+      }) as never
+    );
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({
+      message: "Program priority must match the programs in your cart.",
+    });
   });
 
   it("rejects checkout payloads that exceed the configured cart limit", async () => {

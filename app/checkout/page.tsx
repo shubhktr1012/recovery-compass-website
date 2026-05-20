@@ -17,6 +17,8 @@ import {
     Tag,
     X,
     Plus,
+    ArrowUp,
+    ArrowDown,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -38,6 +40,7 @@ type CreateOrderResponse = {
     id: string;
     amount: number;
     currency: string;
+    keyId?: string;
     message?: string;
 };
 
@@ -49,7 +52,12 @@ type RazorpaySuccessResponse = {
 
 type RazorpayFailureResponse = {
     error: {
+        code?: string;
         description?: string;
+        source?: string;
+        step?: string;
+        reason?: string;
+        metadata?: Record<string, unknown>;
     };
 };
 
@@ -107,6 +115,17 @@ function getErrorMessage(error: unknown) {
     }
 
     return "Something went wrong";
+}
+
+function serializeRazorpayFailure(error: RazorpayFailureResponse["error"] | undefined) {
+    return {
+        code: error?.code ?? null,
+        description: error?.description ?? null,
+        source: error?.source ?? null,
+        step: error?.step ?? null,
+        reason: error?.reason ?? null,
+        metadata: error?.metadata ?? {},
+    };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -230,19 +249,96 @@ function CartItem({
     );
 }
 
+function ProgramPriorityEditor({
+    programs,
+    order,
+    onMove,
+}: {
+    programs: Array<{ id: string; title: string; tag: string }>;
+    order: string[];
+    onMove: (id: string, direction: "up" | "down") => void;
+}) {
+    const programById = new Map(programs.map((program) => [program.id, program]));
+    const orderedPrograms = order
+        .map((id) => programById.get(id))
+        .filter((program): program is { id: string; title: string; tag: string } => Boolean(program));
+
+    if (orderedPrograms.length < 2) {
+        return null;
+    }
+
+    return (
+        <motion.div
+            layout
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 rounded-3xl border border-[oklch(0.2475_0.0661_146.79)]/[0.08] bg-[oklch(0.9484_0.0251_149.08)]/55 p-4"
+        >
+            <div className="mb-3">
+                <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[oklch(0.2475_0.0661_146.79)]/35">
+                    Program order
+                </p>
+                <p className="mt-1 text-[12px] font-medium leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/48">
+                    Your first program starts first. The rest wait in this order.
+                </p>
+            </div>
+            <div className="space-y-2">
+                {orderedPrograms.map((program, index) => (
+                    <div
+                        key={program.id}
+                        className="flex items-center gap-3 rounded-2xl bg-white/80 px-3 py-3 shadow-sm shadow-[oklch(0.2475_0.0661_146.79)]/[0.03]"
+                    >
+                        <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-[oklch(0.2475_0.0661_146.79)]/[0.06] text-[11px] font-black tabular-nums text-[oklch(0.2475_0.0661_146.79)]/60">
+                            {index + 1}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                            <p className="truncate text-[13px] font-bold text-[oklch(0.2475_0.0661_146.79)]">
+                                {program.title}
+                            </p>
+                            <p className="truncate text-[10px] font-black uppercase tracking-[0.14em] text-[oklch(0.2475_0.0661_146.79)]/30">
+                                {program.tag}
+                            </p>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <button
+                                type="button"
+                                onClick={() => onMove(program.id, "up")}
+                                disabled={index === 0}
+                                className="flex size-8 items-center justify-center rounded-full text-[oklch(0.2475_0.0661_146.79)]/45 transition-colors hover:bg-[oklch(0.2475_0.0661_146.79)]/[0.06] hover:text-[oklch(0.2475_0.0661_146.79)] disabled:cursor-not-allowed disabled:opacity-20"
+                                aria-label={`Move ${program.title} earlier`}
+                            >
+                                <ArrowUp className="size-4" strokeWidth={2.5} />
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => onMove(program.id, "down")}
+                                disabled={index === orderedPrograms.length - 1}
+                                className="flex size-8 items-center justify-center rounded-full text-[oklch(0.2475_0.0661_146.79)]/45 transition-colors hover:bg-[oklch(0.2475_0.0661_146.79)]/[0.06] hover:text-[oklch(0.2475_0.0661_146.79)] disabled:cursor-not-allowed disabled:opacity-20"
+                                aria-label={`Move ${program.title} later`}
+                            >
+                                <ArrowDown className="size-4" strokeWidth={2.5} />
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </motion.div>
+    );
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Main Component
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function CheckoutPage() {
-    const { items, cartTotal, addItem, removeItem } = useCart();
+    const { items, cartLoaded, cartTotal, addItem, removeItem } = useCart();
     const { user, isLoading: isAuthLoading } = useUser();
     const router = useRouter();
     const [isProcessing, setIsProcessing] = useState(false);
     const [promoCode, setPromoCode] = useState("");
     const [promoError, setPromoError] = useState("");
     const [showPromo, setShowPromo] = useState(false);
-    const [cartLoaded, setCartLoaded] = useState(false);
+    const [programOrder, setProgramOrder] = useState<string[]>([]);
     const valueFeatures = getValueFeatures(items);
     const programItems = items.filter((item) => !isDietPlanCartId(item.id));
     const hasDietPlanAddon = items.some((item) => isDietPlanCartId(item.id));
@@ -252,13 +348,6 @@ export default function CheckoutPage() {
     const paymentDescription = hasDietPlanAddon
         ? `${formatPaymentDescription(programItems.length)} + diet plan add-on`
         : formatPaymentDescription(programItems.length);
-
-    // Wait for cart to hydrate from localStorage before evaluating guards
-    useEffect(() => {
-        // Small delay to allow CartProvider's useEffect to hydrate from localStorage
-        const timer = setTimeout(() => setCartLoaded(true), 100);
-        return () => clearTimeout(timer);
-    }, []);
 
     // Redirect if not logged in or cart is empty (only after loading completes)
     useEffect(() => {
@@ -278,6 +367,35 @@ export default function CheckoutPage() {
             removeItem(DIET_PLAN_CART_ID);
         }
     }, [cartLoaded, hasDietPlanAddon, programItems.length, removeItem]);
+
+    useEffect(() => {
+        const programIds = programItems.map((item) => item.id);
+        setProgramOrder((previousOrder) => {
+            const preservedOrder = previousOrder.filter((id) => programIds.includes(id));
+            const missingPrograms = programIds.filter((id) => !preservedOrder.includes(id));
+            const nextOrder = [...preservedOrder, ...missingPrograms];
+            return nextOrder.join("|") === previousOrder.join("|") ? previousOrder : nextOrder;
+        });
+    }, [programItems]);
+
+    const moveProgramPriority = (programId: string, direction: "up" | "down") => {
+        setProgramOrder((currentOrder) => {
+            const currentIndex = currentOrder.indexOf(programId);
+            if (currentIndex < 0) {
+                return currentOrder;
+            }
+
+            const targetIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
+            if (targetIndex < 0 || targetIndex >= currentOrder.length) {
+                return currentOrder;
+            }
+
+            const nextOrder = [...currentOrder];
+            const [item] = nextOrder.splice(currentIndex, 1);
+            nextOrder.splice(targetIndex, 0, item);
+            return nextOrder;
+        });
+    };
 
     const handlePromoApply = () => {
         setPromoError("");
@@ -326,16 +444,20 @@ export default function CheckoutPage() {
                 body: JSON.stringify({
                     amount: cartTotal,
                     items: normalizedItems,
+                    programOrder,
                     userId: user?.id,
                 }),
             });
             const orderData = (await res.json()) as CreateOrderResponse;
 
             if (!res.ok) throw new Error(orderData.message || "Failed to create order");
+            if (!orderData.id || !orderData.keyId) {
+                throw new Error("Payment order is missing Razorpay configuration. Please refresh and try again.");
+            }
 
             // Step 2: Open Razorpay Modal
             const options = {
-                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+                key: orderData.keyId,
                 amount: orderData.amount,
                 currency: orderData.currency,
                 name: "Recovery Compass",
@@ -394,8 +516,17 @@ export default function CheckoutPage() {
 
             const rzp = new Razorpay(options);
             rzp.on("payment.failed", function (response: RazorpayFailureResponse) {
-                console.error("Payment failed:", response.error);
-                alert(`Payment failed: ${response.error.description || "Please try again."}`);
+                const paymentError = serializeRazorpayFailure(response.error);
+                console.error("Payment failed:", paymentError);
+                void fetch("/api/checkout/payment-failed", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        razorpay_order_id: orderData.id,
+                        error: paymentError,
+                    }),
+                });
+                alert(`Payment failed: ${paymentError.description || "Please try again."}`);
             });
             rzp.open();
         } catch (err: unknown) {
@@ -527,6 +658,11 @@ export default function CheckoutPage() {
 
                         {/* Cart Items */}
                         <div className="mb-6">
+                            <ProgramPriorityEditor
+                                programs={programItems}
+                                order={programOrder}
+                                onMove={moveProgramPriority}
+                            />
                             <AnimatePresence mode="popLayout">
                                 {items.map((item) => (
                                     <CartItem key={item.id} item={item} onRemove={removeItem} />

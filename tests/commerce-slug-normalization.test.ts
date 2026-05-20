@@ -35,6 +35,7 @@ describe("commerce slug normalization", () => {
           title: "21-Day Deep Sleep Reset",
           price_inr: 2599,
           quantity: 1,
+          queue_rank: 2,
         },
         {
           program_slug: "energy_vitality",
@@ -45,7 +46,7 @@ describe("commerce slug normalization", () => {
         {
           program_slug: "custom-diet-plan",
           title: "Custom Diet Plan",
-          price_inr: 399,
+          price_inr: 1299,
           quantity: 1,
         },
         {
@@ -61,6 +62,7 @@ describe("commerce slug normalization", () => {
         title: "21-Day Deep Sleep Reset",
         price_inr: 2599,
         quantity: 1,
+        queue_rank: 2,
       },
       {
         program_slug: "energy_vitality",
@@ -71,7 +73,7 @@ describe("commerce slug normalization", () => {
       {
         program_slug: "custom_diet_plan",
         title: "Custom Diet Plan",
-        price_inr: 399,
+        price_inr: 1299,
         quantity: 1,
       },
     ]);

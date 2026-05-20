@@ -3,11 +3,12 @@ import { existsSync } from "fs";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { DIET_PLAN_SYSTEM_PROMPT, buildDietPlanPrompt } from "@/lib/diet-plan-prompt";
 import { renderDietPlanHtml } from "@/lib/diet-plan-pdf-template";
+import { DIET_PLAN_RESPONSE_SCHEMA, validateDietPlanJson } from "@/lib/diet-plan-schema";
 import { sendDietPlanEmail } from "@/lib/mail";
 
 export const maxDuration = 60;
 
-const DEFAULT_GEMINI_MODEL = "gemini-2.5-flash";
+const DEFAULT_GEMINI_MODEL = "gemini-3.5-flash";
 const DEFAULT_GEMINI_FALLBACK_MODEL = "gemini-2.5-flash";
 const DEFAULT_ANTHROPIC_MODEL = "claude-sonnet-4-20250514";
 const DEFAULT_GEMINI_MAX_OUTPUT_TOKENS = 24000;
@@ -68,6 +69,35 @@ function parseDietPlanJson(rawText: string): Record<string, unknown> {
             `Failed to parse diet plan JSON${isProbablyTruncated ? " (response appears truncated)" : ""}: ${detail}. Raw start: ${cleanJson.slice(0, 200)}`
         );
     }
+}
+
+function parseAndValidateDietPlanJson(rawText: string): Record<string, unknown> {
+    const parsed = parseDietPlanJson(rawText);
+    const validation = validateDietPlanJson(parsed);
+
+    if (!validation.success) {
+        throw new Error(
+            `Diet plan JSON failed schema validation: ${validation.errors.slice(0, 12).join("; ")}`
+        );
+    }
+
+    return validation.data;
+}
+
+function buildDietPlanRepairPrompt({
+    prompt,
+    validationError,
+}: {
+    prompt: string;
+    validationError: string;
+}) {
+    return `${prompt}
+
+━━━ VALIDATION RETRY ━━━
+The previous diet plan response failed server validation:
+${validationError}
+
+Generate the complete diet plan again. Return only raw JSON that matches the required schema. Do not include markdown, comments, explanations, or partial sections.`;
 }
 
 function sanitizeFilenamePart(value: string) {
@@ -135,6 +165,38 @@ async function generateDietPlanJsonText({
     return generateDietPlanWithAnthropic(prompt);
 }
 
+async function generateValidatedDietPlanJson({
+    provider,
+    prompt,
+}: {
+    provider: DietPlanAiProvider;
+    prompt: string;
+}) {
+    const rawText = await generateDietPlanJsonText({ provider, prompt });
+
+    try {
+        return parseAndValidateDietPlanJson(rawText);
+    } catch (error) {
+        if (provider !== "gemini") {
+            throw error;
+        }
+
+        const validationError = getErrorMessage(error);
+        console.warn(`[DietPlan] Gemini response failed validation. Retrying once. ${validationError}`);
+
+        const retryRawText = await generateDietPlanJsonText({
+            provider,
+            prompt: buildDietPlanRepairPrompt({ prompt, validationError }),
+        });
+
+        try {
+            return parseAndValidateDietPlanJson(retryRawText);
+        } catch (retryError) {
+            throw new Error(`Diet plan JSON failed validation after retry: ${getErrorMessage(retryError)}`);
+        }
+    }
+}
+
 async function generateDietPlanWithGemini(prompt: string) {
     const model = process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL;
     const fallbackModel = process.env.GEMINI_FALLBACK_MODEL || DEFAULT_GEMINI_FALLBACK_MODEL;
@@ -167,6 +229,15 @@ async function callGeminiModel({
         "GEMINI_MAX_OUTPUT_TOKENS",
         DEFAULT_GEMINI_MAX_OUTPUT_TOKENS
     );
+    const generationConfig: Record<string, unknown> = {
+        maxOutputTokens,
+        responseMimeType: "application/json",
+        responseJsonSchema: DIET_PLAN_RESPONSE_SCHEMA,
+    };
+
+    if (!model.startsWith("gemini-3.")) {
+        generationConfig.temperature = 0.35;
+    }
 
     const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
@@ -186,11 +257,7 @@ async function callGeminiModel({
                         parts: [{ text: prompt }],
                     },
                 ],
-                generationConfig: {
-                    temperature: 0.35,
-                    maxOutputTokens,
-                    responseMimeType: "application/json",
-                },
+                generationConfig,
             }),
         }
     );
@@ -322,11 +389,11 @@ export async function POST(req: NextRequest) {
                 ? order.questionnaire_data as Record<string, unknown>
                 : {};
 
-        const rawText = await generateDietPlanJsonText({
+        const prompt = buildDietPlanPrompt(questionnaireData);
+        const dietPlan = await generateValidatedDietPlanJson({
             provider: aiProvider.provider,
-            prompt: buildDietPlanPrompt(questionnaireData),
+            prompt,
         });
-        const dietPlan = parseDietPlanJson(rawText);
 
         const html = renderDietPlanHtml(dietPlan, questionnaireData);
         const pdfBuffer = await generatePdf(html);

@@ -20,6 +20,7 @@ type Profile = {
     id: string;
     email: string | null;
     onboarding_complete: boolean;
+    recommended_program?: string | null;
     full_name?: string | null;
     avatar_url?: string | null;
     updated_at: string;
@@ -34,6 +35,7 @@ type UserContextType = {
     isAuthModalOpen: boolean;
     openAuthModal: (tab?: "signin" | "signup", onSuccess?: () => void) => void;
     closeAuthModal: () => void;
+    refreshAccountData: () => Promise<void>;
     ownedPrograms: string[];
     hasActiveProgram: boolean;
 };
@@ -266,6 +268,18 @@ export function UserProvider({ children }: { children: ReactNode }) {
         });
     }, [fetchOwnedPrograms, fetchProfile]);
 
+    const refreshAccountData = useCallback(async () => {
+        const activeUserId = user?.id ?? session?.user.id;
+        if (!activeUserId) {
+            return;
+        }
+
+        await Promise.all([
+            fetchProfile(activeUserId),
+            fetchOwnedPrograms(activeUserId),
+        ]);
+    }, [fetchOwnedPrograms, fetchProfile, session?.user.id, user?.id]);
+
     const syncAuthenticatedState = useCallback(async (candidateSession: Session | null) => {
         if (!candidateSession) {
             clearAuthState();
@@ -346,6 +360,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
                 isAuthModalOpen,
                 openAuthModal,
                 closeAuthModal,
+                refreshAccountData,
                 ownedPrograms,
                 hasActiveProgram
             }}

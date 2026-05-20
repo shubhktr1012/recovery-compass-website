@@ -8,11 +8,13 @@ import {
     Preview,
     Section,
     Text,
+    Link,
     Row,
     Column,
     Img,
 } from "@react-email/components";
 import * as React from "react";
+import { APP_STORE_BADGE_URL, APP_STORE_URL, PLAY_STORE_BADGE_URL, PLAY_STORE_URL } from "@/lib/constants";
 
 interface WelcomeReceiptEmailProps {
     customerName: string;
@@ -25,7 +27,6 @@ interface WelcomeReceiptEmailProps {
     orderId: string;
     receiptDate?: string;
     whatsappLink: string;
-    calendlyLink: string;
 }
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://recoverycompass.co";
@@ -60,7 +61,6 @@ export const WelcomeReceiptEmail = ({
     orderId = "order_placeholder",
     receiptDate,
     whatsappLink = "https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0",
-    calendlyLink = "https://calendly.com/anjan-recoverycompass/30min",
 }: WelcomeReceiptEmailProps) => {
     const formattedReceiptDate = formatReceiptDate(receiptDate);
     const receiptLineItems =
@@ -107,16 +107,35 @@ export const WelcomeReceiptEmail = ({
                         </Button>
                     </Section>
 
-                    {/* Calendly CTA */}
-                    <Section style={calBlock}>
-                        <Text style={ctaEyebrow}>Step 2 · Included Free</Text>
-                        <Text style={ctaTitle}>Book Your 1-on-1 Strategy Call</Text>
+                    {/* App Download CTA */}
+                    <Section style={appBlock}>
+                        <Text style={ctaEyebrow}>Step 2</Text>
+                        <Text style={ctaTitle}>Download the app</Text>
                         <Text style={ctaText}>
-                            A private session to set your baseline and personalise your routine — included in your plan at no extra cost.
+                            Your daily cards, reminders, and program setup live inside the Recovery Compass app.
                         </Text>
-                        <Button href={calendlyLink} style={calBtn}>
-                            Schedule on Calendly →
-                        </Button>
+                        <Row>
+                            <Column style={badgeCol}>
+                                <Link href={APP_STORE_URL}>
+                                    <Img
+                                        src={APP_STORE_BADGE_URL}
+                                        width="132"
+                                        alt="Download on the App Store"
+                                        style={storeBadge}
+                                    />
+                                </Link>
+                            </Column>
+                            <Column style={badgeCol}>
+                                <Link href={PLAY_STORE_URL}>
+                                    <Img
+                                        src={PLAY_STORE_BADGE_URL}
+                                        width="148"
+                                        alt="Get it on Google Play"
+                                        style={storeBadge}
+                                    />
+                                </Link>
+                            </Column>
+                        </Row>
                     </Section>
 
                     {/* Divider */}
@@ -270,13 +289,12 @@ const waBlock = {
     borderLeft: "4px solid #25D366",
 };
 
-// Calendly block
-const calBlock = {
+const appBlock = {
     margin: "16px 32px 0",
     padding: "24px",
-    backgroundColor: "#eef4ff",
+    backgroundColor: "#f5faf8",
     borderRadius: "12px",
-    borderLeft: "4px solid #006BFF",
+    border: `1px solid ${border}`,
 };
 
 const ctaEyebrow = {
@@ -318,16 +336,15 @@ const waBtn = {
     fontFamily: ff,
 };
 
-const calBtn = {
-    backgroundColor: "#006BFF",
-    color: "#ffffff",
-    fontSize: "14px",
-    fontWeight: "700",
-    textDecoration: "none",
-    padding: "14px 24px",
-    borderRadius: "8px",
-    display: "inline-block",
-    fontFamily: ff,
+const badgeCol = {
+    width: "50%",
+    verticalAlign: "middle" as const,
+    paddingRight: "10px",
+};
+
+const storeBadge = {
+    display: "block",
+    border: "0",
 };
 
 const hr = { borderColor: border, margin: "0" };

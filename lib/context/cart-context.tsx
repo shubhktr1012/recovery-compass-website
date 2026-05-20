@@ -12,6 +12,7 @@ export type ProgramItem = {
 
 type CartContextType = {
     items: ProgramItem[];
+    cartLoaded: boolean;
     addItem: (item: ProgramItem, options?: { openCart?: boolean }) => void;
     removeItem: (id: string) => void;
     isItemInCart: (id: string) => boolean;
@@ -24,34 +25,37 @@ type CartContextType = {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-    const [items, setItems] = useState<ProgramItem[]>(() => {
-        if (typeof window === "undefined") {
-            return [];
-        }
+    const [items, setItems] = useState<ProgramItem[]>([]);
+    const [cartLoaded, setCartLoaded] = useState(false);
+    const [isCartOpen, setIsCartOpen] = useState(false);
 
+    useEffect(() => {
         const savedCart = localStorage.getItem("rc_cart");
         if (!savedCart) {
-            return [];
+            setCartLoaded(true);
+            return;
         }
 
         try {
             const parsed = JSON.parse(savedCart);
             if (Array.isArray(parsed)) {
-                // Normalize any legacy multi-item cart down to the current
-                // policy limit so the rule stays consistent on reload.
-                return normalizeCartItems(parsed);
+                // Normalize legacy carts so reloads obey the current commerce rules.
+                setItems(normalizeCartItems(parsed));
             }
         } catch (e) {
             console.error("Failed to parse cart", e);
+        } finally {
+            setCartLoaded(true);
         }
-
-        return [];
-    });
-    const [isCartOpen, setIsCartOpen] = useState(false);
+    }, []);
 
     useEffect(() => {
+        if (!cartLoaded) {
+            return;
+        }
+
         localStorage.setItem("rc_cart", JSON.stringify(items));
-    }, [items]);
+    }, [cartLoaded, items]);
 
     const addItem = useCallback((item: ProgramItem, options?: { openCart?: boolean }) => {
         setItems((prev) => nextCartItems(prev, item));
@@ -80,6 +84,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         <CartContext.Provider
             value={{
                 items,
+                cartLoaded,
                 addItem,
                 removeItem,
                 isItemInCart,

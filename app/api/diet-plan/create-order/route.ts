@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import Razorpay from "razorpay";
+import { DIET_PLAN_STANDALONE_PRICE_INR } from "@/lib/diet-plan-product";
 
-const DIET_PLAN_PRICE_PAISE = 59900;
+const DIET_PLAN_PRICE_PAISE = DIET_PLAN_STANDALONE_PRICE_INR * 100;
 
 function getErrorMessage(error: unknown) {
     if (error instanceof Error) {
@@ -62,6 +63,7 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({
             orderId: order.id,
+            keyId: process.env.RAZORPAY_KEY_ID,
             amount: DIET_PLAN_PRICE_PAISE,
             currency: "INR",
         });
