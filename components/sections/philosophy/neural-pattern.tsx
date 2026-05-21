@@ -206,6 +206,7 @@ export function NeuralPattern() {
                 {/* Craving Node (Left) */}
                 <motion.g
                     transform="translate(80, 220)"
+                    initial={{ opacity: 1 }}
                     animate={{ opacity: (phase === "old_default" || phase === "shift") ? 1 : 0.3 }}
                     transition={{ duration: 1 }}
                 >
@@ -216,6 +217,7 @@ export function NeuralPattern() {
                 {/* Calm Node (Right) */}
                 <motion.g
                     transform="translate(320, 220)"
+                    initial={{ opacity: 0.3 }}
                     animate={{ opacity: (phase === "rewiring" || phase === "new_default") ? 1 : 0.3 }}
                     transition={{ duration: 1 }}
                 >

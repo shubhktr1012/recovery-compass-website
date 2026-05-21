@@ -19,7 +19,7 @@ export function AppDownloadSection() {
     const phoneOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
     return (
-        <section ref={containerRef} id="app-download" className="py-16 md:py-24 px-6 md:px-12 max-w-[1400px] mx-auto scroll-mt-24">
+        <section ref={containerRef} id="app-download" className="relative py-16 md:py-24 px-6 md:px-12 max-w-[1400px] mx-auto scroll-mt-24">
             <div className="relative w-full rounded-[40px] overflow-hidden bg-[oklch(0.97_0.01_150)] dark:bg-[oklch(0.2_0.05_150)] shadow-sm border border-black/5 dark:border-white/5">
                 
                 {/* Background Details */}

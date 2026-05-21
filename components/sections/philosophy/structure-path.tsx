@@ -71,6 +71,7 @@ export function StructurePath() {
                             key={d.day}
                             className="absolute flex items-center justify-center"
                             style={{ x, y }}
+                            initial={{ opacity: isActive ? 1 : 0.3, scale: isActive ? 1.1 : 1 }}
                             animate={{ opacity: isActive ? 1 : 0.3, scale: isActive ? 1.1 : 1 }}
                             transition={{ duration: 0.5 }}
                         >
