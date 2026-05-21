@@ -354,6 +354,42 @@ function shouldPreserveExistingAccess(row: ProgramAccessRow | undefined) {
     );
 }
 
+function getSupabaseErrorText(error: unknown) {
+    if (!error || typeof error !== "object") {
+        return "";
+    }
+
+    const record = error as {
+        code?: unknown;
+        details?: unknown;
+        hint?: unknown;
+        message?: unknown;
+    };
+
+    return [
+        record.code,
+        record.message,
+        record.details,
+        record.hint,
+    ]
+        .filter((value): value is string => typeof value === "string")
+        .join(" ")
+        .toLowerCase();
+}
+
+function isMissingProgramQueueContractError(error: unknown) {
+    const errorText = getSupabaseErrorText(error);
+    return (
+        errorText.includes("priority_rank") ||
+        errorText.includes("normalize_owned_program_priority_queue") ||
+        errorText.includes("could not find the function") ||
+        errorText.includes("schema cache") ||
+        errorText.includes("pgrst202") ||
+        errorText.includes("pgrst204") ||
+        errorText.includes("42703")
+    );
+}
+
 async function grantProgramEntitlements(userId: string, programSlugs: CanonicalProgramSlug[]) {
     if (programSlugs.length === 0) {
         return;
@@ -380,24 +416,33 @@ async function grantProgramEntitlements(userId: string, programSlugs: CanonicalP
             continue;
         }
 
-        const priorityRank = index + 1;
         const payload = {
             user_id: userId,
             owned_program: dbSlug,
             purchase_state: "owned_active",
             completion_state: "not_started",
-            priority_rank: priorityRank,
+        };
+        const payloadWithQueueRank = {
+            ...payload,
+            priority_rank: index + 1,
         };
 
-        const { error: accessError } = existing
-            ? await supabaseAdmin
+        const writeAccess = async (nextPayload: typeof payload | typeof payloadWithQueueRank) => existing
+            ? supabaseAdmin
                 .from("program_access")
-                .update(payload)
+                .update(nextPayload)
                 .eq("user_id", userId)
                 .eq("owned_program", dbSlug)
-            : await supabaseAdmin
+            : supabaseAdmin
                 .from("program_access")
-                .insert(payload);
+                .insert(nextPayload);
+
+        let { error: accessError } = await writeAccess(payloadWithQueueRank);
+
+        if (accessError && isMissingProgramQueueContractError(accessError)) {
+            console.warn(`[Commerce] program_access.priority_rank unavailable; granting ${dbSlug} without queue rank.`);
+            ({ error: accessError } = await writeAccess(payload));
+        }
 
         if (accessError) {
             console.error(`[Commerce] Failed to write entitlement for ${dbSlug}:`, accessError);
@@ -411,6 +456,11 @@ async function grantProgramEntitlements(userId: string, programSlugs: CanonicalP
     );
 
     if (normalizeError) {
+        if (isMissingProgramQueueContractError(normalizeError)) {
+            console.warn("[Commerce] Queue normalizer unavailable; continuing with legacy entitlement fulfillment.");
+            return;
+        }
+
         throw normalizeError;
     }
 }
