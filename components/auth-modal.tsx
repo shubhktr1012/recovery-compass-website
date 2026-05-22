@@ -296,7 +296,9 @@ export function AuthModal({ isOpen, onClose, onSuccess, defaultTab = "signin" }:
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => { if (!open) { reset(); onClose(); } }}>
-            <DialogContent className={cn(
+            <DialogContent
+                aria-describedby={undefined}
+                className={cn(
                 "sm:max-w-[440px] p-0 overflow-hidden border-none",
                 "bg-[oklch(0.9484_0.0251_149.08)] shadow-2xl shadow-black/10",
                 "rounded-[32px]"

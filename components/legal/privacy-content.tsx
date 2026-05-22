@@ -33,7 +33,7 @@ export function PrivacyContent() {
         <p className="mb-4">
           Recovery Compass (&quot;Recovery Compass&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) provides a mobile app,
           website, and related services that support habit change, sleep, energy, daily wellness routines,
-          journaling, and subscription access.
+          journaling, purchases, entitlements, and questionnaire-based services.
         </p>
         <p>
           This policy explains what data we collect, how we use it, which service providers help us run the
@@ -72,7 +72,7 @@ export function PrivacyContent() {
           <ul className="list-disc pl-6 space-y-2">
             <li>the Recovery Compass mobile app</li>
             <li>the Recovery Compass website</li>
-            <li>our account, subscription, support, and email flows</li>
+            <li>our account, purchase, subscription, support, and email flows</li>
             <li>our educational citations and legal pages</li>
           </ul>
           <p>
@@ -86,7 +86,7 @@ export function PrivacyContent() {
         <div className="space-y-4">
           <p>Depending on how you use the Services, we may collect:</p>
           <ul className="list-disc pl-6 space-y-2">
-            <li>account data such as email address, display name, and login provider</li>
+            <li>account data such as email address, display name, login provider, and optional phone number</li>
             <li>optional profile image uploads</li>
             <li>onboarding and questionnaire answers</li>
             <li>recommended program or journey selections generated from your responses</li>
@@ -94,7 +94,10 @@ export function PrivacyContent() {
             <li>journal entries, reflections, moods, cravings, physical symptoms, and related check-in data</li>
             <li>step-count and movement data if you enable Motion &amp; Fitness or Health Connect features</li>
             <li>notification preferences, push opt-in state, and push token identifiers</li>
-            <li>subscription and purchase state, including store product identifiers and RevenueCat customer identifiers</li>
+            <li>subscription, entitlement, and purchase state, including store product identifiers and RevenueCat customer identifiers</li>
+            <li>diet-plan questionnaire responses, fulfilment status, and claim or recovery link metadata for supported website flows</li>
+            <li>in-app analytics events such as card progress, day progress, notification taps, and related product usage events</li>
+            <li>client-side error and diagnostic reports linked to your account when you are signed in</li>
             <li>support messages, enquiry submissions, and operational email records</li>
             <li>website checkout information for web purchases, including order and payment verification details</li>
           </ul>
@@ -111,7 +114,8 @@ export function PrivacyContent() {
             <li>complete onboarding, questionnaires, and journal prompts</li>
             <li>use program content, reminders, and progress features</li>
             <li>enable profile photo upload, notifications, or step tracking</li>
-            <li>purchase a program through the app stores or the website</li>
+            <li>purchase a program or add-on through the app stores or the website</li>
+            <li>complete a diet-plan questionnaire or resume a diet-plan order through a claim link</li>
             <li>contact us through support or enquiry forms</li>
           </ul>
           <p>
@@ -129,6 +133,7 @@ export function PrivacyContent() {
             <li>IP address and basic request metadata</li>
             <li>session and authentication state needed to keep you signed in</li>
             <li>website performance and usage telemetry used to improve reliability</li>
+            <li>in-app event telemetry and error diagnostics used to improve stability, performance, and support</li>
             <li>server-side logs for security, fraud prevention, debugging, and webhook processing</li>
           </ul>
         </div>
@@ -146,20 +151,24 @@ export function PrivacyContent() {
           <p>
             We do not request camera access for core app use, and microphone access is disabled in the current build.
           </p>
+          <p>
+            Some in-program screens may also use device-level privacy protection, such as restricting screenshots
+            or obscuring app previews, to reduce accidental exposure of sensitive wellness content.
+          </p>
         </div>
       </motion.section>
 
       <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
-        <h2 className="font-erode text-2xl font-semibold text-foreground">7. Subscription and Payment Information</h2>
+        <h2 className="font-erode text-2xl font-semibold text-foreground">7. Purchases and Payment Information</h2>
         <div className="space-y-4">
-          <p>Subscriptions and program purchases may be processed through:</p>
+          <p>Program purchases, add-ons, subscriptions if offered, and supported website checkouts may be processed through:</p>
           <ul className="list-disc pl-6 space-y-2">
             <li>Apple App Store</li>
             <li>Google Play Store</li>
             <li>Razorpay for website purchases</li>
           </ul>
           <p>
-            Subscription validation and entitlement syncing are handled through <span className="font-medium text-foreground">RevenueCat</span>.
+            Purchase validation, entitlement syncing, and restore flows may be handled through <span className="font-medium text-foreground">RevenueCat</span>.
           </p>
           <div className="p-6 bg-foreground/[0.03] border border-foreground/5 rounded-2xl">
             <p className="font-bold mb-2">We do not store:</p>
@@ -180,7 +189,8 @@ export function PrivacyContent() {
             <li>create and manage your account</li>
             <li>deliver onboarding, program access, journal history, and progress features</li>
             <li>generate recommendations and personalize your experience</li>
-            <li>restore purchases and validate subscription access</li>
+            <li>restore purchases and validate subscription or entitlement access</li>
+            <li>fulfil diet-plan orders, generate related outputs, and deliver fulfilment emails or claim links</li>
             <li>send service-related emails and reminders</li>
             <li>provide support and respond to deletion requests</li>
             <li>detect abuse, prevent fraud, and secure the platform</li>
@@ -197,11 +207,12 @@ export function PrivacyContent() {
           <p>We share data only as needed to run the Services, including with:</p>
           <ul className="list-disc pl-6 space-y-2">
             <li><span className="font-medium text-foreground">Supabase</span> for authentication, database, storage, and server-side functions</li>
-            <li><span className="font-medium text-foreground">RevenueCat</span> for subscription and entitlement management</li>
+            <li><span className="font-medium text-foreground">RevenueCat</span> for purchase restoration, subscription, and entitlement management</li>
             <li><span className="font-medium text-foreground">Apple and Google</span> for in-app purchase processing</li>
             <li><span className="font-medium text-foreground">Razorpay</span> for website payment processing</li>
             <li><span className="font-medium text-foreground">Resend</span> for transactional email delivery</li>
             <li><span className="font-medium text-foreground">Vercel</span> for website hosting and performance telemetry</li>
+            <li><span className="font-medium text-foreground">Google or Anthropic</span> for diet-plan generation workflows when enabled</li>
             <li>law enforcement or regulators where required by law</li>
           </ul>
           <p>We do not rent or broker personal data.</p>

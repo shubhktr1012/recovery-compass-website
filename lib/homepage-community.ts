@@ -76,43 +76,46 @@ async function resolveAvatarUrl(avatarPath: string | null) {
 const getHomepageCommunityDataCached = unstable_cache(
     async (): Promise<HomepageCommunityData> => {
         try {
-            const [countResult, latestProfilesResult] = await Promise.all([
-                supabaseAdmin.from("profiles").select("id", { count: "exact", head: true }),
-                supabaseAdmin
-                    .from("profiles")
-                    .select("id, avatar_url, display_name, email")
-                    .order("created_at", { ascending: false })
-                    .limit(4),
-            ]);
+            const fetchPromise = (async () => {
+                const [countResult, latestProfilesResult] = await Promise.all([
+                    supabaseAdmin.from("profiles").select("id", { count: "exact", head: true }),
+                    supabaseAdmin
+                        .from("profiles")
+                        .select("id, avatar_url, display_name, email")
+                        .order("created_at", { ascending: false })
+                        .limit(4),
+                ]);
 
-            if (countResult.error) {
-                throw countResult.error;
-            }
+                if (countResult.error) throw countResult.error;
+                if (latestProfilesResult.error) throw latestProfilesResult.error;
 
-            if (latestProfilesResult.error) {
-                throw latestProfilesResult.error;
-            }
+                const latestMembers = await Promise.all(
+                    (latestProfilesResult.data ?? []).map(async (profile) => {
+                        const snapshot = profile as ProfileSnapshot;
+                        return {
+                            id: snapshot.id,
+                            avatarUrl: await resolveAvatarUrl(snapshot.avatar_url),
+                            displayName: snapshot.display_name,
+                            initials: getInitials(snapshot.display_name, snapshot.email),
+                        };
+                    })
+                );
 
-            const latestMembers = await Promise.all(
-                (latestProfilesResult.data ?? []).map(async (profile) => {
-                    const snapshot = profile as ProfileSnapshot;
+                return {
+                    memberCount: countResult.count ?? latestMembers.length,
+                    latestMembers,
+                };
+            })();
 
-                    return {
-                        id: snapshot.id,
-                        avatarUrl: await resolveAvatarUrl(snapshot.avatar_url),
-                        displayName: snapshot.display_name,
-                        initials: getInitials(snapshot.display_name, snapshot.email),
-                    };
-                })
-            );
+            // 3.5 second timeout to prevent hanging the page render
+            const timeoutPromise = new Promise<HomepageCommunityData>((_, reject) => {
+                setTimeout(() => reject(new Error("Timeout fetching community data")), 3500);
+            });
 
-            return {
-                memberCount: countResult.count ?? latestMembers.length,
-                latestMembers,
-            };
-        } catch (error) {
-            console.error("Failed to load homepage community data:", error);
-
+            return await Promise.race([fetchPromise, timeoutPromise]);
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : String(error);
+            console.error("Failed to load homepage community data:", message);
             return {
                 memberCount: null,
                 latestMembers: [],

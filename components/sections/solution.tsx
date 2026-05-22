@@ -236,7 +236,7 @@ export function SolutionSection() {
     const imageAnimations = [
         { x: slide1ImageX, opacity: slide1ImageOpacity },
         { x: slide2ImageX, opacity: slide2ImageOpacity },
-        { x: slide3ImageX },
+        { x: slide3ImageX, opacity: 1 },
     ];
 
     const imageLayers = ["z-20", "z-30", "z-40"];
