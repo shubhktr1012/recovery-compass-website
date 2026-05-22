@@ -262,10 +262,7 @@ export async function markTransactionFailed(providerOrderId: string, metadata?: 
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 4. Fulfillment Stub
-//    TODO: Grant entitlements into `program_access` table once that schema
-//    is finalized from the DB cleanup work.
-//
+// 4. Fulfillment
 //    Current behavior:
 //    - Logs the intent
 //    - Sends the Welcome & Receipt email to the user via Resend!
