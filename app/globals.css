@@ -76,6 +76,54 @@
   .font-erode {
     font-family: var(--font-erode);
   }
+
+  .premium-shine-pill {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    box-shadow:
+      inset 0 1px 0 oklch(1 0 0 / 0.7),
+      0 8px 24px oklch(0.2475 0.0661 146.79 / 0.04);
+  }
+
+  .premium-shine-pill::after {
+    content: "";
+    position: absolute;
+    inset: -45% -80%;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        105deg,
+        transparent 36%,
+        oklch(0.2475 0.0661 146.79 / 0.05) 44%,
+        oklch(1 0 0 / 0.88) 50%,
+        oklch(0.2475 0.0661 146.79 / 0.08) 56%,
+        transparent 66%
+      );
+    filter: blur(0.5px);
+    transform: translateX(-120%) rotate(6deg);
+    animation: premium-pill-shine 18s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  }
+
+  @keyframes premium-pill-shine {
+    0%,
+    22% {
+      transform: translateX(-120%) rotate(6deg);
+    }
+
+    84%,
+    100% {
+      transform: translateX(120%) rotate(6deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .premium-shine-pill::after {
+      animation: none;
+      opacity: 0;
+    }
+  }
 }
 
 :root {
