@@ -67,12 +67,8 @@ export function AboutPageContent() {
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.5 }}
-                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[oklch(0.2475_0.0661_146.79)]/5 border border-[oklch(0.2475_0.0661_146.79)]/10"
+                            className="inline-flex items-center px-3 py-1 rounded-full bg-[oklch(0.2475_0.0661_146.79)]/5 border border-[oklch(0.2475_0.0661_146.79)]/10"
                         >
-                            <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[oklch(0.2475_0.0661_146.79)] opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-[oklch(0.2475_0.0661_146.79)]"></span>
-                            </span>
                             <span className="text-[10px] md:text-xs font-bold text-[oklch(0.2475_0.0661_146.79)]/80 tracking-wide uppercase">
                                 Our Mission & Vision
                             </span>

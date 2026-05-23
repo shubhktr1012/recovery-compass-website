@@ -62,12 +62,8 @@ export function HeroOmega({
                         {/* Headline - Centered */}
                         <div className="max-w-[320px] md:max-w-[600px] lg:max-w-[560px] mx-auto space-y-5 md:space-y-6">
                             {/* Status Pill */}
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[oklch(0.2475_0.0661_146.79)]/5 border border-[oklch(0.2475_0.0661_146.79)]/10">
-                                <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
-                                </span>
-                                <span className="text-[10px] md:text-xs font-bold text-[oklch(0.2475_0.0661_146.79)]/80 tracking-wide uppercase">
+                            <div className="premium-shine-pill inline-flex items-center rounded-full border border-[oklch(0.2475_0.0661_146.79)]/10 bg-[oklch(0.2475_0.0661_146.79)]/5 px-3 py-1">
+                                <span className="relative z-10 text-[10px] md:text-xs font-bold text-[oklch(0.2475_0.0661_146.79)]/80 tracking-wide uppercase">
                                     A Behavioral Guidance App <span className="hidden md:inline"> - Available Now on iOS &amp; Android</span>
                                     <span className="md:hidden"> - Available Now</span>
                                 </span>
