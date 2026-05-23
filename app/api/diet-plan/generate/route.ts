@@ -378,10 +378,35 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ message: "Already fulfilled" });
     }
 
-    await supabase
+    if (order.status === "generating") {
+        return NextResponse.json({ message: "Already generating" });
+    }
+
+    if (!["pending", "failed"].includes(order.status)) {
+        return NextResponse.json(
+            { message: `Order is not ready for generation. Current status: ${order.status}` },
+            { status: 409 }
+        );
+    }
+
+    const { data: claimedOrder, error: claimError } = await supabase
         .from("diet_plan_orders")
         .update({ status: "generating", error_message: null })
-        .eq("id", orderId);
+        .eq("id", orderId)
+        .eq("status", order.status)
+        .select("id")
+        .maybeSingle();
+
+    if (claimError) {
+        return NextResponse.json(
+            { message: `Failed to claim order for generation: ${claimError.message}` },
+            { status: 500 }
+        );
+    }
+
+    if (!claimedOrder) {
+        return NextResponse.json({ message: "Order is already being processed" });
+    }
 
     try {
         const questionnaireData =
