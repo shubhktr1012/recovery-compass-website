@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import crypto from "crypto";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { DIET_PLAN_STANDALONE_PRICE_INR } from "@/lib/diet-plan-product";
@@ -15,6 +15,13 @@ function getErrorMessage(error: unknown) {
 
 function isValidEmail(email: string) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function getBaseUrl(req: NextRequest) {
+    return (
+        process.env.NEXT_PUBLIC_SITE_URL ||
+        new URL(req.url).origin
+    ).replace(/\/$/, "");
 }
 
 export async function POST(req: NextRequest) {
@@ -115,6 +122,39 @@ export async function POST(req: NextRequest) {
         if (insertError || !order) {
             throw new Error(insertError?.message ?? "Failed to record diet plan order");
         }
+
+        const baseUrl = getBaseUrl(req);
+
+        after(async () => {
+            try {
+                if (!process.env.DIET_PLAN_INTERNAL_SECRET) {
+                    await supabase
+                        .from("diet_plan_orders")
+                        .update({
+                            status: "failed",
+                            error_message: "DIET_PLAN_INTERNAL_SECRET is not configured",
+                        })
+                        .eq("id", order.id);
+                    return;
+                }
+
+                const response = await fetch(`${baseUrl}/api/diet-plan/generate`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-internal-secret": process.env.DIET_PLAN_INTERNAL_SECRET,
+                    },
+                    body: JSON.stringify({ orderId: order.id }),
+                });
+
+                if (!response.ok) {
+                    const body = await response.text().catch(() => "(unreadable)");
+                    console.error(`[DietPlan] Generation trigger failed (${response.status}): ${body}`);
+                }
+            } catch (error) {
+                console.error("[DietPlan] Failed to trigger generation:", error);
+            }
+        });
 
         return NextResponse.json({
             message: "Payment verified. Your personalised diet plan will be emailed within 30-45 minutes.",

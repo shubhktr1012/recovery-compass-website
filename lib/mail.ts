@@ -294,6 +294,13 @@ export interface SendDietPlanEmailParams {
     pdfFilename: string;
 }
 
+function getDietPlanScheduledAt() {
+    const delayMinutes = Number.parseInt(process.env.DIET_PLAN_EMAIL_DELAY_MINUTES ?? "35", 10);
+    const safeDelayMinutes = Number.isFinite(delayMinutes) && delayMinutes > 0 ? delayMinutes : 35;
+
+    return new Date(Date.now() + safeDelayMinutes * 60 * 1000).toISOString();
+}
+
 export async function sendDietPlanEmail({
     to,
     clientName,
@@ -314,6 +321,7 @@ export async function sendDietPlanEmail({
             from: FROM_EMAIL,
             to: [to],
             subject: `${clientName}, your personalised Recovery Compass diet plan is ready`,
+            scheduledAt: getDietPlanScheduledAt(),
             html: `
 <div style="font-family: 'Inter', system-ui, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; color: #1a1a1a;">
 
@@ -368,7 +376,7 @@ export async function sendDietPlanEmail({
             return { success: false, error: error.message };
         }
 
-        console.log(`[Mail] Diet plan email sent to ${to}. Email ID: ${data?.id}`);
+        console.log(`[Mail] Diet plan email scheduled for ${to}. Email ID: ${data?.id}`);
         return { success: true, id: data?.id ?? null };
     } catch (err: unknown) {
         console.error("[Mail] Exception sending diet plan email:", err);
