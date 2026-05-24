@@ -13,7 +13,7 @@ export default async function AdminDashboardLayout({
   const access = await getAdminAccess();
 
   if (!access.ok && access.reason === "unauthenticated") {
-    redirect("/admin/sign-in");
+    redirect("/sign-in");
   }
 
   if (!access.ok) {

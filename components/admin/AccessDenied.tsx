@@ -15,7 +15,7 @@ export function AccessDenied({
         <h1 className="mt-4 text-3xl font-semibold">Access denied</h1>
         <p className="mt-3 text-sm leading-6 text-white/60">{message}</p>
         <Button asChild className="mt-6 rounded-full bg-white text-[#073512] hover:bg-white/90">
-          <Link href="/">Return to website</Link>
+          <Link href="https://recoverycompass.co">Return to website</Link>
         </Button>
       </div>
     </main>

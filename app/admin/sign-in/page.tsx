@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export default async function AdminSignInPage() {
   const access = await getAdminAccess();
   if (access.ok) {
-    redirect("/admin/overview");
+    redirect("/overview");
   }
 
   return (
@@ -18,8 +18,8 @@ export default async function AdminSignInPage() {
         </p>
         <h1 className="mt-4 text-3xl font-semibold">Sign in</h1>
         <p className="mt-3 text-sm leading-6 text-white/60">
-          Use an approved Supabase account from the temporary admin allowlist.
-          The dashboard is read-only in this first release slice.
+          Use Google or password sign-in with an approved admin email. The
+          dashboard is read-only in this first release slice.
         </p>
         <AdminSignInForm />
       </div>

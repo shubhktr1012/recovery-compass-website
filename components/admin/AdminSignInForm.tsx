@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +15,7 @@ export function AdminSignInForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -32,12 +34,52 @@ export function AdminSignInForm() {
       return;
     }
 
-    router.replace(searchParams.get("next") ?? "/admin/overview");
+    router.replace(searchParams.get("next") ?? "/overview");
     router.refresh();
   }
 
+  async function handleGoogleSignIn() {
+    setIsGoogleLoading(true);
+    setError(null);
+
+    const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(
+      searchParams.get("next") ?? "/overview"
+    )}`;
+    const { error: signInError } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo },
+    });
+
+    if (signInError) {
+      setIsGoogleLoading(false);
+      setError(signInError.message);
+    }
+  }
+
   return (
-    <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+    <div className="mt-8 space-y-4">
+      <Button
+        className="h-12 w-full rounded-full border border-white/10 bg-white/[0.08] text-white hover:bg-white/[0.13]"
+        disabled={isGoogleLoading || isSubmitting}
+        onClick={handleGoogleSignIn}
+        type="button"
+        variant="outline"
+      >
+        {isGoogleLoading ? (
+          <Loader2 className="size-4 animate-spin" />
+        ) : (
+          <FcGoogle className="size-5" />
+        )}
+        Continue with Google
+      </Button>
+
+      <div className="flex items-center gap-3 text-xs uppercase tracking-[0.18em] text-white/35">
+        <span className="h-px flex-1 bg-white/10" />
+        or use password
+        <span className="h-px flex-1 bg-white/10" />
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
         <label className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45">
           Admin email
@@ -71,12 +113,13 @@ export function AdminSignInForm() {
       ) : null}
       <Button
         className="h-12 w-full rounded-full bg-white text-[#073512] hover:bg-white/90"
-        disabled={isSubmitting}
+        disabled={isSubmitting || isGoogleLoading}
         type="submit"
       >
         {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : null}
         Sign in
       </Button>
-    </form>
+      </form>
+    </div>
   );
 }

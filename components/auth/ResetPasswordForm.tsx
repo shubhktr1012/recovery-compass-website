@@ -132,7 +132,7 @@ export function ResetPasswordForm() {
           <p>{success}</p>
           <Link
             className="inline-flex font-semibold underline underline-offset-4"
-            href="https://admin.recoverycompass.co/admin"
+            href="https://admin.recoverycompass.co"
           >
             Go to admin sign-in
           </Link>

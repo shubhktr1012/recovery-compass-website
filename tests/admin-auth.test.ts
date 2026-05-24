@@ -1,10 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
-  isAdminHost,
   normalizeAdminEmail,
   parseAdminEmails,
   resolveAdminUser,
 } from "@/lib/admin/auth";
+import { isAdminHost } from "@/lib/admin/host";
 import { getAdminDateRange } from "@/lib/admin/date-range";
 import { maskEmail } from "@/lib/admin/format";
 

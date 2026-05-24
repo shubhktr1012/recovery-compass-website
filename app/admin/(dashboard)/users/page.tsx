@@ -51,7 +51,7 @@ export default async function AdminUsersPage({
         ]}
         data={users.map((user) => ({
           ...user,
-          href: `/admin/users/${user.id}`,
+          href: `/users/${user.id}`,
           lastSeen: formatDateTime(user.lastSeen),
         }))}
         emptyDescription="No users matched that search."

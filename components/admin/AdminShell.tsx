@@ -17,13 +17,13 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
 const navItems = [
-  { href: "/admin/overview", label: "Home", icon: Home },
-  { href: "/admin/users", label: "Users", icon: Users },
-  { href: "/admin/programs", label: "Programs", icon: ListChecks },
-  { href: "/admin/purchases", label: "Purchases", icon: CreditCard },
-  { href: "/admin/diet-plans", label: "Diet Plans", icon: Apple },
-  { href: "/admin/engagement", label: "Engagement", icon: BarChart3 },
-  { href: "/admin/activity", label: "Admin Activity", icon: Activity },
+  { href: "/overview", label: "Home", icon: Home },
+  { href: "/users", label: "Users", icon: Users },
+  { href: "/programs", label: "Programs", icon: ListChecks },
+  { href: "/purchases", label: "Purchases", icon: CreditCard },
+  { href: "/diet-plans", label: "Diet Plans", icon: Apple },
+  { href: "/engagement", label: "Engagement", icon: BarChart3 },
+  { href: "/activity", label: "Admin Activity", icon: Activity },
 ];
 
 export function AdminShell({
@@ -39,7 +39,7 @@ export function AdminShell({
     <div className="min-h-screen bg-[#06190d] text-white">
       <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(177,222,188,0.16),transparent_34%),radial-gradient(circle_at_78%_18%,rgba(255,255,255,0.08),transparent_28%),linear-gradient(135deg,#06190d,#082411_45%,#041007)]" />
       <aside className="fixed inset-y-0 left-0 hidden w-72 border-r border-white/10 bg-black/15 px-5 py-6 backdrop-blur-xl lg:block">
-        <Link href="/admin/overview" className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3">
           <div className="flex size-11 items-center justify-center rounded-2xl bg-white text-[#073512]">
             <LayoutDashboard className="size-5" />
           </div>
@@ -53,7 +53,7 @@ export function AdminShell({
           {navItems.map((item) => {
             const isActive =
               pathname === item.href ||
-              (item.href !== "/admin/overview" && pathname.startsWith(item.href));
+              (item.href !== "/overview" && pathname.startsWith(item.href));
             const Icon = item.icon;
 
             return (

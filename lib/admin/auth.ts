@@ -1,10 +1,9 @@
 import type { User } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { getHostFromHeaders, isAdminHost } from "@/lib/admin/host";
 import type { AdminAccessResult, AdminRole, AdminSession } from "@/lib/admin/types";
 
-const DEFAULT_ADMIN_HOST = "admin.recoverycompass.co";
-const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1"]);
 const validRoles = new Set<AdminRole>(["owner", "ops", "viewer"]);
 
 export function normalizeAdminEmail(email: string | null | undefined) {
@@ -35,44 +34,8 @@ export function parseAdminEmails(value = process.env.ADMIN_EMAILS) {
   return entries;
 }
 
-export function getAdminDashboardHost() {
-  return (
-    process.env.ADMIN_DASHBOARD_HOST?.trim().toLowerCase() ?? DEFAULT_ADMIN_HOST
-  );
-}
-
-function normalizeHost(host: string | null | undefined) {
-  const firstHost = host?.split(",")[0]?.trim().toLowerCase();
-  if (!firstHost) {
-    return "";
-  }
-
-  if (firstHost.startsWith("[")) {
-    return firstHost.replace(/^\[|\](?::\d+)?$/g, "");
-  }
-
-  return firstHost.replace(/:\d+$/, "");
-}
-
-export function isAdminHost(host: string | null | undefined) {
-  const normalizedHost = normalizeHost(host);
-  if (!normalizedHost) {
-    return false;
-  }
-
-  if (LOCAL_HOSTS.has(normalizedHost) || normalizedHost.endsWith(".localhost")) {
-    return process.env.NODE_ENV !== "production";
-  }
-
-  return normalizedHost === normalizeHost(getAdminDashboardHost());
-}
-
 export function getRequestHost(request: Request | NextRequest) {
-  return (
-    request.headers.get("x-forwarded-host") ??
-    request.headers.get("host") ??
-    request.headers.get("x-vercel-forwarded-host")
-  );
+  return getHostFromHeaders(request.headers);
 }
 
 export function resolveAdminUser(user: Pick<User, "id" | "email"> | null | undefined) {

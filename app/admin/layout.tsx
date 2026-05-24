@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
-import { isAdminHost } from "@/lib/admin/auth";
+import { getHostFromHeaders, isAdminHost } from "@/lib/admin/host";
 
 export const metadata: Metadata = {
   robots: {
@@ -17,10 +17,7 @@ export default async function AdminRootLayout({
   children: React.ReactNode;
 }) {
   const headerStore = await headers();
-  const host =
-    headerStore.get("x-forwarded-host") ??
-    headerStore.get("host") ??
-    headerStore.get("x-vercel-forwarded-host");
+  const host = getHostFromHeaders(headerStore);
 
   if (!isAdminHost(host)) {
     notFound();
