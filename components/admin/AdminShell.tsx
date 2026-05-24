@@ -15,6 +15,7 @@ import {
 import type { AdminSession } from "@/lib/admin/types";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { AdminSignOutButton } from "@/components/admin/AdminSignOutButton";
 
 const navItems = [
   { href: "/overview", label: "Home", icon: Home },
@@ -80,6 +81,7 @@ export function AdminShell({
           <Badge className="mt-3 bg-white/10 text-white hover:bg-white/10">
             {admin.role}
           </Badge>
+          <AdminSignOutButton className="mt-3 w-full" />
         </div>
       </aside>
 
@@ -92,13 +94,16 @@ export function AdminShell({
               </p>
               <p className="mt-1 text-lg font-semibold">Admin dashboard</p>
             </div>
-            <div className="hidden items-center gap-2 md:flex">
-              <Badge className="bg-white/10 text-white hover:bg-white/10">
-                {admin.source.replace("_", " ")}
-              </Badge>
-              <Badge className="bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/15">
-                Read-only V1
-              </Badge>
+            <div className="flex items-center gap-2">
+              <div className="hidden items-center gap-2 md:flex">
+                <Badge className="bg-white/10 text-white hover:bg-white/10">
+                  {admin.source.replace("_", " ")}
+                </Badge>
+                <Badge className="bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/15">
+                  Read-only V1
+                </Badge>
+              </div>
+              <AdminSignOutButton className="px-3" showLabel={false} />
             </div>
           </div>
           <nav className="mt-4 flex gap-2 overflow-x-auto pb-1 lg:hidden">

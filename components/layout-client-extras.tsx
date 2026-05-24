@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
 import { isProgramFinderEnabled } from "@/lib/features";
 
 const BackToTop = dynamic(
@@ -29,7 +30,16 @@ const MyPlanDrawer = dynamic(
 );
 
 export function LayoutClientExtras() {
+  const pathname = usePathname();
   const programFinderEnabled = isProgramFinderEnabled();
+  const isAdminExperience =
+    pathname?.startsWith("/admin") ||
+    (typeof window !== "undefined" &&
+      window.location.hostname === "admin.recoverycompass.co");
+
+  if (isAdminExperience) {
+    return null;
+  }
 
   return (
     <>
