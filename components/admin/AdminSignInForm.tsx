@@ -42,12 +42,9 @@ export function AdminSignInForm() {
     setIsGoogleLoading(true);
     setError(null);
 
-    const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(
-      searchParams.get("next") ?? "/overview"
-    )}`;
     const { error: signInError } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo },
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
     });
 
     if (signInError) {

@@ -2,14 +2,17 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/commerce";
+import { getHostFromHeaders, isAdminHost } from "@/lib/admin/host";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
     const { searchParams, origin } = new URL(request.url);
     const code = searchParams.get("code");
-    // if "next" is in search params, use it as the redirection URL
-    const next = searchParams.get("next") ?? "/";
+    const requestHost = getHostFromHeaders(request.headers);
+    const isAdminCallback = isAdminHost(requestHost);
+    // If "next" is present, use it. Otherwise admin callbacks go to the dashboard.
+    const next = searchParams.get("next") ?? (isAdminCallback ? "/overview" : "/");
     const redirectUrl = new URL(next, request.url);
     const response = NextResponse.redirect(redirectUrl);
     response.headers.set("Cache-Control", "private, no-store");
