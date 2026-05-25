@@ -34,9 +34,9 @@ export default async function AdminOverviewPage({
           <TrendLineChart
             data={data.trend}
             lines={[
-              { color: "#b7e7c0", key: "signups", label: "New users" },
-              { color: "#ffffff", key: "purchases", label: "Paid purchases" },
-              { color: "#78b986", key: "dayCompletions", label: "Days completed" },
+              { color: "#8bd3ff", key: "signups", label: "New users" },
+              { color: "#f7c66a", key: "purchases", label: "Paid purchases" },
+              { color: "#c7b7ff", key: "dayCompletions", label: "Days completed" },
             ]}
           />
         </section>
@@ -63,9 +63,18 @@ export default async function AdminOverviewPage({
           </div>
         ) : (
           <div className="mt-4 divide-y divide-white/10">
-            {data.activity.map((item) => (
+            {data.activity.map((item, index) => (
               <div key={item.id} className="flex gap-4 py-3">
-                <div className="mt-1 size-2 rounded-full bg-emerald-200" />
+                <div
+                  className={
+                    [
+                      "mt-1 size-2 rounded-full bg-sky-300",
+                      "mt-1 size-2 rounded-full bg-amber-300",
+                      "mt-1 size-2 rounded-full bg-violet-300",
+                      "mt-1 size-2 rounded-full bg-rose-300",
+                    ][index % 4]
+                  }
+                />
                 <div>
                   <p className="font-medium text-white">{item.label}</p>
                   <p className="mt-1 text-sm text-white/55">{item.detail}</p>

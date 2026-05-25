@@ -25,8 +25,8 @@ export function DateRangeControls({ activeRange }: { activeRange: string }) {
             className={cn(
               "rounded-full px-3 py-1.5 text-xs font-medium transition",
               isActive
-                ? "bg-white text-[#073512]"
-                : "text-white/60 hover:bg-white/[0.07] hover:text-white"
+                ? "bg-sky-100 text-[#082035]"
+                : "text-white/60 hover:bg-white/[0.07] hover:text-sky-50"
             )}
           >
             {option.label}

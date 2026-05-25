@@ -36,7 +36,7 @@ export default async function AdminUsersPage({
             placeholder="Search by email, name, or user ID"
           />
         </div>
-        <Button className="h-12 rounded-2xl bg-white px-6 text-[#073512] hover:bg-white/90">
+        <Button className="h-12 rounded-2xl bg-sky-100 px-6 text-[#082035] hover:bg-sky-50">
           Search
         </Button>
       </form>

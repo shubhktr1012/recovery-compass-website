@@ -38,7 +38,7 @@ export function AdminShell({
 
   return (
     <div className="min-h-screen bg-[#06190d] text-white">
-      <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(177,222,188,0.16),transparent_34%),radial-gradient(circle_at_78%_18%,rgba(255,255,255,0.08),transparent_28%),linear-gradient(135deg,#06190d,#082411_45%,#041007)]" />
+      <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(139,211,255,0.14),transparent_32%),radial-gradient(circle_at_78%_18%,rgba(247,198,106,0.12),transparent_26%),radial-gradient(circle_at_62%_82%,rgba(199,183,255,0.1),transparent_30%),linear-gradient(135deg,#06190d,#092113_45%,#061016)]" />
       <aside className="fixed inset-y-0 left-0 hidden w-72 border-r border-white/10 bg-black/15 px-5 py-6 backdrop-blur-xl lg:block">
         <Link href="/" className="flex items-center gap-3">
           <div className="flex size-11 items-center justify-center rounded-2xl bg-white text-[#073512]">
@@ -64,7 +64,7 @@ export function AdminShell({
                 className={cn(
                   "flex items-center gap-3 rounded-2xl px-4 py-3 text-sm transition",
                   isActive
-                    ? "bg-white text-[#073512] shadow-lg shadow-black/10"
+                    ? "bg-sky-100 text-[#082035] shadow-lg shadow-black/10"
                     : "text-white/62 hover:bg-white/[0.07] hover:text-white"
                 )}
               >
@@ -99,7 +99,7 @@ export function AdminShell({
                 <Badge className="bg-white/10 text-white hover:bg-white/10">
                   {admin.source.replace("_", " ")}
                 </Badge>
-                <Badge className="bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/15">
+                <Badge className="bg-sky-300/15 text-sky-100 hover:bg-sky-300/15">
                   Read-only V1
                 </Badge>
               </div>
@@ -115,7 +115,7 @@ export function AdminShell({
                   href={item.href}
                   className={cn(
                     "shrink-0 rounded-full px-3 py-2 text-xs font-medium",
-                    isActive ? "bg-white text-[#073512]" : "bg-white/[0.07] text-white/65"
+                    isActive ? "bg-sky-100 text-[#082035]" : "bg-white/[0.07] text-white/65"
                   )}
                 >
                   {item.label}

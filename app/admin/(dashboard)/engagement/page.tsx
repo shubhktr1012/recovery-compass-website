@@ -31,8 +31,8 @@ export default async function AdminEngagementPage({
         <TrendLineChart
           data={data.trend}
           lines={[
-            { color: "#b7e7c0", key: "events", label: "Tracked actions" },
-            { color: "#ffffff", key: "dayCompletions", label: "Days completed" },
+            { color: "#8bd3ff", key: "events", label: "Tracked actions" },
+            { color: "#f7c66a", key: "dayCompletions", label: "Days completed" },
           ]}
         />
       </section>
