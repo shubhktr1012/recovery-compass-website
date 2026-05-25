@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const range = getAdminDateRange(request.nextUrl.searchParams);
-    return NextResponse.json(await getAdminPurchases(range));
+    return NextResponse.json(await getAdminPurchases(range, auth.admin.role));
   } catch (error) {
     return adminApiError(error);
   }

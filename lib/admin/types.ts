@@ -4,7 +4,7 @@ export type AdminSession = {
   userId: string;
   email: string;
   role: AdminRole;
-  source: "env_allowlist";
+  source: "admin_users" | "env_allowlist";
 };
 
 export type AdminAccessResult =

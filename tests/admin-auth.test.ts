@@ -6,7 +6,7 @@ import {
 } from "@/lib/admin/auth";
 import { isAdminHost } from "@/lib/admin/host";
 import { getAdminDateRange } from "@/lib/admin/date-range";
-import { maskEmail } from "@/lib/admin/format";
+import { formatEmailForAdminRole, maskEmail } from "@/lib/admin/format";
 
 describe("admin auth helpers", () => {
   afterEach(() => {
@@ -72,5 +72,11 @@ describe("admin display helpers", () => {
   it("masks email addresses in list views", () => {
     expect(maskEmail("shubh@example.com")).toBe("sh***@e***.com");
     expect(maskEmail(null)).toBe("No email");
+  });
+
+  it("shows full email only to owner and ops admin roles", () => {
+    expect(formatEmailForAdminRole("team@example.com", "owner")).toBe("team@example.com");
+    expect(formatEmailForAdminRole("ops@example.com", "ops")).toBe("ops@example.com");
+    expect(formatEmailForAdminRole("viewer@example.com", "viewer")).toBe("vi***@e***.com");
   });
 });

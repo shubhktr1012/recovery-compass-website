@@ -2,9 +2,12 @@ import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { DataTable } from "@/components/admin/DataTable";
 import { KpiGrid } from "@/components/admin/KpiCard";
+import { ProgramGrantPanel } from "@/components/admin/ProgramGrantPanel";
 import { SupportWorkflowPanel } from "@/components/admin/SupportWorkflowPanel";
 import { getAdminUserDetail } from "@/lib/admin/data";
 import { formatDateTime } from "@/lib/admin/format";
+import { canGrantPrograms, getAdminAccess } from "@/lib/admin/auth";
+import { recordAdminAuditLog } from "@/lib/admin/audit";
 import {
   buildSupabaseTableLinks,
   buildUserSupportSnippets,
@@ -19,10 +22,22 @@ export default async function AdminUserDetailPage({
   params: Promise<{ userId: string }>;
 }) {
   const { userId } = await params;
-  const user = await getAdminUserDetail(userId);
+  const access = await getAdminAccess();
+  const admin = access.ok ? access.admin : null;
+  const user = await getAdminUserDetail(userId, admin?.role ?? "viewer");
 
   if (!user) {
     notFound();
+  }
+
+  if (admin) {
+    await recordAdminAuditLog({
+      action: "user_detail_viewed",
+      admin,
+      metadata: { source: "admin_dashboard" },
+      targetEmail: user.profile.email,
+      targetUserId: user.profile.id,
+    });
   }
 
   const supportSnippets = buildUserSupportSnippets({
@@ -37,7 +52,7 @@ export default async function AdminUserDetailPage({
   return (
     <div className="space-y-6">
       <PageHeader
-        description="Full user detail is intentionally limited to this drilldown. Future mutations will require audit logging."
+        description="Full user detail is limited to this drilldown. Owner and ops can make audited program grants; viewers remain read-only."
         title={user.profile.displayName}
         withDateRange={false}
       />
@@ -56,7 +71,17 @@ export default async function AdminUserDetailPage({
           },
         ]}
       />
-      <SupportWorkflowPanel snippets={supportSnippets} tableLinks={tableLinks} />
+      <SupportWorkflowPanel
+        snippets={supportSnippets}
+        tableLinks={tableLinks}
+        targetEmail={user.profile.email}
+        targetUserId={user.profile.id}
+      />
+      <ProgramGrantPanel
+        canGrant={admin ? canGrantPrograms(admin) : false}
+        programs={user.programs}
+        userId={user.profile.id}
+      />
 
       <section className="space-y-3">
         <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-white/45">

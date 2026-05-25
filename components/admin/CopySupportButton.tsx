@@ -5,9 +5,17 @@ import { Check, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function CopySupportButton({
+  audit,
   text,
   label = "Copy",
 }: {
+  audit?: {
+    action: string;
+    metadata?: Record<string, unknown>;
+    targetEmail?: string | null;
+    targetProgram?: string | null;
+    targetUserId?: string | null;
+  };
   text: string;
   label?: string;
 }) {
@@ -17,6 +25,16 @@ export function CopySupportButton({
     await navigator.clipboard.writeText(text);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1800);
+
+    if (audit) {
+      void fetch("/api/admin/audit", {
+        body: JSON.stringify(audit),
+        headers: { "content-type": "application/json" },
+        method: "POST",
+      }).catch(() => {
+        // Copying support details should not fail because audit logging is transiently unavailable.
+      });
+    }
   }
 
   return (

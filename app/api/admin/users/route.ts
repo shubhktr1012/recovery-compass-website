@@ -12,7 +12,10 @@ export async function GET(request: NextRequest) {
 
   try {
     return NextResponse.json({
-      users: await searchAdminUsers(request.nextUrl.searchParams.get("q") ?? ""),
+      users: await searchAdminUsers(
+        request.nextUrl.searchParams.get("q") ?? "",
+        auth.admin.role
+      ),
     });
   } catch (error) {
     return adminApiError(error);

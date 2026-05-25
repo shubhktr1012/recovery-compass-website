@@ -3,6 +3,7 @@ import { KpiGrid } from "@/components/admin/KpiCard";
 import { DataTable } from "@/components/admin/DataTable";
 import { getAdminDateRange, resolveSearchParams } from "@/lib/admin/date-range";
 import { getAdminPurchases } from "@/lib/admin/data";
+import { getAdminAccess } from "@/lib/admin/auth";
 import type { AdminSearchParams } from "@/lib/admin/types";
 
 export const dynamic = "force-dynamic";
@@ -14,7 +15,9 @@ export default async function AdminPurchasesPage({
 }) {
   const params = await resolveSearchParams(searchParams);
   const range = getAdminDateRange(params);
-  const data = await getAdminPurchases(range);
+  const access = await getAdminAccess();
+  const role = access.ok ? access.admin.role : "viewer";
+  const data = await getAdminPurchases(range, role);
 
   return (
     <div className="space-y-6">

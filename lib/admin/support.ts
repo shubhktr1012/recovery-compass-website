@@ -35,10 +35,18 @@ type BuildSupportSnippetsInput = {
 };
 
 export type SupportSnippet = {
+  auditAction: SupportCopyAuditAction;
   body: string;
   description: string;
   label: string;
 };
+
+export type SupportCopyAuditAction =
+  | "diagnostic_sql_copied"
+  | "support_packet_copied"
+  | "grant_review_request_copied"
+  | "queue_repair_request_copied"
+  | "fulfillment_review_copied";
 
 export type SupabaseTableLink = {
   href: string;
@@ -115,6 +123,8 @@ export function buildSupabaseTableLinks(projectRef: string | null): SupabaseTabl
     "diet_plan_orders",
     "outbound_email_deliveries",
     "user_day_states",
+    "admin_users",
+    "admin_audit_logs",
   ];
 
   if (!projectRef) {
@@ -208,7 +218,7 @@ Safety checklist before any write:
 - Confirm payment/approval evidence exists.
 - If the user already has an active program, queue the new program instead of creating a second active program.
 - Preserve current_day, user_day_states, and queue order unless explicitly repairing them.
-- Record the reason in the admin audit log once Phase 2 mutations are live.`;
+- Record the reason and evidence in the audited grant flow.`;
 
   const queueRequest = `Requested action: review program queue repair
 User ID: ${userId}
@@ -242,30 +252,35 @@ Safety checklist:
 - Do not mark payment as paid manually.
 - Verify Razorpay/RevenueCat payment truth first.
 - If payment is paid but fulfillment failed, inspect transaction fulfillment_status and outbound_email_deliveries.
-- Retry controls should wait for Phase 2 audit logging unless handled manually by an owner.`;
+- Retry controls should wait for a dedicated audited retry flow unless handled manually by an owner.`;
 
   return [
     {
+      auditAction: "diagnostic_sql_copied",
       body: diagnosticSql,
       description: "Read-only SQL for a full user support snapshot.",
       label: "Copy diagnostic SQL",
     },
     {
+      auditAction: "support_packet_copied",
       body: supportPacket,
       description: "Plain-English packet the support team can send to engineering.",
       label: "Copy support packet",
     },
     {
+      auditAction: "grant_review_request_copied",
       body: grantRequest,
       description: "Non-executable request template for entitlement/grant review.",
       label: "Copy grant review request",
     },
     {
+      auditAction: "queue_repair_request_copied",
       body: queueRequest,
       description: "Non-executable request template for queue/order repairs.",
       label: "Copy queue repair request",
     },
     {
+      auditAction: "fulfillment_review_copied",
       body: fulfillmentRequest,
       description: "Non-executable request template for purchase or diet delivery issues.",
       label: "Copy fulfillment review",

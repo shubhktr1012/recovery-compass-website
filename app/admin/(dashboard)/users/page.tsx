@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { resolveSearchParams } from "@/lib/admin/date-range";
 import { searchAdminUsers } from "@/lib/admin/data";
 import { formatDateTime } from "@/lib/admin/format";
+import { getAdminAccess } from "@/lib/admin/auth";
 import type { AdminSearchParams } from "@/lib/admin/types";
 
 export const dynamic = "force-dynamic";
@@ -17,12 +18,14 @@ export default async function AdminUsersPage({
 }) {
   const params = await resolveSearchParams(searchParams);
   const query = Array.isArray(params.q) ? params.q[0] ?? "" : params.q ?? "";
-  const users = await searchAdminUsers(query);
+  const access = await getAdminAccess();
+  const role = access.ok ? access.admin.role : "viewer";
+  const users = await searchAdminUsers(query, role);
 
   return (
     <div className="space-y-6">
       <PageHeader
-        description="Search users by email, display name, or UUID. List views intentionally mask email addresses."
+        description="Search users by email, display name, or UUID. Owner and ops see full emails; viewers see masked emails."
         title="Users"
         withDateRange={false}
       />

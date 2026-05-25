@@ -13,9 +13,13 @@ const SNIPPET_TONES = [
 export function SupportWorkflowPanel({
   snippets,
   tableLinks,
+  targetEmail,
+  targetUserId,
 }: {
   snippets: SupportSnippet[];
   tableLinks: SupabaseTableLink[];
+  targetEmail?: string | null;
+  targetUserId?: string | null;
 }) {
   return (
     <section className="overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_0%_0%,rgba(139,211,255,0.12),transparent_32%),radial-gradient(circle_at_95%_8%,rgba(247,198,106,0.12),transparent_30%),rgba(255,255,255,0.045)]">
@@ -24,17 +28,17 @@ export function SupportWorkflowPanel({
           <div>
             <div className="flex items-center gap-2 text-sky-100">
               <ShieldCheck className="size-5" />
-              <h2 className="text-lg font-semibold">Phase 1.5 support workflow</h2>
+              <h2 className="text-lg font-semibold">Support workflow</h2>
             </div>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-white/58">
-              This section helps non-technical support users inspect and escalate cases
-              without mutating production data. Copy packets are intentionally read-only
-              or non-executable until admin roles and audit logs exist.
+              This section helps non-technical support users inspect, copy, and
+              escalate cases. Copy actions are audited; writes stay limited to the
+              dedicated grant panel.
             </p>
           </div>
           <div className="rounded-2xl border border-white/10 bg-black/15 px-4 py-3 text-xs leading-5 text-white/55">
             <p className="font-semibold text-white/75">Safety rule</p>
-            <p>No grant, retry, queue, or payment write runs from this screen.</p>
+            <p>No retry, queue, or payment write runs from this screen.</p>
           </div>
         </div>
       </div>
@@ -50,7 +54,7 @@ export function SupportWorkflowPanel({
               <li>2. Check web transactions or external store evidence before any entitlement review.</li>
               <li>3. Check active and queued programs before requesting any grant or queue change.</li>
               <li>4. Check outbound emails before escalating diet plan delivery issues.</li>
-              <li>5. Copy the right packet and send it to an owner/engineer for the actual write.</li>
+              <li>5. Copy the right packet or use the audited grant panel if your role allows it.</li>
             </ol>
           </div>
 
@@ -96,7 +100,16 @@ export function SupportWorkflowPanel({
                 {snippet.description}
               </p>
               <div className="mt-4">
-                <CopySupportButton label={snippet.label} text={snippet.body} />
+                <CopySupportButton
+                  audit={{
+                    action: snippet.auditAction,
+                    metadata: { label: snippet.label },
+                    targetEmail,
+                    targetUserId,
+                  }}
+                  label={snippet.label}
+                  text={snippet.body}
+                />
               </div>
             </div>
           ))}

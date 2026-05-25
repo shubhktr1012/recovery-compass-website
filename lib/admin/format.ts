@@ -1,4 +1,5 @@
 import { publicPrograms } from "@/lib/public-programs";
+import type { AdminRole } from "@/lib/admin/types";
 
 const programNameBySlug = new Map<string, string>(
   publicPrograms.map((program) => [program.dbSlug, program.title])
@@ -48,6 +49,17 @@ export function maskEmail(email: string | null | undefined) {
   const suffix = domainParts.length > 0 ? `.${domainParts.join(".")}` : "";
 
   return `${visibleName}***@${visibleDomain}***${suffix}`;
+}
+
+export function formatEmailForAdminRole(
+  email: string | null | undefined,
+  role: AdminRole
+) {
+  if (role === "owner" || role === "ops") {
+    return email ?? "No email";
+  }
+
+  return maskEmail(email);
 }
 
 export function formatProgramName(slug: string | null | undefined) {

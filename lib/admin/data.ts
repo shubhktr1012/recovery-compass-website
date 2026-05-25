@@ -7,15 +7,16 @@ import {
 } from "@/lib/admin/date-range";
 import {
   formatDateTime,
+  formatEmailForAdminRole,
   formatEventTypeLabel,
   formatInrFromPaise,
   formatProgramName,
-  maskEmail,
 } from "@/lib/admin/format";
 import type {
   AdminActivityItem,
   AdminDateRange,
   AdminKpi,
+  AdminRole,
   AdminTrendPoint,
 } from "@/lib/admin/types";
 
@@ -105,6 +106,20 @@ type EmailDeliveryRow = {
   sent_at: string | null;
   created_at: string | null;
   updated_at: string | null;
+};
+
+type AdminAuditLogRow = {
+  id: string;
+  action: string;
+  admin_email: string | null;
+  admin_role: AdminRole | null;
+  target_user_id: string | null;
+  target_email: string | null;
+  target_program: string | null;
+  reason: string | null;
+  evidence: string | null;
+  metadata: Record<string, unknown> | null;
+  created_at: string | null;
 };
 
 type UserPreferenceRow = {
@@ -370,7 +385,7 @@ async function getProfilesByIds(userIds: string[]) {
   return new Map(rows.map((row) => [row.id, row]));
 }
 
-export async function searchAdminUsers(query: string) {
+export async function searchAdminUsers(query: string, role: AdminRole = "viewer") {
   const trimmedQuery = query.trim();
   let profiles: ProfileRow[] = [];
 
@@ -436,7 +451,7 @@ export async function searchAdminUsers(query: string) {
     return {
       createdAt: profile.created_at,
       displayName: profile.display_name ?? "Unnamed user",
-      email: maskEmail(profile.email),
+      email: formatEmailForAdminRole(profile.email, role),
       id: profile.id,
       lastSeen: profile.updated_at,
       onboardingComplete: Boolean(profile.onboarding_complete),
@@ -446,7 +461,7 @@ export async function searchAdminUsers(query: string) {
   });
 }
 
-export async function getAdminUserDetail(userId: string) {
+export async function getAdminUserDetail(userId: string, role: AdminRole = "viewer") {
   const [profile, accessRows, events, transactions, dietOrders, emails, dayStates, preference] =
     await Promise.all([
       readSingle<ProfileRow>(
@@ -554,7 +569,7 @@ export async function getAdminUserDetail(userId: string) {
     profile: {
       createdAt: profile.created_at,
       displayName: profile.display_name ?? "Unnamed user",
-      email: profile.email,
+      email: formatEmailForAdminRole(profile.email, role),
       id: profile.id,
       onboardingComplete: Boolean(profile.onboarding_complete),
       recommendedProgram: formatProgramName(profile.recommended_program),
@@ -623,7 +638,7 @@ export async function getAdminPrograms(range: AdminDateRange) {
   };
 }
 
-export async function getAdminPurchases(range: AdminDateRange) {
+export async function getAdminPurchases(range: AdminDateRange, role: AdminRole = "viewer") {
   const transactions = await readList<TransactionRow>(
     supabaseAdmin
       .from("transactions")
@@ -652,7 +667,7 @@ export async function getAdminPurchases(range: AdminDateRange) {
       return {
         amount: formatInrFromPaise(transaction.amount),
         createdAt: formatDateTime(transaction.created_at),
-        email: maskEmail(profile?.email),
+        email: formatEmailForAdminRole(profile?.email, role),
         fulfillmentStatus: transaction.fulfillment_status ?? "unknown",
         id: transaction.id,
         items:
@@ -666,7 +681,7 @@ export async function getAdminPurchases(range: AdminDateRange) {
   };
 }
 
-export async function getAdminDietPlans(range: AdminDateRange) {
+export async function getAdminDietPlans(range: AdminDateRange, role: AdminRole = "viewer") {
   const [orders, emails] = await Promise.all([
     readList<DietPlanOrderRow>(
       supabaseAdmin
@@ -702,7 +717,7 @@ export async function getAdminDietPlans(range: AdminDateRange) {
     rows: orders.map((order) => ({
       amount: formatInrFromPaise(order.amount),
       createdAt: formatDateTime(order.created_at),
-      email: maskEmail(order.email),
+      email: formatEmailForAdminRole(order.email, role),
       fulfilledAt: order.fulfilled_at ? formatDateTime(order.fulfilled_at) : "Not delivered yet",
       id: order.id,
       name: order.name ?? "No name",
@@ -769,25 +784,52 @@ export async function getAdminEngagement(range: AdminDateRange) {
   };
 }
 
-export async function getAdminActivity(range: AdminDateRange) {
-  const events = await readList<UserEventRow>(
-    supabaseAdmin
-      .from("user_events")
-      .select("id,user_id,event_type,program_slug,day_number,card_id,event_data,occurred_at,created_at")
-      .gte("occurred_at", range.startIso)
-      .lte("occurred_at", range.endIso)
-      .order("occurred_at", { ascending: false })
-      .limit(200),
-    "admin activity"
-  );
+export async function getAdminActivity(range: AdminDateRange, role: AdminRole = "viewer") {
+  const [events, auditLogs] = await Promise.all([
+    readList<UserEventRow>(
+      supabaseAdmin
+        .from("user_events")
+        .select("id,user_id,event_type,program_slug,day_number,card_id,event_data,occurred_at,created_at")
+        .gte("occurred_at", range.startIso)
+        .lte("occurred_at", range.endIso)
+        .order("occurred_at", { ascending: false })
+        .limit(200),
+      "admin activity"
+    ),
+    readList<AdminAuditLogRow>(
+      supabaseAdmin
+        .from("admin_audit_logs")
+        .select("id,action,admin_email,admin_role,target_user_id,target_email,target_program,reason,evidence,metadata,created_at")
+        .gte("created_at", range.startIso)
+        .lte("created_at", range.endIso)
+        .order("created_at", { ascending: false })
+        .limit(200),
+      "admin audit logs"
+    ),
+  ]);
 
   return {
     activity: events.map(translateActivity),
+    auditLogs: auditLogs.map((log) => ({
+      action: formatEventTypeLabel(log.action),
+      actor: formatEmailForAdminRole(log.admin_email, role),
+      createdAt: log.created_at,
+      evidence: log.evidence ?? "No evidence",
+      id: log.id,
+      reason: log.reason ?? "No reason",
+      role: log.admin_role ?? "unknown",
+      target: log.target_email
+        ? formatEmailForAdminRole(log.target_email, role)
+        : log.target_user_id ?? "No target",
+      targetProgram: formatProgramName(log.target_program),
+      targetUserId: log.target_user_id ?? "No user ID",
+      technicalAction: log.action,
+    })),
     kpis: [
       { label: "Activity rows", value: events.length.toLocaleString("en-IN") },
       { label: "Unique users", value: new Set(events.map((event) => event.user_id).filter(Boolean)).size.toLocaleString("en-IN") },
       { label: "Program events", value: events.filter((event) => event.program_slug).length.toLocaleString("en-IN") },
-      { label: "Support flags", value: events.filter((event) => event.event_type === "premium_route_blocked").length.toLocaleString("en-IN") },
+      { label: "Admin audit rows", value: auditLogs.length.toLocaleString("en-IN") },
     ] satisfies AdminKpi[],
   };
 }
