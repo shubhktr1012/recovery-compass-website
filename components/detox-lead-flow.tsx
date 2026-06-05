@@ -5,13 +5,22 @@ import { ArrowRight, Check, Leaf, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const FOCUS_AREAS = [
-    "Better Sleep",
-    "More Energy",
-    "Gut Health",
-    "Quit Smoking / Alcohol",
-    "Stress Relief",
-    "General Wellness",
+const PROGRAM_DAYS = [
+    "Nervous system reset",
+    "Hydration rhythm",
+    "Morning anchor",
+    "Gut support",
+    "Trigger release",
+    "Daily routine map",
+];
+
+const PRIMARY_ISSUE_OPTIONS = [
+    "I cannot sleep properly",
+    "I have no energy or feel tired all the time",
+    "My gut feels off — bloating, acidity, or poor digestion",
+    "I feel stressed or anxious most of the time",
+    "I want to quit smoking or drinking",
+    "I want to feel healthier overall",
 ];
 
 const COUNTRY_CODE_OPTIONS = [
@@ -22,28 +31,43 @@ const COUNTRY_CODE_OPTIONS = [
     { value: "+61", label: "AU +61" },
 ];
 
-const DEFERRED_QUESTIONS = [
+const DETOX_QUESTIONS = [
     {
-        id: "tried_detox",
-        question: "Have you ever tried a detox program before?",
+        id: "routine_type",
+        question: "What does your typical daily routine look like?",
+        help: "This helps us time your practices correctly for your lifestyle.",
         type: "radio",
-        options: ["Yes, and it worked well", "Yes, but didn't see results", "No, this is my first time"],
+        options: [
+            "I wake early and sleep before 11 PM",
+            "I sleep late and wake after 8 AM",
+            "My schedule changes every day",
+            "I work night shifts or irregular hours",
+        ],
     },
     {
-        id: "dietary_preference",
-        question: "Do you have any dietary preferences or restrictions?",
+        id: "health_conditions",
+        question: "Do you have any of the following health conditions?",
+        help: "This ensures your program includes the right safety notes for you.",
         type: "checkbox",
-        options: ["Vegetarian", "Vegan", "Lactose Intolerant", "Gluten Free", "None"],
+        options: [
+            "Type 2 diabetes or pre-diabetes",
+            "High blood pressure",
+            "Heart condition diagnosed",
+            "Pregnant",
+            "Gut condition diagnosed",
+            "None of the above",
+        ],
+        note: "If you select a health condition, please consult your doctor before making significant lifestyle changes.",
     },
 ] as const;
 
 type DetoxLeadFlowProps = {
     source: "homepage_modal" | "landing_page";
-    onClaimed?: () => void;
-    onClose?: () => void;
+    onClaimedAction?: () => void;
+    onCloseAction?: () => void;
 };
 
-export function DetoxLeadFlow({ source, onClaimed, onClose }: DetoxLeadFlowProps) {
+export function DetoxLeadFlow({ source, onClaimedAction, onCloseAction }: DetoxLeadFlowProps) {
     const [step, setStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [apiError, setApiError] = useState<string | null>(null);
@@ -62,7 +86,7 @@ export function DetoxLeadFlow({ source, onClaimed, onClose }: DetoxLeadFlowProps
 
     const isQuestionnaireValid =
         primaryFocus.length > 0 &&
-        DEFERRED_QUESTIONS.every((question) => {
+        DETOX_QUESTIONS.every((question) => {
             const answer = answers[question.id];
             return question.type === "radio"
                 ? typeof answer === "string" && answer.length > 0
@@ -76,11 +100,19 @@ export function DetoxLeadFlow({ source, onClaimed, onClose }: DetoxLeadFlowProps
     const handleCheckboxAnswer = (questionId: string, option: string) => {
         setAnswers((current) => {
             const existing = Array.isArray(current[questionId]) ? current[questionId] as string[] : [];
+            if (option === "None of the above") {
+                return {
+                    ...current,
+                    [questionId]: existing.includes(option) ? [] : [option],
+                };
+            }
+
+            const withoutNone = existing.filter((item) => item !== "None of the above");
             return {
                 ...current,
-                [questionId]: existing.includes(option)
-                    ? existing.filter((item) => item !== option)
-                    : [...existing, option],
+                [questionId]: withoutNone.includes(option)
+                    ? withoutNone.filter((item) => item !== option)
+                    : [...withoutNone, option],
             };
         });
     };
@@ -151,7 +183,7 @@ export function DetoxLeadFlow({ source, onClaimed, onClose }: DetoxLeadFlowProps
             window.dispatchEvent(new CustomEvent("rc-detox-claimed"));
 
             setStep(3);
-            onClaimed?.();
+            onClaimedAction?.();
         } catch (error) {
             setApiError(error instanceof Error ? error.message : "An unexpected error occurred.");
         } finally {
@@ -184,11 +216,30 @@ export function DetoxLeadFlow({ source, onClaimed, onClose }: DetoxLeadFlowProps
                     <h2 className="font-erode text-2xl md:text-3xl font-bold leading-tight mb-4">
                         Get your free detox PDF
                     </h2>
-                    <p className="text-[13.5px] leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/55 mb-6">
-                        A simple 10-15 minute daily reset for hydration, gut health, movement, sleep, and stress support.
+                    <p className="text-[13.5px] leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/55 mb-4">
+                        A 6-day starter program that works on the root causes behind poor sleep, low energy, gut discomfort, stress, and cravings.
                     </p>
 
-                    <div className="space-y-4">
+                    <div className="mb-6 rounded-2xl border border-[oklch(0.2475_0.0661_146.79)]/10 bg-[oklch(0.97_0.012_145)] p-4">
+                        <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-[oklch(0.2475_0.0661_146.79)]/45 mb-3">
+                            What is inside
+                        </p>
+                        <div className="grid grid-cols-2 gap-2">
+                            {PROGRAM_DAYS.map((day, index) => (
+                                <div
+                                    key={day}
+                                    className="rounded-xl bg-white/70 px-3 py-2 text-[12px] font-semibold text-[oklch(0.2475_0.0661_146.79)]/75"
+                                >
+                                    Day {index + 1}: {day}
+                                </div>
+                            ))}
+                        </div>
+                        <p className="mt-3 text-[12px] leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/55">
+                            Each day is designed to take about 10-15 minutes. Your answers help us add the right explanation and safety notes to the PDF.
+                        </p>
+                    </div>
+
+                    <div className="space-y-3">
                         <div>
                             <label htmlFor={`${source}-detox-name`} className="block text-[11px] font-bold uppercase tracking-wider text-[oklch(0.2475_0.0661_146.79)]/40 mb-2">
                                 Name
@@ -245,7 +296,7 @@ export function DetoxLeadFlow({ source, onClaimed, onClose }: DetoxLeadFlowProps
                     </div>
 
                     <p className="mt-4 text-[11.5px] leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/45">
-                        We will send the PDF by email and WhatsApp. You can reply on WhatsApp if you want help choosing a Recovery Compass program.
+                        Your answers are private and used only to personalize this Recovery Compass detox program. We will send the PDF by email and WhatsApp.
                     </p>
 
                     {apiError ? (
@@ -277,10 +328,13 @@ export function DetoxLeadFlow({ source, onClaimed, onClose }: DetoxLeadFlowProps
                     <div className="space-y-6">
                         <div>
                             <span className="block text-[13px] font-bold text-[oklch(0.2475_0.0661_146.79)] mb-3">
-                                Choose your primary wellness focus
+                                What is your biggest health issue right now?
                             </span>
+                            <p className="text-[12px] leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/50 mb-3">
+                                Choose the one that bothers you most day to day. There is no wrong answer.
+                            </p>
                             <div className="grid grid-cols-2 gap-2">
-                                {FOCUS_AREAS.map((focus) => (
+                                {PRIMARY_ISSUE_OPTIONS.map((focus) => (
                                     <button
                                         key={focus}
                                         type="button"
@@ -299,11 +353,14 @@ export function DetoxLeadFlow({ source, onClaimed, onClose }: DetoxLeadFlowProps
                             </div>
                         </div>
 
-                        {DEFERRED_QUESTIONS.map((question) => (
+                        {DETOX_QUESTIONS.map((question) => (
                             <div key={question.id}>
                                 <span className="block text-[13px] font-bold text-[oklch(0.2475_0.0661_146.79)] mb-3">
                                     {question.question}
                                 </span>
+                                <p className="text-[12px] leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/50 mb-3">
+                                    {question.help}
+                                </p>
                                 {question.type === "radio" ? (
                                     <div className="space-y-2">
                                         {question.options.map((option) => {
@@ -354,6 +411,11 @@ export function DetoxLeadFlow({ source, onClaimed, onClose }: DetoxLeadFlowProps
                                         })}
                                     </div>
                                 )}
+                                {"note" in question ? (
+                                    <p className="mt-2 text-[11.5px] leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/45">
+                                        {question.note}
+                                    </p>
+                                ) : null}
                             </div>
                         ))}
                     </div>
@@ -402,10 +464,10 @@ export function DetoxLeadFlow({ source, onClaimed, onClose }: DetoxLeadFlowProps
                     </p>
 
                     <div className="flex flex-col gap-3">
-                        {onClose ? (
+                        {onCloseAction ? (
                             <Button
                                 type="button"
-                                onClick={onClose}
+                                onClick={onCloseAction}
                                 className="w-full h-12 rounded-[16px] font-bold text-[14px] border border-[oklch(0.2475_0.0661_146.79)]/15 text-[oklch(0.2475_0.0661_146.79)] bg-transparent hover:bg-[oklch(0.2475_0.0661_146.79)]/5 shadow-none"
                             >
                                 Return to Website

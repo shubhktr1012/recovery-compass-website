@@ -86,7 +86,7 @@ export function DetoxModalV2() {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 16 }}
                         transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                        className="relative z-10 w-full max-w-[520px] overflow-hidden rounded-[32px] bg-white text-[oklch(0.2475_0.0661_146.79)] shadow-2xl border border-[oklch(0.2475_0.0661_146.79)]/8"
+                        className="relative z-10 max-h-[calc(100vh-2rem)] w-full max-w-[520px] overflow-y-auto rounded-[32px] bg-white text-[oklch(0.2475_0.0661_146.79)] shadow-2xl border border-[oklch(0.2475_0.0661_146.79)]/8"
                     >
                         <div className="absolute inset-x-0 top-0 h-[4px] bg-gradient-to-r from-[#0d4416] via-[#3D7A4A] to-[#EBF4EC]" />
                         <button
@@ -99,8 +99,8 @@ export function DetoxModalV2() {
                         </button>
                         <DetoxLeadFlow
                             source="homepage_modal"
-                            onClose={handleClose}
-                            onClaimed={() => {
+                            onCloseAction={handleClose}
+                            onClaimedAction={() => {
                                 localStorage.setItem("rc:detox-opt-in", "claimed");
                             }}
                         />
