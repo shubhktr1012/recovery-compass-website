@@ -13,14 +13,25 @@ export function AnnouncementBanner() {
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
       <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 font-satoshi font-medium">
         <span className="opacity-90">Recovery Compass Wellness. Now on iOS & Android</span>
-        <a 
-          href={downloadHref}
-          {...(isExternalLink ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-          className="group inline-flex items-center gap-1 font-bold tracking-tight hover:text-white/80 transition-colors"
-        >
-          Download Now
-          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-        </a>
+        <div className="flex items-center gap-3">
+          <a
+            href={downloadHref}
+            {...(isExternalLink ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+            className="group inline-flex items-center gap-1 font-bold tracking-tight hover:text-white/80 transition-colors"
+          >
+            Download Now
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+          </a>
+          <span className="opacity-30">|</span>
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new CustomEvent("rc-open-detox-modal"))}
+            className="group inline-flex items-center gap-1 font-bold tracking-tight hover:text-white/80 transition-colors cursor-pointer bg-transparent border-none p-0 text-white font-satoshi font-medium"
+          >
+            Get Free 6-Day Detox
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, useEffect, useMemo } from "react";
+import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useCart } from "@/lib/context/cart-context";
 import {
@@ -9,6 +9,8 @@ import {
     ArrowRight,
     Sparkles,
     ClipboardList,
+    Leaf,
+    Loader2,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { motion } from "framer-motion";
@@ -104,6 +106,175 @@ function AppStoreBadge({ platform }: { platform: "ios" | "android" }) {
                 )}
             />
         </a>
+    );
+}
+
+const FOCUS_AREAS = [
+    "Better Sleep",
+    "More Energy",
+    "Gut Health",
+    "Quit Smoking / Alcohol",
+    "Stress Relief",
+    "General Wellness",
+];
+
+function getDefaultFocus(ownedPrograms: string[]) {
+    if (ownedPrograms.includes("21-day-deep-sleep-reset")) return "Better Sleep";
+    if (ownedPrograms.includes("14-day-energy-restore")) return "More Energy";
+    if (ownedPrograms.includes("90-day-smoke-free-journey")) return "Quit Smoking / Alcohol";
+    if (ownedPrograms.includes("mens-vitality-reset-program")) return "General Wellness";
+    return "General Wellness";
+}
+
+function FreeDetoxClaimCard() {
+    const { user, ownedPrograms } = useUser();
+    const [phone, setPhone] = useState("");
+    const [primaryFocus, setPrimaryFocus] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isClaimed, setIsClaimed] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setIsClaimed(localStorage.getItem("rc:detox-opt-in") === "claimed");
+        }
+    }, []);
+
+    useEffect(() => {
+        if (ownedPrograms && ownedPrograms.length > 0) {
+            setPrimaryFocus(getDefaultFocus(ownedPrograms));
+        } else {
+            setPrimaryFocus("General Wellness");
+        }
+    }, [ownedPrograms]);
+
+    const handleClaim = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setError(null);
+
+        try {
+            const response = await fetch("/api/detox/claim-bonus", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    phone,
+                    primaryFocus,
+                    questionnaireData: {
+                        source: "checkout_success_page"
+                    }
+                }),
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || "Failed to claim detox program. Please try again.");
+            }
+
+            localStorage.setItem("rc:detox-opt-in", "claimed");
+            window.dispatchEvent(new CustomEvent("rc-nudge-active"));
+
+            setIsClaimed(true);
+
+        } catch (err: unknown) {
+            console.error("[Detox Claim Error]:", err);
+            setError(err instanceof Error ? err.message : "An unexpected error occurred.");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    if (!user) return null;
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.57 }}
+            className="group rounded-[32px] p-8 md:p-10 bg-white/75 backdrop-blur-md border border-white/60 flex flex-col justify-between shadow-xl shadow-[oklch(0.2475_0.0661_146.79)]/5 relative overflow-hidden"
+        >
+            <div className="mb-6 flex justify-between items-start">
+                <div className="size-12 rounded-full bg-[#06290C]/[0.06] text-[#06290C] flex items-center justify-center border border-[#06290C]/10">
+                    <Leaf className="size-6 text-[#3D7A4A] fill-current" />
+                </div>
+                <div className="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider">
+                    Free Bonus
+                </div>
+            </div>
+
+            {isClaimed ? (
+                <div>
+                    <h3 className="text-[26px] md:text-[30px] font-bold mb-3 text-[oklch(0.2475_0.0661_146.79)] leading-tight font-erode">
+                        Detox Program Claimed!
+                    </h3>
+                    <p className="text-[14px] md:text-[15px] text-[oklch(0.2475_0.0661_146.79)]/70 font-medium leading-relaxed">
+                        Your free 6-Day Detox Program PDF has been sent to your email and WhatsApp. Please check your inbox shortly!
+                    </p>
+                </div>
+            ) : (
+                <form onSubmit={handleClaim}>
+                    <h3 className="text-[26px] md:text-[30px] font-bold mb-3 text-[oklch(0.2475_0.0661_146.79)] leading-tight font-erode">
+                        Claim Your Free 6-Day Detox
+                    </h3>
+                    <p className="text-[14px] md:text-[15px] text-[oklch(0.2475_0.0661_146.79)]/70 font-medium leading-relaxed mb-6">
+                        Get your personalized 6-day curriculum sent directly to your Email & WhatsApp.
+                    </p>
+
+                    <div className="space-y-4 mb-6">
+                        <div>
+                            <label className="block text-[10px] font-bold uppercase tracking-wider text-[oklch(0.2475_0.0661_146.79)]/45 mb-1.5">
+                                Wellness Focus
+                            </label>
+                            <select
+                                value={primaryFocus}
+                                onChange={(e) => setPrimaryFocus(e.target.value)}
+                                className="w-full h-11 rounded-xl border border-[oklch(0.2475_0.0661_146.79)]/15 px-3 bg-white/50 font-medium text-[oklch(0.2475_0.0661_146.79)] focus:outline-none focus:border-[oklch(0.2475_0.0661_146.79)] focus:ring-1 focus:ring-[oklch(0.2475_0.0661_146.79)] transition-all"
+                            >
+                                {FOCUS_AREAS.map((f) => (
+                                    <option key={f} value={f}>{f}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block text-[10px] font-bold uppercase tracking-wider text-[oklch(0.2475_0.0661_146.79)]/45 mb-1.5">
+                                WhatsApp Number
+                            </label>
+                            <input
+                                type="tel"
+                                required
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                placeholder="e.g. +91 99999 99999"
+                                className="w-full h-11 rounded-xl border border-[oklch(0.2475_0.0661_146.79)]/15 px-3.5 font-medium text-[oklch(0.2475_0.0661_146.79)] placeholder:text-[oklch(0.2475_0.0661_146.79)]/30 focus:outline-none focus:border-[oklch(0.2475_0.0661_146.79)] focus:ring-1 focus:ring-[oklch(0.2475_0.0661_146.79)] transition-all bg-white/50"
+                            />
+                        </div>
+                    </div>
+
+                    {error && (
+                        <p className="text-[12px] text-red-600 font-semibold mb-4 bg-red-50 p-2.5 rounded-lg border border-red-100">{error}</p>
+                    )}
+
+                    <Button
+                        type="submit"
+                        disabled={isSubmitting || !phone || !primaryFocus}
+                        className="inline-flex items-center gap-2 text-[14px] font-bold text-white bg-[oklch(0.2475_0.0661_146.79)] px-5 py-2.5 rounded-full hover:bg-[oklch(0.2475_0.0661_146.79)]/90 shadow-lg shadow-[oklch(0.2475_0.0661_146.79)]/10"
+                    >
+                        {isSubmitting ? (
+                            <>
+                                <Loader2 className="size-4 animate-spin" /> Claiming...
+                            </>
+                        ) : (
+                            <>
+                                Claim Free Detox <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
+                            </>
+                        )}
+                    </Button>
+                </form>
+            )}
+        </motion.div>
     );
 }
 
@@ -297,6 +468,9 @@ function SuccessPageContent() {
                                 </div>
                             </motion.a>
                         )}
+
+                        {/* ── Free Detox Claim Card ── */}
+                        <FreeDetoxClaimCard />
 
                         {/* ── WhatsApp Community ── */}
                         <motion.a

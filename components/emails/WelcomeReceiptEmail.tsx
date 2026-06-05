@@ -18,6 +18,7 @@ import { APP_STORE_BADGE_URL, APP_STORE_URL, PLAY_STORE_BADGE_URL, PLAY_STORE_UR
 
 interface WelcomeReceiptEmailProps {
     customerName: string;
+    detoxPdfUrl?: string | null;
     programName: string;
     lineItems?: Array<{
         title: string;
@@ -55,6 +56,7 @@ function formatReceiptDate(date?: string) {
 
 export const WelcomeReceiptEmail = ({
     customerName = "Seeker",
+    detoxPdfUrl,
     programName = "Recovery Compass Program",
     lineItems,
     amountFormatted = "₹4,999.00",
@@ -137,6 +139,19 @@ export const WelcomeReceiptEmail = ({
                             </Column>
                         </Row>
                     </Section>
+
+                    {detoxPdfUrl ? (
+                        <Section style={bonusBlock}>
+                            <Text style={ctaEyebrow}>Included Bonus</Text>
+                            <Text style={ctaTitle}>Free 14-day Detox Program PDF</Text>
+                            <Text style={ctaText}>
+                                Your purchase includes a simple 14-day detox guide you can keep and revisit alongside your app program.
+                            </Text>
+                            <Button href={detoxPdfUrl} style={bonusBtn}>
+                                Open Detox PDF
+                            </Button>
+                        </Section>
+                    ) : null}
 
                     {/* Divider */}
                     <Section style={section}>
@@ -297,6 +312,14 @@ const appBlock = {
     border: `1px solid ${border}`,
 };
 
+const bonusBlock = {
+    margin: "16px 32px 0",
+    padding: "24px",
+    backgroundColor: "#fff8eb",
+    borderRadius: "12px",
+    border: "1px solid #f4dfb3",
+};
+
 const ctaEyebrow = {
     fontSize: "11px",
     fontWeight: "700",
@@ -326,6 +349,18 @@ const ctaText = {
 
 const waBtn = {
     backgroundColor: "#25D366",
+    color: "#ffffff",
+    fontSize: "14px",
+    fontWeight: "700",
+    textDecoration: "none",
+    padding: "14px 24px",
+    borderRadius: "8px",
+    display: "inline-block",
+    fontFamily: ff,
+};
+
+const bonusBtn = {
+    backgroundColor: forest,
     color: "#ffffff",
     fontSize: "14px",
     fontWeight: "700",

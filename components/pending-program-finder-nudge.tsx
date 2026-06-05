@@ -5,9 +5,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, ClipboardList, X } from "lucide-react";
 import { useCart } from "@/lib/context/cart-context";
 import { useUser } from "@/lib/context/user-context";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const HIDDEN_ROUTE_PREFIXES = ["/program-finder", "/checkout", "/diet-plan"];
+
+type NudgeWindow = Window & {
+    rcActiveNudges?: Record<string, boolean>;
+};
 
 function shouldHideOnRoute(pathname: string | null) {
     if (!pathname) {
@@ -42,6 +46,23 @@ export function PendingProgramFinderNudge() {
         !hideForRoute &&
         !isCartOpen
     );
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const nudgeWindow = window as NudgeWindow;
+            nudgeWindow.rcActiveNudges = nudgeWindow.rcActiveNudges || {};
+            nudgeWindow.rcActiveNudges["program-finder"] = shouldRender;
+            window.dispatchEvent(new CustomEvent("rc-nudge-active"));
+        }
+        return () => {
+            if (typeof window !== "undefined") {
+                const nudgeWindow = window as NudgeWindow;
+                nudgeWindow.rcActiveNudges = nudgeWindow.rcActiveNudges || {};
+                nudgeWindow.rcActiveNudges["program-finder"] = false;
+                window.dispatchEvent(new CustomEvent("rc-nudge-active"));
+            }
+        };
+    }, [shouldRender]);
     const returnTo = pathname && pathname !== "/program-finder" ? pathname : "/";
     const programFinderHref = `/program-finder?returnTo=${encodeURIComponent(returnTo)}`;
 

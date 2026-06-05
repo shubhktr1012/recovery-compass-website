@@ -20,6 +20,15 @@ type MailSendResult = {
     error?: string;
 };
 
+function escapeHtml(value: string) {
+    return value
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
 function getProgramDisplayName(programSlug: string) {
     if (programSlug in CANONICAL_PROGRAM_DISPLAY_NAMES) {
         return CANONICAL_PROGRAM_DISPLAY_NAMES[programSlug as keyof typeof CANONICAL_PROGRAM_DISPLAY_NAMES];
@@ -34,6 +43,14 @@ function getResendClient() {
     }
 
     return new Resend(process.env.RESEND_API_KEY);
+}
+
+function getDetoxPdfUrl() {
+    return (
+        process.env.DETOX_PDF_URL?.trim() ||
+        process.env.NEXT_PUBLIC_DETOX_PDF_URL?.trim() ||
+        null
+    );
 }
 
 export interface SendWelcomeEmailParams {
@@ -76,6 +93,7 @@ export async function sendWelcomeEmail({
             subject: "Welcome to the Inner Circle. This is your new beginning.",
             react: WelcomeReceiptEmail({
                 customerName,
+                detoxPdfUrl: getDetoxPdfUrl(),
                 programName,
                 lineItems,
                 amountFormatted,
@@ -105,6 +123,7 @@ export async function sendWelcomeEmail({
 export interface SendAppPurchaseWelcomeEmailParams {
     to: string;
     customerName: string;
+    programName?: string | null;
     programSlug: string;
     store?: string | null;
 }
@@ -112,6 +131,7 @@ export interface SendAppPurchaseWelcomeEmailParams {
 export async function sendAppPurchaseWelcomeEmail({
     to,
     customerName,
+    programName: programNameOverride,
     programSlug,
     store,
 }: SendAppPurchaseWelcomeEmailParams) {
@@ -123,13 +143,14 @@ export async function sendAppPurchaseWelcomeEmail({
     }
 
     try {
-        const programName = getProgramDisplayName(programSlug);
+        const programName = programNameOverride?.trim() || getProgramDisplayName(programSlug);
         const { data, error } = await resend.emails.send({
             from: FROM_EMAIL,
             to: [to],
             subject: `Your ${programName} is unlocked`,
             react: AppPurchaseWelcomeEmail({
                 customerName,
+                detoxPdfUrl: getDetoxPdfUrl(),
                 programName,
                 store,
                 whatsappLink: "https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0",
@@ -380,6 +401,106 @@ export async function sendDietPlanEmail({
         return { success: true, id: data?.id ?? null };
     } catch (err: unknown) {
         console.error("[Mail] Exception sending diet plan email:", err);
+        return {
+            success: false,
+            error: err instanceof Error ? err.message : "Unknown email exception",
+        };
+    }
+}
+
+export interface SendDetoxEmailParams {
+    to: string;
+    clientName: string;
+    pdfBuffer: Buffer;
+    pdfFilename: string;
+    pdfUrl?: string | null;
+}
+
+export async function sendDetoxEmail({
+    to,
+    clientName,
+    pdfBuffer,
+    pdfFilename,
+    pdfUrl,
+}: SendDetoxEmailParams): Promise<MailSendResult> {
+    const resend = getResendClient();
+
+    if (!resend) {
+        console.warn("[Mail] RESEND_API_KEY is not set. Detox plan email not sent.");
+        return { success: false, error: "RESEND_API_KEY is not set" };
+    }
+
+    const base64Pdf = pdfBuffer.toString("base64");
+    const safeClientName = escapeHtml(clientName);
+    const safePdfUrl = pdfUrl ? escapeHtml(pdfUrl) : null;
+
+    try {
+        const { data, error } = await resend.emails.send({
+            from: FROM_EMAIL,
+            to: [to],
+            subject: `Your free 6-Day Detox Program is ready, ${clientName}`,
+            html: `
+<div style="font-family: 'Inter', system-ui, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; color: #1a1a1a;">
+
+  <div style="margin-bottom: 24px;">
+    <p style="font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: #3D7A4A; margin: 0 0 8px;">Recovery Compass</p>
+    <h1 style="font-size: 22px; font-weight: 600; color: #06290C; margin: 0 0 6px; line-height: 1.3;">Your 6-Day Free Detox Program is ready, ${safeClientName}.</h1>
+    <p style="font-size: 14px; color: #666; margin: 0;">Find it attached as a PDF.</p>
+  </div>
+  ${safePdfUrl ? `
+  <div style="margin: 0 0 24px;">
+    <a href="${safePdfUrl}" style="display:inline-block; background:#06290C; color:#ffffff; text-decoration:none; border-radius:999px; padding:12px 18px; font-size:13px; font-weight:700;">Open your detox PDF</a>
+  </div>
+  ` : ""}
+
+  <div style="background: #EBF4EC; border-radius: 8px; padding: 16px 20px; margin-bottom: 24px;">
+    <p style="font-size: 13px; color: #06290C; margin: 0 0 6px; font-weight: 500;">How to get the most out of your 6 days:</p>
+    <ul style="font-size: 13px; color: #444; margin: 0; padding-left: 18px; line-height: 1.7;">
+      <li>Start with Day 1 and follow the 3 quick morning practices.</li>
+      <li>Follow the structured water timing — this makes a massive difference in energy and gut bloating.</li>
+      <li>Check the personalized box in your PDF for insights specific to your wellness goals.</li>
+      <li>Consult your physician before starting if you have any pre-existing medical conditions.</li>
+    </ul>
+  </div>
+
+  <p style="font-size: 13px; color: #444; margin: 0 0 16px;">
+    Join our community on <a href="https://chat.whatsapp.com/GgW0StdlYGB4FG4EqfgGv0" style="color: #3D7A4A; text-decoration: none; font-weight: 500;">WhatsApp</a> if you want support or have questions.
+  </p>
+
+  <div style="background: #F5FAF8; border: 1px solid #d8e8da; border-radius: 10px; padding: 16px 18px; margin: 0 0 24px;">
+    <p style="font-size: 13px; color: #06290C; margin: 0 0 12px; font-weight: 600;">Use Recovery Compass on your phone</p>
+    <a href="${APP_STORE_URL}" style="display: inline-block; margin-right: 10px;">
+      <img src="${APP_STORE_BADGE_URL}" width="132" alt="Download on the App Store" style="display: block; border: 0;" />
+    </a>
+    <a href="${PLAY_STORE_URL}" style="display: inline-block;">
+      <img src="${PLAY_STORE_BADGE_URL}" width="148" alt="Get it on Google Play" style="display: block; border: 0;" />
+    </a>
+  </div>
+
+  <p style="font-size: 13px; color: #888; border-top: 1px solid #d8e8da; padding-top: 16px; margin: 0;">
+    Recovery Compass · Guided Wellness<br>
+    <span style="font-size: 11px;">This plan is for educational purposes only and does not constitute medical advice.</span>
+  </p>
+
+</div>
+            `.trim(),
+            attachments: [
+                {
+                    filename: pdfFilename,
+                    content: base64Pdf,
+                },
+            ],
+        });
+
+        if (error) {
+            console.error("[Mail] Failed to send detox email via Resend:", error);
+            return { success: false, error: error.message };
+        }
+
+        console.log(`[Mail] Detox email sent to ${to}. Email ID: ${data?.id}`);
+        return { success: true, id: data?.id ?? null };
+    } catch (err: unknown) {
+        console.error("[Mail] Exception sending detox email:", err);
         return {
             success: false,
             error: err instanceof Error ? err.message : "Unknown email exception",
