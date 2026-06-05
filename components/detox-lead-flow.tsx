@@ -192,9 +192,9 @@ export function DetoxLeadFlow({ source, onClaimedAction, onCloseAction }: DetoxL
     };
 
     return (
-        <div className="p-8 md:p-10 pt-12">
+        <div className="p-6 pt-10 md:p-8 md:pt-10">
             {step < 3 ? (
-                <div className="flex gap-2 mb-6">
+                <div className="flex gap-2 mb-5">
                     {[1, 2].map((indicator) => (
                         <div
                             key={indicator}
@@ -208,111 +208,119 @@ export function DetoxLeadFlow({ source, onClaimedAction, onCloseAction }: DetoxL
             ) : null}
 
             {step === 1 ? (
-                <div>
-                    <div className="flex items-center gap-2 text-[oklch(0.2475_0.0661_146.79)]/40 text-[10px] font-bold uppercase tracking-[0.2em] mb-2">
-                        <Leaf className="size-3 text-[oklch(0.37_0.076_145)]" />
-                        Free 6-Day Program
-                    </div>
-                    <h2 className="font-erode text-2xl md:text-3xl font-bold leading-tight mb-4">
-                        Get your free detox PDF
-                    </h2>
-                    <p className="text-[13.5px] leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/55 mb-4">
-                        A 6-day starter program that works on the root causes behind poor sleep, low energy, gut discomfort, stress, and cravings.
-                    </p>
-
-                    <div className="mb-6 rounded-2xl border border-[oklch(0.2475_0.0661_146.79)]/10 bg-[oklch(0.97_0.012_145)] p-4">
-                        <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-[oklch(0.2475_0.0661_146.79)]/45 mb-3">
-                            What is inside
+                <div className="grid gap-5 md:grid-cols-[1.08fr_0.92fr] md:items-start">
+                    <div>
+                        <div className="flex items-center gap-2 text-[oklch(0.2475_0.0661_146.79)]/40 text-[10px] font-bold uppercase tracking-[0.2em] mb-2">
+                            <Leaf className="size-3 text-[oklch(0.37_0.076_145)]" />
+                            Free 6-Day Program
+                        </div>
+                        <h2 className="font-erode text-2xl md:text-[32px] font-bold leading-tight mb-3">
+                            Get your free detox PDF
+                        </h2>
+                        <p className="text-[13.5px] leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/55 mb-4">
+                            A 6-day starter program that works on the root causes behind poor sleep, low energy, gut discomfort, stress, and cravings.
                         </p>
-                        <div className="grid grid-cols-2 gap-2">
-                            {PROGRAM_DAYS.map((day, index) => (
-                                <div
-                                    key={day}
-                                    className="rounded-xl bg-white/70 px-3 py-2 text-[12px] font-semibold text-[oklch(0.2475_0.0661_146.79)]/75"
-                                >
-                                    Day {index + 1}: {day}
-                                </div>
-                            ))}
+
+                        <div className="rounded-2xl border border-[oklch(0.2475_0.0661_146.79)]/10 bg-[oklch(0.97_0.012_145)] p-4">
+                            <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-[oklch(0.2475_0.0661_146.79)]/45 mb-3">
+                                What is inside
+                            </p>
+                            <div className="grid grid-cols-2 gap-2">
+                                {PROGRAM_DAYS.map((day, index) => (
+                                    <div
+                                        key={day}
+                                        className="rounded-xl bg-white/70 px-3 py-2 text-[12px] font-semibold text-[oklch(0.2475_0.0661_146.79)]/75"
+                                    >
+                                        Day {index + 1}: {day}
+                                    </div>
+                                ))}
+                            </div>
+                            <p className="mt-3 text-[12px] leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/55">
+                                Each day is designed to take about 10-15 minutes. Your answers help us add the right explanation and safety notes to the PDF.
+                            </p>
                         </div>
-                        <p className="mt-3 text-[12px] leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/55">
-                            Each day is designed to take about 10-15 minutes. Your answers help us add the right explanation and safety notes to the PDF.
+
+                        <p className="mt-3 text-[11.5px] leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/45">
+                            Your answers are private and used only to personalize this Recovery Compass detox program.
                         </p>
                     </div>
 
-                    <div className="space-y-3">
-                        <div>
-                            <label htmlFor={`${source}-detox-name`} className="block text-[11px] font-bold uppercase tracking-wider text-[oklch(0.2475_0.0661_146.79)]/40 mb-2">
-                                Name
-                            </label>
-                            <input
-                                id={`${source}-detox-name`}
-                                type="text"
-                                value={name}
-                                onChange={(event) => setName(event.target.value)}
-                                placeholder="Enter your name"
-                                className="w-full h-12 rounded-2xl border border-[oklch(0.2475_0.0661_146.79)]/15 px-4 font-medium text-[oklch(0.2475_0.0661_146.79)] placeholder:text-[oklch(0.2475_0.0661_146.79)]/30 focus:outline-none focus:border-[oklch(0.2475_0.0661_146.79)] focus:ring-1 focus:ring-[oklch(0.2475_0.0661_146.79)] transition-all"
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor={`${source}-detox-email`} className="block text-[11px] font-bold uppercase tracking-wider text-[oklch(0.2475_0.0661_146.79)]/40 mb-2">
-                                Email Address
-                            </label>
-                            <input
-                                id={`${source}-detox-email`}
-                                type="email"
-                                value={email}
-                                onChange={(event) => setEmail(event.target.value)}
-                                placeholder="name@example.com"
-                                className="w-full h-12 rounded-2xl border border-[oklch(0.2475_0.0661_146.79)]/15 px-4 font-medium text-[oklch(0.2475_0.0661_146.79)] placeholder:text-[oklch(0.2475_0.0661_146.79)]/30 focus:outline-none focus:border-[oklch(0.2475_0.0661_146.79)] focus:ring-1 focus:ring-[oklch(0.2475_0.0661_146.79)] transition-all"
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor={`${source}-detox-phone`} className="block text-[11px] font-bold uppercase tracking-wider text-[oklch(0.2475_0.0661_146.79)]/40 mb-2">
-                                WhatsApp Number
-                            </label>
-                            <div className="flex gap-2">
-                                <select
-                                    aria-label="WhatsApp country code"
-                                    value={countryCode}
-                                    onChange={(event) => setCountryCode(event.target.value)}
-                                    className="h-12 w-[112px] rounded-2xl border border-[oklch(0.2475_0.0661_146.79)]/15 bg-white px-3 font-bold text-[13px] text-[oklch(0.2475_0.0661_146.79)] focus:outline-none focus:border-[oklch(0.2475_0.0661_146.79)] focus:ring-1 focus:ring-[oklch(0.2475_0.0661_146.79)] transition-all"
-                                >
-                                    {COUNTRY_CODE_OPTIONS.map((option) => (
-                                        <option key={option.value} value={option.value}>
-                                            {option.label}
-                                        </option>
-                                    ))}
-                                </select>
+                    <div className="rounded-3xl border border-[oklch(0.2475_0.0661_146.79)]/10 bg-white/70 p-4 shadow-sm shadow-[oklch(0.2475_0.0661_146.79)]/5">
+                        <div className="space-y-3">
+                            <div>
+                                <label htmlFor={`${source}-detox-name`} className="block text-[11px] font-bold uppercase tracking-wider text-[oklch(0.2475_0.0661_146.79)]/40 mb-2">
+                                    Name
+                                </label>
                                 <input
-                                    id={`${source}-detox-phone`}
-                                    type="tel"
-                                    value={phone}
-                                    onChange={(event) => setPhone(event.target.value)}
-                                    placeholder="99999 99999"
-                                    className="min-w-0 flex-1 h-12 rounded-2xl border border-[oklch(0.2475_0.0661_146.79)]/15 px-4 font-medium text-[oklch(0.2475_0.0661_146.79)] placeholder:text-[oklch(0.2475_0.0661_146.79)]/30 focus:outline-none focus:border-[oklch(0.2475_0.0661_146.79)] focus:ring-1 focus:ring-[oklch(0.2475_0.0661_146.79)] transition-all"
+                                    id={`${source}-detox-name`}
+                                    type="text"
+                                    value={name}
+                                    onChange={(event) => setName(event.target.value)}
+                                    placeholder="Enter your name"
+                                    className="w-full h-11 rounded-2xl border border-[oklch(0.2475_0.0661_146.79)]/15 px-4 font-medium text-[oklch(0.2475_0.0661_146.79)] placeholder:text-[oklch(0.2475_0.0661_146.79)]/30 focus:outline-none focus:border-[oklch(0.2475_0.0661_146.79)] focus:ring-1 focus:ring-[oklch(0.2475_0.0661_146.79)] transition-all"
                                 />
                             </div>
+                            <div>
+                                <label htmlFor={`${source}-detox-email`} className="block text-[11px] font-bold uppercase tracking-wider text-[oklch(0.2475_0.0661_146.79)]/40 mb-2">
+                                    Email Address
+                                </label>
+                                <input
+                                    id={`${source}-detox-email`}
+                                    type="email"
+                                    value={email}
+                                    onChange={(event) => setEmail(event.target.value)}
+                                    placeholder="name@example.com"
+                                    className="w-full h-11 rounded-2xl border border-[oklch(0.2475_0.0661_146.79)]/15 px-4 font-medium text-[oklch(0.2475_0.0661_146.79)] placeholder:text-[oklch(0.2475_0.0661_146.79)]/30 focus:outline-none focus:border-[oklch(0.2475_0.0661_146.79)] focus:ring-1 focus:ring-[oklch(0.2475_0.0661_146.79)] transition-all"
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor={`${source}-detox-phone`} className="block text-[11px] font-bold uppercase tracking-wider text-[oklch(0.2475_0.0661_146.79)]/40 mb-2">
+                                    WhatsApp Number
+                                </label>
+                                <div className="flex gap-2">
+                                    <select
+                                        aria-label="WhatsApp country code"
+                                        value={countryCode}
+                                        onChange={(event) => setCountryCode(event.target.value)}
+                                        className="h-11 w-[112px] rounded-2xl border border-[oklch(0.2475_0.0661_146.79)]/15 bg-white px-3 font-bold text-[13px] text-[oklch(0.2475_0.0661_146.79)] focus:outline-none focus:border-[oklch(0.2475_0.0661_146.79)] focus:ring-1 focus:ring-[oklch(0.2475_0.0661_146.79)] transition-all"
+                                    >
+                                        {COUNTRY_CODE_OPTIONS.map((option) => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <input
+                                        id={`${source}-detox-phone`}
+                                        type="tel"
+                                        value={phone}
+                                        onChange={(event) => setPhone(event.target.value)}
+                                        placeholder="99999 99999"
+                                        className="min-w-0 flex-1 h-11 rounded-2xl border border-[oklch(0.2475_0.0661_146.79)]/15 px-4 font-medium text-[oklch(0.2475_0.0661_146.79)] placeholder:text-[oklch(0.2475_0.0661_146.79)]/30 focus:outline-none focus:border-[oklch(0.2475_0.0661_146.79)] focus:ring-1 focus:ring-[oklch(0.2475_0.0661_146.79)] transition-all"
+                                    />
+                                </div>
+                            </div>
                         </div>
+
+                        <p className="mt-3 text-[11.5px] leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/45">
+                            We will send the PDF by email and WhatsApp.
+                        </p>
+
+                        {apiError ? (
+                            <div className="mt-3 text-[12px] font-semibold text-red-600 bg-red-50 border border-red-100 rounded-xl p-3.5">
+                                {apiError}
+                            </div>
+                        ) : null}
+
+                        <Button
+                            type="button"
+                            disabled={!isContactValid || isSubmitting}
+                            onClick={handleCreateLead}
+                            className="w-full h-11 rounded-[16px] font-bold text-[14px] mt-4 bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 shadow-lg shadow-[oklch(0.2475_0.0661_146.79)]/15"
+                        >
+                            {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : <>Next: Customize My Routine <ArrowRight className="size-4 ml-1" /></>}
+                        </Button>
                     </div>
-
-                    <p className="mt-4 text-[11.5px] leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/45">
-                        Your answers are private and used only to personalize this Recovery Compass detox program. We will send the PDF by email and WhatsApp.
-                    </p>
-
-                    {apiError ? (
-                        <div className="mt-4 text-[12px] font-semibold text-red-600 bg-red-50 border border-red-100 rounded-xl p-3.5">
-                            {apiError}
-                        </div>
-                    ) : null}
-
-                    <Button
-                        type="button"
-                        disabled={!isContactValid || isSubmitting}
-                        onClick={handleCreateLead}
-                        className="w-full h-12 rounded-[16px] font-bold text-[14px] mt-6 bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 shadow-lg shadow-[oklch(0.2475_0.0661_146.79)]/15"
-                    >
-                        {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : <>Next: Customize My Routine <ArrowRight className="size-4 ml-1" /></>}
-                    </Button>
                 </div>
             ) : null}
 
@@ -325,7 +333,7 @@ export function DetoxLeadFlow({ source, onClaimedAction, onCloseAction }: DetoxL
                         Help us customize your routine
                     </h2>
 
-                    <div className="space-y-6">
+                    <div className="space-y-5">
                         <div>
                             <span className="block text-[13px] font-bold text-[oklch(0.2475_0.0661_146.79)] mb-3">
                                 What is your biggest health issue right now?
@@ -333,7 +341,7 @@ export function DetoxLeadFlow({ source, onClaimedAction, onCloseAction }: DetoxL
                             <p className="text-[12px] leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/50 mb-3">
                                 Choose the one that bothers you most day to day. There is no wrong answer.
                             </p>
-                            <div className="grid grid-cols-2 gap-2">
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                 {PRIMARY_ISSUE_OPTIONS.map((focus) => (
                                     <button
                                         key={focus}
@@ -362,7 +370,7 @@ export function DetoxLeadFlow({ source, onClaimedAction, onCloseAction }: DetoxL
                                     {question.help}
                                 </p>
                                 {question.type === "radio" ? (
-                                    <div className="space-y-2">
+                                    <div className={cn("gap-2", question.id === "routine_type" ? "grid grid-cols-2" : "space-y-2")}>
                                         {question.options.map((option) => {
                                             const isSelected = answers[question.id] === option;
                                             return (
@@ -386,7 +394,7 @@ export function DetoxLeadFlow({ source, onClaimedAction, onCloseAction }: DetoxL
                                         })}
                                     </div>
                                 ) : (
-                                    <div className="grid grid-cols-2 gap-2">
+                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                         {question.options.map((option) => {
                                             const selectedValues = Array.isArray(answers[question.id]) ? answers[question.id] as string[] : [];
                                             const isSelected = selectedValues.includes(option);
