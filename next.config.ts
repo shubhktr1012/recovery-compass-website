@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const isDevelopment = process.env.NODE_ENV === "development";
+const projectRoot = dirname(fileURLToPath(import.meta.url));
 
 function getWebSocketOrigin(origin: string) {
   if (origin.startsWith("http://")) {
@@ -20,7 +23,7 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ["lucide-react"],
   },
   turbopack: {
-    root: __dirname,
+    root: projectRoot,
   },
   async headers() {
     const connectSrc = [

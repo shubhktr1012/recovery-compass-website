@@ -15,6 +15,10 @@ type PendingClaimResponse = {
 
 const HIDDEN_ROUTE_PREFIXES = ["/diet-plan", "/checkout"];
 
+type NudgeWindow = Window & {
+    rcActiveNudges?: Record<string, boolean>;
+};
+
 function shouldHideOnRoute(pathname: string | null) {
     if (!pathname) {
         return false;
@@ -99,6 +103,23 @@ export function PendingDietPlanNudge() {
     };
 
     const shouldRender = !hideForRoute && !isCartOpen && Boolean(userId && href);
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const nudgeWindow = window as NudgeWindow;
+            nudgeWindow.rcActiveNudges = nudgeWindow.rcActiveNudges || {};
+            nudgeWindow.rcActiveNudges["diet-plan"] = shouldRender;
+            window.dispatchEvent(new CustomEvent("rc-nudge-active"));
+        }
+        return () => {
+            if (typeof window !== "undefined") {
+                const nudgeWindow = window as NudgeWindow;
+                nudgeWindow.rcActiveNudges = nudgeWindow.rcActiveNudges || {};
+                nudgeWindow.rcActiveNudges["diet-plan"] = false;
+                window.dispatchEvent(new CustomEvent("rc-nudge-active"));
+            }
+        };
+    }, [shouldRender]);
 
     return (
         <AnimatePresence mode="wait">

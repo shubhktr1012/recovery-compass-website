@@ -3,6 +3,7 @@ import { sendAppPurchaseWelcomeEmail } from "@/lib/mail";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
 type AppPurchaseEmailRequest = {
+    programName?: string | null;
     userId?: string;
     programSlug?: string;
     revenueCatEventId?: string | null;
@@ -179,6 +180,7 @@ export async function POST(request: Request) {
             customerName: profile.display_name || "Seeker",
             programSlug,
             store: body.store ?? null,
+            ...(body.programName !== undefined ? { programName: body.programName } : {}),
         });
 
         if (!emailResult.success) {
