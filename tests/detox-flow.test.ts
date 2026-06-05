@@ -100,7 +100,8 @@ describe("Detox Funnel API Endpoints", () => {
                 action: "create_lead",
                 name: "John Doe",
                 email: "john@example.com",
-                phone: "+919999999999",
+                countryCode: "+91",
+                phone: "99999 99999",
                 source: "homepage_modal",
             }));
 
@@ -155,7 +156,8 @@ describe("Detox Funnel API Endpoints", () => {
             const response = await submitRoute(jsonRequest({
                 name: "John Doe",
                 email: "john@example.com",
-                phone: "+919999999999",
+                countryCode: "+91",
+                phone: "99999 99999",
                 primaryFocus: "More Energy",
                 questionnaireData: { tried_detox: "No" },
             }));
@@ -165,8 +167,19 @@ describe("Detox Funnel API Endpoints", () => {
             expect(data.success).toBe(true);
             expect(data.leadId).toBe("lead-123");
             expect(data).not.toHaveProperty("pdfBase64");
-            expect(mocks.createDetoxLead).toHaveBeenCalled();
-            expect(mocks.deliverDetoxProgram).toHaveBeenCalled();
+            expect(mocks.createDetoxLead).toHaveBeenCalledWith({
+                name: "John Doe",
+                email: "john@example.com",
+                phone: "+919999999999",
+                source: "homepage_modal",
+                emailConsent: true,
+                whatsappConsent: true,
+            });
+            expect(mocks.deliverDetoxProgram).toHaveBeenCalledWith(expect.objectContaining({
+                lead: expect.objectContaining({
+                    phone: "+919999999999",
+                }),
+            }));
         });
     });
 
@@ -188,7 +201,8 @@ describe("Detox Funnel API Endpoints", () => {
 
         it("accepts authorized claims and uses the shared delivery path", async () => {
             const response = await claimBonusRoute(jsonRequest({
-                phone: "+919999999999",
+                countryCode: "+91",
+                phone: "99999 99999",
                 primaryFocus: "More Energy",
                 questionnaireData: { source: "checkout_success" },
             }));

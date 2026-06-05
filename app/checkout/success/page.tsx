@@ -126,8 +126,17 @@ function getDefaultFocus(ownedPrograms: string[]) {
     return "General Wellness";
 }
 
+const COUNTRY_CODE_OPTIONS = [
+    { value: "+91", label: "IN +91" },
+    { value: "+1", label: "US +1" },
+    { value: "+44", label: "UK +44" },
+    { value: "+971", label: "AE +971" },
+    { value: "+61", label: "AU +61" },
+];
+
 function FreeDetoxClaimCard() {
     const { user, ownedPrograms } = useUser();
+    const [countryCode, setCountryCode] = useState("+91");
     const [phone, setPhone] = useState("");
     const [primaryFocus, setPrimaryFocus] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -160,6 +169,7 @@ function FreeDetoxClaimCard() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
+                    countryCode,
                     phone,
                     primaryFocus,
                     questionnaireData: {
@@ -242,14 +252,28 @@ function FreeDetoxClaimCard() {
                             <label className="block text-[10px] font-bold uppercase tracking-wider text-[oklch(0.2475_0.0661_146.79)]/45 mb-1.5">
                                 WhatsApp Number
                             </label>
-                            <input
-                                type="tel"
-                                required
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                                placeholder="e.g. +91 99999 99999"
-                                className="w-full h-11 rounded-xl border border-[oklch(0.2475_0.0661_146.79)]/15 px-3.5 font-medium text-[oklch(0.2475_0.0661_146.79)] placeholder:text-[oklch(0.2475_0.0661_146.79)]/30 focus:outline-none focus:border-[oklch(0.2475_0.0661_146.79)] focus:ring-1 focus:ring-[oklch(0.2475_0.0661_146.79)] transition-all bg-white/50"
-                            />
+                            <div className="flex gap-2">
+                                <select
+                                    aria-label="WhatsApp country code"
+                                    value={countryCode}
+                                    onChange={(e) => setCountryCode(e.target.value)}
+                                    className="h-11 w-[104px] rounded-xl border border-[oklch(0.2475_0.0661_146.79)]/15 bg-white/50 px-2.5 font-bold text-[12px] text-[oklch(0.2475_0.0661_146.79)] focus:outline-none focus:border-[oklch(0.2475_0.0661_146.79)] focus:ring-1 focus:ring-[oklch(0.2475_0.0661_146.79)] transition-all"
+                                >
+                                    {COUNTRY_CODE_OPTIONS.map((option) => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </select>
+                                <input
+                                    type="tel"
+                                    required
+                                    value={phone}
+                                    onChange={(e) => setPhone(e.target.value)}
+                                    placeholder="99999 99999"
+                                    className="min-w-0 flex-1 h-11 rounded-xl border border-[oklch(0.2475_0.0661_146.79)]/15 px-3.5 font-medium text-[oklch(0.2475_0.0661_146.79)] placeholder:text-[oklch(0.2475_0.0661_146.79)]/30 focus:outline-none focus:border-[oklch(0.2475_0.0661_146.79)] focus:ring-1 focus:ring-[oklch(0.2475_0.0661_146.79)] transition-all bg-white/50"
+                                />
+                            </div>
                         </div>
                     </div>
 

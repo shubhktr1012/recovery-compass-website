@@ -14,6 +14,14 @@ const FOCUS_AREAS = [
     "General Wellness",
 ];
 
+const COUNTRY_CODE_OPTIONS = [
+    { value: "+91", label: "IN +91" },
+    { value: "+1", label: "US +1" },
+    { value: "+44", label: "UK +44" },
+    { value: "+971", label: "AE +971" },
+    { value: "+61", label: "AU +61" },
+];
+
 const DEFERRED_QUESTIONS = [
     {
         id: "tried_detox",
@@ -42,6 +50,7 @@ export function DetoxLeadFlow({ source, onClaimed, onClose }: DetoxLeadFlowProps
     const [leadId, setLeadId] = useState<string | null>(null);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [countryCode, setCountryCode] = useState("+91");
     const [phone, setPhone] = useState("");
     const [primaryFocus, setPrimaryFocus] = useState("");
     const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
@@ -88,6 +97,7 @@ export function DetoxLeadFlow({ source, onClaimed, onClose }: DetoxLeadFlowProps
                     action: "create_lead",
                     name,
                     email,
+                    countryCode,
                     phone,
                     source,
                     emailConsent: true,
@@ -209,14 +219,28 @@ export function DetoxLeadFlow({ source, onClaimed, onClose }: DetoxLeadFlowProps
                             <label htmlFor={`${source}-detox-phone`} className="block text-[11px] font-bold uppercase tracking-wider text-[oklch(0.2475_0.0661_146.79)]/40 mb-2">
                                 WhatsApp Number
                             </label>
-                            <input
-                                id={`${source}-detox-phone`}
-                                type="tel"
-                                value={phone}
-                                onChange={(event) => setPhone(event.target.value)}
-                                placeholder="e.g. +91 99999 99999"
-                                className="w-full h-12 rounded-2xl border border-[oklch(0.2475_0.0661_146.79)]/15 px-4 font-medium text-[oklch(0.2475_0.0661_146.79)] placeholder:text-[oklch(0.2475_0.0661_146.79)]/30 focus:outline-none focus:border-[oklch(0.2475_0.0661_146.79)] focus:ring-1 focus:ring-[oklch(0.2475_0.0661_146.79)] transition-all"
-                            />
+                            <div className="flex gap-2">
+                                <select
+                                    aria-label="WhatsApp country code"
+                                    value={countryCode}
+                                    onChange={(event) => setCountryCode(event.target.value)}
+                                    className="h-12 w-[112px] rounded-2xl border border-[oklch(0.2475_0.0661_146.79)]/15 bg-white px-3 font-bold text-[13px] text-[oklch(0.2475_0.0661_146.79)] focus:outline-none focus:border-[oklch(0.2475_0.0661_146.79)] focus:ring-1 focus:ring-[oklch(0.2475_0.0661_146.79)] transition-all"
+                                >
+                                    {COUNTRY_CODE_OPTIONS.map((option) => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </select>
+                                <input
+                                    id={`${source}-detox-phone`}
+                                    type="tel"
+                                    value={phone}
+                                    onChange={(event) => setPhone(event.target.value)}
+                                    placeholder="99999 99999"
+                                    className="min-w-0 flex-1 h-12 rounded-2xl border border-[oklch(0.2475_0.0661_146.79)]/15 px-4 font-medium text-[oklch(0.2475_0.0661_146.79)] placeholder:text-[oklch(0.2475_0.0661_146.79)]/30 focus:outline-none focus:border-[oklch(0.2475_0.0661_146.79)] focus:ring-1 focus:ring-[oklch(0.2475_0.0661_146.79)] transition-all"
+                                />
+                            </div>
                         </div>
                     </div>
 

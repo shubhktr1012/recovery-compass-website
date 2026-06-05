@@ -73,6 +73,22 @@ export function normalizeDetoxContactString(value: unknown) {
     return String(value ?? "").trim();
 }
 
+export function normalizeDetoxPhoneInput(phone: unknown, countryCode?: unknown) {
+    const rawPhone = normalizeDetoxContactString(phone);
+    const phoneDigits = rawPhone.replace(/\D/g, "");
+    const countryDigits = normalizeDetoxContactString(countryCode).replace(/\D/g, "");
+
+    if (!phoneDigits) {
+        return "";
+    }
+
+    if (rawPhone.startsWith("+") || !countryDigits || phoneDigits.startsWith(countryDigits)) {
+        return `+${phoneDigits}`;
+    }
+
+    return `+${countryDigits}${phoneDigits}`;
+}
+
 export function normalizeDetoxEmail(value: unknown) {
     return normalizeDetoxContactString(value).toLowerCase();
 }

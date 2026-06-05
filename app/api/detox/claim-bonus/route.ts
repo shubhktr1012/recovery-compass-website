@@ -7,6 +7,7 @@ import {
     deliverDetoxProgram,
     getDetoxQuestionnaireData,
     normalizeDetoxContactString,
+    normalizeDetoxPhoneInput,
 } from "@/lib/detox-delivery";
 
 export async function POST(request: Request) {
@@ -22,7 +23,7 @@ export async function POST(request: Request) {
         }
 
         const body = await request.json();
-        const phone = normalizeDetoxContactString(body?.phone);
+        const phone = normalizeDetoxPhoneInput(body?.phone, body?.countryCode);
         const primaryFocus = normalizeDetoxContactString(body?.primaryFocus);
         const questionnaireData = getDetoxQuestionnaireData(body?.questionnaireData);
 

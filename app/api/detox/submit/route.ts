@@ -8,6 +8,7 @@ import {
     isValidDetoxEmail,
     normalizeDetoxContactString,
     normalizeDetoxEmail,
+    normalizeDetoxPhoneInput,
 } from "@/lib/detox-delivery";
 
 function validationError(message: string) {
@@ -20,7 +21,7 @@ export async function POST(request: Request) {
         const action = normalizeDetoxContactString(body?.action || "single_step");
         const name = normalizeDetoxContactString(body?.name);
         const email = normalizeDetoxEmail(body?.email);
-        const phone = normalizeDetoxContactString(body?.phone);
+        const phone = normalizeDetoxPhoneInput(body?.phone, body?.countryCode);
         const source = normalizeDetoxContactString(body?.source || "homepage_modal");
         const emailConsent = body?.emailConsent !== false;
         const whatsappConsent = body?.whatsappConsent !== false;
