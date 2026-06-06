@@ -1,11 +1,11 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// 6-Day Detox Program — PDF HTML Template
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
+// 6-Day Detox Program - PDF HTML Template
+// -----------------------------------------------------------------------------
 // Renders the static 6-day detox program content into a premium A4 HTML
 // document matching the design language of the Diet Plan (forest green,
 // sage accents, Erode/Satoshi typography). Personalizes sections based
 // on the user's primary wellness focus.
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -77,9 +77,15 @@ function esc(str: unknown): string {
         .replace(/>/g, "&gt;");
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+function cleanGeneratedHtml(html: string): string {
+    return html
+        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+        .replace(/[\u2013\u2014]/g, "-");
+}
+
+// -----------------------------------------------------------------------------
 // Focus-Specific Static Data
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
 type FocusArea = "Better Sleep" | "More Energy" | "Gut Health" | "Quit Smoking / Alcohol" | "Stress Relief" | "General Wellness";
 
@@ -96,58 +102,58 @@ const FOCUS_INFO_MAP: Record<FocusArea, {
 }> = {
     "Better Sleep": {
         day1: "Vagus nerve activation directly improves sleep onset. When the nervous system shifts to rest-and-digest before bed, falling asleep takes minutes instead of hours.",
-        day2: "Dehydration reduces melatonin production — the sleep hormone. Even mild dehydration at bedtime increases time to fall asleep and reduces sleep depth. Two glasses of warm water in the evening changes this within 2 to 3 days.",
+        day2: "Dehydration reduces melatonin production - the sleep hormone. Even mild dehydration at bedtime increases time to fall asleep and reduces sleep depth. Two glasses of warm water in the evening changes this within 2 to 3 days.",
         day3: "Morning sunlight is the single most powerful sleep intervention available. The light signal through the eyes sets the circadian clock that determines when melatonin is released that evening. 10 minutes of morning sun means significantly faster sleep onset at night.",
-        day4: "The gut produces 95% of the body's serotonin — the precursor to melatonin. Poor gut function means poor serotonin production, which means poor sleep quality. Fixing the gut directly improves sleep chemistry.",
+        day4: "The gut produces 95% of the body's serotonin - the precursor to melatonin. Poor gut function means poor serotonin production, which means poor sleep quality. Fixing the gut directly improves sleep chemistry.",
         day5: "The racing mind at night is the most common cause of sleep difficulty. Pattern awareness shows you exactly what thoughts and worries are keeping you awake. The physiological sigh calms the nervous system within 60 seconds of lying down.",
-        day6: "A consistent daily rhythm is what separates people who sleep well from those who do not. The circadian clock governs melatonin release, body temperature drop, and cortisol timing — all three require consistency to work properly.",
-        day5Nutrition: "For sleep: avoid chai or coffee after 2 PM — caffeine has a 6-hour half-life and is still in your system at midnight.",
+        day6: "A consistent daily rhythm is what separates people who sleep well from those who do not. The circadian clock governs melatonin release, body temperature drop, and cortisol timing - all three require consistency to work properly.",
+        day5Nutrition: "For sleep: avoid chai or coffee after 2 PM - caffeine has a 6-hour half-life and is still in your system at midnight.",
         nextStepTitle: "21-Day Sleep Reset",
         nextStepDesc: "Complete evening protocol, military sleep method, cognitive shuffle, body temperature science, and the full circadian rhythm rebuild. Most users see the biggest change between Days 7 and 14."
     },
     "More Energy": {
-        day1: "Cold water spikes alertness within 60 seconds — faster than caffeine and without the crash. The nervous system shift from rest to alert is immediate.",
-        day2: "The number one cause of the 3 PM energy crash is mild dehydration — not lack of sleep or food. Structured water timing eliminates this predictably within the first week.",
-        day3: "Morning sunlight triggers the appropriate cortisol morning peak — giving genuine alert energy instead of groggy fatigue. Post-meal walking prevents the afternoon energy crash by stabilising blood sugar after eating.",
-        day4: "Poor gut function means poor nutrient absorption. You can eat well and still be nutritionally depleted if the gut lining is inflamed. Today's practices improve absorption efficiency — meaning more energy from the same food.",
-        day5: "Chronic low-grade stress is one of the biggest energy drains that exists. Cortisol in the bloodstream suppresses mitochondrial function — cellular energy production. Reducing stress releases trapped energy that was being diverted to the stress response.",
-        day6: "Energy is not a resource you have or lack — it is a rhythm you maintain or disrupt. Morning sunlight, consistent meal timing, movement, and the eating window together create steady energy without caffeine dependency within 7 to 10 days.",
-        day5Nutrition: "For energy: eat a protein-rich breakfast — eggs, dal, curd, or paneer.",
+        day1: "Cold water spikes alertness within 60 seconds - faster than caffeine and without the crash. The nervous system shift from rest to alert is immediate.",
+        day2: "The number one cause of the 3 PM energy crash is mild dehydration - not lack of sleep or food. Structured water timing eliminates this predictably within the first week.",
+        day3: "Morning sunlight triggers the appropriate cortisol morning peak - giving genuine alert energy instead of groggy fatigue. Post-meal walking prevents the afternoon energy crash by stabilising blood sugar after eating.",
+        day4: "Poor gut function means poor nutrient absorption. You can eat well and still be nutritionally depleted if the gut lining is inflamed. Today's practices improve absorption efficiency - meaning more energy from the same food.",
+        day5: "Chronic low-grade stress is one of the biggest energy drains that exists. Cortisol in the bloodstream suppresses mitochondrial function - cellular energy production. Reducing stress releases trapped energy that was being diverted to the stress response.",
+        day6: "Energy is not a resource you have or lack - it is a rhythm you maintain or disrupt. Morning sunlight, consistent meal timing, movement, and the eating window together create steady energy without caffeine dependency within 7 to 10 days.",
+        day5Nutrition: "For energy: eat a protein-rich breakfast - eggs, dal, curd, or paneer.",
         nextStepTitle: "14-Day Energy Reset",
         nextStepDesc: "Cold therapy protocol, mitochondria science, nutrition timing for sustained energy, stress-energy connection, and the morning routine that replaces caffeine dependency."
     },
     "Gut Health": {
         day1: "The vagus nerve controls gut motility. Activating it every morning means better digestion, less bloating, and more regular bowel movements throughout the day.",
         day2: "The colon requires water to keep stool soft and moving. Mild dehydration firms stool, slows transit time, and causes bloating that looks like a gut problem but is actually a hydration problem.",
-        day3: "Post-meal walking directly stimulates the migrating motor complex — your gut's natural cleaning wave. Walking after meals reduces bloating, improves gut motility, and helps the gut empty at the right rate. This is clinical physiology, not wellness advice.",
+        day3: "Post-meal walking directly stimulates the migrating motor complex - your gut's natural cleaning wave. Walking after meals reduces bloating, improves gut motility, and helps the gut empty at the right rate. This is clinical physiology, not wellness advice.",
         day4: "The chewing practice, warm compress, and yoga sequence address three separate mechanisms of gut dysfunction: enzyme insufficiency, slow gastric emptying, and poor colonic motility. Most people feel the difference by this evening.",
-        day5: "The gut-brain axis means emotional stress directly alters gut motility, enzyme secretion, and gut bacteria balance. The body tension mapping practice specifically targets gut tension — where most emotional stress is physically stored.",
-        day6: "Gut bacteria follow a precise 24-hour clock of activity and dormancy. Eating at consistent times within a consistent window is the most powerful microbiome intervention available — more effective than any probiotic supplement.",
+        day5: "The gut-brain axis means emotional stress directly alters gut motility, enzyme secretion, and gut bacteria balance. The body tension mapping practice specifically targets gut tension - where most emotional stress is physically stored.",
+        day6: "Gut bacteria follow a precise 24-hour clock of activity and dormancy. Eating at consistent times within a consistent window is the most powerful microbiome intervention available - more effective than any probiotic supplement.",
         day5Nutrition: "For gut: add a pinch of turmeric with black pepper to one meal.",
         nextStepTitle: "21-Day Gut Reset",
-        nextStepDesc: "Colon massage, diaphragmatic breathing, full spice protocol, fermented foods, circadian eating window, and the complete evening gut repair sequence — with lactose intolerance guidance woven throughout."
+        nextStepDesc: "Colon massage, diaphragmatic breathing, full spice protocol, fermented foods, circadian eating window, and the complete evening gut repair sequence - with lactose intolerance guidance woven throughout."
     },
     "Quit Smoking / Alcohol": {
-        day1: "Vagus nerve activation reduces craving intensity within 90 seconds. Use the cold water face splash the moment an urge appears — the fastest biological urge interrupter available.",
-        day2: "Dehydration amplifies cravings by up to 30%. The brain confuses dehydration signals with craving signals. A full glass of water is one of the most effective urge interrupters — and now you know exactly why.",
+        day1: "Vagus nerve activation reduces craving intensity within 90 seconds. Use the cold water face splash the moment an urge appears - the fastest biological urge interrupter available.",
+        day2: "Dehydration amplifies cravings by up to 30%. The brain confuses dehydration signals with craving signals. A full glass of water is one of the most effective urge interrupters - and now you know exactly why.",
         day3: "Physical movement metabolises the cortisol and adrenaline that intensify cravings. A 10-minute walk during a strong craving reduces craving intensity by 30 to 40% within the walk itself. Movement is one of the most underused quit tools.",
-        day4: "The gut produces dopamine alongside serotonin. Gut inflammation disrupts dopamine production, which makes the brain seek dopamine from elsewhere — including nicotine and alcohol. Improving gut health directly reduces craving intensity over time.",
-        day5: "Understanding your emotional triggers is Phase 1 of the 21-Day Quit Program — the most important phase. Most relapses happen because of an emotional trigger the person did not see coming. Pattern awareness gives you advance warning before the urge peaks.",
-        day6: "Urges are strongest when the nervous system is dysregulated. A consistent daily rhythm — same morning routine, same meal times, same evening wind-down — reduces nervous system volatility and reduces urge intensity throughout the day.",
+        day4: "The gut produces dopamine alongside serotonin. Gut inflammation disrupts dopamine production, which makes the brain seek dopamine from elsewhere - including nicotine and alcohol. Improving gut health directly reduces craving intensity over time.",
+        day5: "Understanding your emotional triggers is Phase 1 of the 21-Day Quit Program - the most important phase. Most relapses happen because of an emotional trigger the person did not see coming. Pattern awareness gives you advance warning before the urge peaks.",
+        day6: "Urges are strongest when the nervous system is dysregulated. A consistent daily rhythm - same morning routine, same meal times, same evening wind-down - reduces nervous system volatility and reduces urge intensity throughout the day.",
         day5Nutrition: "For quit support: replace the post-meal or post-chai craving with saunf (fennel seeds) and a 2-minute walk outside.",
         nextStepTitle: "21-Day Quit Program",
         nextStepDesc: "Urge Surfing, the Delay Technique, social pressure scripts, slip recovery protocol, identity shift, and a complete post-program plan for the 90 days that follow."
     },
     "Stress Relief": {
-        day1: "Cold water drops cortisol — the primary stress hormone — within 60 seconds. The fastest natural stress reset available. Free, accessible anywhere, works every time.",
-        day2: "Cortisol — the primary stress hormone — is significantly elevated by even mild dehydration. The body interprets dehydration as a physical stressor. Proper hydration is one of the simplest cortisol management tools available.",
-        day3: "A 10-minute walk metabolises cortisol and adrenaline faster than any breathing exercise. Post-meal walking is specifically effective for stress because it uses stress hormones for their intended purpose — physical movement — removing them from the bloodstream.",
+        day1: "Cold water drops cortisol - the primary stress hormone - within 60 seconds. The fastest natural stress reset available. Free, accessible anywhere, works every time.",
+        day2: "Cortisol - the primary stress hormone - is significantly elevated by even mild dehydration. The body interprets dehydration as a physical stressor. Proper hydration is one of the simplest cortisol management tools available.",
+        day3: "A 10-minute walk metabolises cortisol and adrenaline faster than any breathing exercise. Post-meal walking is specifically effective for stress because it uses stress hormones for their intended purpose - physical movement - removing them from the bloodstream.",
         day4: "The gut-brain axis is a two-way connection. Gut inflammation increases anxiety and stress reactivity. Gut healing reduces it. The warm compress specifically activates the parasympathetic nervous system through vagus nerve pathways in the gut wall.",
-        day5: "The physiological sigh is clinically the fastest stress reset available. 60 seconds. Works every time. Pattern awareness shows your personal stress triggers — more valuable than any technique because it lets you intervene before stress peaks.",
+        day5: "The physiological sigh is clinically the fastest stress reset available. 60 seconds. Works every time. Pattern awareness shows your personal stress triggers - more valuable than any technique because it lets you intervene before stress peaks.",
         day6: "Chronic stress is largely a rhythm problem. The cortisol curve is supposed to peak in the morning and drop through the day. Irregular sleep, meals, and no morning anchor disrupt this curve and keep cortisol elevated all day. This routine resets it.",
-        day5Nutrition: "For stress: do not skip any meal today — low blood sugar amplifies cortisol significantly.",
+        day5Nutrition: "For stress: do not skip any meal today - low blood sugar amplifies cortisol significantly.",
         nextStepTitle: "90-Day Master Program",
-        nextStepDesc: "The most powerful program in the Recovery Compass library. ACT-based awareness and behaviour change across 7 phases — the program that changes people at the level of identity, not just behaviour."
+        nextStepDesc: "The most powerful program in the Recovery Compass library. ACT-based awareness and behaviour change across 7 phases - the program that changes people at the level of identity, not just behaviour."
     },
     "General Wellness": {
         day1: "Warm water on waking activates digestion, rehydrates after overnight fasting, and starts the body's natural morning clearing process. One of the most powerful 3-minute habits you can build.",
@@ -156,15 +162,15 @@ const FOCUS_INFO_MAP: Record<FocusArea, {
         day4: "The gut is the foundation of every other system. Immunity, mood, energy, sleep, and skin health all depend on gut function. Three practices in 15 minutes that simultaneously address all of these is one of the highest-value investments of time in this entire program.",
         day5: "Pattern awareness is the single most powerful health tool most people never use. Understanding when, where, and why your body feels its worst gives you the ability to intervene before the symptom appears rather than reacting after it has already peaked.",
         day6: "A consistent daily rhythm is the foundation of long-term health. Every practice you have built this week becomes exponentially more effective when done at consistent times every day.",
-        day5Nutrition: "For general wellness: eat a protein-rich breakfast — eggs, dal, curd, or paneer.",
+        day5Nutrition: "For general wellness: eat a protein-rich breakfast - eggs, dal, curd, or paneer.",
         nextStepTitle: "90-Day Master Program",
-        nextStepDesc: "The complete Recovery Compass journey — energy, sleep, gut, stress, and behaviour change woven into one 90-day program that produces lasting change across every dimension of wellness."
+        nextStepDesc: "The complete Recovery Compass journey - energy, sleep, gut, stress, and behaviour change woven into one 90-day program that produces lasting change across every dimension of wellness."
     }
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 // Render Header / Footer
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
 function renderRCHeader(page: number): string {
     const logoDataUri = getPublicAssetDataUri("rc-logo-white.svg", "image/svg+xml");
@@ -181,13 +187,13 @@ function renderRCHeader(page: number): string {
 function renderRCFooter(): string {
     return `<div class="rc-footer">
     <span class="rc-footer-disclaimer">This program is for general wellness. Consult your doctor if you have a diagnosed health condition.</span>
-    <span class="rc-footer-brand">Recovery Compass · Free Detox</span>
+    <span class="rc-footer-brand">Recovery Compass | Free Detox</span>
   </div>`;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 // Main Renderer
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
 export function renderDetoxHtml(name: string, focusInput: string): string {
     // Sanitize focus area
@@ -212,7 +218,7 @@ export function renderDetoxHtml(name: string, focusInput: string): string {
         year: "numeric"
     });
 
-    return `<!DOCTYPE html>
+    return cleanGeneratedHtml(`<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -385,6 +391,20 @@ body {
   line-height: 1.6;
   color: var(--ink-mid);
   margin-bottom: 16px;
+}
+.print-callout {
+  background: #fbfdfb;
+  border: 0.5px solid var(--border);
+  border-left: 3px solid var(--mid);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin: 12px 0 14px;
+  font-size: 8.6pt;
+  color: var(--ink-mid);
+  line-height: 1.45;
+}
+.print-callout strong {
+  color: var(--forest);
 }
 .section-title {
   font-family: var(--font-serif);
@@ -589,6 +609,76 @@ body {
   background: var(--sage);
 }
 
+.tracker-intro {
+  font-size: 8.6pt;
+  color: var(--ink-mid);
+  line-height: 1.45;
+  margin-bottom: 8px;
+}
+.tracker-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  margin-top: 8px;
+  font-size: 7.15pt;
+}
+.tracker-table th {
+  background: var(--forest);
+  color: var(--white);
+  padding: 5px 3px;
+  text-align: center;
+  font-weight: 700;
+  line-height: 1.15;
+}
+.tracker-table th:first-child {
+  width: 30%;
+  text-align: left;
+  padding-left: 7px;
+}
+.tracker-table td {
+  border: 0.5px solid var(--border);
+  padding: 3.6px 4px;
+  vertical-align: middle;
+}
+.tracker-table td:first-child {
+  color: var(--ink-mid);
+  font-weight: 500;
+}
+.tracker-table td:not(:first-child) {
+  text-align: center;
+}
+.tracker-check {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--mid);
+  border-radius: 2px;
+}
+.reflection-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 8px;
+  margin-top: 10px;
+}
+.reflection-card {
+  min-height: 34px;
+  border: 0.5px solid var(--border);
+  border-radius: 6px;
+  background: #fbfdfb;
+  padding: 6px 8px;
+}
+.reflection-card-title {
+  font-size: 7.2pt;
+  font-weight: 700;
+  color: var(--forest);
+  margin-bottom: 2px;
+}
+.reflection-card-prompt {
+  font-size: 7.1pt;
+  color: var(--ink-mid);
+  line-height: 1.25;
+}
+
 .quote-hero {
   font-size: 11pt;
   font-style: italic;
@@ -609,7 +699,7 @@ ${renderRCFooter()}
   <div class="cover-wrapper">
     <div class="cover-badge">Recovery Compass</div>
     <h1 class="cover-title">6-Day Free<br>Detox Program</h1>
-    <p class="cover-subtitle">All five major wellness issues — poor sleep, low energy, gut problems, chronic stress, and addictive habits — share the same six root causes. This program fixes all six in six days.</p>
+    <p class="cover-subtitle">All five major wellness issues - poor sleep, low energy, gut problems, chronic stress, and addictive habits - share the same six root causes. This program fixes all six in six days.</p>
 
     <div class="cover-strip">
       <div class="cover-cell">
@@ -638,7 +728,11 @@ ${renderRCFooter()}
   <div class="section-title">How this program works</div>
   <p class="intro-lead">This program fixes all six root wellness causes in six days. One key practice per day. Under 15 minutes total. Every single day produces a felt result.</p>
 
-  <p style="margin-bottom: 12px; font-size: 9.5pt; color: var(--ink-mid);">Each day builds on the previous one — do not skip days. By Day 3 most people notice at least two clear physical changes. Day 6 bridges you to the full Recovery Compass program for your issue.</p>
+  <p style="margin-bottom: 12px; font-size: 9.5pt; color: var(--ink-mid);">Each day builds on the previous one - do not skip days. By Day 3 most people notice at least two clear physical changes. Day 6 bridges you to the full Recovery Compass program for your issue.</p>
+
+  <div class="print-callout">
+    <strong>Before you start:</strong> print the full program and keep it somewhere visible. It will be easier to follow each day's steps and tick the tracker as you complete the week.
+  </div>
 
   <div class="section-title">The six root causes this program fixes</div>
 
@@ -667,35 +761,35 @@ ${renderRCFooter()}
     <div class="practice-desc">The body works on a 24-hour clock. Irregular eating, sleeping, and movement patterns disrupt every system simultaneously. Day 6 builds the complete rhythm.</div>
   </div>
 
-  <p style="margin-top: 25px; font-size: 8.5pt; color: var(--ink-light); font-style: italic;">No cold water or cold drinks on any day of this program. No eating after 9 PM — the body needs a clear overnight rest window.</p>
+  <p style="margin-top: 25px; font-size: 8.5pt; color: var(--ink-light); font-style: italic;">No cold water or cold drinks on any day of this program. No eating after 9 PM - the body needs a clear overnight rest window.</p>
 </div>
 
 <!-- PAGE 3: DAY 1 -->
 <div class="page">
   ${renderRCHeader(3)}
   <div class="day-title-row">
-    <span class="day-title">Day 1 · Root Cause 1 — Dysregulated Nervous System</span>
+    <span class="day-title">Day 1: Root Cause 1 - Dysregulated Nervous System</span>
     <span class="day-time">~12 min total</span>
   </div>
   <div class="section-subtitle">The Nervous System Reset</div>
   <p style="margin-bottom:12px; font-size:9pt; color:var(--ink-mid);">Today you activate the rest-and-digest mode of your nervous system deliberately using three free tools that together take under 5 minutes.</p>
 
   <div class="practice-block">
-    <div class="practice-head">Practice 1 — Cold Water Face Splash (10 seconds)</div>
+    <div class="practice-head">Practice 1 - Cold Water Face Splash (10 seconds)</div>
     <div class="practice-desc">Go to your sink. Splash cold water on your face 5 to 7 times. Do this before tea, before food, before your phone.</div>
     <div class="why-works">Cold water triggers the dive reflex. This immediately fires the vagus nerve: the direct physical connection between your brain and your gut, heart rate, stress response, and sleep quality.</div>
   </div>
 
   <div class="practice-block">
-    <div class="practice-head">Practice 2 — Tongue Scraping (30 seconds)</div>
+    <div class="practice-head">Practice 2 - Tongue Scraping (30 seconds)</div>
     <div class="practice-desc">Before brushing your teeth, scrape your tongue from back to front 5 to 7 times. Use a tongue scraper or the back edge of a metal spoon.</div>
     <div class="why-works">The mouth and gut share the same biological system. Scraping removes overnight bacteria film before it is swallowed with your first drink.</div>
   </div>
 
   <div class="practice-block">
-    <div class="practice-head">Practice 3 — 500 ml Warm Water on Waking (3 mins)</div>
+    <div class="practice-head">Practice 3 - 500 ml Warm Water on Waking (3 mins)</div>
     <div class="practice-desc">After tongue scraping, drink 500 ml of warm water slowly. Not hot. Not cold. Warm. Zero cold drinks for the rest of the day.</div>
-    <div class="why-works">Warm water triggers the gastrocolic reflex — your gut's natural signal to empty the bowel. Cold water tightens the gut muscle and disrupts digestion.</div>
+    <div class="why-works">Warm water triggers the gastrocolic reflex - your gut's natural signal to empty the bowel. Cold water tightens the gut muscle and disrupts digestion.</div>
   </div>
 
   <div class="personal-card">
@@ -715,18 +809,18 @@ ${renderRCFooter()}
     <div>
       <div class="grid-col-title">Indian Nutrition Note</div>
       <div class="note-box">
-        Eat normal meals. The only change: drink warm water with every meal instead of cold drinks. Skip cold water alongside your morning chai. Ideal addition: squeeze half a lemon into your warm morning water — a traditional liver-cleansing practice.
+        Eat normal meals. The only change: drink warm water with every meal instead of cold drinks. Skip cold water alongside your morning chai. Ideal addition: squeeze half a lemon into your warm morning water - a traditional liver-cleansing practice.
       </div>
     </div>
   </div>
 
   <div class="checklist-box">
     <div class="checklist-title">Day 1 Completion Checklist</div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Cold water face splash on waking</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Tongue scraping before brushing</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>500 ml warm water on waking</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>No cold drinks all day</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Hum any note for 2 minutes before bed (vagus nerve stimulation)</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Cold water face splash on waking</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Tongue scraping before brushing</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>500 ml warm water on waking</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>No cold drinks all day</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Hum any note for 2 minutes before bed (vagus nerve stimulation)</span></div>
   </div>
 </div>
 
@@ -734,14 +828,14 @@ ${renderRCFooter()}
 <div class="page">
   ${renderRCHeader(4)}
   <div class="day-title-row">
-    <span class="day-title">Day 2 · Root Cause 2 — Chronic Dehydration</span>
+    <span class="day-title">Day 2: Root Cause 2 - Chronic Dehydration</span>
     <span class="day-time">~13 min total</span>
   </div>
   <div class="section-subtitle">The Hydration and Mouth Reset</div>
-  <p style="margin-bottom:12px; font-size:9pt; color:var(--ink-mid);">Today adds oil pulling — a 5-minute traditional practice backed by modern research that removes harmful bacteria from your mouth before they reach your gut.</p>
+  <p style="margin-bottom:12px; font-size:9pt; color:var(--ink-mid);">Today adds oil pulling - a 5-minute traditional practice backed by modern research that removes harmful bacteria from your mouth before they reach your gut.</p>
 
   <div class="practice-block">
-    <div class="practice-head">Practice 1 — Morning Protocol (4 Steps)</div>
+    <div class="practice-head">Practice 1 - Morning Protocol (4 Steps)</div>
     <div class="practice-desc">Step 1: Oil pulling (5 mins). Step 2: Tongue scraping. Step 3: Cold water face splash. Step 4: 500 ml warm water. Done together in sequence, these are more powerful than any supplement.</div>
   </div>
 
@@ -752,7 +846,7 @@ ${renderRCFooter()}
   </div>
 
   <div class="practice-block">
-    <div class="practice-head">Practice 2 — Structured Water Timing</div>
+    <div class="practice-head">Practice 2 - Structured Water Timing</div>
     <div class="practice-desc">Before meals: drink 200 ml warm water 30 minutes before eating. During meals: only small sips. After meals: wait 20 minutes then drink 200 ml warm water. No cold drinks.</div>
     <div class="why-works">Large water amounts during meals dilute digestive enzymes by up to 50%. Drinking water at the wrong temperature and wrong time causes post-meal bloating, low energy, and disrupted sleep.</div>
   </div>
@@ -774,19 +868,19 @@ ${renderRCFooter()}
     <div>
       <div class="grid-col-title">Indian Nutrition Note</div>
       <div class="note-box">
-        Add **jeera water** in the afternoon today. Boil 1 teaspoon of cumin seeds in 300 ml of water for 5 minutes, strain, and drink warm. Cumin directly stimulates digestive enzymes and reduces afternoon bloating and gas. Keep normal meals otherwise.
+        Add <strong>jeera water</strong> in the afternoon today. Boil 1 teaspoon of cumin seeds in 300 ml of water for 5 minutes, strain, and drink warm. Cumin directly stimulates digestive enzymes and reduces afternoon bloating and gas. Keep normal meals otherwise.
       </div>
     </div>
   </div>
 
   <div class="checklist-box">
     <div class="checklist-title">Day 2 Completion Checklist</div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Oil pulling 5 minutes</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Full morning protocol (scrape, splash, warm water)</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Water timing followed: before/after meals, not during</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Jeera water in the afternoon</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>No cold drinks all day</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Evening: hum 2 mins + gargle with warm salt water 30s</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Oil pulling 5 minutes</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Full morning protocol (scrape, splash, warm water)</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Water timing followed: before/after meals, not during</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Jeera water in the afternoon</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>No cold drinks all day</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Evening: hum 2 mins + gargle with warm salt water 30s</span></div>
   </div>
 </div>
 
@@ -794,22 +888,22 @@ ${renderRCFooter()}
 <div class="page">
   ${renderRCHeader(5)}
   <div class="day-title-row">
-    <span class="day-title">Day 3 · Root Cause 3 — No Morning Anchor</span>
+    <span class="day-title">Day 3: Root Cause 3 - No Morning Anchor</span>
     <span class="day-time">~15 min total</span>
   </div>
   <div class="section-subtitle">The Movement Reset</div>
-  <p style="margin-bottom:12px; font-size:9pt; color:var(--ink-mid);">Morning sunlight and movement set the body's circadian clock — the 24-hour rhythm that governs energy, sleep, gut bacterial rhythm, and cravings.</p>
+  <p style="margin-bottom:12px; font-size:9pt; color:var(--ink-mid);">Morning sunlight and movement set the body's circadian clock - the 24-hour rhythm that governs energy, sleep, gut bacterial rhythm, and cravings.</p>
 
   <div class="practice-block">
-    <div class="practice-head">Practice 1 — Morning Sunlight Walk (10 minutes)</div>
+    <div class="practice-head">Practice 1 - Morning Sunlight Walk (10 minutes)</div>
     <div class="practice-desc">Within 30 minutes of waking, go outside. Walk in direct sunlight for 10 minutes (not through glass). No sunglasses. Barefoot on grass or soil if possible (grounding).</div>
     <div class="why-works">Morning sunlight sets the circadian clock governing melatonin release at night. It triggers appropriate morning cortisol peak, Vitamin D production, and stimulates gut-derived serotonin.</div>
   </div>
 
   <div class="practice-block">
-    <div class="practice-head">Practice 2 — Post-Meal Walk (10 minutes after lunch & dinner)</div>
+    <div class="practice-head">Practice 2 - Post-Meal Walk (10 minutes after lunch & dinner)</div>
     <div class="practice-desc">Walk at a relaxed, comfortable, conversational pace. Breathe through your nose only. Keep one hand resting lightly on your belly. Walking after meals is more impactful than before.</div>
-    <div class="why-works">Walking stimulates peristalsis — the muscular wave moving food through intestines. It also lowers post-meal blood sugar by 20 to 30%. Nasal breathing generates nitric oxide, improving gut blood flow.</div>
+    <div class="why-works">Walking stimulates peristalsis - the muscular wave moving food through intestines. It also lowers post-meal blood sugar by 20 to 30%. Nasal breathing generates nitric oxide, improving gut blood flow.</div>
   </div>
 
   <div class="personal-card">
@@ -829,20 +923,20 @@ ${renderRCFooter()}
     <div>
       <div class="grid-col-title">Indian Nutrition Note</div>
       <div class="note-box">
-        Eat breakfast within 45 minutes of your morning walk. Best choices: **pesarattu** (moong dal dosa) or **idli with sambar** — high protein, low glycemic, fermented. Alternatively, plain curd with a banana. Do not skip breakfast today; skipping it disrupts the cortisol curve morning light just fixed.
+        Eat breakfast within 45 minutes of your morning walk. Best choices: <strong>pesarattu</strong> (moong dal dosa) or <strong>idli with sambar</strong> - high protein, low glycemic, fermented. Alternatively, plain curd with a banana. Do not skip breakfast today; skipping it disrupts the cortisol curve morning light just fixed.
       </div>
     </div>
   </div>
 
   <div class="checklist-box">
     <div class="checklist-title">Day 3 Completion Checklist</div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Full morning protocol (oil, scrape, splash, water)</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Morning sunlight walk 10 minutes</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Breakfast within 45 minutes of the walk</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Post-meal walk after lunch 10 minutes</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Post-meal walk after dinner 10 minutes</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>No cold drinks all day</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Evening humming and gargling</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Full morning protocol (oil, scrape, splash, water)</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Morning sunlight walk 10 minutes</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Breakfast within 45 minutes of the walk</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Post-meal walk after lunch 10 minutes</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Post-meal walk after dinner 10 minutes</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>No cold drinks all day</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Evening humming and gargling</span></div>
   </div>
 </div>
 
@@ -850,26 +944,26 @@ ${renderRCFooter()}
 <div class="page">
   ${renderRCHeader(6)}
   <div class="day-title-row">
-    <span class="day-title">Day 4 · Root Cause 4 — Poor Gut Function</span>
+    <span class="day-title">Day 4: Root Cause 4 - Poor Gut Function</span>
     <span class="day-time">~15 min total</span>
   </div>
   <div class="section-subtitle">The Gut and Food Reset</div>
   <p style="margin-bottom:12px; font-size:9pt; color:var(--ink-mid);">Today introduces three specific gut practices that address enzyme insufficiency, slow gastric emptying, and poor colonic motility.</p>
 
   <div class="practice-block">
-    <div class="practice-head">Practice 1 — The Chewing Practice</div>
+    <div class="practice-head">Practice 1 - The Chewing Practice</div>
     <div class="practice-desc">Choose your biggest meal. Put phone away. Sit down. On the first 10 bites, chew each bite 20 times before swallowing. Eat the rest of the meal normally.</div>
     <div class="why-works">Digestion begins in the mouth. Chewing 20 times breaks carbohydrates down by 40% using salivary amylase before reaching the stomach. Fermentation decreases, reducing gas and bloating.</div>
   </div>
 
   <div class="practice-block">
-    <div class="practice-head">Practice 2 — Warm Compress after Largest Meal (5 minutes)</div>
+    <div class="practice-head">Practice 2 - Warm Compress after Largest Meal (5 minutes)</div>
     <div class="practice-desc">Take a small towel. Run under warm water and wring out. Lie down comfortably and place the warm cloth on your belly (ribs to belly button). Do nothing else.</div>
     <div class="why-works">Increases blood flow to the stomach, liver, and intestines, speeding up gastric emptying and removing post-meal heaviness.</div>
   </div>
 
   <div class="practice-block">
-    <div class="practice-head">Practice 3 — 8-Minute Gut Yoga Sequence</div>
+    <div class="practice-head">Practice 3 - 8-Minute Gut Yoga Sequence</div>
     <div class="practice-desc">Do on an empty stomach. Poses: 1. Knees to chest (2m). 2. Seated spinal twist (1m each side). 3. Child's pose (1m). 4. Cat & Cow (1m). 5. Lying twist (30s each side).</div>
     <div class="why-works">Each pose compresses and releases a specific section of the digestive tract, wringing the organs and stimulating colonic motility.</div>
   </div>
@@ -890,19 +984,19 @@ ${renderRCFooter()}
     <div>
       <div class="grid-col-title">Indian Nutrition Note</div>
       <div class="note-box">
-        Add one fermented food to at least one meal today. Options: homemade **curd** (dahi/perugu), fresh **buttermilk** (chaas/majjiga), or naturally fermented **idli/dosa**. A single cup of homemade curd contains more beneficial gut bacteria than most probiotic capsules. Add a slice of ginger to your morning water.
+        Add one fermented food to at least one meal today. Options: homemade <strong>curd</strong> (dahi/perugu), fresh <strong>buttermilk</strong> (chaas/majjiga), or naturally fermented <strong>idli/dosa</strong>. A single cup of homemade curd contains more beneficial gut bacteria than most probiotic capsules. Add a slice of ginger to your morning water.
       </div>
     </div>
   </div>
 
   <div class="checklist-box">
     <div class="checklist-title">Day 4 Completion Checklist</div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Full morning protocol + sunlight walk</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>8-minute gut yoga sequence</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Chewing practice: 10 bites at 20 chews</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Warm compress after biggest meal</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Fermented food added to at least one meal</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Post-meal walks + evening wind-down</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Full morning protocol + sunlight walk</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>8-minute gut yoga sequence</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Chewing practice: 10 bites at 20 chews</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Warm compress after biggest meal</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Fermented food added to at least one meal</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Post-meal walks + evening wind-down</span></div>
   </div>
 </div>
 
@@ -910,26 +1004,26 @@ ${renderRCFooter()}
 <div class="page">
   ${renderRCHeader(7)}
   <div class="day-title-row">
-    <span class="day-title">Day 5 · Root Cause 5 — Emotional Triggers Stored in the Body</span>
+    <span class="day-title">Day 5: Root Cause 5 - Emotional Triggers Stored in the Body</span>
     <span class="day-time">~14 min total</span>
   </div>
   <div class="section-subtitle">The Mind Reset</div>
   <p style="margin-bottom:12px; font-size:9pt; color:var(--ink-mid);">Unprocessed stress stores in the body as muscular tension and nervous system dysregulation, driving poor sleep, low energy, and cravings.</p>
 
   <div class="practice-block">
-    <div class="practice-head">Practice 1 — The Physiological Sigh (60 seconds)</div>
+    <div class="practice-head">Practice 1 - The Physiological Sigh (60 seconds)</div>
     <div class="practice-desc">When stress peaks, do this immediately: Take a normal breath in through your nose, take a second smaller sip of air on top, then execute a long, slow exhale through your mouth. Repeat 3 times.</div>
     <div class="why-works">Stanford research shows this is the fastest known biological stress reset. Fully inflates the lung's air sacs, maximizing CO2 removal on the exhale, which drops heart rate and activates the parasympathetic response.</div>
   </div>
 
   <div class="practice-block">
-    <div class="practice-head">Practice 2 — Pattern Awareness (5 minutes)</div>
+    <div class="practice-head">Practice 2 - Pattern Awareness (5 minutes)</div>
     <div class="practice-desc">Sit quietly. Ask yourself honestly: 1. When does my primary issue get worst? 2. What emotion is present just before it peaks? 3. What situation triggers it most? 4. What am I actually looking for when the symptom appears? Write one sentence for each.</div>
     <div class="why-works">Simply noticing a trigger-response pattern begins to interrupt it neurologically before any active effort is made. You cannot change a pattern you cannot see.</div>
   </div>
 
   <div class="practice-block">
-    <div class="practice-head">Practice 3 — Body Tension Mapping (3 minutes)</div>
+    <div class="practice-head">Practice 3 - Body Tension Mapping (3 minutes)</div>
     <div class="practice-desc">Lie on back. Scan from throat to lower belly. Look for tightness or contraction. Place one hand there and take 5 slow breaths. Do not try to fix it, just notice and breathe.</div>
     <div class="why-works">Muscular contraction holds stress. Conscious breathing into tight areas triggers release, often noticed as a sudden sigh, gurgle, or relaxation.</div>
   </div>
@@ -959,12 +1053,12 @@ ${renderRCFooter()}
 
   <div class="checklist-box">
     <div class="checklist-title">Day 5 Completion Checklist</div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Full morning protocol + sunlight walk</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Physiological sigh used at least once during stress</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Pattern awareness: 5 mins, four questions answered</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Body tension mapping: 3 mins</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Post-meal walks + gut yoga sequence</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Evening: hum 2 mins + warm turmeric milk</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Full morning protocol + sunlight walk</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Physiological sigh used at least once during stress</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Pattern awareness: 5 mins, four questions answered</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Body tension mapping: 3 mins</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Post-meal walks + gut yoga sequence</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Evening: hum 2 mins + warm turmeric milk</span></div>
   </div>
 </div>
 
@@ -972,11 +1066,11 @@ ${renderRCFooter()}
 <div class="page">
   ${renderRCHeader(8)}
   <div class="day-title-row">
-    <span class="day-title">Day 6 · Root Cause 6 — No Consistent Daily Rhythm</span>
+    <span class="day-title">Day 6: Root Cause 6 - No Consistent Daily Rhythm</span>
     <span class="day-time">~20 min total</span>
   </div>
   <div class="section-subtitle">The Full Routine</div>
-  <p style="margin-bottom:12px; font-size:9pt; color:var(--ink-mid);">Today you run everything you have built this week as one complete daily routine — a single flowing rhythm.</p>
+  <p style="margin-bottom:12px; font-size:9pt; color:var(--ink-mid);">Today you run everything you have built this week as one complete daily routine - a single flowing rhythm.</p>
 
   <p class="quote-hero">"Six days of small signals. The body has been listening the whole time."</p>
 
@@ -984,24 +1078,24 @@ ${renderRCFooter()}
     <div>
       <div class="grid-col-title">Your Morning Routine (15 mins)</div>
       <div style="font-size:8.5pt; color:var(--ink-mid); line-height: 1.6;">
-        1. **Morning belly check** (2 min) — lie on back, notice tension.<br>
-        2. **Oil pulling** (5 min) — swish sesame or coconut oil.<br>
-        3. **Tongue scraping** (30s) — 5-7 strokes with scraper.<br>
-        4. **Cold face splash** (10s) — before food or phone.<br>
-        5. **700 ml warm ginger water** (3 min) — drink slowly.<br>
-        6. **Morning sunlight walk** (10 min) — barefoot grounding.
+        1. <strong>Morning belly check</strong> (2 min) - lie on back, notice tension.<br>
+        2. <strong>Oil pulling</strong> (5 min) - swish sesame or coconut oil.<br>
+        3. <strong>Tongue scraping</strong> (30s) - 5-7 strokes with scraper.<br>
+        4. <strong>Cold face splash</strong> (10s) - before food or phone.<br>
+        5. <strong>700 ml warm ginger water</strong> (3 min) - drink slowly.<br>
+        6. <strong>Morning sunlight walk</strong> (10 min) - barefoot grounding.
       </div>
     </div>
     <div>
       <div class="grid-col-title">Your Evening Routine (20 mins)</div>
       <div style="font-size:8.5pt; color:var(--ink-mid); line-height: 1.6;">
-        1. **Post-dinner walk** (10 min) — relaxed pace, nasal breathing.<br>
-        2. **Warm compress on belly** (5 min) — after largest meal.<br>
-        3. **Gut yoga** (8 min) — knees to chest, seated twist, child's pose, cat-cow, lying twist.<br>
-        4. **Physiological sigh** (60s) — 3 double-inhale cycles.<br>
-        5. **Body tension mapping** (3 min) — scan & release.<br>
-        6. **Bedtime drink** — warm turmeric milk or chamomile tea.<br>
-        7. **Humming (2m) & Gargling (30s)** — vagus nerve close.
+        1. <strong>Post-dinner walk</strong> (10 min) - relaxed pace, nasal breathing.<br>
+        2. <strong>Warm compress on belly</strong> (5 min) - after largest meal.<br>
+        3. <strong>Gut yoga</strong> (8 min) - knees to chest, seated twist, child's pose, cat-cow, lying twist.<br>
+        4. <strong>Physiological sigh</strong> (60s) - 3 double-inhale cycles.<br>
+        5. <strong>Body tension mapping</strong> (3 min) - scan & release.<br>
+        6. <strong>Bedtime drink</strong> - warm turmeric milk or chamomile tea.<br>
+        7. <strong>Humming (2m) & Gargling (30s)</strong> - vagus nerve close.
       </div>
     </div>
   </div>
@@ -1030,20 +1124,20 @@ ${renderRCFooter()}
 
   <div class="checklist-box" style="margin-top:10px;">
     <div class="checklist-title">Day 6 Completion Checklist</div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Full morning routine (6 steps) + sunlight walk completed</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Gut yoga sequence + Chewing practice followed</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Warm compress after biggest meal + post-meal walks done</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>12-hour eating window started and followed</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Full evening routine (7 steps) completed before sleep</span></div>
-    <div class="checklist-item"><span class="checklist-bullet">✓</span><span>Identified my next full Recovery Compass program</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Full morning routine (6 steps) + sunlight walk completed</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Gut yoga sequence + Chewing practice followed</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Warm compress after biggest meal + post-meal walks done</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>12-hour eating window started and followed</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Full evening routine (7 steps) completed before sleep</span></div>
+    <div class="checklist-item"><span class="checklist-bullet">[ ]</span><span>Identified my next full Recovery Compass program</span></div>
   </div>
 </div>
 
 <!-- PAGE 9: QUICK REFERENCE CARD & NEXT STEPS -->
 <div class="page">
   ${renderRCHeader(9)}
-  <div class="section-title" style="margin-top:0;">Quick Reference Card — Daily Habits</div>
-  <p style="font-size:9pt; color:var(--ink-mid); margin-bottom: 8px;">Keep this page — return to it on any hard day.</p>
+  <div class="section-title" style="margin-top:0;">Quick Reference Card - Daily Habits</div>
+  <p style="font-size:9pt; color:var(--ink-mid); margin-bottom: 8px;">Keep this page. Return to it on any hard day.</p>
 
   <table class="routine-table">
     <thead>
@@ -1055,11 +1149,11 @@ ${renderRCFooter()}
     <tbody>
       <tr>
         <td><strong>Morning Routine</strong></td>
-        <td>Belly check (2m) $\rightarrow$ Oil pulling (5m) $\rightarrow$ Tongue scrape (30s) $\rightarrow$ Cold face splash (10s) $\rightarrow$ 700ml warm ginger water $\rightarrow$ Sunlight walk (10m)</td>
+        <td>Belly check (2m) -> Oil pulling (5m) -> Tongue scrape (30s) -> Cold face splash (10s) -> 700ml warm ginger water -> Sunlight walk (10m)</td>
       </tr>
       <tr>
         <td><strong>Evening Routine</strong></td>
-        <td>Post-dinner walk (10m) $\rightarrow$ Warm belly compress (5m) $\rightarrow$ Gut yoga (8m) $\rightarrow$ Physiological sigh (60s) $\rightarrow$ Body scan (3m) $\rightarrow$ Turmeric milk $\rightarrow$ Hum (2m) & Gargle (30s)</td>
+        <td>Post-dinner walk (10m) -> Warm belly compress (5m) -> Gut yoga (8m) -> Physiological sigh (60s) -> Body scan (3m) -> Turmeric milk -> Hum (2m) & Gargle (30s)</td>
       </tr>
       <tr>
         <td><strong>Water Timing</strong></td>
@@ -1081,10 +1175,78 @@ ${renderRCFooter()}
   </div>
 
   <p style="margin-top: 20px; font-size: 8.5pt; text-align: center; color: var(--ink-light);">
-    Open the **Recovery Compass** app on Day 7, select your recommended program, and continue your journey.
+    Open the <strong>Recovery Compass</strong> app on Day 7, select your recommended program, and continue your journey.
   </p>
 </div>
 
+<!-- PAGE 10: DAILY TRACKER -->
+<div class="page">
+  ${renderRCHeader(10)}
+  <div class="section-title" style="margin-top:0;">Your 6-Day Daily Tracker</div>
+  <p class="tracker-intro">Tick each practice as you complete it. One honest tick per day is enough. Use this page as a simple accountability sheet for the full detox week.</p>
+
+  <table class="tracker-table">
+    <thead>
+      <tr>
+        <th>Practice</th>
+        <th>Day 1<br>Nervous<br>System</th>
+        <th>Day 2<br>Hydration</th>
+        <th>Day 3<br>Movement</th>
+        <th>Day 4<br>Gut<br>Reset</th>
+        <th>Day 5<br>Mind<br>Reset</th>
+        <th>Day 6<br>Full<br>Routine</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${[
+        "Cold water face splash",
+        "Tongue scraping",
+        "Warm water on waking",
+        "Oil pulling",
+        "Morning sunlight walk",
+        "Post-meal walk (lunch)",
+        "Post-meal walk (dinner)",
+        "Gut yoga 8 minutes",
+        "Chewing practice",
+        "Warm compress",
+        "Physiological sigh",
+        "Pattern awareness",
+        "Evening humming",
+        "No cold drinks all day",
+        "Eating window maintained"
+      ].map((practice) => `<tr><td>${esc(practice)}</td>${Array.from({ length: 6 }, () => `<td><span class="tracker-check"></span></td>`).join("")}</tr>`).join("")}
+    </tbody>
+  </table>
+
+  <div class="section-title" style="margin-top:14px;">Daily One-Line Reflections</div>
+  <div class="reflection-grid">
+    <div class="reflection-card">
+      <div class="reflection-card-title">Day 1</div>
+      <div class="reflection-card-prompt">Where did I feel my nervous system shift today?</div>
+    </div>
+    <div class="reflection-card">
+      <div class="reflection-card-title">Day 2</div>
+      <div class="reflection-card-prompt">Did I notice any difference when drinking water before meals?</div>
+    </div>
+    <div class="reflection-card">
+      <div class="reflection-card-title">Day 3</div>
+      <div class="reflection-card-prompt">How did my body feel after the morning walk and sunlight?</div>
+    </div>
+    <div class="reflection-card">
+      <div class="reflection-card-title">Day 4</div>
+      <div class="reflection-card-prompt">How did the chewing practice and warm compress change the meal?</div>
+    </div>
+    <div class="reflection-card">
+      <div class="reflection-card-title">Day 5</div>
+      <div class="reflection-card-prompt">What is my most reliable trigger for my primary health issue?</div>
+    </div>
+    <div class="reflection-card">
+      <div class="reflection-card-title">Day 6</div>
+      <div class="reflection-card-prompt">What one practice made the biggest difference this week?</div>
+    </div>
+  </div>
+</div>
+
 </body>
-</html>`;
+</html>`);
 }
