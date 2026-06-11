@@ -2,6 +2,7 @@ import { NextRequest, NextResponse, after } from "next/server";
 import crypto from "crypto";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { DIET_PLAN_STANDALONE_PRICE_INR } from "@/lib/diet-plan-product";
+import { normalizeQuestionnaireProgramValues } from "@/lib/diet-plan-program-options";
 
 const DIET_PLAN_PRICE_PAISE = DIET_PLAN_STANDALONE_PRICE_INR * 100;
 
@@ -69,6 +70,10 @@ export async function POST(req: NextRequest) {
             );
         }
 
+        const normalizedQuestionnaireData = normalizeQuestionnaireProgramValues(
+            questionnaire_data as Record<string, unknown>
+        );
+
         const sign = `${razorpay_order_id}|${razorpay_payment_id}`;
         const expectedSign = crypto
             .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
@@ -113,7 +118,7 @@ export async function POST(req: NextRequest) {
                 razorpay_signature,
                 amount: DIET_PLAN_PRICE_PAISE,
                 currency: "INR",
-                questionnaire_data,
+                questionnaire_data: normalizedQuestionnaireData,
                 status: "pending",
             })
             .select("id")

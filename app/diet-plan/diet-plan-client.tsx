@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { NavbarSticky } from "@/components/navbar-sticky";
 import { FooterVariantTwo } from "@/components/sections";
 import { DIET_PLAN_STANDALONE_PRICE_INR } from "@/lib/diet-plan-product";
-import { publicPrograms } from "@/lib/public-programs";
+import { PROGRAM_OPTION_VALUES, normalizeProgramValues } from "@/lib/diet-plan-program-options";
 import { cn } from "@/lib/utils";
 
 type QuestionnaireData = {
@@ -155,14 +155,6 @@ const LOCAL_DRAFT_VERSION = 1;
 const LOCAL_STANDALONE_DRAFT_KEY = "rc:diet-plan-draft:standalone";
 const DRAFT_SAVE_DELAY_MS = 700;
 const QUESTIONNAIRE_KEYS = Object.keys(INITIAL_DATA) as Array<keyof QuestionnaireData>;
-const PROGRAM_OPTION_VALUES = publicPrograms.map((program) => program.title);
-const LEGACY_PROGRAM_VALUE_BY_NAME: Record<string, string> = {
-    "Sleep Reset": "Deep Sleep Reset",
-    "Energy Vitality": "Energy Restore",
-    "Men's Vitality": "Men’s Vitality Reset",
-    "Age Well": "Age Well",
-    "90-Day Master": "Smoking Reset",
-};
 
 type LocalDietPlanDraft = {
     version?: number;
@@ -211,14 +203,6 @@ function normalizeQuestionnaireDraft(value: unknown): Partial<QuestionnaireData>
     }
 
     return draft;
-}
-
-function normalizeProgramValues(values: string[]) {
-    return Array.from(
-        new Set(
-            values.map((value) => LEGACY_PROGRAM_VALUE_BY_NAME[value] ?? value)
-        )
-    );
 }
 
 function fillMissingQuestionnaireData(
@@ -667,6 +651,7 @@ export function DietPlanClientContent() {
         () => ({
             ...data,
             region: resolvedRegion,
+            programs: normalizeProgramValues(data.programs),
         }),
         [data, resolvedRegion]
     );
@@ -726,7 +711,7 @@ export function DietPlanClientContent() {
                             : Array.isArray(serverDraft.programs) && serverDraft.programs.length > 0
                                 ? serverDraft.programs
                             : prefill.programs && prefill.programs.length > 0
-                                ? prefill.programs
+                                ? normalizeProgramValues(prefill.programs)
                                 : current.programs,
                 }));
             } catch (prefillError) {
