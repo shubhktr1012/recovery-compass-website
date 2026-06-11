@@ -249,6 +249,8 @@ export async function deliverDetoxProgram({
             phone: lead.phone,
             clientName: lead.name,
             pdfUrl: pdfUrl!,
+            pdfBuffer,
+            pdfFilename,
         })
         : { success: false, skipped: true, error: pdfLastError || "WhatsApp consent not granted or PDF link unavailable" };
 

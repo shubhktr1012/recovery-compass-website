@@ -9,6 +9,22 @@ type SendDetoxWhatsAppParams = {
     phone: string;
     clientName: string;
     pdfUrl: string;
+    pdfBuffer?: Buffer;
+    pdfFilename?: string;
+};
+
+type PeriskopeRequestBody = {
+    chat_id: string;
+    message: string;
+    media?: {
+        type: "document";
+        mimetype: "application/pdf";
+        filename: string;
+        filedata: string;
+    };
+    options: {
+        hide_url_preview: boolean;
+    };
 };
 
 function normalizeWhatsAppNumber(rawPhone: string) {
@@ -30,10 +46,41 @@ function getPeriskopeBaseUrl() {
     return (process.env.PERISKOPE_API_BASE_URL || "https://api.periskope.app/v1").replace(/\/$/, "");
 }
 
+function buildDetoxWhatsAppCaption(clientName: string, hasAttachment: boolean, pdfUrl: string) {
+    const safeName = clientName.trim() || "there";
+
+    if (hasAttachment) {
+        return [
+            `Hi ${safeName},`,
+            "",
+            "*Your Recovery Compass 6-Day Detox Program is ready.*",
+            "",
+            "I have attached the PDF here. Please print it before Day 1 so it is easier to follow the steps and tick the tracker through the week.",
+            "",
+            "Start with Day 1 today. Reply here if you need help.",
+        ].join("\n");
+    }
+
+    return [
+        `Hi ${safeName},`,
+        "",
+        "*Your Recovery Compass 6-Day Detox Program is ready.*",
+        "",
+        "Open the PDF here:",
+        pdfUrl,
+        "",
+        "Please print it before Day 1 so it is easier to follow the steps and tick the tracker through the week.",
+        "",
+        "Reply here if you need help.",
+    ].join("\n");
+}
+
 export async function sendDetoxWhatsApp({
     phone,
     clientName,
     pdfUrl,
+    pdfBuffer,
+    pdfFilename,
 }: SendDetoxWhatsAppParams): Promise<PeriskopeSendResult> {
     const apiKey = process.env.PERISKOPE_API_KEY?.trim();
     const senderPhone = process.env.PERISKOPE_PHONE?.trim();
@@ -51,14 +98,24 @@ export async function sendDetoxWhatsApp({
         return { success: false, error: "Invalid WhatsApp number" };
     }
 
-    const safeName = clientName.trim() || "there";
-    const message = [
-        `Hi ${safeName}, your free 6-Day Detox Program from Recovery Compass is ready.`,
-        "",
-        `Download it here: ${pdfUrl}`,
-        "",
-        "Start with Day 1 today. If you have questions, reply here and our team will help.",
-    ].join("\n");
+    const hasAttachment = Boolean(pdfBuffer?.length && pdfFilename?.trim());
+    const message = buildDetoxWhatsAppCaption(clientName, hasAttachment, pdfUrl);
+    const body: PeriskopeRequestBody = {
+        chat_id: `${recipientPhone}@c.us`,
+        message,
+        options: {
+            hide_url_preview: hasAttachment,
+        },
+    };
+
+    if (hasAttachment && pdfBuffer && pdfFilename) {
+        body.media = {
+            type: "document",
+            mimetype: "application/pdf",
+            filename: pdfFilename,
+            filedata: pdfBuffer.toString("base64"),
+        };
+    }
 
     try {
         const response = await fetch(`${getPeriskopeBaseUrl()}/message/send`, {
@@ -68,13 +125,7 @@ export async function sendDetoxWhatsApp({
                 "Content-Type": "application/json",
                 "x-phone": senderPhone,
             },
-            body: JSON.stringify({
-                chat_id: `${recipientPhone}@c.us`,
-                message,
-                options: {
-                    hide_url_preview: false,
-                },
-            }),
+            body: JSON.stringify(body),
         });
 
         const responseBody = await response.json().catch(() => null) as
