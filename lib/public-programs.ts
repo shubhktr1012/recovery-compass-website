@@ -80,7 +80,7 @@ export const publicPrograms = [
     dbSlug: "six_day_reset",
     category: "Break Habits",
     tag: "Decision & Reset",
-    title: "6-Day Control",
+    title: "Control",
     cardDescription:
       "Break autopilot, make smoking inconvenient and conscious, and regain control through interruption instead of perfection.",
     article: {
@@ -117,7 +117,7 @@ export const publicPrograms = [
     dbSlug: "ninety_day_transform",
     category: "Break Habits",
     tag: "Daily Guided Modules",
-    title: "90-Day Smoking Reset",
+    title: "Smoking Reset",
     cardDescription:
       "A 90-day reset for pattern recognition, emotional steadiness, low-pressure journaling, and long-term smoking recovery.",
     article: {
@@ -155,17 +155,17 @@ export const publicPrograms = [
     dbSlug: "sleep_disorder_reset",
     category: "Restore Balance",
     tag: "Reset the Body Clock",
-    title: "21-Day Deep Sleep Reset",
+    title: "Deep Sleep Reset",
     cardDescription:
-      "A 21-day sleep protocol that rebuilds morning light, caffeine cut-off, breathing, downshift, and sleep-prep cues.",
+      "Finally wake up feeling rested, with a calmer evening rhythm and sleep that actually restores you.",
     article: {
-      subtitle: "Calming the hyperactive nervous system.",
+      subtitle: "21 days to finally wake up feeling rested.",
       whoIsItFor:
-        "For those caught in the frustrating cycle of waking up exhausted, feeling wired all day, and lying awake at night.",
+        "Most people have forgotten what it actually feels like to sleep well. They have just gotten used to tired. Dragging yourself out of bed, running on caffeine, and feeling foggy by midday is not normal. That is a sleep problem.",
       curriculumOverview:
-        "Sunlight protocols, caffeine timing, physiological sigh techniques, evening downshifts, and guided sleep audio.",
+        "This reset helps you fall asleep easier, wake up actually refreshed, calm stress, lower cortisol, improve focus, support better workouts, and give your skin the kind of glow real rest creates.",
       dailyRhythm:
-        "Each day builds sleep pressure from morning light and movement, then narrows the evening toward breathing, wind-down, and sleep preparation.",
+        "No supplements. No equipment. Nothing to buy. Sleep is not laziness. It is where your body does its best work.",
     },
     days: 21,
     phases: 3,
@@ -175,15 +175,15 @@ export const publicPrograms = [
     priceInr: 2599,
     priceLabel: "Launch price",
     cardFacts: [
-      { label: "Best for", value: "Wired nights and tired mornings" },
+      { label: "Best for", value: "Tired mornings, caffeine reliance, foggy days" },
       { label: "Daily practice", value: "Morning light, caffeine cutoff, evening wind-down" },
       { label: "Signature tool", value: "Sleep pressure reset + guided sleep audio" },
     ],
     highlights: [
-      { label: "Morning Signal", text: "Sunlight exposure within 30 minutes of waking" },
-      { label: "Breathing", text: "Hydration plus 10 cycles of physiological sigh" },
-      { label: "Sleep Pressure", text: "Light morning movement to make the body naturally tired at night" },
-      { label: "Night Routine", text: "No caffeine after 2 PM and guided sleep meditation before bed" },
+      { label: "Rested Mornings", text: "Fall asleep easier and wake up actually refreshed" },
+      { label: "Calmer Mind", text: "Less stress, lower cortisol, and more presence through the day" },
+      { label: "Better Output", text: "Better focus and getting more done without burning out" },
+      { label: "Visible Rest", text: "Skin that glows because real rest shows on your face" },
     ],
     accent: "dark",
     availability: "paid_checkout",
@@ -193,17 +193,17 @@ export const publicPrograms = [
     dbSlug: "energy_vitality",
     category: "Restore Balance",
     tag: "Energy Reset Foundations",
-    title: "14-Day Energy Restore",
+    title: "Energy Restore",
     cardDescription:
-      "A 14-day physical rhythm reset for hydration, sunlight, cold activation, movement, pressure points, and evening reflection.",
+      "Feel like yourself again by rebuilding the daily rhythm behind stamina, focus, cravings, and afternoon slumps.",
     article: {
-      subtitle: "Reclaiming your natural momentum.",
+      subtitle: "14 days to feel like yourself again.",
       whoIsItFor:
-        "For individuals feeling chronically sluggish, dealing with mid-afternoon slumps, or struggling to find the physical motivation to accomplish daily goals.",
+        "Most people do not realise how constantly feeling low has become their new normal. Low energy creeps up as the afternoon slump, mental fog, and days that feel like you are just getting through.",
       curriculumOverview:
-        "Hydration, light exposure, cold activation, full-body movement, pressure-point work, and evening reflection.",
+        "This reset is designed for stamina that carries you through the day, fewer cravings, fewer afternoon slumps, a sharper mind, and the mental space to enjoy hobbies and move your body.",
       dailyRhythm:
-        "Each day starts with water and light, adds manageable activation, and closes with recovery cues that make energy more predictable.",
+        "No supplements. No equipment. Nothing to buy. Just you, and a reset your body has been waiting for.",
     },
     days: 14,
     phases: 2,
@@ -213,15 +213,15 @@ export const publicPrograms = [
     priceInr: 1499,
     priceLabel: "Launch price",
     cardFacts: [
-      { label: "Best for", value: "Low energy and afternoon slumps" },
+      { label: "Best for", value: "Low energy, mental fog, afternoon slumps" },
       { label: "Daily practice", value: "Water, sunlight, movement, pressure points" },
       { label: "Signature tool", value: "Morning activation stack" },
     ],
     highlights: [
-      { label: "Foundation", text: "500 ml water within 10 minutes of waking" },
-      { label: "Circadian Reset", text: "10-15 minutes of morning sunlight" },
-      { label: "Activation", text: "10 minutes of movement plus a light walk" },
-      { label: "Recovery", text: "Deep breathing before bed and a fixed sleep time" },
+      { label: "Stamina", text: "More energy that carries you through the day" },
+      { label: "Cravings", text: "Fewer cravings and no more afternoon slumps" },
+      { label: "Clarity", text: "A sharper, clearer, and more focused mind" },
+      { label: "Optimism", text: "Greater sense of optimism and confidence" },
     ],
     accent: "light",
     availability: "paid_checkout",
@@ -231,17 +231,17 @@ export const publicPrograms = [
     dbSlug: "male_sexual_health",
     category: "Build Vitality",
     tag: "Reset & Activation",
-    title: "30-Day Men's Vitality Reset",
+    title: "Men’s Vitality Reset",
     cardDescription:
-      "Break automatic habits, calm performance anxiety, and activate the muscles that support blood flow and sexual strength.",
+      "Feel strong, sharp, and like yourself again by addressing stress, stamina, blood flow, recovery, and confidence.",
     article: {
-      subtitle: "Physical activation and psychological calm.",
+      subtitle: "30 days to feel strong, sharp, and like yourself again.",
       whoIsItFor:
-        "Men seeking to overcome performance anxiety, break negative compulsive habits, and restore physical confidence through natural regulation.",
+        "Low energy, stress that will not switch off, and a body that is not performing the way it used to are things most men quietly accept as getting older. You should not.",
       curriculumOverview:
-        "Pelvic strength work, glute bridges, squats, brisk walking, 4-2-6 breathing, and recovery-focused night routines.",
+        "This program works on the parts most men never think to address: performance anxiety, blood flow, endurance, hormone-supportive night routines, stress, heart health, and recovery.",
       dailyRhythm:
-        "Each day pairs a physical activation block with a breathing reset and recovery cue, so confidence is trained through repeatable actions.",
+        "No supplements. No equipment. Nothing to buy. Your body has not given up. It has just been waiting for the right reset.",
     },
     days: 30,
     phases: 3,
@@ -251,15 +251,15 @@ export const publicPrograms = [
     priceInr: 4999,
     priceLabel: "Launch price",
     cardFacts: [
-      { label: "Best for", value: "Performance anxiety and vitality confidence" },
+      { label: "Best for", value: "Low energy, stress, performance confidence" },
       { label: "Daily practice", value: "Strength work, walking, breath regulation" },
       { label: "Signature tool", value: "4-2-6 breath + pelvic strength" },
     ],
     highlights: [
-      { label: "Urge Control", text: "Use a breathing reset when the urge appears and let it pass in 5-10 minutes" },
-      { label: "Performance Anxiety", text: "4-2-6 breathing to activate the relaxation response" },
-      { label: "Vitality Exercise", text: "Pelvic strength, glute bridges, squats, and a brisk walk" },
-      { label: "Recovery", text: "Night routine to support hormones and physical recovery" },
+      { label: "Confidence", text: "Calm performance anxiety and build real, lasting confidence" },
+      { label: "Blood Flow", text: "Support stronger blood flow and physical endurance" },
+      { label: "Recovery", text: "A night routine that supports hormones and proper recovery" },
+      { label: "Stamina", text: "More stamina in the gym, at work, and in the bedroom" },
     ],
     accent: "dark",
     availability: "paid_checkout",
@@ -269,17 +269,17 @@ export const publicPrograms = [
     dbSlug: "age_reversal",
     category: "Build Vitality",
     tag: "Rejuvenation Journey",
-    title: "90-Day Biohacking Reset",
+    title: "Age Well",
     cardDescription:
-      "A 90-day longevity protocol for relaxed walking, facial activation, regulation practices, sleep prep, and recovery routines.",
+      "Feel younger, look better, and move with ease through a body-first reset for long-term vitality.",
     article: {
-      subtitle: "Cellular renewal through rhythm and blood flow.",
+      subtitle: "90 days to feel younger, look better, and move with ease.",
       whoIsItFor:
-        "For those looking to move beyond superficial skincare treatments into deep, systemic lifestyle restoration for lasting vitality and appearance.",
+        "Most people accept feeling stiff, tired, and older than they should as just part of life. It does not have to be.",
       curriculumOverview:
-        "Relaxed walking, facial activation, nervous-system regulation, sleep preparation, and recovery routines.",
+        "This is a 90-day reset that works with your body, not against it. It supports healthier-looking skin, stronger muscles, natural rhythm, better posture, easier weight management, lower stress, and more years spent feeling active and functional.",
       dailyRhythm:
-        "Each day combines circulation, facial work, regulation, and sleep preparation so the protocol stays physical, visible, and repeatable.",
+        "No supplements. No equipment. Nothing to buy. Just your body, doing what it was always meant to do.",
     },
     days: 90,
     phases: 4,
@@ -289,15 +289,15 @@ export const publicPrograms = [
     priceInr: 6999,
     priceLabel: "Launch price",
     cardFacts: [
-      { label: "Best for", value: "Age reversal, skin tone, long-term vitality" },
+      { label: "Best for", value: "Stiffness, tiredness, skin tone, long-term vitality" },
       { label: "Daily practice", value: "Walking, facial activation, regulation, sleep prep" },
       { label: "Signature tool", value: "Circulation + facial routine" },
     ],
     highlights: [
-      { label: "Circulation", text: "20-minute relaxed walk to improve blood flow and cellular energy" },
-      { label: "Face Exercise", text: "Daily facial muscle activation to support firmness and lift" },
-      { label: "Regulation", text: "Guided calming practice to relax the nervous system and lower cortisol" },
-      { label: "Sleep Preparation", text: "Consistent sleep routine to support hormone balance and repair" },
+      { label: "Skin", text: "Skin that looks healthier and feels firmer" },
+      { label: "Strength", text: "Stronger muscles that stay with you as you age" },
+      { label: "Posture", text: "Better posture and a body that feels good to live in" },
+      { label: "Stress", text: "Calm the nervous system and bring stress levels down" },
     ],
     accent: "light",
     availability: "paid_checkout",
@@ -307,17 +307,17 @@ export const publicPrograms = [
     dbSlug: "smoking_alcohol_quit",
     category: "Break Habits",
     tag: "Guided Quit Journey",
-    title: "21-Day Smoking & Alcohol Quit",
+    title: "Smoking & Alcohol Quit",
     cardDescription:
-      "A guided quit path for smoking, alcohol, or both, with trigger mapping, urge tools, and slip recovery.",
+      "Put them down for good with a structured path for the moments when everything in you says to light one up.",
     article: {
-      subtitle: "Outlast the urge, reclaim your rhythm.",
+      subtitle: "21 days to put them down for good.",
       whoIsItFor:
-        "Designed for those ready to quit smoking, alcohol, or both, seeking a structured, clinically backed path to map triggers and build physical resistance.",
+        "You already know you want to quit, and that means the first step has already been taken. The hard part is not the decision. It is what happens in those moments when everything in you says light one up.",
       curriculumOverview:
-        "Three phases covering pattern mapping, trigger disruption, Delay and Urge Surfing protocols, social pressure strategies, and slip recovery.",
+        "This program helps you understand what actually triggers you, calm your nervous system instead of reaching for a cigarette, break the habit loop without white-knuckling it, and build real confidence that is not leaning on cigarettes anymore.",
       dailyRhythm:
-        "Daily guided modules pairing behavioral science lessons, optional journaling, and audio-guided reflection routines.",
+        "No supplements. No equipment. Nothing to buy. You do not need more willpower. You need a better way through.",
     },
     days: 21,
     phases: 3,
@@ -328,14 +328,14 @@ export const publicPrograms = [
     priceLabel: "Launch price",
     cardFacts: [
       { label: "Best for", value: "Smoking, alcohol, or both" },
-      { label: "Daily practice", value: "Trigger mapping, guided reflection, urge tools" },
+      { label: "Daily practice", value: "Trigger mapping, urge tools, grounding techniques" },
       { label: "Signature tool", value: "5-minute Delay + Urge Surfing" },
     ],
     highlights: [
-      { label: "Trigger Mapping", text: "Map times, places, and emotions driving the urge" },
-      { label: "Delay Protocol", text: "Outlast cravings with the evidence-backed 5-minute protocol" },
-      { label: "Urge Surfing", text: "Observe and ride out physical spikes without willpower fatigue" },
-      { label: "Dual Support", text: "Integrated tools for nicotine, alcohol, or both" },
+      { label: "Triggers", text: "Understand what actually triggers you and how to move through it" },
+      { label: "Nervous System", text: "Calm your nervous system instead of reaching for a cigarette" },
+      { label: "Habit Loop", text: "Break the habit loop without white-knuckling it" },
+      { label: "Real Moments", text: "Light movements and grounding techniques that work in real moments" },
     ],
     accent: "dark",
     availability: "paid_checkout",
@@ -345,17 +345,17 @@ export const publicPrograms = [
     dbSlug: "gut_health_reset",
     category: "Restore Balance",
     tag: "Gut-Brain Connection",
-    title: "21-Day Gut Reset",
+    title: "Gut Reset",
     cardDescription:
-      "A structured gut-health reset with daily hydration, nervous-system, movement, and eating-rhythm practices.",
+      "Fix what has been bothering you from the inside: bloating, slow digestion, heaviness, reflux, and gut tension.",
     article: {
-      subtitle: "The second brain runs on rhythm.",
+      subtitle: "21 days to fix what has been bothering you from the inside.",
       whoIsItFor:
-        "For anyone struggling with bloating, slow digestion, morning sluggishness, or stress-related gut tension seeking a natural, body-first reset.",
+        "Bloating, sluggish digestion, and that heavy uncomfortable feeling after eating are things most people live with for years, thinking it is just how their body works. It is not. Your gut just needs a reset.",
       curriculumOverview:
-        "Daily physical and behavioral prompts focused on vagus nerve stimulation, mouth-gut hygiene, thermal therapy, and circadian windows.",
+        "This program supports better food absorption, less bloating and gas, digestion that actually works, relief from acid reflux, easier weight management, stronger immunity, less inflammation, and more stable energy during the cycle for women.",
       dailyRhythm:
-        "A 5-step morning sequence, post-meal activation, abdominal movement, and calming evening rest practices.",
+        "No supplements. No equipment. Nothing to buy. Take care of your gut, and your gut takes care of everything else.",
     },
     days: 21,
     phases: 3,
@@ -365,15 +365,15 @@ export const publicPrograms = [
     priceInr: 4999,
     priceLabel: "Launch price",
     cardFacts: [
-      { label: "Best for", value: "Bloating, slow digestion, gut tension" },
+      { label: "Best for", value: "Bloating, sluggish digestion, gut discomfort" },
       { label: "Daily practice", value: "Hydration, chewing, post-meal walks, belly work" },
       { label: "Signature tool", value: "Vagus activation + motility routine" },
     ],
     highlights: [
-      { label: "Vagus Activation", text: "Morning face splash, tongue scraping, and humming" },
-      { label: "Motility Support", text: "Warm compress and 10-minute post-meal walks" },
-      { label: "Belly Yoga", text: "8-minute targeted sequence to release trapped gas" },
-      { label: "Bacteria Clock", text: "Reset digestion timing using a 12-hour eating window" },
+      { label: "Absorption", text: "Help your body absorb the goodness from food the way it should" },
+      { label: "Bloating", text: "Reduce bloating, gas, constipation, and discomfort" },
+      { label: "Reflux", text: "Support relief from acid reflux and post-meal heaviness" },
+      { label: "Inflammation", text: "Support less inflammation throughout the body" },
     ],
     accent: "light",
     availability: "paid_checkout",
@@ -383,17 +383,17 @@ export const publicPrograms = [
     dbSlug: "free_detox_reset",
     category: "Restore Balance",
     tag: "App Starter Reset",
-    title: "6-Day Free Detox",
+    title: "Free Detox Program",
     cardDescription:
-      "A free six-day starter journey for nervous-system, hydration, movement, gut, mind, and daily-rhythm reset practices.",
+      "Six days. One practice a day. A free starting point for the root causes behind sleep, energy, gut, stress, and cravings.",
     article: {
-      subtitle: "Six days of small, structural signals.",
+      subtitle: "Six days. One practice a day. Results you can actually feel.",
       whoIsItFor:
-        "For individuals looking to experience the Recovery Compass method with a zero-cost, low-pressure introduction to daily physical habits.",
+        "Poor sleep, low energy, gut problems, chronic stress, and addictive habits look different on the surface. Underneath, they share the same six root causes.",
       curriculumOverview:
-        "Six days of progressive, body-first habits addressing hydration, oral health, morning light, chewing mechanics, and physiological sighs.",
+        "This plan fixes all six. One per day. Under 15 minutes. Each day targets one root cause with a single, simple practice and a personal note showing how that day connects to your specific issue.",
       dailyRhythm:
-        "One simple habit added each morning and evening to build a complete, repeatable daily routine.",
+        "Nothing to buy. No supplements. No equipment needed. The best starting point is the one that costs you nothing.",
     },
     days: 6,
     phases: 1,
@@ -403,15 +403,15 @@ export const publicPrograms = [
     priceInr: null,
     priceLabel: "Free in the app",
     cardFacts: [
-      { label: "Best for", value: "Trying Recovery Compass for free" },
-      { label: "Daily practice", value: "Hydration, oral care, light, gut rhythm" },
+      { label: "Best for", value: "Poor sleep, low energy, gut issues, stress, cravings" },
+      { label: "Daily practice", value: "One root-cause practice a day" },
       { label: "Signature tool", value: "6-day starter habit stack" },
     ],
     highlights: [
-      { label: "Vagus Reset", text: "Vagus nerve stimulation with cold water and humming" },
-      { label: "Mouth-Gut Gateway", text: "Morning oil pulling and tongue scraping" },
-      { label: "Light Anchor", text: "10-minute outdoor walk to align melatonin timing" },
-      { label: "Belly Warmth", text: "Chewing mechanics and warm compresses after food" },
+      { label: "Root Cause", text: "Each day targets one root cause with a simple practice" },
+      { label: "Personal Note", text: "Every day shows how the practice connects to your specific issue" },
+      { label: "Everyday Items", text: "Practices use Indian foods and items already in your home" },
+      { label: "Tracker", text: "Comes with a daily journal tracker to keep you on track" },
     ],
     accent: "dark",
     availability: "app_only_free",

@@ -70,11 +70,11 @@ export function HeroOmega({
                             </div>
 
                             <h1 className="text-4xl md:text-5xl lg:text-7xl font-erode font-medium tracking-tighter leading-[1.10] text-black">
-                                Steady progress, <span className="whitespace-nowrap"><span className="italic text-[oklch(0.2475_0.0661_146.79)]">without</span> pressure.</span>
+                                A smarter way of <span className="whitespace-nowrap"><span className="italic text-[oklch(0.2475_0.0661_146.79)]">living.</span></span>
                             </h1>
 
                             <p className="text-base md:text-xl text-[oklch(0.2475_0.0661_146.79)]/70 leading-snug font-medium max-w-2xl mx-auto">
-                                Recovery Compass turns difficult behavior change into structured daily programs: timed cards, practical routines, breathing practices, reflections, and progress tracking for smoking, sleep, energy, men&apos;s vitality, and biohacking.
+                                Recovery Compass helps you build a healthier routine around smoking, sleep, energy, gut health, men&apos;s vitality, and ageing well, without overwhelming you or putting pressure on you.
                             </p>
                         </div>
 

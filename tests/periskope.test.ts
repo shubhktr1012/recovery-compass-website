@@ -51,7 +51,7 @@ describe("sendDetoxWhatsApp", () => {
 
         const body = JSON.parse(init.body as string);
         expect(body.chat_id).toBe("917089983626@c.us");
-        expect(body.message).toContain("*Your Recovery Compass 6-Day Detox Program is ready.*");
+        expect(body.message).toContain("*Your Recovery Compass Free Detox Program is ready.*");
         expect(body.message).toContain("I have attached the PDF here.");
         expect(body.message).not.toContain(pdfUrl);
         expect(body.options.hide_url_preview).toBe(true);

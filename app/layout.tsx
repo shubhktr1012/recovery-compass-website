@@ -82,11 +82,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://recoverycompass.co"),
   applicationName: "Recovery Compass Wellness",
   title: {
-    default: "Recovery Compass Wellness | Guided Habit Reset & Wellness",
+    default: "Recovery Compass Wellness | A Smarter Way of Living",
     template: "%s | Recovery Compass Wellness",
   },
   description:
-    "Recovery Compass is a wellness app with structured daily programs for habit reset, sleep, energy, men's vitality, and biohacking.",
+    "Recovery Compass is a wellness app with structured daily programs for smoking, sleep, energy, gut health, men's vitality, and ageing well.",
   keywords: [
     "Recovery Compass Wellness",
     "habit reset",
@@ -129,7 +129,7 @@ export const metadata: Metadata = {
     url: "https://recoverycompass.co",
     title: "Recovery Compass Wellness | Habit Reset & Wellness",
     description:
-      "Structured daily programs for habit reset, sleep, energy, men's vitality, and biohacking.",
+      "Structured daily programs for smoking, sleep, energy, gut health, men's vitality, and ageing well.",
     siteName: "Recovery Compass Wellness",
     images: [
       {
@@ -144,7 +144,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Recovery Compass Wellness | Habit Reset & Wellness",
     description:
-      "Structured daily programs for habit reset, sleep, energy, men's vitality, and biohacking.",
+      "Structured daily programs for smoking, sleep, energy, gut health, men's vitality, and ageing well.",
     images: ["/og-image.png"],
     creator: "@recoverycompass",
   },

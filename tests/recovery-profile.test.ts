@@ -96,7 +96,7 @@ describe("recovery-profile", () => {
     expect(resolution).toMatchObject({
       journey: "male_sexual_health",
       recommendedProgram: "male_sexual_health",
-      primaryConcernLabel: "30-Day Men's Vitality Reset",
+      primaryConcernLabel: "Men’s Vitality Reset",
     });
   });
 });

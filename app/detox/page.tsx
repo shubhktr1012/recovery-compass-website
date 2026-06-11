@@ -23,7 +23,7 @@ export default function DetoxLandingPage() {
                         Free in the app
                     </div>
                     <h1 className="font-erode text-4xl md:text-6xl font-semibold tracking-tight leading-[1.05] mb-5">
-                        Start the 6-Day Free Detox Program inside Recovery Compass.
+                        Start the Free Detox Program inside Recovery Compass.
                     </h1>
                     <p className="text-[15px] md:text-[17px] text-[oklch(0.2475_0.0661_146.79)]/62 font-medium leading-relaxed md:mx-auto md:max-w-xl">
                         Detox is now an app journey, not a website PDF. Download the app to start it for free, or access it as a bonus with any paid program.

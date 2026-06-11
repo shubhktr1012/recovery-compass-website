@@ -5,7 +5,7 @@ import { AboutPageContent } from "@/components/sections/about-page-content";
 
 export const metadata: Metadata = {
     title: "About Us",
-    description: "Recovery Compass offers structured daily programs for smoking reset, sleep, energy, men's vitality, and biohacking.",
+    description: "Recovery Compass offers structured daily programs for smoking reset, sleep, energy, gut health, men's vitality, and ageing well.",
     keywords: [
         "about Recovery Compass",
         "Recovery Compass Wellness",

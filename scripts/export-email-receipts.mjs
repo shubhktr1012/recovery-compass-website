@@ -21,7 +21,7 @@ const chromePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome
 const receiptEntries = [
   {
     customerName: "Prishita Agrawal",
-    programName: "90-Day Smoking Reset",
+    programName: "Smoking Reset",
     amountFormatted: "₹5,999.00",
     orderId: "RC-INV-202604-006",
     receiptDate: "2026-04-10T10:00:00Z",
@@ -29,7 +29,7 @@ const receiptEntries = [
   },
   {
     customerName: "Shubh Khatri",
-    programName: "21-Day Deep Sleep Reset",
+    programName: "Deep Sleep Reset",
     amountFormatted: "₹2,599.00",
     orderId: "RC-INV-202604-007",
     receiptDate: "2026-04-15T10:00:00Z",
@@ -37,7 +37,7 @@ const receiptEntries = [
   },
   {
     customerName: "Dev",
-    programName: "30-Day Men's Vitality Reset",
+    programName: "Men’s Vitality Reset",
     amountFormatted: "₹4,999.00",
     orderId: "RC-INV-202604-008",
     receiptDate: "2026-04-18",
