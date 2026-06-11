@@ -23,14 +23,14 @@ export function AnnouncementBanner() {
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </a>
           <span className="opacity-30">|</span>
-          <button
-            type="button"
-            onClick={() => window.dispatchEvent(new CustomEvent("rc-open-detox-modal"))}
-            className="group inline-flex items-center gap-1 font-bold tracking-tight hover:text-white/80 transition-colors cursor-pointer bg-transparent border-none p-0 text-white font-satoshi font-medium"
+          <a
+            href={downloadHref}
+            {...(isExternalLink ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+            className="group inline-flex items-center gap-1 font-bold tracking-tight hover:text-white/80 transition-colors"
           >
-            Get Free 6-Day Detox
+            Free Detox in App
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-          </button>
+          </a>
         </div>
       </div>
     </div>

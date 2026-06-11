@@ -23,7 +23,7 @@ export function HeroOmega({
         : "Structured daily programs";
 
     return (
-        <section className="relative flex flex-col justify-start pt-12 pb-8 md:pt-16 md:pb-10 bg-white text-[oklch(0.2475_0.0661_146.79)]">
+        <section className="relative flex flex-col justify-start bg-white pt-12 pb-8 text-[oklch(0.2475_0.0661_146.79)] md:pt-16 md:pb-10">
             {/* Content Container */}
             <div className="relative z-20 w-full max-w-[1200px] mx-auto px-6 md:px-12 lg:px-24 flex flex-col justify-start pt-0 pb-0">
                 <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-y-6 lg:gap-x-12 items-center">
@@ -62,7 +62,7 @@ export function HeroOmega({
                         {/* Headline - Centered */}
                         <div className="max-w-[320px] md:max-w-[600px] lg:max-w-[560px] mx-auto space-y-5 md:space-y-6">
                             {/* Status Pill */}
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[oklch(0.2475_0.0661_146.79)]/5 border border-[oklch(0.2475_0.0661_146.79)]/10">
+                            <div className="inline-flex items-center gap-2 rounded-full border border-[oklch(0.2475_0.0661_146.79)]/10 bg-[oklch(0.2475_0.0661_146.79)]/5 px-3 py-1">
                                 <span className="relative flex h-2 w-2">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
@@ -90,7 +90,7 @@ export function HeroOmega({
                                 {...(isExternalLink ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                                 id="hero-download-cta"
                                 className={cn(
-                                    "inline-flex items-center gap-2.5 rounded-full px-5 py-2.5 transition-all active:scale-95",
+                                    "inline-flex items-center gap-2.5 rounded-full px-5 py-2.5 transition-[background-color,box-shadow,transform] duration-200 ease-out active:scale-95",
                                     "bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 border border-transparent",
                                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.2475_0.0661_146.79)] focus-visible:ring-offset-2"
                                 )}
@@ -127,8 +127,8 @@ export function HeroOmega({
                             <a
                                 href="#programs"
                                 className={cn(
-                                    "inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-medium transition-all active:scale-95",
-                                    "bg-white text-[oklch(0.2475_0.0661_146.79)] border border-[oklch(0.2475_0.0661_146.79)] hover:bg-[oklch(0.2475_0.0661_146.79)] hover:text-white h-auto",
+                                    "inline-flex h-auto items-center justify-center rounded-full border px-5 py-2.5 text-sm font-medium transition-[background-color,border-color,color,transform] duration-200 ease-out active:scale-95",
+                                    "border-[oklch(0.2475_0.0661_146.79)] bg-white text-[oklch(0.2475_0.0661_146.79)] hover:bg-[oklch(0.2475_0.0661_146.79)] hover:text-white",
                                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                                 )}
                             >

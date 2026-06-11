@@ -18,16 +18,6 @@ const PendingProgramFinderNudge = dynamic(
   { ssr: false }
 );
 
-const FreeDetoxNudge = dynamic(
-  () => import("@/components/free-detox-nudge").then((mod) => mod.FreeDetoxNudge),
-  { ssr: false }
-);
-
-const DetoxModal = dynamic(
-  () => import("@/components/detox-modal-v2").then((mod) => mod.DetoxModalV2),
-  { ssr: false }
-);
-
 const CookieBanner = dynamic(
   () => import("@/components/cookie-banner").then((mod) => mod.CookieBanner),
   { ssr: false }
@@ -46,8 +36,6 @@ export function LayoutClientExtras() {
       <MyPlanDrawer />
       <PendingDietPlanNudge />
       {programFinderEnabled ? <PendingProgramFinderNudge /> : null}
-      <FreeDetoxNudge />
-      <DetoxModal />
       <BackToTop />
       <CookieBanner />
     </>
