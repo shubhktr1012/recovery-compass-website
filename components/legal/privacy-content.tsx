@@ -24,7 +24,7 @@ export function PrivacyContent() {
       }}
     >
       <motion.section variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
-        <p className="text-sm text-foreground/50 mb-4 font-sans">Last Updated: May 2026</p>
+        <p className="text-sm text-foreground/50 mb-4 font-sans">Last Updated: June 2026</p>
         <h1 className="font-erode text-4xl md:text-5xl font-semibold text-foreground mb-8 tracking-tighter">
           Privacy Policy
         </h1>
@@ -32,8 +32,9 @@ export function PrivacyContent() {
         <p className="italic mb-6">Please read this Privacy Policy carefully.</p>
         <p className="mb-4">
           Recovery Compass (&quot;Recovery Compass&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) provides a mobile app,
-          website, and related services that support habit change, sleep, energy, daily wellness routines,
-          journaling, purchases, entitlements, and questionnaire-based services.
+          website, and related services that support habit change, sleep, energy, gut health, vitality,
+          age-well routines, daily wellness routines, journaling, purchases, free-tier access, entitlements,
+          and questionnaire-based services.
         </p>
         <p>
           This policy explains what data we collect, how we use it, which service providers help us run the
@@ -72,7 +73,7 @@ export function PrivacyContent() {
           <ul className="list-disc pl-6 space-y-2">
             <li>the Recovery Compass mobile app</li>
             <li>the Recovery Compass website</li>
-            <li>our account, purchase, subscription, support, and email flows</li>
+            <li>our account, free-tier, purchase, subscription, support, and email flows</li>
             <li>our educational citations and legal pages</li>
           </ul>
           <p>
@@ -91,6 +92,7 @@ export function PrivacyContent() {
             <li>onboarding and questionnaire answers</li>
             <li>recommended program or journey selections generated from your responses</li>
             <li>program progress, completion state, and active program preferences</li>
+            <li>free-tier activation status and free program progress, including Free Detox Program progress where available</li>
             <li>journal entries, reflections, moods, cravings, physical symptoms, and related check-in data</li>
             <li>step-count and movement data if you enable Motion &amp; Fitness or Health Connect features</li>
             <li>notification preferences, push opt-in state, and push token identifiers</li>
@@ -99,6 +101,7 @@ export function PrivacyContent() {
             <li>in-app analytics events such as card progress, day progress, notification taps, and related product usage events</li>
             <li>client-side error and diagnostic reports linked to your account when you are signed in</li>
             <li>support messages, enquiry submissions, and operational email records</li>
+            <li>testimonials, reviews, result stories, before-and-after materials, or feedback you voluntarily submit for support, review, or marketing use</li>
             <li>website checkout information for web purchases, including order and payment verification details</li>
           </ul>
           <p>We do not store your Apple, Google, card, or bank passwords.</p>
@@ -188,6 +191,7 @@ export function PrivacyContent() {
           <ul className="list-disc pl-6 space-y-2">
             <li>create and manage your account</li>
             <li>deliver onboarding, program access, journal history, and progress features</li>
+            <li>deliver free-tier features and free app-only programs where available</li>
             <li>generate recommendations and personalize your experience</li>
             <li>restore purchases and validate subscription or entitlement access</li>
             <li>fulfil diet-plan orders, generate related outputs, and deliver fulfilment emails or claim links</li>
@@ -198,6 +202,12 @@ export function PrivacyContent() {
             <li>comply with legal obligations</li>
           </ul>
           <p className="font-bold">We do not sell your personal data.</p>
+          <p>
+            We may use anonymized, aggregated, or de-identified usage and outcome information to understand
+            product performance, improve the Services, and describe general results. We only use identifiable
+            testimonials, personal results, photos, or named success stories for marketing when you voluntarily
+            provide them for that purpose or otherwise give consent.
+          </p>
         </div>
       </motion.section>
 
@@ -333,6 +343,11 @@ export function PrivacyContent() {
         <div className="space-y-4">
           <p>
             The current Services do not include a public social feed or public journal-posting feature. If we add public sharing features in the future, we will update this policy and the related in-app disclosures.
+          </p>
+          <p>
+            If you choose to send us a testimonial, review, result story, progress photo, or similar material for
+            public or marketing use, we may process and publish that material as described in our Terms &amp; Conditions.
+            Private journal entries, questionnaire responses, and account-level progress are not public by default.
           </p>
         </div>
       </motion.section>

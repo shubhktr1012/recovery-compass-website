@@ -163,7 +163,7 @@ export const publicPrograms = [
       whoIsItFor:
         "Most people have forgotten what it actually feels like to sleep well. They have just gotten used to tired. Dragging yourself out of bed, running on caffeine, and feeling foggy by midday is not normal. That is a sleep problem.",
       curriculumOverview:
-        "This reset helps you fall asleep easier, wake up actually refreshed, calm stress, lower cortisol, improve focus, support better workouts, and give your skin the kind of glow real rest creates.",
+        "This reset helps you fall asleep easier, wake up actually refreshed, feel more energy, support better workouts, calm stress, lower cortisol, improve focus, support a healthier heart, lower depression and anxiety risk, and give your skin the kind of glow real rest creates.",
       dailyRhythm:
         "No supplements. No equipment. Nothing to buy. Sleep is not laziness. It is where your body does its best work.",
     },
@@ -184,6 +184,8 @@ export const publicPrograms = [
       { label: "Calmer Mind", text: "Less stress, lower cortisol, and more presence through the day" },
       { label: "Better Output", text: "Better focus and getting more done without burning out" },
       { label: "Visible Rest", text: "Skin that glows because real rest shows on your face" },
+      { label: "Heart Support", text: "Support a healthier heart through better sleep rhythm" },
+      { label: "Mood", text: "Lower risk of depression and anxiety by restoring real rest" },
     ],
     accent: "dark",
     availability: "paid_checkout",
@@ -239,7 +241,7 @@ export const publicPrograms = [
       whoIsItFor:
         "Low energy, stress that will not switch off, and a body that is not performing the way it used to are things most men quietly accept as getting older. You should not.",
       curriculumOverview:
-        "This program works on the parts most men never think to address: performance anxiety, blood flow, endurance, hormone-supportive night routines, stress, heart health, and recovery.",
+        "This program works on the parts most men never think to address: performance anxiety, blood flow, endurance, hormone-supportive night routines, better morning erections, stress, heart health, and recovery.",
       dailyRhythm:
         "No supplements. No equipment. Nothing to buy. Your body has not given up. It has just been waiting for the right reset.",
     },
@@ -259,7 +261,9 @@ export const publicPrograms = [
       { label: "Confidence", text: "Calm performance anxiety and build real, lasting confidence" },
       { label: "Blood Flow", text: "Support stronger blood flow and physical endurance" },
       { label: "Recovery", text: "A night routine that supports hormones and proper recovery" },
+      { label: "Function", text: "Better morning erections as a sign your body is functioning well" },
       { label: "Stamina", text: "More stamina in the gym, at work, and in the bedroom" },
+      { label: "Heart Health", text: "Better heart health with less fatigue and burnout" },
     ],
     accent: "dark",
     availability: "paid_checkout",
@@ -296,8 +300,11 @@ export const publicPrograms = [
     highlights: [
       { label: "Skin", text: "Skin that looks healthier and feels firmer" },
       { label: "Strength", text: "Stronger muscles that stay with you as you age" },
+      { label: "Natural Rhythm", text: "Help your body find its own natural rhythm again" },
       { label: "Posture", text: "Better posture and a body that feels good to live in" },
+      { label: "Weight", text: "Easier weight management without obsessing over it" },
       { label: "Stress", text: "Calm the nervous system and bring stress levels down" },
+      { label: "Active Years", text: "More years spent feeling healthy, active, and functional" },
     ],
     accent: "light",
     availability: "paid_checkout",
@@ -317,7 +324,7 @@ export const publicPrograms = [
       curriculumOverview:
         "This program helps you understand what actually triggers you, calm your nervous system instead of reaching for a cigarette, break the habit loop without white-knuckling it, and build real confidence that is not leaning on cigarettes anymore.",
       dailyRhythm:
-        "No supplements. No equipment. Nothing to buy. You do not need more willpower. You need a better way through.",
+        "By the end, cigarettes, lighters, and ashtrays should have no place in your home. No supplements. No equipment. Nothing to buy. You do not need more willpower. You need a better way through.",
     },
     days: 21,
     phases: 3,
@@ -335,7 +342,9 @@ export const publicPrograms = [
       { label: "Triggers", text: "Understand what actually triggers you and how to move through it" },
       { label: "Nervous System", text: "Calm your nervous system instead of reaching for a cigarette" },
       { label: "Habit Loop", text: "Break the habit loop without white-knuckling it" },
+      { label: "Confidence", text: "Build real confidence that is not leaning on cigarettes anymore" },
       { label: "Real Moments", text: "Light movements and grounding techniques that work in real moments" },
+      { label: "Home Reset", text: "Cigarettes, lighters, and ashtrays no longer have a place at home" },
     ],
     accent: "dark",
     availability: "paid_checkout",
@@ -391,9 +400,9 @@ export const publicPrograms = [
       whoIsItFor:
         "Poor sleep, low energy, gut problems, chronic stress, and addictive habits look different on the surface. Underneath, they share the same six root causes.",
       curriculumOverview:
-        "This plan fixes all six. One per day. Under 15 minutes. Each day targets one root cause with a single, simple practice and a personal note showing how that day connects to your specific issue.",
+        "This plan fixes all six. One per day. Under 15 minutes. Each day targets one root cause with a single, simple practice and a personal note showing how that day connects to your specific issue. Most people notice at least two clear physical changes by Day 3.",
       dailyRhythm:
-        "Nothing to buy. No supplements. No equipment needed. The best starting point is the one that costs you nothing.",
+        "Morning and evening, 10 to 15 minutes total across your day. Each day builds on the one before, so do not skip days. Day 6 walks you into the full program built for your specific issue. Nothing to buy. No supplements. No equipment needed.",
     },
     days: 6,
     phases: 1,
@@ -410,8 +419,12 @@ export const publicPrograms = [
     highlights: [
       { label: "Root Cause", text: "Each day targets one root cause with a simple practice" },
       { label: "Personal Note", text: "Every day shows how the practice connects to your specific issue" },
+      { label: "Day 3 Changes", text: "Most people notice at least two clear physical changes by Day 3" },
       { label: "Everyday Items", text: "Practices use Indian foods and items already in your home" },
+      { label: "Daily Rhythm", text: "Morning and evening practices take 10 to 15 minutes total" },
+      { label: "Do Not Skip", text: "Each day builds on the one before, so stay with the sequence" },
       { label: "Tracker", text: "Comes with a daily journal tracker to keep you on track" },
+      { label: "Next Step", text: "Day 6 walks you into the full program built for your specific issue" },
     ],
     accent: "dark",
     availability: "app_only_free",

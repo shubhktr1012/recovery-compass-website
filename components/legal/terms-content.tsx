@@ -24,7 +24,7 @@ export function TermsContent() {
             }}
         >
             <motion.section variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
-                <p className="text-sm text-foreground/50 mb-4 font-sans">Last Updated: May 2026</p>
+                <p className="text-sm text-foreground/50 mb-4 font-sans">Last Updated: June 2026</p>
                 <h1 className="font-erode text-4xl md:text-5xl font-semibold text-foreground mb-8 tracking-tighter">
                     Terms &amp; Conditions
                 </h1>
@@ -65,12 +65,13 @@ export function TermsContent() {
                 <h2 className="font-erode text-2xl font-semibold text-foreground">2. What Recovery Compass Provides</h2>
                 <p>
                     Recovery Compass provides structured digital wellness content, journaling, progress tools,
-                    reminders, and related purchase flows designed to support habit change and wellness goals.
+                    reminders, free-tier access, and related purchase flows designed to support habit change and wellness goals.
                 </p>
                 <p>Current offerings may include, for example:</p>
                 <ul className="list-disc pl-6 space-y-2">
-                    <li>guided digital programs for smoking recovery, sleep support, energy support, and other wellness goals</li>
+                    <li>guided digital programs for smoking and alcohol recovery, gut health, sleep support, energy support, men&apos;s vitality, age-well routines, and related wellness goals</li>
                     <li>daily cards, lessons, exercises, audio, routines, reflections, and progress tracking</li>
+                    <li>free app-only starter programs, including the Free Detox Program where available</li>
                     <li>personalized recommendations based on questionnaire responses</li>
                     <li>website and in-app purchase flows for programs and add-ons</li>
                     <li>custom diet-plan services and questionnaire-based fulfilment flows</li>
@@ -127,6 +128,10 @@ export function TermsContent() {
                     <p>
                         When a purchase succeeds, you receive a limited, personal, non-transferable right to
                         access the purchased content or service in accordance with the offer shown at checkout.
+                    </p>
+                    <p>
+                        Free-tier access, free bonus programs, and app-only starter programs may be offered without
+                        creating paid program ownership, purchase entitlement, or transferable access rights.
                     </p>
                     <p>
                         Some purchases may require additional steps after payment, such as completing a
@@ -227,7 +232,32 @@ export function TermsContent() {
             </motion.section>
 
             <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
-                <h2 className="font-erode text-2xl font-semibold text-foreground">10. Service Availability and Changes</h2>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">10. Testimonials, Results, and Marketing Use</h2>
+                <div className="space-y-4">
+                    <p>
+                        If you voluntarily submit a testimonial, review, progress update, result, before-and-after
+                        photo, quote, screenshot, or similar success story for marketing or public sharing, you grant
+                        Recovery Compass permission to use, reproduce, edit for length or clarity, publish, display,
+                        and distribute that submitted material in our marketing, website, app store materials, social
+                        channels, advertisements, and related promotional content.
+                    </p>
+                    <p>
+                        We will not publish your private journal entries, private questionnaire responses, identifiable
+                        health information, personal photos, or account-level progress as a named case study without
+                        your consent. We may use anonymized, aggregated, or de-identified outcomes and product usage
+                        insights to explain how the Services are used and improved.
+                    </p>
+                    <p>
+                        If you give approval for a testimonial or result to be used publicly, you agree that we may
+                        continue using already-published materials unless applicable law requires removal or we agree
+                        otherwise in writing. You can contact us at support@recoverycompass.co if you want to request
+                        withdrawal or correction of a testimonial.
+                    </p>
+                </div>
+            </motion.section>
+
+            <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">11. Service Availability and Changes</h2>
                 <ul className="list-disc pl-6 space-y-2">
                     <li>We do not guarantee uninterrupted availability of the Services.</li>
                     <li>The Services may rely on third-party infrastructure, payment providers, app stores, email services, analytics systems, or AI providers.</li>
@@ -237,7 +267,7 @@ export function TermsContent() {
             </motion.section>
 
             <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
-                <h2 className="font-erode text-2xl font-semibold text-foreground">11. Account Suspension or Termination</h2>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">12. Account Suspension or Termination</h2>
                 <p>We may suspend or terminate access if you:</p>
                 <ul className="list-disc pl-6 space-y-2">
                     <li>violate these Terms</li>
@@ -251,7 +281,7 @@ export function TermsContent() {
             </motion.section>
 
             <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
-                <h2 className="font-erode text-2xl font-semibold text-foreground">12. Limitation of Liability</h2>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">13. Limitation of Liability</h2>
                 <p>To the maximum extent permitted under applicable law:</p>
                 <ul className="list-disc pl-6 space-y-2">
                     <li>Recovery Compass is not liable for indirect, incidental, special, consequential, or punitive damages arising from use of the Services.</li>
@@ -261,7 +291,7 @@ export function TermsContent() {
             </motion.section>
 
             <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
-                <h2 className="font-erode text-2xl font-semibold text-foreground">13. Third-Party Platforms</h2>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">14. Third-Party Platforms</h2>
                 <div className="space-y-4">
                     <p>
                         Apple, Google, RevenueCat, Razorpay, Supabase, Vercel, Resend, and any AI service providers
@@ -275,7 +305,7 @@ export function TermsContent() {
             </motion.section>
 
             <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
-                <h2 className="font-erode text-2xl font-semibold text-foreground">14. Communications</h2>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">15. Communications</h2>
                 <ul className="list-disc pl-6 space-y-2">
                     <li>You may receive service-related emails, purchase confirmations, fulfilment updates, reminder emails, and support communications.</li>
                     <li>Marketing emails, if any, require appropriate consent where required by law.</li>
@@ -283,7 +313,7 @@ export function TermsContent() {
             </motion.section>
 
             <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
-                <h2 className="font-erode text-2xl font-semibold text-foreground">15. Governing Law and Disputes</h2>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">16. Governing Law and Disputes</h2>
                 <ul className="list-disc pl-6 space-y-2">
                     <li>These Terms are governed by the laws of India.</li>
                     <li>Any disputes shall be subject to the exclusive jurisdiction of courts located in Bangalore, India, unless applicable law requires otherwise.</li>
@@ -292,7 +322,7 @@ export function TermsContent() {
             </motion.section>
 
             <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
-                <h2 className="font-erode text-2xl font-semibold text-foreground">16. Business Transfers, Severability, and Entire Agreement</h2>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">17. Business Transfers, Severability, and Entire Agreement</h2>
                 <ul className="list-disc pl-6 space-y-2">
                     <li>In the event of a merger, acquisition, or transfer of business assets, user data and services may transfer to the new entity subject to applicable law.</li>
                     <li>If any provision of these Terms is found unenforceable, the remaining provisions remain in effect.</li>
@@ -301,7 +331,7 @@ export function TermsContent() {
             </motion.section>
 
             <motion.section className="space-y-6" variants={sectionVariants} transition={{ duration: 0.8, ease: "easeOut" }}>
-                <h2 className="font-erode text-2xl font-semibold text-foreground">17. Contact Us</h2>
+                <h2 className="font-erode text-2xl font-semibold text-foreground">18. Contact Us</h2>
                 <p>For questions, support, or concerns regarding these Terms, contact us at:</p>
                 <p>
                     <span className="font-bold">Email:</span> support@recoverycompass.co
