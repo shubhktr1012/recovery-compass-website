@@ -63,6 +63,14 @@ export async function POST(request: Request) {
                 return validationError("Lead ID and wellness focus are required.");
             }
 
+            const rateAllowed = await consumeDetoxRateLimit(`complete:${leadId}`);
+            if (!rateAllowed) {
+                return NextResponse.json(
+                    { error: "Too many requests. Please try again later." },
+                    { status: 429 }
+                );
+            }
+
             const result = await completeDetoxLead({
                 leadId,
                 primaryFocus,
@@ -115,9 +123,12 @@ export async function POST(request: Request) {
         return NextResponse.json({ success: true, leadId, ...result }, { status: 200 });
     } catch (error) {
         console.error("[Detox Submit] Request failed:", error);
+        const message = error instanceof Error ? error.message : "Internal server error";
+        const status = message === "This detox lead has already been completed." ? 409 : 500;
+
         return NextResponse.json(
-            { error: error instanceof Error ? error.message : "Internal server error" },
-            { status: 500 }
+            { error: message },
+            { status }
         );
     }
 }
