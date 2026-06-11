@@ -10,6 +10,8 @@ import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/lib/context/cart-context";
 import { useUser } from "@/lib/context/user-context";
 import { isProgramFinderEnabled } from "@/lib/features";
+import { getDownloadHref, isExternalDownloadPlatform } from "@/lib/constants";
+import { useDownloadPlatform } from "@/lib/use-download-platform";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import {
     DIET_PLAN_ADDON_PRICE_INR,
@@ -30,6 +32,9 @@ const dietPlanAddonPriceLabel = `₹${DIET_PLAN_ADDON_PRICE_INR.toLocaleString("
 
 export function ExploreProgramsSection() {
     const programFinderEnabled = isProgramFinderEnabled();
+    const platform = useDownloadPlatform();
+    const detoxDownloadHref = getDownloadHref(platform);
+    const isExternalDownloadLink = isExternalDownloadPlatform(platform);
 
     return (
         <section id="programs" className="w-full bg-[#F9F9F9] py-16 md:py-24 overflow-visible">
@@ -86,13 +91,14 @@ export function ExploreProgramsSection() {
                             </p>
                         </div>
                         <div className="pt-4 mt-auto">
-                            <Link
-                                href="/detox"
+                            <a
+                                href={detoxDownloadHref}
+                                {...(isExternalDownloadLink ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                                 className="group inline-flex items-center gap-2 rounded-full bg-[oklch(0.2475_0.0661_146.79)] px-6 py-3 text-[14px] font-bold text-white shadow-lg shadow-[oklch(0.2475_0.0661_146.79)]/10 transition-[box-shadow,transform,background-color] duration-200 ease-out hover:shadow-xl hover:shadow-[oklch(0.2475_0.0661_146.79)]/15 active:scale-[0.97]"
                             >
                                 Start Free Detox in the App
                                 <ArrowRight className="size-4 opacity-60 transition-transform group-hover:translate-x-0.5" />
-                            </Link>
+                            </a>
                         </div>
                     </div>
 
