@@ -150,6 +150,37 @@ describe("Detox Funnel API Endpoints", () => {
                 primaryFocus: "More Energy",
                 questionnaireData: { tried_detox: "No" },
             });
+            expect(mocks.consumeDetoxRateLimit).toHaveBeenCalledWith("complete:lead-123");
+        });
+
+        it("rate limits questionnaire completion before delivery", async () => {
+            mocks.consumeDetoxRateLimit.mockResolvedValueOnce(false);
+
+            const response = await submitRoute(jsonRequest({
+                action: "complete_questionnaire",
+                leadId: "lead-123",
+                primaryFocus: "More Energy",
+                questionnaireData: { health_conditions: ["Pregnant"] },
+            }));
+
+            expect(response.status).toBe(429);
+            await expect(response.json()).resolves.toEqual({ error: "Too many requests. Please try again later." });
+            expect(mocks.consumeDetoxRateLimit).toHaveBeenCalledWith("complete:lead-123");
+            expect(mocks.completeDetoxLead).not.toHaveBeenCalled();
+        });
+
+        it("returns a conflict when questionnaire completion is replayed after delivery", async () => {
+            mocks.completeDetoxLead.mockRejectedValueOnce(new Error("This detox lead has already been completed."));
+
+            const response = await submitRoute(jsonRequest({
+                action: "complete_questionnaire",
+                leadId: "lead-123",
+                primaryFocus: "More Energy",
+                questionnaireData: { health_conditions: ["Heart condition diagnosed"] },
+            }));
+
+            expect(response.status).toBe(409);
+            await expect(response.json()).resolves.toEqual({ error: "This detox lead has already been completed." });
         });
 
         it("keeps backward-compatible single-step submissions", async () => {

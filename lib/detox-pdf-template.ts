@@ -191,11 +191,69 @@ function renderRCFooter(): string {
   </div>`;
 }
 
+const HEALTH_CONDITION_NONE = "None of the above";
+const SAFETY_NOTES_BY_HEALTH_CONDITION: Record<string, string> = {
+    "Type 2 diabetes or pre-diabetes": "Keep medication and meal timing stable, avoid skipping meals, and monitor glucose as advised by your clinician. Stop any practice that causes weakness, dizziness, shaking, or unusual discomfort.",
+    "High blood pressure": "Keep breathing, walking, and warm-water practices gentle. Do not force breath holds, overheat the body, or push through light-headedness, chest pressure, or unusual breathlessness.",
+    "Heart condition diagnosed": "Use this program only after medical clearance. Keep walks easy, skip any practice that triggers chest discomfort, breathlessness, dizziness, palpitations, or pressure, and follow your cardiologist's limits first.",
+    "Pregnant": "Use this only with doctor approval. Avoid intense abdominal pressure, overheating, fasting-style changes, or aggressive detox claims. Prioritise hydration, food safety, rest, and gentle walking.",
+    "Gut condition diagnosed": "Keep warm water, chewing, and walking gentle. Skip abdominal movement or compresses if they worsen pain, reflux, nausea, bowel symptoms, or any clinician-restricted condition.",
+};
+
+function getQuestionnaireStringArray(value: unknown) {
+    if (Array.isArray(value)) {
+        return value
+            .map((item) => String(item ?? "").trim())
+            .filter(Boolean);
+    }
+
+    const normalized = String(value ?? "").trim();
+    return normalized ? [normalized] : [];
+}
+
+function getSelectedHealthConditions(questionnaireData: Record<string, unknown>) {
+    const rawConditions = questionnaireData.health_conditions ?? questionnaireData.healthConditions;
+    const conditions = getQuestionnaireStringArray(rawConditions)
+        .filter((condition) => condition !== HEALTH_CONDITION_NONE);
+
+    return Array.from(new Set(conditions));
+}
+
+function renderSafetyNotes(questionnaireData: Record<string, unknown>) {
+    const selectedConditions = getSelectedHealthConditions(questionnaireData);
+
+    if (selectedConditions.length === 0) {
+        return `<div class="safety-card safety-card--standard">
+    <div class="safety-card-label">Safety note from your answers</div>
+    <p>You selected no listed medical conditions. Follow the program gently, stay hydrated, and stop any practice that feels painful, dizzying, or unusually uncomfortable.</p>
+  </div>`;
+    }
+
+    const notes = selectedConditions.map((condition) => {
+        const note = SAFETY_NOTES_BY_HEALTH_CONDITION[condition] || "Please check with your doctor before making significant changes to movement, hydration, breathwork, food timing, or daily routine.";
+
+        return `<div class="safety-item">
+      <div class="safety-item-title">${esc(condition)}</div>
+      <div class="safety-item-text">${esc(note)}</div>
+    </div>`;
+    }).join("");
+
+    return `<div class="safety-card">
+    <div class="safety-card-label">Safety notes from your answers</div>
+    <p class="safety-card-intro">You selected: ${esc(selectedConditions.join(", "))}. Please use these notes before starting the daily practices.</p>
+    ${notes}
+  </div>`;
+}
+
 // -----------------------------------------------------------------------------
 // Main Renderer
 // -----------------------------------------------------------------------------
 
-export function renderDetoxHtml(name: string, focusInput: string): string {
+export function renderDetoxHtml(
+    name: string,
+    focusInput: string,
+    questionnaireData: Record<string, unknown> = {}
+): string {
     // Sanitize focus area
     let primaryFocus: FocusArea = "General Wellness";
     const normalizedInput = String(focusInput).trim();
@@ -498,6 +556,51 @@ body {
   color: var(--forest-light);
   line-height: 1.45;
 }
+.safety-card {
+  background: #fffdf7;
+  border: 0.5px solid #e6dcc3;
+  border-left: 3.5px solid #b98a2d;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 14px 0 16px;
+}
+.safety-card--standard {
+  background: #fbfdfb;
+  border-color: var(--border);
+  border-left-color: var(--mid);
+}
+.safety-card-label {
+  font-size: 6.5pt;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--forest);
+  margin-bottom: 5px;
+}
+.safety-card p {
+  font-size: 8.5pt;
+  color: var(--ink-mid);
+  line-height: 1.45;
+}
+.safety-card-intro {
+  margin-bottom: 8px;
+}
+.safety-item {
+  padding-top: 7px;
+  margin-top: 7px;
+  border-top: 0.5px solid rgba(185, 138, 45, 0.28);
+}
+.safety-item-title {
+  font-size: 8.2pt;
+  font-weight: 700;
+  color: var(--forest);
+  margin-bottom: 2px;
+}
+.safety-item-text {
+  font-size: 8.2pt;
+  color: var(--ink-mid);
+  line-height: 1.4;
+}
 
 /* Schedule & Notes Grid */
 .split-grid {
@@ -733,6 +836,8 @@ ${renderRCFooter()}
   <div class="print-callout">
     <strong>Before you start:</strong> print the full program and keep it somewhere visible. It will be easier to follow each day's steps and tick the tracker as you complete the week.
   </div>
+
+  ${renderSafetyNotes(questionnaireData)}
 
   <div class="section-title">The six root causes this program fixes</div>
 

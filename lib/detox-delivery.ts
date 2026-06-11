@@ -17,6 +17,9 @@ type DetoxLeadRecord = {
     source: string;
     email_consent?: boolean | null;
     whatsapp_consent?: boolean | null;
+    lead_stage?: string | null;
+    overall_status?: string | null;
+    completed_at?: string | null;
 };
 
 type CreateDetoxLeadParams = {
@@ -157,7 +160,7 @@ export async function createDetoxLead({
 async function getDetoxLead(leadId: string) {
     const { data, error } = await supabaseAdmin
         .from("detox_leads")
-        .select("id, name, email, phone, primary_focus, source, email_consent, whatsapp_consent")
+        .select("id, name, email, phone, primary_focus, source, email_consent, whatsapp_consent, lead_stage, overall_status, completed_at")
         .eq("id", leadId)
         .single();
 
@@ -166,6 +169,53 @@ async function getDetoxLead(leadId: string) {
     }
 
     return data as DetoxLeadRecord;
+}
+
+function assertDetoxLeadCanBeCompleted(lead: DetoxLeadRecord) {
+    const deliveredStatuses = new Set(["delivered", "partially_delivered"]);
+
+    if (
+        lead.completed_at ||
+        lead.lead_stage === "questionnaire_completed" ||
+        lead.lead_stage === "delivery_processing" ||
+        (lead.overall_status ? deliveredStatuses.has(lead.overall_status) : false)
+    ) {
+        throw new Error("This detox lead has already been completed.");
+    }
+}
+
+async function claimDetoxLeadForCompletion(leadId: string) {
+    const { data, error } = await supabaseAdmin
+        .from("detox_leads")
+        .update({
+            lead_stage: "delivery_processing",
+            updated_at: new Date().toISOString(),
+        })
+        .eq("id", leadId)
+        .is("completed_at", null)
+        .or("lead_stage.is.null,lead_stage.eq.contact_captured")
+        .select("id")
+        .single();
+
+    if (error || !data) {
+        throw new Error("This detox lead has already been completed.");
+    }
+}
+
+async function releaseDetoxLeadCompletionClaim(leadId: string) {
+    const { error } = await supabaseAdmin
+        .from("detox_leads")
+        .update({
+            lead_stage: "contact_captured",
+            updated_at: new Date().toISOString(),
+        })
+        .eq("id", leadId)
+        .eq("lead_stage", "delivery_processing")
+        .is("completed_at", null);
+
+    if (error) {
+        console.warn(`[Detox] Failed to release completion claim for lead ${leadId}:`, error);
+    }
 }
 
 async function uploadDetoxPdf({
@@ -209,7 +259,7 @@ export async function deliverDetoxProgram({
     primaryFocus,
     questionnaireData,
 }: DeliverDetoxProgramParams) {
-    const html = renderDetoxHtml(lead.name, primaryFocus);
+    const html = renderDetoxHtml(lead.name, primaryFocus, questionnaireData);
     const pdfBuffer = await generatePdf(html);
     const pdfFilename = `RC-Detox-Program-${sanitizeFilenamePart(lead.name)}.pdf`;
     let pdfStoragePath: string | null = null;
@@ -299,9 +349,17 @@ export async function completeDetoxLead({
     questionnaireData,
 }: CompleteDetoxLeadParams) {
     const lead = await getDetoxLead(leadId);
-    return deliverDetoxProgram({
-        lead,
-        primaryFocus,
-        questionnaireData,
-    });
+    assertDetoxLeadCanBeCompleted(lead);
+    await claimDetoxLeadForCompletion(lead.id);
+
+    try {
+        return await deliverDetoxProgram({
+            lead,
+            primaryFocus,
+            questionnaireData,
+        });
+    } catch (error) {
+        await releaseDetoxLeadCompletionClaim(lead.id);
+        throw error;
+    }
 }
