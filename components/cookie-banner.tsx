@@ -35,7 +35,7 @@ export function CookieBanner() {
                         stiffness: 120,
                         opacity: { duration: 0.4 }
                     }}
-                    className="fixed bottom-6 left-6 right-6 md:left-auto md:right-8 md:w-[420px] z-[100]"
+                    className="fixed bottom-6 left-6 right-6 z-[100] md:right-auto md:w-[420px]"
                 >
                     <div className="relative overflow-hidden bg-secondary/40 backdrop-blur-2xl border border-secondary/50 rounded-3xl p-7 shadow-[0_20px_50px_rgba(0,0,0,0.1)] group">
                         {/* Decorative subtle gradient */}

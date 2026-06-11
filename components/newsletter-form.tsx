@@ -252,8 +252,7 @@ export function DefaultNewsletterForm({ alignment = "right", className }: Defaul
       </form>
 
       <div className="mt-4 flex flex-col items-center gap-2">
-        <p className="text-xs text-white/60 font-medium flex items-center gap-1.5 px-4 py-1 rounded-full bg-black/20 backdrop-blur-sm">
-          <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.5)]" />
+        <p className="text-xs text-white/60 font-medium px-4 py-1 rounded-full bg-black/20 backdrop-blur-sm">
           Private enquiry. We only use these details to get back to you.
         </p>
       </div>

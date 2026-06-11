@@ -130,9 +130,6 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                     <span className="font-erode text-lg font-semibold tracking-tighter text-primary">
                         Recovery Compass
                     </span>
-                    <span className="ml-2 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.15em] rounded-full border border-[oklch(0.2475_0.0661_146.79)]/20 text-[oklch(0.2475_0.0661_146.79)]/50 bg-[oklch(0.2475_0.0661_146.79)]/5">
-                        Now Live
-                    </span>
                 </Link>
 
                 {/* Right Actions (Nav + CTA + Mobile Toggle) */}
@@ -151,7 +148,6 @@ export function NavbarSticky({ simple = false }: NavbarStickyProps) {
                             </Link>
                         ))}
                     </nav>
-
                     {/* Desktop CTA & Auth */}
                     <div className="hidden md:flex items-center gap-4">
 

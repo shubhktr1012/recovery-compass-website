@@ -103,7 +103,7 @@ export function ExploreProgramsSection() {
                                 Companion Plan
                             </p>
                             <h3 className="font-erode text-[22px] md:text-2xl font-medium tracking-tight leading-snug text-[oklch(0.2475_0.0661_146.79)] mb-2">
-                                Need food support too?
+                                Need a personalised diet plan too?
                             </h3>
                             <p className="text-[14px] md:text-[15px] font-satoshi font-medium leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/55">
                                 A personalised PDF diet plan built around your health conditions, regional cuisine, eating habits, disliked foods, goals, and family cooking setup.

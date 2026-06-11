@@ -245,8 +245,7 @@ export function SolutionSection() {
         <>
             <section className="bg-primary px-4 py-16 md:px-8 md:py-24 lg:hidden">
                 <div className="mx-auto mb-12 max-w-2xl text-center">
-                    <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-secondary/30 bg-secondary/5 px-3 py-1 text-xs uppercase tracking-widest text-secondary font-satoshi">
-                        <span className="h-1.5 w-1.5 rounded-full bg-secondary animate-pulse" />
+                    <div className="mb-6 inline-flex items-center rounded-full border border-secondary/30 bg-secondary/5 px-3 py-1 text-xs uppercase tracking-widest text-secondary font-satoshi">
                         {sectionIntro.badge}
                     </div>
                     <h2 className="mb-4 text-4xl font-erode font-medium leading-[1.10] tracking-tighter text-secondary md:text-5xl">
@@ -271,8 +270,7 @@ export function SolutionSection() {
                             <motion.div
                                 style={{ y: introHeadlineY, opacity: introHeadlineOpacity, zIndex: 10, position: "relative" }}
                             >
-                                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-secondary/30 bg-secondary/5 px-3 py-1 text-xs uppercase tracking-widest text-secondary font-satoshi">
-                                    <span className="h-1.5 w-1.5 rounded-full bg-secondary animate-pulse" />
+                                <div className="mb-6 inline-flex items-center rounded-full border border-secondary/30 bg-secondary/5 px-3 py-1 text-xs uppercase tracking-widest text-secondary font-satoshi">
                                     {sectionIntro.badge}
                                 </div>
                                 <h2 className="mb-8 max-w-4xl text-5xl font-erode font-medium leading-[1.10] tracking-tighter text-secondary md:text-5xl lg:text-6xl">
