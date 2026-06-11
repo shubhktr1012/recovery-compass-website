@@ -4,7 +4,8 @@ export type ProgramSlug =
   | 'sleep_disorder_reset'
   | 'energy_vitality'
   | 'age_reversal'
-  | 'male_sexual_health';
+  | 'male_sexual_health'
+  | 'smoking_alcohol_quit';
 
 export const GENDER_OPTIONS = ['Male', 'Female', 'Prefer not to say'] as const;
 

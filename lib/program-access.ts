@@ -1,11 +1,11 @@
 import {
   CANONICAL_PROGRAM_DISPLAY_NAMES,
   CANONICAL_PROGRAM_SLUGS,
-  publicPrograms,
+  grantablePrograms,
   type CanonicalProgramSlug,
 } from "@/lib/public-programs";
 
-export const PROGRAM_OPTIONS = publicPrograms.map((program) => ({
+export const PROGRAM_OPTIONS = grantablePrograms.map((program) => ({
   slug: program.dbSlug,
   label: program.title,
 })) satisfies ReadonlyArray<{ slug: CanonicalProgramSlug; label: string }>;

@@ -27,6 +27,34 @@ describe("commerce slug normalization", () => {
     expect(canonicalizeProgramSlug("unknown-program")).toBeNull();
   });
 
+  it("restricts legacy and free detox slugs under checkout mode", () => {
+    // Under checkout mode (forCheckout: true):
+    // Active checkout programs should be allowed
+    expect(canonicalizeProgramSlug("smoking_alcohol_quit", { forCheckout: true })).toBe("smoking_alcohol_quit");
+    expect(canonicalizeProgramSlug("gut_health_reset", { forCheckout: true })).toBe("gut_health_reset");
+
+    // Legacy programs should be blocked
+    expect(canonicalizeProgramSlug("six_day_reset", { forCheckout: true })).toBeNull();
+    expect(canonicalizeProgramSlug("ninety_day_transform", { forCheckout: true })).toBeNull();
+
+    // Free Detox should be blocked
+    expect(canonicalizeProgramSlug("free_detox_reset", { forCheckout: true })).toBeNull();
+  });
+
+  it("allows legacy and free detox slugs under compatibility parsing mode", () => {
+    // Under compatibility mode (forCheckout: false / undefined):
+    // Active checkout programs
+    expect(canonicalizeProgramSlug("smoking_alcohol_quit")).toBe("smoking_alcohol_quit");
+    expect(canonicalizeProgramSlug("gut_health_reset")).toBe("gut_health_reset");
+
+    // Legacy programs
+    expect(canonicalizeProgramSlug("six_day_reset")).toBe("six_day_reset");
+    expect(canonicalizeProgramSlug("ninety_day_transform")).toBe("ninety_day_transform");
+
+    // Free Detox
+    expect(canonicalizeProgramSlug("free_detox_reset")).toBe("free_detox_reset");
+  });
+
   it("normalizes transaction items before persistence", () => {
     expect(
       canonicalizeTransactionItems([

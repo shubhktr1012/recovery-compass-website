@@ -6,15 +6,15 @@ import { supabase } from "@/lib/supabase";
 import { AuthModal } from "@/components/auth-modal";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import { DB_TO_WEB_PROGRAM_SLUG } from "@/lib/public-programs";
 
-const dbToWebSlug: Record<string, string> = {
-    "six_day_reset": "6-day-compass-reset",
-    "ninety_day_transform": "90-day-smoke-free-journey",
-    "sleep_disorder_reset": "21-day-deep-sleep-reset",
-    "energy_vitality": "14-day-energy-restore",
-    "age_reversal": "radiance-journey",
-    "male_sexual_health": "mens-vitality-reset-program",
-};
+function mapDbProgramToWebProgram(dbSlug: string | null | undefined) {
+    if (!dbSlug || !(dbSlug in DB_TO_WEB_PROGRAM_SLUG)) {
+        return null;
+    }
+
+    return DB_TO_WEB_PROGRAM_SLUG[dbSlug as keyof typeof DB_TO_WEB_PROGRAM_SLUG];
+}
 
 type Profile = {
     id: string;
@@ -210,8 +210,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
                 // Collect ALL owned program slugs (active, completed, or archived)
                 const ownedSlugs = data
                     .filter(r => ["owned_active", "owned_completed", "owned_archived"].includes(r.purchase_state))
-                    .map(r => dbToWebSlug[r.owned_program])
-                    .filter((slug): slug is string => Boolean(slug));
+                    .flatMap(r => {
+                        const webSlug = mapDbProgramToWebProgram(r.owned_program);
+                        return webSlug ? [webSlug] : [];
+                    });
 
                 setOwnedPrograms(ownedSlugs);
                 setHasActiveProgram(data.some(r => r.purchase_state === "owned_active"));

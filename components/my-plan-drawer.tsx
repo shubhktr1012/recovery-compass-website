@@ -9,7 +9,7 @@ import type { LucideIcon } from "lucide-react";
 import { useUser } from "@/lib/context/user-context";
 import { useRouter } from "next/navigation";
 import { MAX_CART_ITEMS } from "@/lib/program-commerce-policy";
-import { allPrograms, formatProgramPrice, toCartItem } from "@/lib/public-programs";
+import { allPrograms, checkoutPrograms, formatProgramPrice, toCartItem } from "@/lib/public-programs";
 import { cn } from "@/lib/utils";
 
 // Stable icon map — defined outside the component so it's never re-created on render
@@ -32,8 +32,8 @@ export function MyPlanDrawer() {
         .map((programId) => allPrograms.find((p) => p.id === programId))
         .filter((p): p is NonNullable<typeof p> => Boolean(p));
 
-    // Programs that are neither in the cart nor already owned
-    const quickAddPrograms = allPrograms.filter(
+    // Programs that are neither in the cart nor already owned, and are available for checkout
+    const quickAddPrograms = checkoutPrograms.filter(
         (p) => !isItemInCart(p.id) && !ownedPrograms.includes(p.id)
     );
 

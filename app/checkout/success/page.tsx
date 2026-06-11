@@ -9,6 +9,7 @@ import {
     ArrowRight,
     Sparkles,
     ClipboardList,
+    Leaf,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { motion } from "framer-motion";
@@ -104,6 +105,39 @@ function AppStoreBadge({ platform }: { platform: "ios" | "android" }) {
                 )}
             />
         </a>
+    );
+}
+
+function FreeDetoxAppBonusCard() {
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.57 }}
+            className="group rounded-[32px] p-8 md:p-10 bg-white/75 backdrop-blur-md border border-white/60 flex flex-col justify-between shadow-xl shadow-[oklch(0.2475_0.0661_146.79)]/5 relative overflow-hidden"
+        >
+            <div className="mb-6 flex justify-between items-start">
+                <div className="size-12 rounded-full bg-[#06290C]/[0.06] text-[#06290C] flex items-center justify-center border border-[#06290C]/10">
+                    <Leaf className="size-6 text-[#3D7A4A] fill-current" />
+                </div>
+                <div className="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider">
+                    Free Bonus
+                </div>
+            </div>
+
+            <div>
+                <h3 className="text-[26px] md:text-[30px] font-bold mb-3 text-[oklch(0.2475_0.0661_146.79)] leading-tight font-erode">
+                    Your Detox bonus is in the app.
+                </h3>
+                <p className="text-[14px] md:text-[15px] text-[oklch(0.2475_0.0661_146.79)]/70 font-medium leading-relaxed mb-6">
+                    Every program includes the 6-Day Free Detox Program. Open Recovery Compass to start it as an in-app journey alongside your purchased program.
+                </p>
+                <div className="flex flex-col items-start gap-3">
+                    <AppStoreBadge platform="ios" />
+                    <AppStoreBadge platform="android" />
+                </div>
+            </div>
+        </motion.div>
     );
 }
 
@@ -297,6 +331,9 @@ function SuccessPageContent() {
                                 </div>
                             </motion.a>
                         )}
+
+                        {/* ── Free Detox App Bonus Card ── */}
+                        <FreeDetoxAppBonusCard />
 
                         {/* ── WhatsApp Community ── */}
                         <motion.a
