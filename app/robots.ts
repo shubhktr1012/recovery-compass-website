@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
             {
                 userAgent: "*",
                 allow: "/",
-                disallow: ["/checkout", "/checkout/success", "/receipts"],
+                disallow: ["/admin", "/api", "/checkout", "/checkout/success", "/receipts"],
             },
         ],
         sitemap: "https://recoverycompass.co/sitemap.xml",
