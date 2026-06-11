@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse, after } from "next/server";
 import crypto from "crypto";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { normalizeQuestionnaireProgramValues } from "@/lib/diet-plan-program-options";
 
 function getErrorMessage(error: unknown) {
     if (error instanceof Error) {
@@ -67,6 +68,10 @@ export async function POST(req: NextRequest) {
             );
         }
 
+        const normalizedQuestionnaireData = normalizeQuestionnaireProgramValues(
+            questionnaire_data as Record<string, unknown>
+        );
+
         const supabase = getSupabaseAdmin();
         const claimTokenHash = hashClaimToken(claimToken);
 
@@ -102,7 +107,7 @@ export async function POST(req: NextRequest) {
             .update({
                 email: normalizedEmail,
                 name: typeof name === "string" && name.trim() ? name.trim() : null,
-                questionnaire_data,
+                questionnaire_data: normalizedQuestionnaireData,
                 status: "pending",
                 claimed_at: new Date().toISOString(),
                 error_message: null,

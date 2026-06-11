@@ -122,9 +122,51 @@ describe("PUT /api/diet-plan/draft", () => {
     expect(updateQuery.update).toHaveBeenCalledWith({
       email: "shubh@example.com",
       name: "Shubh",
-      questionnaire_data: { name: "Shubh", programs: ["Sleep Reset"] },
+      questionnaire_data: { name: "Shubh", programs: ["Deep Sleep Reset"] },
     });
     expect(updateQuery.eq).toHaveBeenCalledWith("id", "00000000-0000-4000-8000-000000000000");
     expect(updateQuery.in).toHaveBeenCalledWith("status", ["awaiting_questionnaire", "failed"]);
+  });
+
+  it("normalizes old full program titles before saving drafts", async () => {
+    const orderQuery = createQuery({
+      data: {
+        id: "00000000-0000-4000-8000-000000000001",
+        status: "awaiting_questionnaire",
+        source: "checkout_addon",
+      },
+      error: null,
+    });
+    const updateQuery = createQuery({ data: null, error: null });
+
+    mocks.from.mockImplementation((table: string) => {
+      expect(table).toBe("diet_plan_orders");
+      return orderQuery.select.mock.calls.length === 0 ? orderQuery : updateQuery;
+    });
+
+    const response = await PUT(
+      buildRequest({
+        diet_order_id: "00000000-0000-4000-8000-000000000001",
+        claim_token: "b".repeat(43),
+        questionnaire_data: {
+          programs: [
+            "21-Day Deep Sleep Reset",
+            "14-Day Energy Restore",
+            "90-Day Biohacking Reset",
+          ],
+        },
+      })
+    );
+
+    expect(response.status).toBe(200);
+    expect(updateQuery.update).toHaveBeenCalledWith({
+      questionnaire_data: {
+        programs: [
+          "Deep Sleep Reset",
+          "Energy Restore",
+          "Age Well",
+        ],
+      },
+    });
   });
 });
