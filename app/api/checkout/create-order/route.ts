@@ -48,7 +48,7 @@ function normalizeProgramOrder(
 
     const requestedOrder = uniqueValues(
         orderSource
-            .map((slug) => canonicalizeProgramSlug(slug))
+            .map((slug) => canonicalizeProgramSlug(slug, { forCheckout: true }))
             .filter((slug): slug is CanonicalProgramSlug => typeof slug === "string" && !isDietPlanCheckoutSlug(slug))
     );
 
@@ -127,7 +127,7 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const normalizedItems = canonicalizeTransactionItems(items);
+        const normalizedItems = canonicalizeTransactionItems(items, { forCheckout: true });
         if (normalizedItems.length === 0) {
             return NextResponse.json({ message: "No valid checkout items were found." }, { status: 400 });
         }

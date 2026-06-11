@@ -84,29 +84,13 @@ export function getActiveQuestionSequence(answers: OnboardingAnswers): QuestionD
   ];
 }
 
-function getSmokingRecommendedProgram(answers: OnboardingAnswers) {
-  const outcome = answers.questionValues.smoking_outcome;
-  const duration = answers.questionValues.smoking_duration;
-  const dailyCountValue = answers.questionValues.smoking_daily_count;
-  const dailyCount = typeof dailyCountValue === 'string' ? Number(dailyCountValue) : 0;
-
-  if (outcome === 'full_quit_longer_path') {
-    return 'ninety_day_transform' as const;
-  }
-
-  if (
-    outcome === 'not_sure' &&
-    (dailyCount >= 10 || duration === '3_10_years' || duration === '10_plus_years')
-  ) {
-    return 'ninety_day_transform' as const;
-  }
-
-  return 'six_day_reset' as const;
+function getSmokingRecommendedProgram() {
+  return 'smoking_alcohol_quit' as const;
 }
 
-function getRecommendedProgramForAnswers(journey: JourneyKey, answers: OnboardingAnswers) {
+function getRecommendedProgramForAnswers(journey: JourneyKey) {
   return journey === 'smoking'
-    ? getSmokingRecommendedProgram(answers)
+    ? getSmokingRecommendedProgram()
     : getRecommendedProgramForJourney(journey);
 }
 
@@ -226,7 +210,7 @@ export function getOnboardingResolution(answers: OnboardingAnswers): OnboardingR
 
   return {
     journey,
-    recommendedProgram: getRecommendedProgramForAnswers(journey, answers),
+    recommendedProgram: getRecommendedProgramForAnswers(journey),
     primaryConcernLabel,
   };
 }

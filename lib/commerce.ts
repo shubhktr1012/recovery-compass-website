@@ -2,7 +2,9 @@ import crypto from "crypto";
 import { sendOpsAlertEmail, sendWelcomeEmail } from "@/lib/mail";
 import {
     CANONICAL_PROGRAM_SLUGS,
+    GRANTABLE_PROGRAM_SLUGS,
     WEB_TO_DB_PROGRAM_SLUG,
+    checkoutPrograms,
     type CanonicalProgramSlug,
 } from "@/lib/public-programs";
 import {
@@ -100,9 +102,16 @@ export const webToDbSlug: Readonly<Record<string, CheckoutItemSlug>> = {
 };
 
 const allowedCheckoutSlugs = new Set<CheckoutItemSlug>([
+    ...checkoutPrograms.map((p) => p.dbSlug),
+    DIET_PLAN_CHECKOUT_SLUG,
+]);
+
+const knownCheckoutSlugs = new Set<CheckoutItemSlug>([
     ...CANONICAL_PROGRAM_SLUGS,
     DIET_PLAN_CHECKOUT_SLUG,
 ]);
+
+const grantableProgramSlugSet = new Set<CanonicalProgramSlug>(GRANTABLE_PROGRAM_SLUGS);
 
 function createClaimToken() {
     return crypto.randomBytes(32).toString("base64url");
@@ -141,7 +150,7 @@ function formatUnknownError(error: unknown) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export async function createTransaction(params: CreateTransactionParams) {
-    const normalizedItems = canonicalizeTransactionItems(params.items);
+    const normalizedItems = canonicalizeTransactionItems(params.items, { forCheckout: true });
 
     const { data, error } = await supabaseAdmin
         .from("transactions")
@@ -272,18 +281,25 @@ export async function markTransactionFailed(providerOrderId: string, metadata?: 
 //    - Marks the transaction as fulfillment_failed on any error
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function canonicalizeProgramSlug(programSlug: unknown): CheckoutItemSlug | null {
+export function canonicalizeProgramSlug(
+    programSlug: unknown,
+    options?: { forCheckout?: boolean }
+): CheckoutItemSlug | null {
     if (typeof programSlug !== "string" || !programSlug.trim()) {
         return null;
     }
 
     const normalizedSlug = webToDbSlug[programSlug.trim()] ?? programSlug.trim();
-    return allowedCheckoutSlugs.has(normalizedSlug as CheckoutItemSlug)
+    const set = options?.forCheckout ? allowedCheckoutSlugs : knownCheckoutSlugs;
+    return set.has(normalizedSlug as CheckoutItemSlug)
         ? (normalizedSlug as CheckoutItemSlug)
         : null;
 }
 
-export function canonicalizeTransactionItems(items: unknown): CanonicalTransactionItem[] {
+export function canonicalizeTransactionItems(
+    items: unknown,
+    options?: { forCheckout?: boolean }
+): CanonicalTransactionItem[] {
     if (!Array.isArray(items)) {
         return [];
     }
@@ -293,7 +309,10 @@ export function canonicalizeTransactionItems(items: unknown): CanonicalTransacti
             return [];
         }
 
-        const programSlug = canonicalizeProgramSlug((item as { program_slug?: unknown }).program_slug);
+        const programSlug = canonicalizeProgramSlug(
+            (item as { program_slug?: unknown }).program_slug,
+            options
+        );
         if (!programSlug) {
             return [];
         }
@@ -334,6 +353,10 @@ function resolveProgramSlugs(items: unknown): string[] {
         .map(({ item }) => item.program_slug);
 
     return Array.from(new Set(slugs));
+}
+
+function isGrantableProgramSlug(slug: string): slug is CanonicalProgramSlug {
+    return grantableProgramSlugSet.has(slug as CanonicalProgramSlug);
 }
 
 function shouldPreserveExistingAccess(row: ProgramAccessRow | undefined) {
@@ -490,12 +513,25 @@ async function attemptFulfillment(transactionId: string, source: FulfillmentSour
         // 1. Read the transaction's items to get the purchased program slugs
         const allSlugs = resolveProgramSlugs(txn.items);
         const programSlugs = allSlugs.filter(
-            (slug): slug is CanonicalProgramSlug => !isDietPlanCheckoutSlug(slug)
+            (slug): slug is CanonicalProgramSlug => !isDietPlanCheckoutSlug(slug) && isGrantableProgramSlug(slug)
+        );
+        const blockedProgramSlugs = allSlugs.filter(
+            (slug) => !isDietPlanCheckoutSlug(slug) && !isGrantableProgramSlug(slug)
         );
         const hasDietPlan = allSlugs.includes(DIET_PLAN_CHECKOUT_SLUG);
 
         if (allSlugs.length === 0) {
             throw new Error(`Unable to resolve program slug for transaction ${transactionId}`);
+        }
+
+        if (blockedProgramSlugs.length > 0) {
+            console.warn(
+                `[Commerce] Ignoring non-grantable program slugs for transaction ${transactionId}: ${blockedProgramSlugs.join(", ")}`
+            );
+        }
+
+        if (programSlugs.length === 0 && !hasDietPlan) {
+            throw new Error(`No grantable checkout items found for transaction ${transactionId}`);
         }
 
         // 2. Grant entitlements in program_access FIRST (Mission Critical)

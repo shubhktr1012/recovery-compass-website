@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { PROGRAM_LABELS, type ProgramSlug, isProgramSlug } from "@/lib/program-access";
+import { PROGRAM_LABELS, PROGRAM_OPTIONS, type ProgramSlug, isProgramSlug } from "@/lib/program-access";
 
 type ProgramGrantRequest = {
   adminSecret?: string;
@@ -32,7 +32,8 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!isProgramSlug(rawProgramSlug)) {
+    const isGrantable = PROGRAM_OPTIONS.some((opt) => opt.slug === rawProgramSlug);
+    if (!isProgramSlug(rawProgramSlug) || !isGrantable) {
       return NextResponse.json({ success: false, error: "Invalid program slug" }, { status: 400 });
     }
 

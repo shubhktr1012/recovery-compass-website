@@ -102,19 +102,19 @@ function createStartReasonQuestion(idPrefix: string) {
 
 const JOURNEY_CONFIG: Record<JourneyKey, JourneyConfig> = {
   smoking: {
-    selectionLabel: '6-Day Control',
-    selectionDescription: 'Interrupt the craving loop and regain control through the 6-day smoking reset.',
-    primaryGoal: 'Break the craving loop and rebuild calmer, more reliable control over smoking triggers.',
+    selectionLabel: '21-Day Smoking & Alcohol Quit',
+    selectionDescription: 'A guided quit path for smoking, alcohol, or both, with trigger mapping, urge tools, and slip recovery.',
+    primaryGoal: 'Break the habit loops and rebuild calmer, more reliable control over smoking and alcohol triggers.',
     recommendation: {
-      title: 'Your smoking paths are ready.',
-      subtitle: 'We recommend starting with a smoking program that interrupts urges and rebuilds control from the ground up.',
+      title: 'Your quit path is ready.',
+      subtitle: 'We recommend the 21-Day Smoking & Alcohol Quit program that interrupts urges and rebuilds control from the ground up.',
       whyFits:
-        'Your main issue points to a nicotine loop driven by stress, habit timing, and environmental triggers, not just motivation.',
+        'Your answers point to behavioral loops driven by stress, habit timing, and environmental triggers, not just willpower.',
       focusLabel: 'What this path targets',
       focusPoints: [
-        'Interrupt automatic smoking moments before they run the day.',
-        'Lower the intensity of craving spikes with simple regulation tools.',
-        'Build enough control to choose between a short reset or a longer guided quit path.',
+        'Interrupt automatic smoking and drinking moments before they run the day.',
+        'Lower the intensity of cravings with clinical Delay and Urge Surfing protocols.',
+        'Navigate social situations and handle slips with structured, non-shaming response plans.',
       ],
     },
     questions: {
@@ -682,7 +682,7 @@ export function getGuidedJourney(issueId: GuidedIssueId): JourneyKey {
 }
 
 export function getRecommendedProgramForJourney(journey: JourneyKey): ProgramSlug {
-  return journey === 'smoking' ? 'six_day_reset' : journey;
+  return journey === 'smoking' ? 'smoking_alcohol_quit' : journey;
 }
 
 export function getGuidedIssueLabel(issueId: GuidedIssueId | null) {
