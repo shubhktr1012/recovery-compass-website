@@ -468,7 +468,7 @@ export function DetoxLeadFlow({ source, onClaimedAction, onCloseAction }: DetoxL
                         You are all set, {name}!
                     </h2>
                     <p className="text-[14.5px] text-[oklch(0.2475_0.0661_146.79)]/60 font-medium leading-relaxed max-w-sm mx-auto mb-8">
-                        Your free 6-Day Detox Program has been sent. Please check your email or WhatsApp.
+                        Your Free Detox Program has been sent. Please check your email or WhatsApp.
                     </p>
 
                     <div className="flex flex-col gap-3">

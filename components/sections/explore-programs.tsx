@@ -77,17 +77,17 @@ export function ExploreProgramsSection() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 md:mt-16">
-                    {/* ── App-Only Bonus: 6-Day Free Detox ── */}
+                    {/* ── App-Only Bonus: Free Detox Program ── */}
                     <div className="rounded-[28px] bg-[oklch(0.9484_0.0251_149.08)]/60 border border-[oklch(0.2475_0.0661_146.79)]/[0.05] p-7 md:p-10 flex flex-col justify-between">
                         <div className="space-y-3 mb-6">
                             <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#3D7A4A] mb-3">
                                 App-Only Bonus
                             </p>
                             <h3 className="font-erode text-[22px] md:text-2xl font-medium tracking-tight leading-snug text-[oklch(0.2475_0.0661_146.79)] mb-2">
-                                6-Day Free Detox
+                                Free Detox Program
                             </h3>
                             <p className="text-[14px] md:text-[15px] font-satoshi font-medium leading-relaxed text-[oklch(0.2475_0.0661_146.79)]/55">
-                                Start the 6-Day Free Detox inside the app for free. It is also included as a bonus with every paid program.
+                                Start the Free Detox Program inside the app for free. It is also included as a bonus with every paid program.
                             </p>
                         </div>
                         <div className="pt-4 mt-auto">

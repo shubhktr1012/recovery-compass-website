@@ -130,7 +130,7 @@ function FreeDetoxAppBonusCard() {
                     Your Detox bonus is in the app.
                 </h3>
                 <p className="text-[14px] md:text-[15px] text-[oklch(0.2475_0.0661_146.79)]/70 font-medium leading-relaxed mb-6">
-                    Every program includes the 6-Day Free Detox Program. Open Recovery Compass to start it as an in-app journey alongside your purchased program.
+                    Every program includes the Free Detox Program. Open Recovery Compass to start it as an in-app journey alongside your purchased program.
                 </p>
                 <div className="flex flex-col items-start gap-3">
                     <AppStoreBadge platform="ios" />

@@ -53,7 +53,7 @@ function buildDetoxWhatsAppCaption(clientName: string, hasAttachment: boolean, p
         return [
             `Hi ${safeName},`,
             "",
-            "*Your Recovery Compass 6-Day Detox Program is ready.*",
+            "*Your Recovery Compass Free Detox Program is ready.*",
             "",
             "I have attached the PDF here. Please print it before Day 1 so it is easier to follow the steps and tick the tracker through the week.",
             "",
@@ -64,7 +64,7 @@ function buildDetoxWhatsAppCaption(clientName: string, hasAttachment: boolean, p
     return [
         `Hi ${safeName},`,
         "",
-        "*Your Recovery Compass 6-Day Detox Program is ready.*",
+        "*Your Recovery Compass Free Detox Program is ready.*",
         "",
         "Open the PDF here:",
         pdfUrl,

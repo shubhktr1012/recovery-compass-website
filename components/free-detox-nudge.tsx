@@ -99,10 +99,10 @@ export function FreeDetoxNudge() {
                     transition={springTransition}
                     onClick={handleOpenModal}
                     className={`fixed ${bottomClass} right-4 z-[53] flex items-center gap-2 rounded-full bg-[#06290C] pl-3.5 pr-3 py-2.5 text-white shadow-[0_8px_30px_-4px_rgba(6,41,12,0.25)] md:right-8 transition-all duration-300`}
-                    aria-label="Get Free 6-Day Detox Program"
+                    aria-label="Get Free Detox Program"
                 >
                     <Leaf className="size-3.5 text-[#a8c8ac] fill-current" />
-                    <span className="text-[12px] font-bold tracking-wide">Free Detox Reset</span>
+                    <span className="text-[12px] font-bold tracking-wide">Free Detox Program</span>
                     <ArrowRight className="size-3.5 opacity-50" />
                 </motion.button>
             ) : (
@@ -130,7 +130,7 @@ export function FreeDetoxNudge() {
                                         Free Program
                                     </p>
                                     <p className="font-erode text-[17px] font-semibold leading-snug text-[#06290C]">
-                                        Free 6-Day Detox
+                                        Free Detox Program
                                     </p>
                                     <p className="mt-1.5 text-[12px] font-medium leading-relaxed text-[#06290C]/45">
                                         Reset your nervous system, gut, hydration, and energy. Click to download.

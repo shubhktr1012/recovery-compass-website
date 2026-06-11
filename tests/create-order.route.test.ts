@@ -198,7 +198,7 @@ describe("POST /api/checkout/create-order", () => {
     const legacyResponse = await POST(
       buildRequest({
         amount: 5999,
-        items: [{ program_slug: "six_day_reset", title: "6-Day Control", price_inr: 5999, quantity: 1 }],
+        items: [{ program_slug: "six_day_reset", title: "Control", price_inr: 5999, quantity: 1 }],
       }) as never
     );
     expect(legacyResponse.status).toBe(400);
@@ -208,7 +208,7 @@ describe("POST /api/checkout/create-order", () => {
     const freeDetoxResponse = await POST(
       buildRequest({
         amount: 1499,
-        items: [{ program_slug: "free_detox_reset", title: "6-Day Free Detox", price_inr: 0, quantity: 1 }],
+        items: [{ program_slug: "free_detox_reset", title: "Free Detox Program", price_inr: 0, quantity: 1 }],
       }) as never
     );
     expect(freeDetoxResponse.status).toBe(400);

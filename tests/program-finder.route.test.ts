@@ -107,13 +107,13 @@ describe("POST /api/program-finder/complete", () => {
     expect(await response.json()).toEqual({
       journey: "energy_vitality",
       recommendedProgram: "energy_vitality",
-      primaryConcernLabel: "14-Day Energy Restore",
+      primaryConcernLabel: "Energy Restore",
     });
 
     expect(mocks.onboardingUpsert).toHaveBeenCalledWith(
       expect.objectContaining({
         user_id: "user-1",
-        target_selection: "14-Day Energy Restore",
+        target_selection: "Energy Restore",
       }),
       { onConflict: "user_id" }
     );

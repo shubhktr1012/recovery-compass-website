@@ -157,11 +157,11 @@ const DRAFT_SAVE_DELAY_MS = 700;
 const QUESTIONNAIRE_KEYS = Object.keys(INITIAL_DATA) as Array<keyof QuestionnaireData>;
 const PROGRAM_OPTION_VALUES = publicPrograms.map((program) => program.title);
 const LEGACY_PROGRAM_VALUE_BY_NAME: Record<string, string> = {
-    "Sleep Reset": "21-Day Deep Sleep Reset",
-    "Energy Vitality": "14-Day Energy Restore",
-    "Men's Vitality": "30-Day Men's Vitality Reset",
-    "Female Age Reversal": "90-Day Biohacking Reset",
-    "90-Day Master": "90-Day Smoking Reset",
+    "Sleep Reset": "Deep Sleep Reset",
+    "Energy Vitality": "Energy Restore",
+    "Men's Vitality": "Men’s Vitality Reset",
+    "Age Well": "Age Well",
+    "90-Day Master": "Smoking Reset",
 };
 
 type LocalDietPlanDraft = {

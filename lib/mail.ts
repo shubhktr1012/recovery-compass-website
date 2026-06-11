@@ -438,13 +438,13 @@ export async function sendDetoxEmail({
         const { data, error } = await resend.emails.send({
             from: FROM_EMAIL,
             to: [to],
-            subject: `Your free 6-Day Detox Program is ready, ${clientName}`,
+            subject: `Your Free Detox Program is ready, ${clientName}`,
             html: `
 <div style="font-family: 'Inter', system-ui, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; color: #1a1a1a;">
 
   <div style="margin-bottom: 24px;">
     <p style="font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: #3D7A4A; margin: 0 0 8px;">Recovery Compass</p>
-    <h1 style="font-size: 22px; font-weight: 600; color: #06290C; margin: 0 0 6px; line-height: 1.3;">Your 6-Day Free Detox Program is ready, ${safeClientName}.</h1>
+    <h1 style="font-size: 22px; font-weight: 600; color: #06290C; margin: 0 0 6px; line-height: 1.3;">Your Free Detox Program is ready, ${safeClientName}.</h1>
     <p style="font-size: 14px; color: #666; margin: 0;">Find it attached as a PDF.</p>
   </div>
   ${safePdfUrl ? `
