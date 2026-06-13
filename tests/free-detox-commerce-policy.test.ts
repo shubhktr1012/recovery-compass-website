@@ -1,17 +1,4 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
-
-const mocks = vi.hoisted(() => {
-  const from = vi.fn();
-  return {
-    from,
-  };
-});
-
-vi.mock("@/lib/supabase-admin", () => ({
-  supabaseAdmin: {
-    from: mocks.from,
-  },
-}));
+import { describe, expect, it } from "vitest";
 
 import {
   appOnlyPrograms,
@@ -23,22 +10,7 @@ import { PROGRAM_OPTIONS } from "@/lib/program-access";
 import { POST as handleProgramGrant } from "@/app/api/internal/program-grants/route";
 import { getOnboardingResolution, createInitialOnboardingAnswers } from "@/lib/recovery-profile";
 
-function buildRequest(body: unknown) {
-  return new Request("http://localhost/api/internal/program-grants", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
-}
-
 describe("Free Detox and Launch Commerce Policy", () => {
-  beforeEach(() => {
-    process.env.PROGRAM_GRANTS_ADMIN_SECRET = "test_admin_secret";
-    mocks.from.mockReset();
-  });
-
   describe("1. Website Catalog Presence & Pricing for Free Detox", () => {
     it("keeps free_detox_reset out of public website catalog and excludes legacy programs", () => {
       const catalogSlugs = publicCatalogPrograms.map((p) => p.dbSlug);
@@ -98,59 +70,14 @@ describe("Free Detox and Launch Commerce Policy", () => {
       expect(optionSlugs).toContain("ninety_day_transform");
     });
 
-    it("rejects POST grants for free_detox_reset", async () => {
-      const response = await handleProgramGrant(
-        buildRequest({
-          adminSecret: "test_admin_secret",
-          email: "test@example.com",
-          programSlug: "free_detox_reset",
-        })
-      );
+    it("keeps the old shared-secret POST grant endpoint disabled", async () => {
+      const response = await handleProgramGrant();
 
-      expect(response.status).toBe(400);
-      const data = await response.json();
-      expect(data).toEqual({ success: false, error: "Invalid program slug" });
-      expect(mocks.from).not.toHaveBeenCalled();
-    });
-
-    it("allows POST grants for legacy programs", async () => {
-      // Mock profile lookup to return a user
-      const selectMock = vi.fn().mockReturnValue({
-        ilike: vi.fn().mockReturnValue({
-          limit: vi.fn().mockResolvedValue({
-            data: [{ id: "user_123", email: "test@example.com", display_name: "Test User" }],
-            error: null,
-          }),
-        }),
+      expect(response.status).toBe(410);
+      expect(await response.json()).toEqual({
+        message:
+          "This unaudited grant endpoint has been disabled. Use the admin dashboard grant workflow.",
       });
-
-      mocks.from.mockImplementation((table) => {
-        if (table === "profiles") {
-          return { select: selectMock };
-        }
-        if (table === "program_access") {
-          return {
-            select: vi.fn().mockReturnThis(),
-            eq: vi.fn().mockReturnThis(),
-            maybeSingle: vi.fn().mockResolvedValue({ data: null, error: null }),
-            upsert: vi.fn().mockResolvedValue({ error: null }),
-          };
-        }
-        return {};
-      });
-
-      const response = await handleProgramGrant(
-        buildRequest({
-          adminSecret: "test_admin_secret",
-          email: "test@example.com",
-          programSlug: "six_day_reset",
-        })
-      );
-
-      expect(response.status).toBe(200);
-      const data = await response.json();
-      expect(data.success).toBe(true);
-      expect(data.granted.programSlug).toBe("six_day_reset");
     });
   });
 
