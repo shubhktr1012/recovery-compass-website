@@ -169,9 +169,9 @@ function CopyButton({ label, value }: { label: string; value: string }) {
 function DetailItem({ label, value }: { label: string; value: React.ReactNode }) {
   if (!value) return null;
   return (
-    <div className="flex items-start justify-between gap-4 border-b border-white/[0.06] py-2.5 last:border-b-0">
+    <div className="flex flex-col gap-1 border-b border-white/[0.06] py-2.5 last:border-b-0 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
       <span className="shrink-0 text-xs font-medium text-white/40">{label}</span>
-      <span className="max-w-[70%] break-all text-right text-xs text-white/70">{value}</span>
+      <span className="break-all text-xs text-white/70 sm:max-w-[70%] sm:text-right">{value}</span>
     </div>
   );
 }
@@ -401,8 +401,8 @@ function OrderDetailCard({
   const [action, setAction] = useState<"confirm" | "generate" | null>(null);
 
   return (
-    <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
-      <div className="grid gap-4 lg:grid-cols-[1fr_1fr]">
+    <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-3 sm:p-4">
+      <div className="grid gap-4 md:grid-cols-[1fr_1fr]">
         {/* Left: metadata */}
         <div className="space-y-0.5">
           <DetailItem label="Order ID" value={
@@ -951,6 +951,82 @@ function CreateManualOrderForm({ onCreated }: { onCreated: () => void }) {
   );
 }
 
+/* ─── Mobile order card ─────────────────────────────────────────────── */
+
+function MobileOrderCard({
+  canManage,
+  isExpanded,
+  onToggle,
+  row,
+}: {
+  canManage: boolean;
+  isExpanded: boolean;
+  onToggle: () => void;
+  row: DietPlanRow;
+}) {
+  const hasActions = row.canConfirmPayment || row.canGenerate;
+  const hasDetails =
+    row.paymentLinkUrl ||
+    row.paymentReference ||
+    row.errorMessage ||
+    row.adminNotes ||
+    row.razorpayOrderId ||
+    row.manualCreatedBy;
+
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/[0.04]">
+      <button
+        className="w-full p-4 text-left transition hover:bg-white/[0.04]"
+        onClick={onToggle}
+        type="button"
+      >
+        {/* Top: email + status */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium text-white/85">{row.email}</p>
+            {row.name && row.name !== "No name" ? (
+              <p className="truncate text-xs text-white/40">{row.name}</p>
+            ) : null}
+          </div>
+          <div className="flex shrink-0 items-center gap-1.5">
+            <StatusBadge status={row.status} />
+            {isExpanded ? (
+              <ChevronDown className="size-4 text-white/40" />
+            ) : (
+              <ChevronRight className="size-4 text-white/40" />
+            )}
+          </div>
+        </div>
+
+        {/* Bottom: metadata row */}
+        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-white/50">
+          <span>{row.createdAt}</span>
+          <span className="font-medium text-white/65">{row.amount}</span>
+          <SourceBadge source={row.source} />
+        </div>
+
+        {/* Compact info line */}
+        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-white/40">
+          <span>Paid: {row.paymentConfirmedAt ?? "—"}</span>
+          <span>Generated / scheduled: {row.fulfilledAt}</span>
+        </div>
+
+        {(hasActions || hasDetails) && !isExpanded ? (
+          <p className="mt-2 text-xs text-white/30">
+            Tap to {hasActions ? "see actions" : "see details"}
+          </p>
+        ) : null}
+      </button>
+
+      {isExpanded ? (
+        <div className="border-t border-white/[0.06] p-4">
+          <OrderDetailCard canManage={canManage} row={row} />
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 /* ─── Main table + detail cards ─────────────────────────────────────── */
 
 function DietPlanOrderTable({
@@ -964,7 +1040,7 @@ function DietPlanOrderTable({
 
   if (rows.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-3xl border border-white/10 bg-white/[0.05] p-12 text-center">
+      <div className="flex flex-col items-center justify-center rounded-3xl border border-white/10 bg-white/[0.05] p-8 text-center sm:p-12">
         <FileText className="mb-3 size-8 text-white/25" />
         <p className="text-sm text-white/50">No diet plan orders in the selected range.</p>
       </div>
@@ -972,86 +1048,102 @@ function DietPlanOrderTable({
   }
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.05]">
-      <div className="overflow-x-auto">
-        <table className="min-w-full text-left text-sm">
-          <thead className="bg-white/[0.06] text-xs uppercase tracking-[0.18em] text-white/45">
-            <tr>
-              <th className="whitespace-nowrap px-4 py-3 font-semibold">Created</th>
-              <th className="whitespace-nowrap px-4 py-3 font-semibold">Client</th>
-              <th className="whitespace-nowrap px-4 py-3 font-semibold">Amount</th>
-              <th className="whitespace-nowrap px-4 py-3 font-semibold">Status</th>
-              <th className="whitespace-nowrap px-4 py-3 font-semibold">Source</th>
-              <th className="whitespace-nowrap px-4 py-3 font-semibold">Payment confirmed</th>
-              <th className="whitespace-nowrap px-4 py-3 font-semibold">Generated / scheduled</th>
-              <th className="whitespace-nowrap px-4 py-3 font-semibold">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/10">
-            {rows.map((row) => {
-              const isExpanded = expandedId === row.id;
-              const hasActions = row.canConfirmPayment || row.canGenerate;
-              const hasDetails =
-                row.paymentLinkUrl ||
-                row.paymentReference ||
-                row.errorMessage ||
-                row.adminNotes ||
-                row.razorpayOrderId ||
-                row.manualCreatedBy;
-
-              return (
-                <tr key={row.id} className="group">
-                  <td colSpan={8} className="p-0">
-                    {/* Main row */}
-                    <button
-                      className="flex w-full items-center text-left transition hover:bg-white/[0.04]"
-                      onClick={() => setExpandedId(isExpanded ? null : row.id)}
-                      type="button"
-                    >
-                      <span className="whitespace-nowrap px-4 py-3 text-white/70">{row.createdAt}</span>
-                      <span className="min-w-[180px] px-4 py-3">
-                        <span className="block text-white/80">{row.email}</span>
-                        {row.name && row.name !== "No name" ? (
-                          <span className="block text-xs text-white/40">{row.name}</span>
-                        ) : null}
-                      </span>
-                      <span className="whitespace-nowrap px-4 py-3 text-white/70">{row.amount}</span>
-                      <span className="px-4 py-3"><StatusBadge status={row.status} /></span>
-                      <span className="px-4 py-3"><SourceBadge source={row.source} /></span>
-                      <span className="whitespace-nowrap px-4 py-3 text-white/55">
-                        {row.paymentConfirmedAt ?? "—"}
-                      </span>
-                      <span className="whitespace-nowrap px-4 py-3 text-white/55">{row.fulfilledAt}</span>
-                      <span className="px-4 py-3">
-                        {hasActions || hasDetails ? (
-                          <span className="inline-flex items-center gap-1 text-xs text-white/40">
-                            {isExpanded ? (
-                              <ChevronDown className="size-4" />
-                            ) : (
-                              <ChevronRight className="size-4" />
-                            )}
-                            {hasActions ? "Actions" : "Details"}
-                          </span>
-                        ) : (
-                          <span className="text-xs text-white/25">—</span>
-                        )}
-                      </span>
-                    </button>
-
-                    {/* Expanded detail */}
-                    {isExpanded ? (
-                      <div className="border-t border-white/[0.06] px-4 pb-4 pt-3">
-                        <OrderDetailCard canManage={canManage} row={row} />
-                      </div>
-                    ) : null}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+    <>
+      {/* ── Mobile: card layout (<md) ── */}
+      <div className="space-y-3 md:hidden">
+        {rows.map((row) => (
+          <MobileOrderCard
+            canManage={canManage}
+            isExpanded={expandedId === row.id}
+            key={row.id}
+            onToggle={() => setExpandedId(expandedId === row.id ? null : row.id)}
+            row={row}
+          />
+        ))}
       </div>
-    </div>
+
+      {/* ── Desktop: table layout (≥md) ── */}
+      <div className="hidden overflow-hidden rounded-3xl border border-white/10 bg-white/[0.05] md:block">
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-left text-sm">
+            <thead className="bg-white/[0.06] text-xs uppercase tracking-[0.18em] text-white/45">
+              <tr>
+                <th className="whitespace-nowrap px-4 py-3 font-semibold">Created</th>
+                <th className="whitespace-nowrap px-4 py-3 font-semibold">Client</th>
+                <th className="whitespace-nowrap px-4 py-3 font-semibold">Amount</th>
+                <th className="whitespace-nowrap px-4 py-3 font-semibold">Status</th>
+                <th className="whitespace-nowrap px-4 py-3 font-semibold">Source</th>
+                <th className="whitespace-nowrap px-4 py-3 font-semibold">Payment confirmed</th>
+                <th className="whitespace-nowrap px-4 py-3 font-semibold">Generated / scheduled</th>
+                <th className="whitespace-nowrap px-4 py-3 font-semibold">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/10">
+              {rows.map((row) => {
+                const isExpanded = expandedId === row.id;
+                const hasActions = row.canConfirmPayment || row.canGenerate;
+                const hasDetails =
+                  row.paymentLinkUrl ||
+                  row.paymentReference ||
+                  row.errorMessage ||
+                  row.adminNotes ||
+                  row.razorpayOrderId ||
+                  row.manualCreatedBy;
+
+                return (
+                  <tr key={row.id} className="group">
+                    <td colSpan={8} className="p-0">
+                      {/* Main row */}
+                      <button
+                        className="flex w-full items-center text-left transition hover:bg-white/[0.04]"
+                        onClick={() => setExpandedId(isExpanded ? null : row.id)}
+                        type="button"
+                      >
+                        <span className="whitespace-nowrap px-4 py-3 text-white/70">{row.createdAt}</span>
+                        <span className="min-w-[180px] px-4 py-3">
+                          <span className="block text-white/80">{row.email}</span>
+                          {row.name && row.name !== "No name" ? (
+                            <span className="block text-xs text-white/40">{row.name}</span>
+                          ) : null}
+                        </span>
+                        <span className="whitespace-nowrap px-4 py-3 text-white/70">{row.amount}</span>
+                        <span className="px-4 py-3"><StatusBadge status={row.status} /></span>
+                        <span className="px-4 py-3"><SourceBadge source={row.source} /></span>
+                        <span className="whitespace-nowrap px-4 py-3 text-white/55">
+                          {row.paymentConfirmedAt ?? "—"}
+                        </span>
+                        <span className="whitespace-nowrap px-4 py-3 text-white/55">{row.fulfilledAt}</span>
+                        <span className="px-4 py-3">
+                          {hasActions || hasDetails ? (
+                            <span className="inline-flex items-center gap-1 text-xs text-white/40">
+                              {isExpanded ? (
+                                <ChevronDown className="size-4" />
+                              ) : (
+                                <ChevronRight className="size-4" />
+                              )}
+                              {hasActions ? "Actions" : "Details"}
+                            </span>
+                          ) : (
+                            <span className="text-xs text-white/25">—</span>
+                          )}
+                        </span>
+                      </button>
+
+                      {/* Expanded detail */}
+                      {isExpanded ? (
+                        <div className="border-t border-white/[0.06] px-4 pb-4 pt-3">
+                          <OrderDetailCard canManage={canManage} row={row} />
+                        </div>
+                      ) : null}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
   );
 }
 

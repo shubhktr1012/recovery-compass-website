@@ -40,7 +40,7 @@ export function TrendLineChart({
 }) {
   return (
     <div className="h-72 rounded-3xl border border-white/10 bg-white/[0.05] p-4">
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
         <LineChart data={data} margin={{ bottom: 8, left: -20, right: 12, top: 8 }}>
           <CartesianGrid stroke="rgba(255,255,255,0.08)" vertical={false} />
           <XAxis
@@ -80,7 +80,7 @@ export function SimpleBarChart({ data }: { data: BarDatum[] }) {
 
   return (
     <div className="h-72 rounded-3xl border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.07),rgba(255,255,255,0.035))] p-4">
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
         <BarChart data={visibleData} layout="vertical" margin={{ left: 18, right: 12 }}>
           <CartesianGrid stroke="rgba(255,255,255,0.08)" horizontal={false} />
           <XAxis type="number" stroke="rgba(255,255,255,0.35)" tick={{ fontSize: 11 }} />
@@ -89,7 +89,7 @@ export function SimpleBarChart({ data }: { data: BarDatum[] }) {
             stroke="rgba(255,255,255,0.45)"
             tick={{ fontSize: 11 }}
             type="category"
-            width={112}
+            width={90}
           />
           <Tooltip
             cursor={{ fill: "rgba(255,255,255,0.04)" }}
