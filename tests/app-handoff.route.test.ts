@@ -1,18 +1,37 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => {
+  const cookieSet = vi.fn();
   const generateLink = vi.fn();
   const getUser = vi.fn();
   const rpc = vi.fn();
   const from = vi.fn();
+  const verifyOtp = vi.fn();
 
   return {
+    cookieSet,
     from,
     generateLink,
     getUser,
     rpc,
+    verifyOtp,
   };
 });
+
+vi.mock("@supabase/ssr", () => ({
+  createServerClient: vi.fn(() => ({
+    auth: {
+      verifyOtp: mocks.verifyOtp,
+    },
+  })),
+}));
+
+vi.mock("next/headers", () => ({
+  cookies: vi.fn(async () => ({
+    getAll: vi.fn(() => []),
+    set: mocks.cookieSet,
+  })),
+}));
 
 vi.mock("@/lib/supabase-admin", () => ({
   supabaseAdmin: {
@@ -59,6 +78,8 @@ describe("app web handoff", () => {
     mocks.generateLink.mockReset();
     mocks.getUser.mockReset();
     mocks.rpc.mockReset();
+    mocks.verifyOtp.mockReset();
+    mocks.cookieSet.mockReset();
 
     mocks.getUser.mockResolvedValue({
       data: { user: { email: "user@example.com", id: "user-1" } },
@@ -68,6 +89,7 @@ describe("app web handoff", () => {
       data: [{ allowed: true, remaining: 9, reset_at: new Date().toISOString() }],
       error: null,
     });
+    mocks.verifyOtp.mockResolvedValue({ data: { session: {} }, error: null });
   });
 
   it("normalizes handoff next paths to the v1 allowlist", () => {
@@ -112,7 +134,7 @@ describe("app web handoff", () => {
     expect(mocks.from).not.toHaveBeenCalled();
   });
 
-  it("burns a valid token and redirects through Supabase magic-link auth", async () => {
+  it("burns a valid token and establishes a web session before redirecting", async () => {
     const consumeQuery = createConsumeQuery({
       data: {
         email: "user@example.com",
@@ -123,22 +145,23 @@ describe("app web handoff", () => {
     });
     mocks.from.mockReturnValue(consumeQuery);
     mocks.generateLink.mockResolvedValue({
-      data: { properties: { action_link: "https://supabase.example/action-link" } },
+      data: { properties: { hashed_token: "hashed-token" } },
       error: null,
     });
 
     const response = await GET(new Request("https://recoverycompass.co/auth/app-handoff?token=handoff-token"));
 
     expect(response.status).toBe(307);
-    expect(response.headers.get("location")).toBe("https://supabase.example/action-link");
+    expect(response.headers.get("location")).toBe("https://recoverycompass.co/checkout");
     expect(consumeQuery.update).toHaveBeenCalledWith({ consumed_at: expect.any(String) });
     expect(consumeQuery.eq).toHaveBeenCalledWith("token_hash", hashAppHandoffToken("handoff-token"));
     expect(consumeQuery.is).toHaveBeenCalledWith("consumed_at", null);
     expect(mocks.generateLink).toHaveBeenCalledWith({
       email: "user@example.com",
-      options: {
-        redirectTo: "https://recoverycompass.co/auth/callback?next=%2Fcheckout",
-      },
+      type: "magiclink",
+    });
+    expect(mocks.verifyOtp).toHaveBeenCalledWith({
+      token_hash: "hashed-token",
       type: "magiclink",
     });
   });
