@@ -29,10 +29,11 @@ const MyPlanDrawer = dynamic(
   { ssr: false }
 );
 
-export function LayoutClientExtras() {
+export function LayoutClientExtras({ disabled = false }: { disabled?: boolean }) {
   const pathname = usePathname();
   const programFinderEnabled = isProgramFinderEnabled();
   const isAdminExperience =
+    disabled ||
     pathname?.startsWith("/admin") ||
     (typeof window !== "undefined" &&
       window.location.hostname === "admin.recoverycompass.co");

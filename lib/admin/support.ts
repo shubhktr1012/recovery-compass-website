@@ -201,7 +201,7 @@ ${formatDietOrderLines(dietOrders)}
 Requested next step:
 - Describe the exact user issue here.
 - Attach payment proof/order ID if relevant.
-- Do not change payment status manually. Verify against Razorpay/RevenueCat first.`;
+- Do not change program-purchase payment status manually. Use only audited diet-plan admin actions for manual diet-plan service orders.`;
 
   const grantRequest = `Requested action: review program grant or entitlement repair
 User ID: ${userId}
@@ -249,10 +249,11 @@ Diet plan orders:
 ${formatDietOrderLines(dietOrders)}
 
 Safety checklist:
-- Do not mark payment as paid manually.
+- Do not mark program-purchase payment as paid manually.
 - Verify Razorpay/RevenueCat payment truth first.
+- For manual diet-plan service orders, use the dedicated audited confirm-payment flow with payment reference and evidence.
 - If payment is paid but fulfillment failed, inspect transaction fulfillment_status and outbound_email_deliveries.
-- Retry controls should wait for a dedicated audited retry flow unless handled manually by an owner.`;
+- Retry controls must remain role-gated and audited.`;
 
   return [
     {

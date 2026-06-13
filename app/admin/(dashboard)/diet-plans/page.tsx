@@ -1,9 +1,9 @@
 import { PageHeader } from "@/components/admin/PageHeader";
 import { KpiGrid } from "@/components/admin/KpiCard";
-import { DataTable } from "@/components/admin/DataTable";
+import { DietPlanOpsPanel } from "@/components/admin/DietPlanOpsPanel";
 import { getAdminDateRange, resolveSearchParams } from "@/lib/admin/date-range";
 import { getAdminDietPlans } from "@/lib/admin/data";
-import { getAdminAccess } from "@/lib/admin/auth";
+import { getAdminAccess, canManageDietPlans } from "@/lib/admin/auth";
 import type { AdminSearchParams } from "@/lib/admin/types";
 
 export const dynamic = "force-dynamic";
@@ -17,29 +17,18 @@ export default async function AdminDietPlansPage({
   const range = getAdminDateRange(params);
   const access = await getAdminAccess();
   const role = access.ok ? access.admin.role : "viewer";
+  const canManage = access.ok ? canManageDietPlans(access.admin) : false;
   const data = await getAdminDietPlans(range, role);
 
   return (
     <div className="space-y-6">
       <PageHeader
-        description="Diet plan order, delivery, and email status. Manual retries are intentionally parked for Phase 2."
+        description="Diet plan order, payment, delivery, and email status. Manual service orders must use the audited admin flow."
         range={range}
         title="Diet Plans"
       />
       <KpiGrid items={data.kpis} />
-      <DataTable
-        columns={[
-          { key: "createdAt", label: "Created" },
-          { key: "email", label: "Email" },
-          { key: "name", label: "Name" },
-          { key: "amount", label: "Amount" },
-          { key: "status", label: "Status" },
-          { key: "source", label: "Source" },
-          { key: "fulfilledAt", label: "Delivered" },
-        ]}
-        data={data.rows}
-        emptyDescription="No diet plan orders exist in the selected range."
-      />
+      <DietPlanOpsPanel canManage={canManage} rows={data.rows} />
     </div>
   );
 }

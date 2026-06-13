@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { headers } from "next/headers";
 import { LayoutClientExtras } from "@/components/layout-client-extras";
 import { PageTransition } from "@/components/page-transition";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 import { Preloader } from "@/components/ui/preloader";
+import { getHostFromHeaders, isAdminHost } from "@/lib/admin/host";
 
 import "./globals.css";
 
@@ -167,11 +169,14 @@ import { CartProvider } from "@/lib/context/cart-context";
 import { UserProvider } from "@/lib/context/user-context";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headerStore = await headers();
+  const disablePublicExtras = isAdminHost(getHostFromHeaders(headerStore));
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -233,7 +238,7 @@ export default function RootLayout({
             <CartProvider>
               <Preloader />
               <PageTransition>{children}</PageTransition>
-              <LayoutClientExtras />
+              <LayoutClientExtras disabled={disablePublicExtras} />
             </CartProvider>
           </UserProvider>
         </SmoothScrollProvider>

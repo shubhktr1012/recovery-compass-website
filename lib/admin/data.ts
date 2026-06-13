@@ -23,6 +23,7 @@ import type {
 type SupabaseError = { message: string };
 type SupabaseListResult<T> = { data: T[] | null; error: SupabaseError | null };
 type SupabaseSingleResult<T> = { data: T | null; error: SupabaseError | null };
+type SupabaseLooseListQuery = PromiseLike<{ data: unknown[] | null; error: SupabaseError | null }>;
 
 type ProfileRow = {
   id: string;
@@ -79,11 +80,18 @@ type TransactionRow = {
 };
 
 type DietPlanOrderRow = {
+  admin_notes: string | null;
   id: string;
   email: string | null;
   name: string | null;
   amount: number | null;
   currency: string | null;
+  error_message: string | null;
+  manual_created_by: string | null;
+  manual_payment_confirmed_at: string | null;
+  manual_payment_confirmed_by: string | null;
+  manual_payment_link_url: string | null;
+  manual_payment_reference: string | null;
   razorpay_order_id: string | null;
   razorpay_payment_id: string | null;
   status: string | null;
@@ -139,6 +147,12 @@ type UserDayStateRow = {
   finalized_at: string | null;
 };
 
+const DIET_PLAN_ORDER_BASE_SELECT =
+  "id,email,name,amount,currency,razorpay_order_id,razorpay_payment_id,status,source,claimed_at,fulfilled_at,created_at,updated_at";
+
+const DIET_PLAN_ORDER_ADMIN_SELECT =
+  `${DIET_PLAN_ORDER_BASE_SELECT},error_message,manual_payment_link_url,manual_payment_reference,manual_payment_confirmed_at,manual_payment_confirmed_by,manual_created_by,admin_notes`;
+
 async function readList<T>(
   query: PromiseLike<SupabaseListResult<T>>,
   label: string
@@ -149,6 +163,69 @@ async function readList<T>(
   }
 
   return data ?? [];
+}
+
+function isMissingManualDietPlanColumn(error: SupabaseError | null) {
+  return Boolean(
+    error?.message.includes("diet_plan_orders.manual_") ||
+    error?.message.includes("diet_plan_orders.admin_notes") ||
+    error?.message.includes("diet_plan_orders.error_message")
+  );
+}
+
+function withDietPlanOrderDefaults(row: Partial<DietPlanOrderRow>): DietPlanOrderRow {
+  return {
+    admin_notes: row.admin_notes ?? null,
+    amount: row.amount ?? null,
+    claimed_at: row.claimed_at ?? null,
+    created_at: row.created_at ?? null,
+    currency: row.currency ?? null,
+    email: row.email ?? null,
+    error_message: row.error_message ?? null,
+    fulfilled_at: row.fulfilled_at ?? null,
+    id: row.id ?? "",
+    manual_created_by: row.manual_created_by ?? null,
+    manual_payment_confirmed_at: row.manual_payment_confirmed_at ?? null,
+    manual_payment_confirmed_by: row.manual_payment_confirmed_by ?? null,
+    manual_payment_link_url: row.manual_payment_link_url ?? null,
+    manual_payment_reference: row.manual_payment_reference ?? null,
+    name: row.name ?? null,
+    razorpay_order_id: row.razorpay_order_id ?? null,
+    razorpay_payment_id: row.razorpay_payment_id ?? null,
+    source: row.source ?? null,
+    status: row.status ?? null,
+    updated_at: row.updated_at ?? null,
+  };
+}
+
+async function readDietPlanOrders(
+  buildQuery: (select: string) => SupabaseLooseListQuery,
+  label: string
+) {
+  const fullResult = await buildQuery(DIET_PLAN_ORDER_ADMIN_SELECT);
+  if (!fullResult.error) {
+    return (fullResult.data ?? []).map((row) =>
+      withDietPlanOrderDefaults(row as Partial<DietPlanOrderRow>)
+    );
+  }
+
+  if (!isMissingManualDietPlanColumn(fullResult.error)) {
+    throw new Error(`${label}: ${fullResult.error.message}`);
+  }
+
+  console.warn("[admin] Manual diet plan columns unavailable; falling back to base order fields", {
+    error: fullResult.error.message,
+    label,
+  });
+
+  const baseResult = await buildQuery(DIET_PLAN_ORDER_BASE_SELECT);
+  if (baseResult.error) {
+    throw new Error(`${label}: ${baseResult.error.message}`);
+  }
+
+  return (baseResult.data ?? []).map((row) =>
+    withDietPlanOrderDefaults(row as Partial<DietPlanOrderRow>)
+  );
 }
 
 async function readSingle<T>(
@@ -273,14 +350,15 @@ export async function getAdminOverview(range: AdminDateRange) {
         .limit(1000),
       "transactions overview"
     ),
-    readList<DietPlanOrderRow>(
-      supabaseAdmin
-        .from("diet_plan_orders")
-        .select("id,email,name,amount,currency,razorpay_order_id,razorpay_payment_id,status,source,claimed_at,fulfilled_at,created_at,updated_at")
-        .gte("created_at", range.startIso)
-        .lte("created_at", range.endIso)
-        .order("created_at", { ascending: false })
-        .limit(1000),
+    readDietPlanOrders(
+      (select) =>
+        supabaseAdmin
+          .from("diet_plan_orders")
+          .select(select)
+          .gte("created_at", range.startIso)
+          .lte("created_at", range.endIso)
+          .order("created_at", { ascending: false })
+          .limit(1000),
       "diet plan overview"
     ),
     readList<ProgramAccessRow>(
@@ -498,12 +576,13 @@ export async function getAdminUserDetail(userId: string, role: AdminRole = "view
           .limit(50),
         "user detail transactions"
       ),
-      readList<DietPlanOrderRow>(
-        supabaseAdmin
-          .from("diet_plan_orders")
-          .select("id,email,name,amount,currency,razorpay_order_id,razorpay_payment_id,status,source,claimed_at,fulfilled_at,created_at,updated_at")
-          .order("created_at", { ascending: false })
-          .limit(50),
+      readDietPlanOrders(
+        (select) =>
+          supabaseAdmin
+            .from("diet_plan_orders")
+            .select(select)
+            .order("created_at", { ascending: false })
+            .limit(50),
         "user detail diet plans"
       ),
       readList<EmailDeliveryRow>(
@@ -552,9 +631,18 @@ export async function getAdminUserDetail(userId: string, role: AdminRole = "view
       state: row.day_state ?? "unknown",
     })),
     dietOrders: matchingDietOrders.map((order) => ({
+      adminNotes: order.admin_notes,
       amount: formatInrFromPaise(order.amount),
+      canConfirmPayment: order.source === "admin_manual" && ["awaiting_payment", "failed"].includes(order.status ?? ""),
+      canGenerate:
+        ["pending", "failed"].includes(order.status ?? "") &&
+        (order.source !== "admin_manual" || Boolean(order.manual_payment_confirmed_at)),
       createdAt: order.created_at,
+      errorMessage: order.error_message,
       id: order.id,
+      paymentConfirmedAt: order.manual_payment_confirmed_at,
+      paymentLinkUrl: order.manual_payment_link_url,
+      paymentReference: order.manual_payment_reference,
       source: order.source ?? "standalone",
       status: order.status ?? "unknown",
     })),
@@ -683,14 +771,15 @@ export async function getAdminPurchases(range: AdminDateRange, role: AdminRole =
 
 export async function getAdminDietPlans(range: AdminDateRange, role: AdminRole = "viewer") {
   const [orders, emails] = await Promise.all([
-    readList<DietPlanOrderRow>(
-      supabaseAdmin
-        .from("diet_plan_orders")
-        .select("id,email,name,amount,currency,razorpay_order_id,razorpay_payment_id,status,source,claimed_at,fulfilled_at,created_at,updated_at")
-        .gte("created_at", range.startIso)
-        .lte("created_at", range.endIso)
-        .order("created_at", { ascending: false })
-        .limit(1000),
+    readDietPlanOrders(
+      (select) =>
+        supabaseAdmin
+          .from("diet_plan_orders")
+          .select(select)
+          .gte("created_at", range.startIso)
+          .lte("created_at", range.endIso)
+          .order("created_at", { ascending: false })
+          .limit(1000),
       "admin diet orders"
     ),
     readList<EmailDeliveryRow>(
@@ -710,17 +799,34 @@ export async function getAdminDietPlans(range: AdminDateRange, role: AdminRole =
   return {
     kpis: [
       { label: "Diet plan orders", value: orders.length.toLocaleString("en-IN") },
-      { label: "Paid or processing", value: orders.filter((order) => ["paid", "processing"].includes(order.status ?? "")).length.toLocaleString("en-IN") },
-      { label: "Delivered", value: orders.filter((order) => ["fulfilled", "completed", "delivered"].includes(order.status ?? "")).length.toLocaleString("en-IN") },
+      { label: "Waiting for payment", value: orders.filter((order) => order.status === "awaiting_payment").length.toLocaleString("en-IN") },
+      { label: "Ready or generating", value: orders.filter((order) => ["pending", "generating"].includes(order.status ?? "")).length.toLocaleString("en-IN") },
+      { label: "Delivered", value: orders.filter((order) => order.status === "fulfilled").length.toLocaleString("en-IN") },
+      { label: "Failed", value: orders.filter((order) => order.status === "failed").length.toLocaleString("en-IN") },
       { label: "Email issues", value: dietEmails.filter((email) => email.status === "failed").length.toLocaleString("en-IN") },
     ] satisfies AdminKpi[],
     rows: orders.map((order) => ({
+      adminNotes: order.admin_notes,
       amount: formatInrFromPaise(order.amount),
+      canConfirmPayment: order.source === "admin_manual" && ["awaiting_payment", "failed"].includes(order.status ?? ""),
+      canGenerate:
+        ["pending", "failed"].includes(order.status ?? "") &&
+        (order.source !== "admin_manual" || Boolean(order.manual_payment_confirmed_at)),
       createdAt: formatDateTime(order.created_at),
       email: formatEmailForAdminRole(order.email, role),
+      errorMessage: order.error_message,
       fulfilledAt: order.fulfilled_at ? formatDateTime(order.fulfilled_at) : "Not delivered yet",
       id: order.id,
+      manualCreatedBy: order.manual_created_by,
       name: order.name ?? "No name",
+      paymentConfirmedAt: order.manual_payment_confirmed_at
+        ? formatDateTime(order.manual_payment_confirmed_at)
+        : null,
+      paymentConfirmedBy: order.manual_payment_confirmed_by,
+      paymentLinkUrl: order.manual_payment_link_url,
+      paymentReference: order.manual_payment_reference,
+      razorpayOrderId: order.razorpay_order_id,
+      razorpayPaymentId: order.razorpay_payment_id,
       source: order.source ?? "standalone",
       status: order.status ?? "unknown",
     })),
