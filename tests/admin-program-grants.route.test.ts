@@ -101,6 +101,24 @@ describe("POST /api/admin/program-grants", () => {
     expect(mocks.rpc).not.toHaveBeenCalled();
   });
 
+  it("rejects retired legacy programs from manual grants", async () => {
+    mocks.requireAdminApi.mockResolvedValueOnce({ admin: ownerAdmin });
+
+    const response = await grantProgram(
+      buildRequest({
+        evidence: "legacy correction",
+        programSlug: "six_day_reset",
+        reason: "support correction",
+        userId: "user-1",
+      })
+    );
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ message: "Invalid program slug." });
+    expect(mocks.profileSingle).not.toHaveBeenCalled();
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+
   it("uses the audited grant RPC and returns the preserved access state", async () => {
     mocks.requireAdminApi.mockResolvedValueOnce({ admin: ownerAdmin });
     mocks.profileSingle.mockResolvedValueOnce({

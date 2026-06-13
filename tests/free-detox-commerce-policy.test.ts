@@ -62,12 +62,13 @@ describe("Free Detox and Launch Commerce Policy", () => {
   });
 
   describe("3. Admin Program Grant Restrictions", () => {
-    it("excludes free_detox_reset from PROGRAM_OPTIONS list", () => {
+    it("excludes free detox and retired legacy programs from admin grant options", () => {
       const optionSlugs = PROGRAM_OPTIONS.map((opt) => opt.slug);
       expect(optionSlugs).not.toContain("free_detox_reset");
-      // But legacy programs should still be grantable for support compatibility
-      expect(optionSlugs).toContain("six_day_reset");
-      expect(optionSlugs).toContain("ninety_day_transform");
+      expect(optionSlugs).not.toContain("six_day_reset");
+      expect(optionSlugs).not.toContain("ninety_day_transform");
+      expect(optionSlugs).toContain("smoking_alcohol_quit");
+      expect(optionSlugs).toContain("gut_health_reset");
     });
 
     it("keeps the old shared-secret POST grant endpoint disabled", async () => {

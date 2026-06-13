@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { requireAdminApi, adminApiError } from "@/lib/admin/api";
 import { canGrantPrograms } from "@/lib/admin/auth";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { PROGRAM_LABELS, isProgramSlug } from "@/lib/program-access";
+import { PROGRAM_LABELS, isAdminGrantableProgramSlug } from "@/lib/program-access";
 
 type ProgramGrantRequest = {
   email?: string;
@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
     const reason = normalizeText(body.reason);
     const evidence = normalizeText(body.evidence);
 
-    if (!isProgramSlug(rawProgramSlug)) {
+    if (!isAdminGrantableProgramSlug(rawProgramSlug)) {
       return NextResponse.json({ message: "Invalid program slug." }, { status: 400 });
     }
 
