@@ -2,14 +2,14 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/commerce";
+import { normalizeAppHandoffNextPath } from "@/lib/app-handoff";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
     const { searchParams, origin } = new URL(request.url);
     const code = searchParams.get("code");
-    // if "next" is in search params, use it as the redirection URL
-    const next = searchParams.get("next") ?? "/";
+    const next = normalizeAppHandoffNextPath(searchParams.get("next") ?? "/");
     const redirectUrl = new URL(next, request.url);
     const response = NextResponse.redirect(redirectUrl);
     response.headers.set("Cache-Control", "private, no-store");
