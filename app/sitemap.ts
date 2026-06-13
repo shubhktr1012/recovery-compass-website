@@ -15,6 +15,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 1,
         },
         {
+            url: `${baseUrl}/app`,
+            lastModified,
+            changeFrequency: "monthly",
+            priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/detox`,
+            lastModified,
+            changeFrequency: "monthly",
+            priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/program-finder`,
+            lastModified,
+            changeFrequency: "monthly",
+            priority: 0.9,
+        },
+        {
             url: `${baseUrl}/privacy`,
             lastModified,
             changeFrequency: "monthly",
@@ -34,6 +52,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
         {
             url: `${baseUrl}/support`,
+            lastModified,
+            changeFrequency: "monthly",
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/contact`,
             lastModified,
             changeFrequency: "monthly",
             priority: 0.8,

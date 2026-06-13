@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/commerce";
 import { getHostFromHeaders, isAdminHost } from "@/lib/admin/host";
+import { normalizeAppHandoffNextPath } from "@/lib/app-handoff";
 
 export const dynamic = "force-dynamic";
 
@@ -11,8 +12,12 @@ export async function GET(request: Request) {
     const code = searchParams.get("code");
     const requestHost = getHostFromHeaders(request.headers);
     const isAdminCallback = isAdminHost(requestHost);
-    // If "next" is present, use it. Otherwise admin callbacks go to the dashboard.
-    const next = searchParams.get("next") ?? (isAdminCallback ? "/overview" : "/");
+    const rawNext = searchParams.get("next");
+    const next = isAdminCallback
+        ? rawNext?.startsWith("/") && !rawNext.startsWith("//")
+            ? rawNext
+            : "/overview"
+        : normalizeAppHandoffNextPath(rawNext ?? "/");
     const redirectUrl = new URL(next, request.url);
     const response = NextResponse.redirect(redirectUrl);
     response.headers.set("Cache-Control", "private, no-store");

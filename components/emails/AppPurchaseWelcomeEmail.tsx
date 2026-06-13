@@ -18,6 +18,7 @@ import { APP_STORE_BADGE_URL, APP_STORE_URL, PLAY_STORE_BADGE_URL, PLAY_STORE_UR
 
 interface AppPurchaseWelcomeEmailProps {
     customerName: string;
+    detoxPdfUrl?: string | null;
     programName: string;
     store?: string | null;
     whatsappLink: string;
@@ -44,6 +45,7 @@ function formatStoreLabel(store?: string | null) {
 
 export default function AppPurchaseWelcomeEmail({
     customerName = "Seeker",
+    detoxPdfUrl,
     programName = "Recovery Compass Program",
     store,
     whatsappLink,
@@ -116,6 +118,19 @@ export default function AppPurchaseWelcomeEmail({
                             Open WhatsApp Community
                         </Button>
                     </Section>
+
+                    {detoxPdfUrl ? (
+                        <Section style={bonusCard}>
+                            <Text style={eyebrow}>Included Bonus</Text>
+                            <Text style={cardTitle}>Free 14-day Detox Program PDF</Text>
+                            <Text style={cardText}>
+                                Your purchase includes a simple 14-day detox guide you can keep and revisit alongside your app program.
+                            </Text>
+                            <Button href={detoxPdfUrl} style={secondaryButton}>
+                                Open Detox PDF
+                            </Button>
+                        </Section>
+                    ) : null}
 
                     <Section style={section}>
                         <Hr style={hr} />
@@ -223,6 +238,14 @@ const supportCard = {
     borderLeft: "4px solid #25D366",
 };
 
+const bonusCard = {
+    margin: "16px 32px 0",
+    padding: "24px",
+    backgroundColor: "#fff8eb",
+    borderRadius: "12px",
+    border: "1px solid #f4dfb3",
+};
+
 const eyebrow = {
     color: muted,
     fontSize: "12px",
@@ -259,6 +282,18 @@ const primaryButton = {
     textDecoration: "none",
     fontFamily: ff,
     marginRight: "12px",
+};
+
+const secondaryButton = {
+    backgroundColor: forest,
+    borderRadius: "999px",
+    color: "#ffffff",
+    display: "inline-block",
+    fontSize: "14px",
+    fontWeight: "700",
+    padding: "12px 18px",
+    textDecoration: "none",
+    fontFamily: ff,
 };
 
 const badgeCol = {

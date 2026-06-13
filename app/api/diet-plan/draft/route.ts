@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { normalizeQuestionnaireProgramValues } from "@/lib/diet-plan-program-options";
 
 const DRAFTABLE_STATUSES = ["awaiting_questionnaire", "failed"];
 
@@ -56,6 +57,10 @@ export async function PUT(req: NextRequest) {
             );
         }
 
+        const normalizedQuestionnaireData = normalizeQuestionnaireProgramValues(
+            questionnaire_data as Record<string, unknown>
+        );
+
         const supabase = getSupabaseAdmin();
         const claimTokenHash = hashClaimToken(claimToken);
 
@@ -86,7 +91,7 @@ export async function PUT(req: NextRequest) {
         }
 
         const updates: Record<string, unknown> = {
-            questionnaire_data,
+            questionnaire_data: normalizedQuestionnaireData,
         };
 
         if (isValidEmail(normalizedEmail)) {

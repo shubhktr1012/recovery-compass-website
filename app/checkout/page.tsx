@@ -768,6 +768,10 @@ export default function CheckoutPage() {
                                 <span>Cloud Sync & Support</span>
                                 <span className="text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded text-[11px] uppercase tracking-widest border border-emerald-600/10">Included</span>
                             </div>
+                            <div className="flex justify-between items-center text-[14px] font-medium text-[oklch(0.2475_0.0661_146.79)]/60">
+                                <span>Free Detox Program</span>
+                                <span className="text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded text-[11px] uppercase tracking-widest border border-emerald-600/10">Included</span>
+                            </div>
                             <div className="flex justify-between items-end pt-5 mt-5 border-t border-dashed border-[oklch(0.2475_0.0661_146.79)]/15">
                                 <span className="font-bold text-[15px] text-[oklch(0.2475_0.0661_146.79)]">Total Due</span>
                                 <span className="font-erode font-semibold text-3xl tabular-nums text-[oklch(0.2475_0.0661_146.79)] leading-none tracking-tight">₹{cartTotal.toLocaleString("en-IN")}</span>

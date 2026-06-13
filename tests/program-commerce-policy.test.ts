@@ -7,7 +7,14 @@ import {
   nextCartItems,
   normalizeCartItems,
 } from "@/lib/program-commerce-policy";
-import { publicProgramStats, programHasAudio, programIsNinetyDay } from "@/lib/public-programs";
+import {
+  DB_TO_WEB_PROGRAM_SLUG,
+  WEB_TO_DB_PROGRAM_SLUG,
+  publicProgramStats,
+  publicPrograms,
+  programHasAudio,
+  programIsNinetyDay,
+} from "@/lib/public-programs";
 
 describe("program-commerce-policy", () => {
   it("caps the cart at the configured multi-program limit", () => {
@@ -62,11 +69,21 @@ describe("program-commerce-policy", () => {
   it("exposes checkout-safe program facts from the shared public program data", () => {
     expect(publicProgramStats).toEqual({
       programCount: 6,
-      guidedDays: 251,
+      guidedDays: 197,
       platformCount: 2,
     });
     expect(programHasAudio("21-day-deep-sleep-reset")).toBe(true);
     expect(programHasAudio("14-day-energy-restore")).toBe(false);
     expect(programIsNinetyDay("radiance-journey")).toBe(true);
+  });
+
+  it("keeps website and database program slugs in sync for owned-state mapping", () => {
+    expect(DB_TO_WEB_PROGRAM_SLUG.smoking_alcohol_quit).toBe("21-day-smoking-alcohol-quit");
+    expect(DB_TO_WEB_PROGRAM_SLUG.gut_health_reset).toBe("21-day-gut-reset");
+
+    for (const program of publicPrograms) {
+      expect(WEB_TO_DB_PROGRAM_SLUG[program.id]).toBe(program.dbSlug);
+      expect(DB_TO_WEB_PROGRAM_SLUG[program.dbSlug]).toBe(program.id);
+    }
   });
 });

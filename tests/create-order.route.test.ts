@@ -192,4 +192,26 @@ describe("POST /api/checkout/create-order", () => {
       message: `You can purchase up to ${MAX_CART_ITEMS} programs at once.`,
     });
   });
+
+  it("rejects crafted checkout payloads containing only legacy or free detox program slugs", async () => {
+    // legacy program
+    const legacyResponse = await POST(
+      buildRequest({
+        amount: 5999,
+        items: [{ program_slug: "six_day_reset", title: "Control", price_inr: 5999, quantity: 1 }],
+      }) as never
+    );
+    expect(legacyResponse.status).toBe(400);
+    expect(await legacyResponse.json()).toEqual({ message: "No valid checkout items were found." });
+
+    // free detox program
+    const freeDetoxResponse = await POST(
+      buildRequest({
+        amount: 1499,
+        items: [{ program_slug: "free_detox_reset", title: "Free Detox Program", price_inr: 0, quantity: 1 }],
+      }) as never
+    );
+    expect(freeDetoxResponse.status).toBe(400);
+    expect(await freeDetoxResponse.json()).toEqual({ message: "No valid checkout items were found." });
+  });
 });

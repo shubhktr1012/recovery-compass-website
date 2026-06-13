@@ -26,6 +26,7 @@ const PROGRAM_VALUE_ALIAS_BY_NAME: Record<string, string> = {
   "Free Detox Plan": "Free Detox Program",
   "6-Day Control": "Control",
   "90-Day Smoking Reset": "Smoking Reset",
+  "90-Day Master": "Smoking Reset",
 };
 
 export function normalizeProgramValues(values: string[]) {

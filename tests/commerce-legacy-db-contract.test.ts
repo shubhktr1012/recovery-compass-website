@@ -4,15 +4,19 @@ const mocks = vi.hoisted(() => {
   const from = vi.fn();
   const rpc = vi.fn();
   const sendWelcomeEmail = vi.fn();
+  const sendOpsAlertEmail = vi.fn();
   const transactionUpdates: unknown[] = [];
   const programAccessInserts: unknown[] = [];
+  const transactionItems: unknown[] = [];
 
   return {
     from,
     rpc,
+    sendOpsAlertEmail,
     sendWelcomeEmail,
     transactionUpdates,
     programAccessInserts,
+    transactionItems,
   };
 });
 
@@ -24,7 +28,7 @@ vi.mock("@/lib/supabase-admin", () => ({
 }));
 
 vi.mock("@/lib/mail", () => ({
-  sendOpsAlertEmail: vi.fn(),
+  sendOpsAlertEmail: mocks.sendOpsAlertEmail,
   sendWelcomeEmail: mocks.sendWelcomeEmail,
 }));
 
@@ -52,15 +56,7 @@ function buildTransactionsTable() {
             provider_signature: "sig_123",
             amount: 149900,
             currency: "INR",
-            items: [
-              {
-                program_slug: "energy_vitality",
-                title: "14-Day Energy Restore",
-                price_inr: 1499,
-                quantity: 1,
-                queue_rank: 1,
-              },
-            ],
+            items: mocks.transactionItems,
             payment_status: "paid",
             fulfillment_status: "pending",
             metadata: {},
@@ -140,9 +136,18 @@ describe("commerce legacy DB contract", () => {
   beforeEach(() => {
     mocks.from.mockReset();
     mocks.rpc.mockReset();
+    mocks.sendOpsAlertEmail.mockReset();
     mocks.sendWelcomeEmail.mockReset();
     mocks.transactionUpdates.length = 0;
     mocks.programAccessInserts.length = 0;
+    mocks.transactionItems.length = 0;
+    mocks.transactionItems.push({
+      program_slug: "energy_vitality",
+      title: "Energy Restore",
+      price_inr: 1499,
+      quantity: 1,
+      queue_rank: 1,
+    });
 
     mocks.from.mockImplementation((table: string) => {
       if (table === "transactions") return buildTransactionsTable();
@@ -184,6 +189,37 @@ describe("commerce legacy DB contract", () => {
     expect(mocks.transactionUpdates).toContainEqual(
       expect.objectContaining({
         fulfillment_status: "fulfilled",
+      })
+    );
+  });
+
+  it("does not grant app-only Free Detox if a malformed stored transaction contains it", async () => {
+    mocks.transactionItems.length = 0;
+    mocks.transactionItems.push({
+      program_slug: "free_detox_reset",
+      title: "Free Detox Program",
+      price_inr: 0,
+      quantity: 1,
+      queue_rank: 1,
+    });
+
+    const result = await markTransactionPaid({
+      providerOrderId: "order_123",
+      providerPaymentId: "pay_123",
+      providerSignature: "sig_123",
+    });
+
+    expect(result).toEqual({ alreadyProcessed: false, transactionId: "txn-1" });
+    expect(mocks.programAccessInserts).toEqual([]);
+    expect(mocks.transactionUpdates).toContainEqual(
+      expect.objectContaining({
+        fulfillment_status: "fulfillment_failed",
+      })
+    );
+    expect(mocks.sendOpsAlertEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        subject: "[Recovery Compass] Fulfillment failed (mark_paid)",
+        message: expect.stringContaining("No grantable checkout items found for transaction txn-1"),
       })
     );
   });

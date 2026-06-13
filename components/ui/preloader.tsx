@@ -22,7 +22,7 @@ export function Preloader() {
     const timer = setTimeout(() => {
       setLoading(false);
       sessionStorage.setItem("has_seen_preloader", "true");
-    }, 4500);
+    }, 2250);
 
     return () => clearTimeout(timer);
   }, []);
@@ -33,7 +33,7 @@ export function Preloader() {
         <motion.div
           key="preloader"
           exit={{ opacity: 0, filter: isInstant ? "none" : "blur(10px)" }}
-          transition={{ duration: isInstant ? 0 : 0.8, ease: "easeInOut" }}
+          transition={{ duration: isInstant ? 0 : 0.4, ease: "easeInOut" }}
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-primary [.skip-preloader_&]:!hidden"
         >
           <div className="relative flex items-center justify-center">
@@ -44,7 +44,7 @@ export function Preloader() {
                 opacity: [0, 1, 1],
               }}
               transition={{
-                duration: 3.5,
+                duration: 1.75,
                 times: [0, 0.6, 1],
                 ease: [0.76, 0, 0.24, 1],
               }}
@@ -67,8 +67,8 @@ export function Preloader() {
                 opacity: 1,
               }}
               transition={{
-                delay: 2.1,
-                duration: 1.4,
+                delay: 1.05,
+                duration: 0.7,
                 ease: [0.76, 0, 0.24, 1],
               }}
             >

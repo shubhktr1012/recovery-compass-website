@@ -84,11 +84,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://recoverycompass.co"),
   applicationName: "Recovery Compass Wellness",
   title: {
-    default: "Recovery Compass Wellness | Guided Habit Reset & Wellness",
+    default: "Recovery Compass Wellness | A Smarter Way of Living",
     template: "%s | Recovery Compass Wellness",
   },
   description:
-    "Recovery Compass is a wellness app with structured daily programs for habit reset, sleep, energy, men's vitality, and biohacking.",
+    "Recovery Compass is a wellness app with structured daily programs for smoking, sleep, energy, gut health, men's vitality, and ageing well.",
   keywords: [
     "Recovery Compass Wellness",
     "habit reset",
@@ -131,7 +131,7 @@ export const metadata: Metadata = {
     url: "https://recoverycompass.co",
     title: "Recovery Compass Wellness | Habit Reset & Wellness",
     description:
-      "Structured daily programs for habit reset, sleep, energy, men's vitality, and biohacking.",
+      "Structured daily programs for smoking, sleep, energy, gut health, men's vitality, and ageing well.",
     siteName: "Recovery Compass Wellness",
     images: [
       {
@@ -146,16 +146,17 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Recovery Compass Wellness | Habit Reset & Wellness",
     description:
-      "Structured daily programs for habit reset, sleep, energy, men's vitality, and biohacking.",
+      "Structured daily programs for smoking, sleep, energy, gut health, men's vitality, and ageing well.",
     images: ["/og-image.png"],
     creator: "@recoverycompass",
   },
   icons: {
     icon: [
-      { url: "/favicon.ico" },
-      { url: "/icon.png", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
     ],
-    apple: "/apple-icon.png",
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
 };
 
@@ -182,8 +183,10 @@ export default async function RootLayout({
       <head>
         <meta charSet="utf-8" />
         <link rel="preload" href="/rc-logo-white.svg" as="image" />
-        <link rel="icon" href="/icon.png" type="image/png" sizes="1024x1024" />
-        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+        <link rel="icon" href="/icon-512.png" type="image/png" sizes="512x512" />
+        <link rel="shortcut icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-icon.png" sizes="180x180" />
         {process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID && (
           <script

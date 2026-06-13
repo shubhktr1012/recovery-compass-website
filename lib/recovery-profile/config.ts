@@ -102,19 +102,19 @@ function createStartReasonQuestion(idPrefix: string) {
 
 const JOURNEY_CONFIG: Record<JourneyKey, JourneyConfig> = {
   smoking: {
-    selectionLabel: '6-Day Control',
-    selectionDescription: 'Interrupt the craving loop and regain control through the 6-day smoking reset.',
-    primaryGoal: 'Break the craving loop and rebuild calmer, more reliable control over smoking triggers.',
+    selectionLabel: 'Smoking & Alcohol Quit',
+    selectionDescription: 'A guided quit path for smoking, alcohol, or both, with trigger mapping, urge tools, and slip recovery.',
+    primaryGoal: 'Break the habit loops and rebuild calmer, more reliable control over smoking and alcohol triggers.',
     recommendation: {
-      title: 'Your smoking paths are ready.',
-      subtitle: 'We recommend starting with a smoking program that interrupts urges and rebuilds control from the ground up.',
+      title: 'Your quit path is ready.',
+      subtitle: 'We recommend the Smoking & Alcohol Quit program that interrupts urges and rebuilds control from the ground up.',
       whyFits:
-        'Your main issue points to a nicotine loop driven by stress, habit timing, and environmental triggers, not just motivation.',
+        'Your answers point to behavioral loops driven by stress, habit timing, and environmental triggers, not just willpower.',
       focusLabel: 'What this path targets',
       focusPoints: [
-        'Interrupt automatic smoking moments before they run the day.',
-        'Lower the intensity of craving spikes with simple regulation tools.',
-        'Build enough control to choose between a short reset or a longer guided quit path.',
+        'Interrupt automatic smoking and drinking moments before they run the day.',
+        'Lower the intensity of cravings with clinical Delay and Urge Surfing protocols.',
+        'Navigate social situations and handle slips with structured, non-shaming response plans.',
       ],
     },
     questions: {
@@ -210,11 +210,11 @@ const JOURNEY_CONFIG: Record<JourneyKey, JourneyConfig> = {
     },
   },
   sleep_disorder_reset: {
-    selectionLabel: '21-Day Deep Sleep Reset',
+    selectionLabel: 'Deep Sleep Reset',
     selectionDescription: 'Reset the body clock and nervous system so sleep starts feeling natural again.',
     primaryGoal: 'Restore consistent, deeper sleep by calming the nervous system and resetting the body clock.',
     recommendation: {
-      title: '21-Day Deep Sleep Reset fits your current pattern.',
+      title: 'Deep Sleep Reset fits your current pattern.',
       subtitle: 'Your answers point to a sleep rhythm problem, not just a bad bedtime routine.',
       whyFits:
         'What you described is consistent with a body that is not getting the right cues for rest, recovery, and nighttime downshift.',
@@ -320,11 +320,11 @@ const JOURNEY_CONFIG: Record<JourneyKey, JourneyConfig> = {
     },
   },
   energy_vitality: {
-    selectionLabel: '14-Day Energy Restore',
+    selectionLabel: 'Energy Restore',
     selectionDescription: 'Rebuild daily energy, rhythm, and focus instead of living on caffeine and force.',
     primaryGoal: 'Restore steady daily energy by improving rhythm, recovery, and nervous-system load.',
     recommendation: {
-      title: '14-Day Energy Restore is the best fit here.',
+      title: 'Energy Restore is the best fit here.',
       subtitle: 'Your answers point to an energy system that needs rhythm, recovery, and consistency.',
       whyFits:
         'The core problem you described is not just tiredness. It is a daily rhythm problem that keeps draining energy faster than you can recover it.',
@@ -430,11 +430,11 @@ const JOURNEY_CONFIG: Record<JourneyKey, JourneyConfig> = {
     },
   },
   age_reversal: {
-    selectionLabel: '90-Day Biohacking Reset',
+    selectionLabel: 'Age Well',
     selectionDescription: 'Restore energy, resilience, and recovery when your body feels older than it should.',
     primaryGoal: 'Reduce hidden stress load and rebuild steadier energy, clarity, and biological resilience.',
     recommendation: {
-      title: '90-Day Biohacking Reset is the strongest fit.',
+      title: 'Age Well is the strongest fit.',
       subtitle: 'Your answers point to stress-driven wear and tear, not just a temporary rough patch.',
       whyFits:
         'The combination of stress load, brain fog, and slowed recovery suggests a system that needs calmer rhythms and better recovery signals.',
@@ -528,11 +528,11 @@ const JOURNEY_CONFIG: Record<JourneyKey, JourneyConfig> = {
     },
   },
   male_sexual_health: {
-    selectionLabel: "30-Day Men's Vitality Reset",
+    selectionLabel: "Men’s Vitality Reset",
     selectionDescription: 'Support confidence, control, and physical vitality with steady, body-based routines.',
     primaryGoal: 'Restore confidence and physical vitality through steadier routines, lower stress, and better regulation.',
     recommendation: {
-      title: "30-Day Men's Vitality Reset is the best fit.",
+      title: "Men’s Vitality Reset is the best fit.",
       subtitle: 'Your answers point to a confidence and regulation problem, not something that will improve through avoidance.',
       whyFits:
         'The pattern you described suggests a need for calmer stress responses, stronger body awareness, and steadier daily habits.',
@@ -682,7 +682,7 @@ export function getGuidedJourney(issueId: GuidedIssueId): JourneyKey {
 }
 
 export function getRecommendedProgramForJourney(journey: JourneyKey): ProgramSlug {
-  return journey === 'smoking' ? 'six_day_reset' : journey;
+  return journey === 'smoking' ? 'smoking_alcohol_quit' : journey;
 }
 
 export function getGuidedIssueLabel(issueId: GuidedIssueId | null) {

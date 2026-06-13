@@ -16,7 +16,7 @@ function baseAnswers(overrides: Partial<OnboardingAnswers>): OnboardingAnswers {
 }
 
 describe("recovery-profile", () => {
-  it("recommends the short smoking reset for immediate-control smoking answers", () => {
+  it("recommends the smoking & alcohol quit program for immediate-control smoking answers", () => {
     const resolution = getOnboardingResolution(
       baseAnswers({
         path: "guided_recommendation",
@@ -31,12 +31,12 @@ describe("recovery-profile", () => {
 
     expect(resolution).toMatchObject({
       journey: "smoking",
-      recommendedProgram: "six_day_reset",
+      recommendedProgram: "smoking_alcohol_quit",
       primaryConcernLabel: "Cravings / smoking urges",
     });
   });
 
-  it("recommends the long smoking reset for explicit longer quit-path answers", () => {
+  it("recommends the smoking & alcohol quit program for explicit longer quit-path answers", () => {
     const resolution = getOnboardingResolution(
       baseAnswers({
         path: "guided_recommendation",
@@ -49,7 +49,7 @@ describe("recovery-profile", () => {
       })
     );
 
-    expect(resolution.recommendedProgram).toBe("ninety_day_transform");
+    expect(resolution.recommendedProgram).toBe("smoking_alcohol_quit");
   });
 
   it("maps non-smoking guided issues to their canonical programs", () => {
@@ -96,7 +96,7 @@ describe("recovery-profile", () => {
     expect(resolution).toMatchObject({
       journey: "male_sexual_health",
       recommendedProgram: "male_sexual_health",
-      primaryConcernLabel: "30-Day Men's Vitality Reset",
+      primaryConcernLabel: "Men’s Vitality Reset",
     });
   });
 });
