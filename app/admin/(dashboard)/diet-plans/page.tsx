@@ -23,7 +23,7 @@ export default async function AdminDietPlansPage({
   return (
     <div className="space-y-6">
       <PageHeader
-        description="Diet plan order, payment, delivery, and email status. Manual service orders must use the audited admin flow."
+        description="Diet plan order, payment, generation, and scheduled email status. Manual service orders must use the audited admin flow."
         range={range}
         title="Diet Plans"
       />

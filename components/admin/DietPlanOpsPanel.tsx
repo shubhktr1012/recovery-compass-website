@@ -983,7 +983,7 @@ function DietPlanOrderTable({
               <th className="whitespace-nowrap px-4 py-3 font-semibold">Status</th>
               <th className="whitespace-nowrap px-4 py-3 font-semibold">Source</th>
               <th className="whitespace-nowrap px-4 py-3 font-semibold">Payment confirmed</th>
-              <th className="whitespace-nowrap px-4 py-3 font-semibold">Delivered</th>
+              <th className="whitespace-nowrap px-4 py-3 font-semibold">Generated / scheduled</th>
               <th className="whitespace-nowrap px-4 py-3 font-semibold">Actions</th>
             </tr>
           </thead>
