@@ -60,14 +60,14 @@ describe("commerce slug normalization", () => {
       canonicalizeTransactionItems([
         {
           program_slug: "14-day-sleep-reset",
-          title: "Deep Sleep Reset",
+          title: "Deep Sleep Reset Program",
           price_inr: 2599,
           quantity: 1,
           queue_rank: 2,
         },
         {
           program_slug: "energy_vitality",
-          title: "Energy Restore",
+          title: "Energy Restore Program",
           price_inr: 1499,
           quantity: 1,
         },
@@ -87,14 +87,14 @@ describe("commerce slug normalization", () => {
     ).toEqual([
       {
         program_slug: "sleep_disorder_reset",
-        title: "Deep Sleep Reset",
+        title: "Deep Sleep Reset Program",
         price_inr: 2599,
         quantity: 1,
         queue_rank: 2,
       },
       {
         program_slug: "energy_vitality",
-        title: "Energy Restore",
+        title: "Energy Restore Program",
         price_inr: 1499,
         quantity: 1,
       },

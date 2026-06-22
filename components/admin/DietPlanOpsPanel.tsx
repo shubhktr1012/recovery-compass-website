@@ -491,7 +491,9 @@ function OrderDetailCard({
                 type="button"
               >
                 <RefreshCw className="size-4 shrink-0" />
-                {row.status === "failed" ? "Retry generation" : "Trigger generation"}
+                {row.status === "failed" || row.status === "generating"
+                  ? "Retry generation"
+                  : "Trigger generation"}
               </button>
             )
           ) : null}

@@ -5,8 +5,9 @@ import { renderDietPlanHtml } from "@/lib/diet-plan-pdf-template";
 import { DIET_PLAN_RESPONSE_SCHEMA, validateDietPlanJson } from "@/lib/diet-plan-schema";
 import { sendDietPlanEmail } from "@/lib/mail";
 import { generatePdf } from "@/lib/pdf-generator";
+import { isDietPlanGenerationStale } from "@/lib/diet-plan-generation-state";
 
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 const DEFAULT_GEMINI_MODEL = "gemini-3.5-flash";
 const DEFAULT_GEMINI_FALLBACK_MODEL = "gemini-2.5-flash";
@@ -354,6 +355,7 @@ export async function POST(req: NextRequest) {
     }
 
     const supabase = getSupabaseAdmin();
+    const requestStartedAt = Date.now();
 
     const { data: order, error: fetchError } = await supabase
         .from("diet_plan_orders")
@@ -369,22 +371,39 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ message: "Already fulfilled" });
     }
 
-    if (order.status === "generating") {
+    const isStaleGeneration = isDietPlanGenerationStale({
+        claimedAt: order.claimed_at,
+        status: order.status,
+        updatedAt: order.updated_at,
+    });
+
+    if (order.status === "generating" && !isStaleGeneration) {
         return NextResponse.json({ message: "Already generating" });
     }
 
-    if (!["pending", "failed"].includes(order.status)) {
+    if (!["pending", "failed"].includes(order.status) && !isStaleGeneration) {
         return NextResponse.json(
             { message: `Order is not ready for generation. Current status: ${order.status}` },
             { status: 409 }
         );
     }
 
-    const { data: claimedOrder, error: claimError } = await supabase
+    const attemptStartedAt = new Date().toISOString();
+    let claimQuery = supabase
         .from("diet_plan_orders")
-        .update({ status: "generating", error_message: null })
+        .update({
+            claimed_at: attemptStartedAt,
+            status: "generating",
+            error_message: null,
+        })
         .eq("id", orderId)
-        .eq("status", order.status)
+        .eq("status", order.status);
+
+    if (isStaleGeneration && order.updated_at) {
+        claimQuery = claimQuery.eq("updated_at", order.updated_at);
+    }
+
+    const { data: claimedOrder, error: claimError } = await claimQuery
         .select("id")
         .maybeSingle();
 
@@ -399,6 +418,13 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ message: "Order is already being processed" });
     }
 
+    console.info("[DietPlan] Generation started", {
+        attemptStartedAt,
+        orderId,
+        provider: aiProvider.provider,
+        recoveredStaleAttempt: isStaleGeneration,
+    });
+
     try {
         const questionnaireData =
             order.questionnaire_data && typeof order.questionnaire_data === "object"
@@ -406,14 +432,80 @@ export async function POST(req: NextRequest) {
                 : {};
 
         const prompt = buildDietPlanPrompt(questionnaireData);
+        console.info("[DietPlan] Requesting AI plan", { orderId });
         const dietPlan = await generateValidatedDietPlanJson({
             provider: aiProvider.provider,
             prompt,
         });
+        console.info("[DietPlan] AI plan validated", {
+            elapsedMs: Date.now() - requestStartedAt,
+            orderId,
+        });
 
         const html = renderDietPlanHtml(dietPlan, questionnaireData);
         const pdfBuffer = await generatePdf(html);
+        console.info("[DietPlan] PDF generated", {
+            bytes: pdfBuffer.byteLength,
+            elapsedMs: Date.now() - requestStartedAt,
+            orderId,
+        });
         const clientName = String(questionnaireData.name || order.name || "there");
+
+        const dedupeKey = `diet_plan_delivery:${orderId}`;
+        const { data: existingDelivery, error: existingDeliveryError } = await supabase
+            .from("outbound_email_deliveries")
+            .select("id,status")
+            .eq("dedupe_key", dedupeKey)
+            .maybeSingle();
+
+        if (existingDeliveryError) {
+            throw new Error(`Failed to inspect diet plan email delivery: ${existingDeliveryError.message}`);
+        }
+
+        if (existingDelivery?.status === "sent") {
+            const { error: fulfilledError } = await supabase
+                .from("diet_plan_orders")
+                .update({
+                    status: "fulfilled",
+                    fulfilled_at: new Date().toISOString(),
+                    error_message: null,
+                })
+                .eq("id", orderId)
+                .eq("status", "generating")
+                .eq("claimed_at", attemptStartedAt);
+
+            if (fulfilledError) {
+                throw new Error(`Failed to reconcile delivered diet plan: ${fulfilledError.message}`);
+            }
+
+            return NextResponse.json({ success: true, deduped: true });
+        }
+
+        const deliveryPayload = {
+            dedupe_key: dedupeKey,
+            email_type: "diet_plan_delivery",
+            last_error: null,
+            metadata: { order_id: orderId },
+            provider: "resend",
+            recipient_email: order.email,
+            status: "pending",
+        };
+        const { data: delivery, error: deliveryError } = existingDelivery
+            ? await supabase
+                .from("outbound_email_deliveries")
+                .update(deliveryPayload)
+                .eq("id", existingDelivery.id)
+                .select("id")
+                .single()
+            : await supabase
+                .from("outbound_email_deliveries")
+                .insert(deliveryPayload)
+                .select("id")
+                .single();
+
+        if (deliveryError || !delivery) {
+            throw new Error(`Failed to record diet plan email delivery: ${deliveryError?.message ?? "Unknown error"}`);
+        }
 
         const emailResult = await sendDietPlanEmail({
             to: order.email,
@@ -423,27 +515,78 @@ export async function POST(req: NextRequest) {
         });
 
         if (!emailResult.success) {
+            await supabase
+                .from("outbound_email_deliveries")
+                .update({
+                    last_error: emailResult.error ?? "Unknown email error",
+                    status: "failed",
+                })
+                .eq("id", delivery.id);
             throw new Error(`Email send failed: ${emailResult.error ?? "Unknown email error"}`);
         }
 
-        await supabase
+        const { error: deliverySentError } = await supabase
+            .from("outbound_email_deliveries")
+            .update({
+                last_error: null,
+                metadata: {
+                    order_id: orderId,
+                    provider_email_id: emailResult.id ?? null,
+                },
+                sent_at: new Date().toISOString(),
+                status: "sent",
+            })
+            .eq("id", delivery.id);
+
+        if (deliverySentError) {
+            throw new Error(`Failed to record diet plan email success: ${deliverySentError.message}`);
+        }
+
+        const { data: fulfilledOrder, error: fulfilledError } = await supabase
             .from("diet_plan_orders")
             .update({
                 status: "fulfilled",
                 fulfilled_at: new Date().toISOString(),
                 error_message: null,
             })
-            .eq("id", orderId);
+            .eq("id", orderId)
+            .eq("status", "generating")
+            .eq("claimed_at", attemptStartedAt)
+            .select("id")
+            .maybeSingle();
+
+        if (fulfilledError) {
+            throw new Error(`Failed to mark diet plan fulfilled: ${fulfilledError.message}`);
+        }
+
+        if (!fulfilledOrder) {
+            throw new Error("Diet plan generation lease changed before completion");
+        }
+
+        console.info("[DietPlan] Generation completed", {
+            elapsedMs: Date.now() - requestStartedAt,
+            emailId: emailResult.id ?? null,
+            orderId,
+        });
 
         return NextResponse.json({ success: true, emailId: emailResult.id ?? null });
     } catch (error: unknown) {
         const message = getErrorMessage(error);
         console.error(`[DietPlan] Generation failed for order ${orderId}:`, error);
 
-        await supabase
+        const { error: failureUpdateError } = await supabase
             .from("diet_plan_orders")
             .update({ status: "failed", error_message: message })
-            .eq("id", orderId);
+            .eq("id", orderId)
+            .eq("status", "generating")
+            .eq("claimed_at", attemptStartedAt);
+
+        if (failureUpdateError) {
+            console.error("[DietPlan] Failed to persist generation failure", {
+                error: failureUpdateError.message,
+                orderId,
+            });
+        }
 
         return NextResponse.json(
             { message: "Generation failed", error: message },

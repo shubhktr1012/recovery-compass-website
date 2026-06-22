@@ -18,6 +18,7 @@ type ManualDietPlanOrder = {
 };
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 300;
 
 function getErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : "Invalid request.";

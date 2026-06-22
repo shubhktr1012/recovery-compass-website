@@ -108,7 +108,7 @@ const FOCUS_INFO_MAP: Record<FocusArea, {
         day5: "The racing mind at night is the most common cause of sleep difficulty. Pattern awareness shows you exactly what thoughts and worries are keeping you awake. The physiological sigh calms the nervous system within 60 seconds of lying down.",
         day6: "A consistent daily rhythm is what separates people who sleep well from those who do not. The circadian clock governs melatonin release, body temperature drop, and cortisol timing - all three require consistency to work properly.",
         day5Nutrition: "For sleep: avoid chai or coffee after 2 PM - caffeine has a 6-hour half-life and is still in your system at midnight.",
-        nextStepTitle: "Deep Sleep Reset",
+        nextStepTitle: "Deep Sleep Reset Program",
         nextStepDesc: "Complete evening protocol, military sleep method, cognitive shuffle, body temperature science, and the full circadian rhythm rebuild. Most users see the biggest change between Days 7 and 14."
     },
     "More Energy": {
@@ -119,7 +119,7 @@ const FOCUS_INFO_MAP: Record<FocusArea, {
         day5: "Chronic low-grade stress is one of the biggest energy drains that exists. Cortisol in the bloodstream suppresses mitochondrial function - cellular energy production. Reducing stress releases trapped energy that was being diverted to the stress response.",
         day6: "Energy is not a resource you have or lack - it is a rhythm you maintain or disrupt. Morning sunlight, consistent meal timing, movement, and the eating window together create steady energy without caffeine dependency within 7 to 10 days.",
         day5Nutrition: "For energy: eat a protein-rich breakfast - eggs, dal, curd, or paneer.",
-        nextStepTitle: "Energy Restore",
+        nextStepTitle: "Energy Restore Program",
         nextStepDesc: "Cold therapy protocol, mitochondria science, nutrition timing for sustained energy, stress-energy connection, and the morning routine that replaces caffeine dependency."
     },
     "Gut Health": {
@@ -130,7 +130,7 @@ const FOCUS_INFO_MAP: Record<FocusArea, {
         day5: "The gut-brain axis means emotional stress directly alters gut motility, enzyme secretion, and gut bacteria balance. The body tension mapping practice specifically targets gut tension - where most emotional stress is physically stored.",
         day6: "Gut bacteria follow a precise 24-hour clock of activity and dormancy. Eating at consistent times within a consistent window is the most powerful microbiome intervention available - more effective than any probiotic supplement.",
         day5Nutrition: "For gut: add a pinch of turmeric with black pepper to one meal.",
-        nextStepTitle: "Gut Reset",
+        nextStepTitle: "Gut Reset Program",
         nextStepDesc: "Colon massage, diaphragmatic breathing, full spice protocol, fermented foods, circadian eating window, and the complete evening gut repair sequence - with lactose intolerance guidance woven throughout."
     },
     "Quit Smoking / Alcohol": {

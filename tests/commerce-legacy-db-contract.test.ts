@@ -143,7 +143,7 @@ describe("commerce legacy DB contract", () => {
     mocks.transactionItems.length = 0;
     mocks.transactionItems.push({
       program_slug: "energy_vitality",
-      title: "Energy Restore",
+      title: "Energy Restore Program",
       price_inr: 1499,
       quantity: 1,
       queue_rank: 1,

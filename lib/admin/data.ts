@@ -19,6 +19,7 @@ import type {
   AdminRole,
   AdminTrendPoint,
 } from "@/lib/admin/types";
+import { isDietPlanGenerationStale } from "@/lib/diet-plan-generation-state";
 
 type SupabaseError = { message: string };
 type SupabaseListResult<T> = { data: T[] | null; error: SupabaseError | null };
@@ -810,7 +811,12 @@ export async function getAdminDietPlans(range: AdminDateRange, role: AdminRole =
       amount: formatInrFromPaise(order.amount),
       canConfirmPayment: order.source === "admin_manual" && ["awaiting_payment", "failed"].includes(order.status ?? ""),
       canGenerate:
-        ["pending", "failed"].includes(order.status ?? "") &&
+        (["pending", "failed"].includes(order.status ?? "") ||
+          isDietPlanGenerationStale({
+            claimedAt: order.claimed_at,
+            status: order.status,
+            updatedAt: order.updated_at,
+          })) &&
         (order.source !== "admin_manual" || Boolean(order.manual_payment_confirmed_at)),
       createdAt: formatDateTime(order.created_at),
       email: formatEmailForAdminRole(order.email, role),

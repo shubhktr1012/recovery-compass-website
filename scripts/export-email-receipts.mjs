@@ -29,7 +29,7 @@ const receiptEntries = [
   },
   {
     customerName: "Shubh Khatri",
-    programName: "Deep Sleep Reset",
+    programName: "Deep Sleep Reset Program",
     amountFormatted: "₹2,599.00",
     orderId: "RC-INV-202604-007",
     receiptDate: "2026-04-15T10:00:00Z",
@@ -37,7 +37,7 @@ const receiptEntries = [
   },
   {
     customerName: "Dev",
-    programName: "Men’s Vitality Reset",
+    programName: "Men’s Vitality Reset Program",
     amountFormatted: "₹4,999.00",
     orderId: "RC-INV-202604-008",
     receiptDate: "2026-04-18",

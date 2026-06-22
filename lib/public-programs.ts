@@ -155,7 +155,7 @@ export const publicPrograms = [
     dbSlug: "sleep_disorder_reset",
     category: "Restore Balance",
     tag: "Reset the Body Clock",
-    title: "Deep Sleep Reset",
+    title: "Deep Sleep Reset Program",
     cardDescription:
       "Finally wake up feeling rested, with a calmer evening rhythm and sleep that actually restores you.",
     article: {
@@ -195,7 +195,7 @@ export const publicPrograms = [
     dbSlug: "energy_vitality",
     category: "Restore Balance",
     tag: "Energy Reset Foundations",
-    title: "Energy Restore",
+    title: "Energy Restore Program",
     cardDescription:
       "Feel like yourself again by rebuilding the daily rhythm behind stamina, focus, cravings, and afternoon slumps.",
     article: {
@@ -233,7 +233,7 @@ export const publicPrograms = [
     dbSlug: "male_sexual_health",
     category: "Build Vitality",
     tag: "Reset & Activation",
-    title: "Men’s Vitality Reset",
+    title: "Men’s Vitality Reset Program",
     cardDescription:
       "Feel strong, sharp, and like yourself again by addressing stress, stamina, blood flow, recovery, and confidence.",
     article: {
@@ -273,7 +273,7 @@ export const publicPrograms = [
     dbSlug: "age_reversal",
     category: "Build Vitality",
     tag: "Rejuvenation Journey",
-    title: "Age Well",
+    title: "Age Reversal Program",
     cardDescription:
       "Feel younger, look better, and move with ease through a body-first reset for long-term vitality.",
     article: {
@@ -314,7 +314,7 @@ export const publicPrograms = [
     dbSlug: "smoking_alcohol_quit",
     category: "Break Habits",
     tag: "Guided Quit Journey",
-    title: "Smoking & Alcohol Quit",
+    title: "Smoking & Alcohol Quit Program",
     cardDescription:
       "Put them down for good with a structured path for the moments when everything in you says to light one up.",
     article: {
@@ -354,7 +354,7 @@ export const publicPrograms = [
     dbSlug: "gut_health_reset",
     category: "Restore Balance",
     tag: "Gut-Brain Connection",
-    title: "Gut Reset",
+    title: "Gut Reset Program",
     cardDescription:
       "Fix what has been bothering you from the inside: bloating, slow digestion, heaviness, reflux, and gut tension.",
     article: {
