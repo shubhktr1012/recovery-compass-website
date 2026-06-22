@@ -19,6 +19,9 @@ function getWebSocketOrigin(origin: string) {
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ["@sparticuz/chromium", "puppeteer-core"],
+  outputFileTracingIncludes: {
+    "/api/diet-plan/generate": ["./node_modules/@sparticuz/chromium/bin/**"],
+  },
   experimental: {
     optimizePackageImports: ["lucide-react"],
   },
