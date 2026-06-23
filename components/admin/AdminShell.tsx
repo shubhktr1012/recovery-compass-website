@@ -8,6 +8,7 @@ import {
   BarChart3,
   CreditCard,
   Home,
+  Handshake,
   LayoutDashboard,
   ListChecks,
   Users,
@@ -23,6 +24,7 @@ const navItems = [
   { href: "/programs", label: "Programs", icon: ListChecks },
   { href: "/purchases", label: "Purchases", icon: CreditCard },
   { href: "/diet-plans", label: "Diet Plans", icon: Apple },
+  { href: "/referrals", label: "Referrals", icon: Handshake },
   { href: "/engagement", label: "Engagement", icon: BarChart3 },
   { href: "/activity", label: "Admin Activity", icon: Activity },
 ];

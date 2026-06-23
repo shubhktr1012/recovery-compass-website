@@ -126,6 +126,10 @@ export function canManageDietPlans(admin: Pick<AdminSession, "role">) {
   return admin.role === "owner" || admin.role === "ops";
 }
 
+export function canManageReferrals(admin: Pick<AdminSession, "role">) {
+  return admin.role === "owner" || admin.role === "ops";
+}
+
 export async function getAdminAccess(): Promise<AdminAccessResult> {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.auth.getUser();

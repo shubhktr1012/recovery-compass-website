@@ -5,6 +5,7 @@ const mocks = vi.hoisted(() => {
   const createOrder = vi.fn();
   const createTransaction = vi.fn();
   const getUser = vi.fn();
+  const validateReferralForCheckout = vi.fn();
   const createSupabaseServerClient = vi.fn(async () => ({
     auth: {
       getUser,
@@ -15,6 +16,7 @@ const mocks = vi.hoisted(() => {
     createTransaction,
     getUser,
     createSupabaseServerClient,
+    validateReferralForCheckout,
   };
 });
 
@@ -29,6 +31,11 @@ vi.mock("razorpay", () => ({
 vi.mock("@/lib/supabase-server", () => ({
   createSupabaseServerClient: mocks.createSupabaseServerClient,
 }));
+
+vi.mock("@/lib/referrals", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/referrals")>();
+  return { ...actual, validateReferralForCheckout: mocks.validateReferralForCheckout };
+});
 
 vi.mock("@/lib/commerce", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/lib/commerce")>();
@@ -54,6 +61,7 @@ describe("POST /api/checkout/create-order", () => {
     mocks.createOrder.mockReset();
     mocks.createTransaction.mockReset();
     mocks.getUser.mockReset();
+    mocks.validateReferralForCheckout.mockReset();
 
     mocks.getUser.mockResolvedValue({
       data: { user: { id: "user-1" } },
@@ -147,7 +155,7 @@ describe("POST /api/checkout/create-order", () => {
     expect(response.status).toBe(200);
     expect(mocks.createTransaction).toHaveBeenCalledWith(
       expect.objectContaining({
-        amount: 299800,
+        amount: 409800,
         items: [
           expect.objectContaining({ program_slug: "energy_vitality", queue_rank: 2 }),
           expect.objectContaining({ program_slug: "sleep_disorder_reset", queue_rank: 1 }),
@@ -213,5 +221,61 @@ describe("POST /api/checkout/create-order", () => {
     );
     expect(freeDetoxResponse.status).toBe(400);
     expect(await freeDetoxResponse.json()).toEqual({ message: "No valid checkout items were found." });
+  });
+
+  it("ignores client prices and discounts only program items", async () => {
+    mocks.validateReferralForCheckout.mockResolvedValueOnce({
+      valid: true,
+      partnerId: "partner-1",
+      partnerName: "Anjan",
+      code: "ANJAN10",
+      discountPct: 10,
+      commissionPct: 10,
+    });
+
+    const response = await POST(
+      buildRequest({
+        amount: 1,
+        referralCode: "anjan-10",
+        items: [
+          { program_slug: "21-day-deep-sleep-reset", title: "Crafted", price_inr: 1, quantity: 1 },
+          { program_slug: "custom-diet-plan", title: "Crafted", price_inr: 1, quantity: 1 },
+        ],
+      }) as never
+    );
+
+    expect(response.status).toBe(200);
+    expect(mocks.createOrder).toHaveBeenCalledWith(expect.objectContaining({ amount: 363810 }));
+    expect(mocks.createTransaction).toHaveBeenCalledWith(
+      expect.objectContaining({
+        amount: 363810,
+        metadata: {
+          referral: expect.objectContaining({
+            code: "ANJAN10",
+            originalAmountPaise: 389800,
+            discountAmountPaise: 25990,
+            finalAmountPaise: 363810,
+          }),
+        },
+      })
+    );
+  });
+
+  it("rejects an ineligible referral before creating an order", async () => {
+    mocks.validateReferralForCheckout.mockResolvedValueOnce({
+      valid: false,
+      code: "ANJAN10",
+      reason: "Referral discounts are available on your first program purchase.",
+    });
+
+    const response = await POST(
+      buildRequest({
+        referralCode: "ANJAN10",
+        items: [{ program_slug: "14-day-energy-restore", title: "Energy", price_inr: 1, quantity: 1 }],
+      }) as never
+    );
+
+    expect(response.status).toBe(400);
+    expect(mocks.createOrder).not.toHaveBeenCalled();
   });
 });

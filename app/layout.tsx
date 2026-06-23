@@ -169,6 +169,7 @@ export const viewport = {
 import { CartProvider } from "@/lib/context/cart-context";
 import { UserProvider } from "@/lib/context/user-context";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ReferralAttribution } from "@/components/referral-attribution";
 
 export default async function RootLayout({
   children,
@@ -236,6 +237,7 @@ export default async function RootLayout({
       <body
         className={`${satoshi.variable} ${erode.variable} font-sans antialiased`}
       >
+        <ReferralAttribution />
         <SmoothScrollProvider>
           <UserProvider>
             <CartProvider>

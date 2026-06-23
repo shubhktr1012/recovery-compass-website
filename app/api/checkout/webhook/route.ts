@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-import { markTransactionPaid, markTransactionFailed } from "@/lib/commerce";
+import { markTransactionPaid, markTransactionFailed, markTransactionRefunded } from "@/lib/commerce";
 
 function getErrorMessage(error: unknown) {
     if (error instanceof Error) {
@@ -83,6 +83,15 @@ export async function POST(req: NextRequest) {
                 });
 
                 console.log(`[Webhook] payment.failed for order ${orderId}`);
+                break;
+            }
+
+            case "payment.refunded": {
+                await markTransactionRefunded({
+                    providerOrderId: orderId,
+                    providerPaymentId: paymentId,
+                });
+                console.log(`[Webhook] payment.refunded for order ${orderId}`);
                 break;
             }
 
