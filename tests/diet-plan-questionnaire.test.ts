@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { parseManualDietPlanOrderPayload } from "@/lib/admin/diet-plan-actions";
+import { buildDietPlanPrompt } from "@/lib/diet-plan-prompt";
 import {
   normalizeDietPlanQuestionnaireData,
   withDietPlanQuestionnairePrograms,
@@ -57,7 +58,7 @@ describe("diet plan questionnaire normalization", () => {
     expect(normalized.conditions).toEqual(["Type 2 diabetes", "Acidity / IBS"]);
     expect(normalized.medications).toBe("Maybe metformin and thyroid medication");
     expect(normalized.allergies).toBe("Sea food allergies");
-    expect(normalized.diet).toBe("No beef");
+    expect(normalized.diet).toBe("Non-veg (no beef)");
     expect(normalized.region).toBe("UP / Bihar");
     expect(normalized.regionOther).toBe("Home food");
     expect(normalized.grain).toBe("Mix");
@@ -89,6 +90,18 @@ describe("diet plan questionnaire normalization", () => {
       "Gut Reset Program",
       "Age Reversal Program",
     ]);
+  });
+
+  it("preserves restricted non-vegetarian diet answers without collapsing them to only the restriction", () => {
+    expect(normalizeDietPlanQuestionnaireData({ "Diet type": "Non-veg (no beef)" }).diet).toBe("Non-veg (no beef)");
+    expect(normalizeDietPlanQuestionnaireData({ "Diet type": "Non-veg (no pork)" }).diet).toBe("Non-veg (no pork)");
+  });
+
+  it("tells the diet-plan model to generate dual-track meals for restricted non-veg answers", () => {
+    const prompt = buildDietPlanPrompt(normalizeDietPlanQuestionnaireData(rawGoogleFormQuestionnaire));
+
+    expect(prompt).toContain("Diet type: Non-veg (no beef)");
+    expect(prompt).toContain('isDualTrack must be: true (diet type is "Non-veg (no beef)")');
   });
 
   it("fills the manual order name from questionnaire data when the top-level name is blank", () => {
