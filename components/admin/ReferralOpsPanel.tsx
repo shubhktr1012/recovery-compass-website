@@ -24,6 +24,15 @@ function formatDate(value: string | null) {
     : "No referrals yet";
 }
 
+const primaryButtonClass =
+  "rounded-xl bg-emerald-100 px-4 text-[#073512] shadow-sm shadow-black/15 transition-[background-color,box-shadow,transform] duration-150 ease-out hover:bg-emerald-50 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-emerald-100/45";
+
+const secondaryButtonClass =
+  "rounded-xl border border-white/14 bg-white/[0.08] px-4 text-white/86 transition-[background-color,border-color,color,transform] duration-150 ease-out hover:border-white/24 hover:bg-white/[0.13] hover:text-white active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white/25";
+
+const copyButtonClass =
+  "inline-flex items-center justify-center gap-2 rounded-xl border border-white/12 bg-white/[0.08] px-3 py-2 text-xs font-semibold text-white/82 transition-[background-color,border-color,color,transform] duration-150 ease-out hover:border-white/24 hover:bg-white/[0.13] hover:text-white active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25";
+
 export function ReferralOpsPanel({
   canManage,
   initialData,
@@ -152,7 +161,7 @@ export function ReferralOpsPanel({
           ))}
         </div>
         {canManage && tab === "partners" ? (
-          <Button onClick={() => setShowCreate((open) => !open)}>
+          <Button className={primaryButtonClass} onClick={() => setShowCreate((open) => !open)}>
             <Plus className="mr-2 size-4" /> Add partner
           </Button>
         ) : null}
@@ -219,8 +228,8 @@ export function ReferralOpsPanel({
             <input className="w-full rounded-xl border border-white/10 bg-black/20 px-3 py-2.5 text-white" min="1" onChange={(event) => setMaxUses(event.target.value)} type="number" value={maxUses} />
           </label>
           <div className="flex gap-2 md:col-span-2">
-            <Button disabled={isSaving} type="submit">Create partner</Button>
-            <Button onClick={() => setShowCreate(false)} type="button" variant="outline">Cancel</Button>
+            <Button className={primaryButtonClass} disabled={isSaving} type="submit">Create partner</Button>
+            <Button className={secondaryButtonClass} onClick={() => setShowCreate(false)} type="button" variant="outline">Cancel</Button>
           </div>
         </form>
       ) : null}
@@ -241,14 +250,35 @@ export function ReferralOpsPanel({
                   {partner.status}
                 </span>
               </div>
-              <div className="mt-5 flex items-center justify-between rounded-2xl bg-black/20 px-4 py-3">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-white/35">Referral code</p>
-                  <p className="mt-1 font-mono text-lg font-semibold text-sky-100">{partner.code}</p>
+              <div className="mt-5 space-y-3 rounded-2xl bg-black/20 p-4">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="min-w-0">
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-white/35">Referral code</p>
+                    <p className="mt-1 break-all font-mono text-lg font-semibold text-sky-100">{partner.code}</p>
+                  </div>
+                  <button
+                    aria-label={`Copy referral code for ${partner.name}`}
+                    className={copyButtonClass}
+                    onClick={() => navigator.clipboard.writeText(partner.code)}
+                    type="button"
+                  >
+                    <Copy className="size-3.5" /> Copy code
+                  </button>
                 </div>
-                <button aria-label={`Copy share link for ${partner.name}`} className="rounded-xl bg-white/10 p-2.5 text-white/65 hover:text-white" onClick={() => navigator.clipboard.writeText(`${siteUrl}/?ref=${partner.code}`)} type="button">
-                  <Copy className="size-4" />
-                </button>
+                <div className="flex flex-col gap-3 border-t border-white/10 pt-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="min-w-0">
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-white/35">Referral link</p>
+                    <p className="mt-1 break-all font-mono text-xs font-medium text-white/70">{siteUrl}/?ref={partner.code}</p>
+                  </div>
+                  <button
+                    aria-label={`Copy referral link for ${partner.name}`}
+                    className={copyButtonClass}
+                    onClick={() => navigator.clipboard.writeText(`${siteUrl}/?ref=${partner.code}`)}
+                    type="button"
+                  >
+                    <Copy className="size-3.5" /> Copy link
+                  </button>
+                </div>
               </div>
               <dl className="mt-5 grid grid-cols-3 gap-3 text-sm">
                 <div><dt className="text-white/40">Referrals</dt><dd className="mt-1 font-semibold text-white">{partner.successfulReferrals}</dd></div>
@@ -267,13 +297,13 @@ export function ReferralOpsPanel({
                   <input aria-label="Internal notes" className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-sm text-white" onChange={(event) => setEditingPartner({ ...editingPartner, notes: event.target.value })} placeholder="Internal notes" value={editingPartner.notes || ""} />
                   <input aria-label="Expiry date" className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-sm text-white" onChange={(event) => setEditingPartner({ ...editingPartner, expiresAt: event.target.value || null })} type="date" value={editingPartner.expiresAt?.slice(0, 10) || ""} />
                   <input aria-label="Maximum uses" className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-sm text-white" min="1" onChange={(event) => setEditingPartner({ ...editingPartner, maxUses: event.target.value ? Number(event.target.value) : null })} placeholder="Maximum uses" type="number" value={editingPartner.maxUses ?? ""} />
-                  <div className="flex gap-2 sm:col-span-2"><Button disabled={isSaving} size="sm" type="submit">Save</Button><Button onClick={() => setEditingPartner(null)} size="sm" type="button" variant="outline">Cancel</Button></div>
+                  <div className="flex gap-2 sm:col-span-2"><Button className={primaryButtonClass} disabled={isSaving} size="sm" type="submit">Save</Button><Button className={secondaryButtonClass} onClick={() => setEditingPartner(null)} size="sm" type="button" variant="outline">Cancel</Button></div>
                 </form>
               ) : null}
               {canManage ? (
                 <div className="mt-5 flex gap-2">
-                  <Button disabled={isSaving} onClick={() => setEditingPartner(partner)} size="sm" variant="outline"><Pencil className="mr-2 size-3.5" /> Edit</Button>
-                  <Button disabled={isSaving} onClick={() => togglePartner(partner)} size="sm" variant="outline">
+                  <Button className={secondaryButtonClass} disabled={isSaving} onClick={() => setEditingPartner(partner)} size="sm" variant="outline"><Pencil className="mr-2 size-3.5" /> Edit</Button>
+                  <Button className={secondaryButtonClass} disabled={isSaving} onClick={() => togglePartner(partner)} size="sm" variant="outline">
                     {partner.status === "active" ? <Pause className="mr-2 size-3.5" /> : <Play className="mr-2 size-3.5" />}
                     {partner.status === "active" ? "Pause code" : "Reactivate code"}
                   </Button>
@@ -300,7 +330,7 @@ export function ReferralOpsPanel({
                   {canManage && unpaidRows.length > 0 ? (
                     <div className="flex w-full gap-2 md:w-auto">
                       <input className="min-w-0 flex-1 rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-sm text-white md:w-64" onChange={(event) => setPayoutNotes((current) => ({ ...current, [partner.id]: event.target.value }))} placeholder="UTR / payout reference" value={payoutNotes[partner.id] || ""} />
-                      <Button disabled={isSaving || (payoutNotes[partner.id]?.trim().length ?? 0) < 3} onClick={() => markPaid(partner)} size="sm"><Check className="mr-2 size-4" /> Mark paid</Button>
+                      <Button className={primaryButtonClass} disabled={isSaving || (payoutNotes[partner.id]?.trim().length ?? 0) < 3} onClick={() => markPaid(partner)} size="sm"><Check className="mr-2 size-4" /> Mark paid</Button>
                     </div>
                   ) : null}
                 </div>
