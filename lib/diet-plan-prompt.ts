@@ -142,9 +142,10 @@ Schema:
 }
 
 ━━━ isDualTrack RULE ━━━
-Set isDualTrack to true ONLY if the client's diet type is Non-vegetarian, No beef, No pork, or Fish only.
+Set isDualTrack to true ONLY if the client's diet type is Non-vegetarian, Non-veg (no beef), Non-veg (no pork), or Fish only.
 When isDualTrack is true: every meal option shows BOTH a veg column and a nonveg column side by side, and the weeklyPlanner includes BOTH a veg week and a nonveg week.
 When isDualTrack is false (vegetarian, vegan, eggetarian, Jain): the "nonveg" fields in all meal options should be null, the "nonveg" fields in snacks should be empty arrays [], and omit "nonveg" from weeklyPlanner entirely.
+For restricted non-veg diets, preserve the restriction exactly: Non-veg (no beef) means non-veg options are allowed but beef is forbidden; Non-veg (no pork) means non-veg options are allowed but pork is forbidden.
 
 ━━━ QUALITY STANDARDS ━━━
 — Breakfast: exactly 4 options (A, B, C, D)
@@ -209,7 +210,7 @@ export function buildDietPlanPrompt(q: Record<string, any>): string {
     const programsStr   = programs.length   ? programs.join(", ")   : "None";
 
     // Derive isDualTrack for the model
-    const isDualTrack = ["Non-vegetarian", "No beef", "No pork", "Fish only"].includes(diet);
+    const isDualTrack = ["Non-vegetarian", "Non-veg (no beef)", "Non-veg (no pork)", "Fish only"].includes(diet);
 
     // Build condition-specific instructions
     const conditionInstructions: string[] = [];
