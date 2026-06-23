@@ -1,5 +1,5 @@
 import { DIET_PLAN_STANDALONE_PRICE_INR } from "@/lib/diet-plan-product";
-import { normalizeQuestionnaireProgramValues } from "@/lib/diet-plan-program-options";
+import { normalizeDietPlanQuestionnaireData } from "@/lib/diet-plan-questionnaire";
 
 const DEFAULT_DIET_PLAN_PRICE_PAISE = DIET_PLAN_STANDALONE_PRICE_INR * 100;
 const MAX_MANUAL_DIET_PLAN_PRICE_PAISE = 1000000;
@@ -82,7 +82,7 @@ function parseQuestionnaireData(value: unknown) {
     throw new Error("Questionnaire data is required.");
   }
 
-  return normalizeQuestionnaireProgramValues(value as Record<string, unknown>);
+  return normalizeDietPlanQuestionnaireData(value as Record<string, unknown>);
 }
 
 export function parseManualDietPlanOrderPayload(body: unknown): ParsedManualDietPlanOrder {
@@ -99,14 +99,17 @@ export function parseManualDietPlanOrderPayload(body: unknown): ParsedManualDiet
     throw new Error("Reason and evidence are required.");
   }
 
+  const questionnaireData = parseQuestionnaireData(payload.questionnaireData);
+  const questionnaireName = normalizeAdminText(questionnaireData.name);
+
   return {
     adminNotes: normalizeAdminText(payload.adminNotes) || null,
     amount: parseAmountInPaise(payload.amountInPaise),
     email,
     evidence,
-    name: normalizeAdminText(payload.name) || null,
+    name: normalizeAdminText(payload.name) || questionnaireName || null,
     paymentLinkUrl: parseHttpsUrl(payload.paymentLinkUrl),
-    questionnaireData: parseQuestionnaireData(payload.questionnaireData),
+    questionnaireData,
     reason,
   };
 }

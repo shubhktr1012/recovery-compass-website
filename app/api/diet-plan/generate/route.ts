@@ -6,6 +6,11 @@ import { DIET_PLAN_RESPONSE_SCHEMA, validateDietPlanJson } from "@/lib/diet-plan
 import { sendDietPlanEmail } from "@/lib/mail";
 import { generatePdf } from "@/lib/pdf-generator";
 import { isDietPlanGenerationStale } from "@/lib/diet-plan-generation-state";
+import {
+    mapProgramSlugToDietQuestionnaireValue,
+    normalizeDietPlanQuestionnaireData,
+    withDietPlanQuestionnairePrograms,
+} from "@/lib/diet-plan-questionnaire";
 
 export const maxDuration = 300;
 
@@ -107,6 +112,54 @@ function sanitizeFilenamePart(value: string) {
         .replace(/-+/g, "-")
         .replace(/^-|-$/g, "")
         .slice(0, 60) || "Client";
+}
+
+function normalizeOrderEmail(value: unknown) {
+    return typeof value === "string" ? value.trim().toLowerCase() : "";
+}
+
+async function loadOwnedProgramTitlesByEmail({
+    email,
+    supabase,
+}: {
+    email: string;
+    supabase: ReturnType<typeof getSupabaseAdmin>;
+}) {
+    if (!email) {
+        return [];
+    }
+
+    const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("id")
+        .ilike("email", email)
+        .maybeSingle();
+
+    if (profileError) {
+        throw new Error(`Failed to load profile for diet plan enrichment: ${profileError.message}`);
+    }
+
+    if (!profile?.id) {
+        return [];
+    }
+
+    const { data: accessRows, error: accessError } = await supabase
+        .from("program_access")
+        .select("owned_program, purchase_state")
+        .eq("user_id", profile.id)
+        .in("purchase_state", ["owned_active", "owned_completed", "owned_archived"]);
+
+    if (accessError) {
+        throw new Error(`Failed to load owned programs for diet plan enrichment: ${accessError.message}`);
+    }
+
+    return Array.from(
+        new Set(
+            (accessRows ?? [])
+                .map((row) => mapProgramSlugToDietQuestionnaireValue(row.owned_program))
+                .filter((value): value is string => Boolean(value))
+        )
+    );
 }
 
 
@@ -426,10 +479,44 @@ export async function POST(req: NextRequest) {
     });
 
     try {
-        const questionnaireData =
+        const rawQuestionnaireData =
             order.questionnaire_data && typeof order.questionnaire_data === "object"
                 ? order.questionnaire_data as Record<string, unknown>
                 : {};
+        let questionnaireData = normalizeDietPlanQuestionnaireData(rawQuestionnaireData);
+
+        if (!Array.isArray(questionnaireData.programs) || questionnaireData.programs.length === 0) {
+            const ownedPrograms = await loadOwnedProgramTitlesByEmail({
+                email: normalizeOrderEmail(order.email),
+                supabase,
+            });
+
+            questionnaireData = withDietPlanQuestionnairePrograms(questionnaireData, ownedPrograms);
+        }
+
+        const questionnaireChanged =
+            JSON.stringify(questionnaireData) !== JSON.stringify(rawQuestionnaireData);
+        const normalizedOrderName =
+            typeof questionnaireData.name === "string" && questionnaireData.name.trim()
+                ? questionnaireData.name.trim()
+                : null;
+
+        if (questionnaireChanged || (normalizedOrderName && normalizedOrderName !== order.name)) {
+            const { error: questionnaireUpdateError } = await supabase
+                .from("diet_plan_orders")
+                .update({
+                    name: normalizedOrderName ?? order.name,
+                    questionnaire_data: questionnaireData,
+                })
+                .eq("id", orderId);
+
+            if (questionnaireUpdateError) {
+                console.warn("[DietPlan] Failed to persist normalized questionnaire data", {
+                    error: questionnaireUpdateError.message,
+                    orderId,
+                });
+            }
+        }
 
         const prompt = buildDietPlanPrompt(questionnaireData);
         console.info("[DietPlan] Requesting AI plan", { orderId });
@@ -449,7 +536,7 @@ export async function POST(req: NextRequest) {
             elapsedMs: Date.now() - requestStartedAt,
             orderId,
         });
-        const clientName = String(questionnaireData.name || order.name || "there");
+        const clientName = String(normalizedOrderName || order.name || "there");
 
         const dedupeKey = `diet_plan_delivery:${orderId}`;
         const { data: existingDelivery, error: existingDeliveryError } = await supabase
