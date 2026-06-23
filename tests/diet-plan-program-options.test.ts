@@ -12,12 +12,12 @@ describe("diet-plan program option normalization", () => {
       "30-Day Men's Vitality Reset",
       "6-Day Free Detox Program",
     ])).toEqual([
-      "Deep Sleep Reset",
-      "Energy Restore",
-      "Age Well",
-      "Smoking & Alcohol Quit",
-      "Gut Reset",
-      "Men’s Vitality Reset",
+      "Deep Sleep Reset Program",
+      "Energy Restore Program",
+      "Age Reversal Program",
+      "Smoking & Alcohol Quit Program",
+      "Gut Reset Program",
+      "Men’s Vitality Reset Program",
       "Free Detox Program",
     ]);
   });
@@ -27,7 +27,7 @@ describe("diet-plan program option normalization", () => {
       "Age Well",
       "90-Day Biohacking Reset",
       "90-Day Age Reversal",
-    ])).toEqual(["Age Well"]);
+    ])).toEqual(["Age Reversal Program"]);
   });
 
   it("normalizes questionnaire program arrays without changing other fields", () => {
@@ -37,7 +37,7 @@ describe("diet-plan program option normalization", () => {
       goal: "Weight loss",
     })).toEqual({
       name: "Shubh",
-      programs: ["Deep Sleep Reset", "Energy Restore"],
+      programs: ["Deep Sleep Reset Program", "Energy Restore Program"],
       goal: "Weight loss",
     });
   });

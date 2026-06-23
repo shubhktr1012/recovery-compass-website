@@ -118,7 +118,7 @@ describe("admin diet plan manual order routes", () => {
         email: "CLIENT@EXAMPLE.COM",
         evidence: "whatsapp lead",
         paymentLinkUrl: "https://rzp.io/i/example",
-        questionnaireData: { name: "Client", programFocus: ["21-Day Deep Sleep Reset"] },
+        questionnaireData: { name: "Client", programFocus: ["Deep Sleep Reset Program"] },
         reason: "client sent info",
       })
     );

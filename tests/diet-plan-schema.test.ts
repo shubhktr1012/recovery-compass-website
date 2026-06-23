@@ -43,7 +43,7 @@ function validPlan() {
     meta: {
       clientLabel: "Shubh - Bengaluru",
       goal: "General wellness",
-      programs: ["Deep Sleep Reset"],
+      programs: ["Deep Sleep Reset Program"],
       isDualTrack: false,
     },
     about: ["This plan is built around the client."],

@@ -35,6 +35,11 @@ import {
     isDietPlanCartId,
 } from "@/lib/diet-plan-product";
 import type { LucideIcon } from "lucide-react";
+import {
+    calculateReferralDiscount,
+    normalizeReferralCode,
+    REFERRAL_STORAGE_KEY,
+} from "@/lib/referral-utils";
 
 type CreateOrderResponse = {
     id: string;
@@ -42,6 +47,17 @@ type CreateOrderResponse = {
     currency: string;
     keyId?: string;
     message?: string;
+    pricing?: {
+        subtotal: number;
+        discount: number;
+        total: number;
+    };
+};
+
+type AppliedReferral = {
+    code: string;
+    partnerName: string;
+    discountPct: number;
 };
 
 type RazorpaySuccessResponse = {
@@ -337,6 +353,8 @@ export default function CheckoutPage() {
     const [isProcessing, setIsProcessing] = useState(false);
     const [promoCode, setPromoCode] = useState("");
     const [promoError, setPromoError] = useState("");
+    const [appliedReferral, setAppliedReferral] = useState<AppliedReferral | null>(null);
+    const [isValidatingPromo, setIsValidatingPromo] = useState(false);
     const [showPromo, setShowPromo] = useState(false);
     const [programOrder, setProgramOrder] = useState<string[]>([]);
     const valueFeatures = getValueFeatures(items);
@@ -348,6 +366,11 @@ export default function CheckoutPage() {
     const paymentDescription = hasDietPlanAddon
         ? `${formatPaymentDescription(programItems.length)} + diet plan add-on`
         : formatPaymentDescription(programItems.length);
+    const programSubtotal = programItems.reduce((total, item) => total + (item.price || 0), 0);
+    const referralDiscount = appliedReferral
+        ? calculateReferralDiscount(programSubtotal * 100, appliedReferral.discountPct) / 100
+        : 0;
+    const totalDue = cartTotal - referralDiscount;
 
     // Redirect if not logged in or cart is empty (only after loading completes)
     useEffect(() => {
@@ -367,6 +390,14 @@ export default function CheckoutPage() {
             removeItem(DIET_PLAN_CART_ID);
         }
     }, [cartLoaded, hasDietPlanAddon, programItems.length, removeItem]);
+
+    useEffect(() => {
+        const storedCode = normalizeReferralCode(sessionStorage.getItem(REFERRAL_STORAGE_KEY));
+        if (storedCode) {
+            setPromoCode(storedCode);
+            setShowPromo(true);
+        }
+    }, []);
 
     useEffect(() => {
         const programIds = programItems.map((item) => item.id);
@@ -397,13 +428,45 @@ export default function CheckoutPage() {
         });
     };
 
-    const handlePromoApply = () => {
+    const handlePromoApply = async () => {
         setPromoError("");
-        // Placeholder: validate promo/referral code against backend
-        if (promoCode.trim().length === 0) return;
-        // For now, show a friendly "coming soon" message
-        setPromoError("Referral codes will be available at launch. Stay tuned!");
-        setTimeout(() => setPromoError(""), 3000);
+        setAppliedReferral(null);
+        const code = normalizeReferralCode(promoCode);
+        if (!code) return;
+
+        setIsValidatingPromo(true);
+        try {
+            const response = await fetch("/api/checkout/validate-referral", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ code }),
+            });
+            const data = (await response.json()) as {
+                code?: string;
+                discountPct?: number;
+                message?: string;
+                partnerName?: string;
+                valid?: boolean;
+            };
+
+            if (!response.ok || !data.valid || !data.code || !data.partnerName || !data.discountPct) {
+                sessionStorage.removeItem(REFERRAL_STORAGE_KEY);
+                throw new Error(data.message || "This referral code could not be applied.");
+            }
+
+            const referral = {
+                code: data.code,
+                partnerName: data.partnerName,
+                discountPct: data.discountPct,
+            };
+            setPromoCode(data.code);
+            setAppliedReferral(referral);
+            sessionStorage.setItem(REFERRAL_STORAGE_KEY, data.code);
+        } catch (error) {
+            setPromoError(getErrorMessage(error));
+        } finally {
+            setIsValidatingPromo(false);
+        }
     };
 
     // Helper to dynamically load the Razorpay script if it's not yet present
@@ -445,6 +508,7 @@ export default function CheckoutPage() {
                     amount: cartTotal,
                     items: normalizedItems,
                     programOrder,
+                    referralCode: appliedReferral?.code,
                     userId: user?.id,
                 }),
             });
@@ -730,15 +794,20 @@ export default function CheckoutPage() {
                                             <input
                                                 type="text"
                                                 value={promoCode}
-                                                onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                                                onChange={(e) => {
+                                                    setPromoCode(normalizeReferralCode(e.target.value));
+                                                    setAppliedReferral(null);
+                                                    setPromoError("");
+                                                }}
                                                 placeholder="Enter code"
                                                 className="flex-1 px-4 py-2.5 rounded-xl border border-[oklch(0.2475_0.0661_146.79)]/10 bg-white text-[13px] font-bold placeholder:text-[oklch(0.2475_0.0661_146.79)]/25 focus:outline-none focus:ring-2 focus:ring-[oklch(0.2475_0.0661_146.79)]/20 transition-all shadow-sm"
                                             />
                                             <Button
                                                 onClick={handlePromoApply}
+                                                disabled={isValidatingPromo || promoCode.length < 3}
                                                 className="rounded-xl px-5 bg-[oklch(0.2475_0.0661_146.79)] text-white hover:bg-[oklch(0.2475_0.0661_146.79)]/90 text-[13px] font-bold h-auto py-2.5 shadow-sm"
                                             >
-                                                Apply
+                                                {isValidatingPromo ? "Checking..." : "Apply"}
                                             </Button>
                                         </div>
                                         <AnimatePresence>
@@ -750,6 +819,15 @@ export default function CheckoutPage() {
                                                     className="text-xs text-amber-600 font-bold mt-2 pl-1"
                                                 >
                                                     {promoError}
+                                                </motion.p>
+                                            )}
+                                            {appliedReferral && (
+                                                <motion.p
+                                                    initial={{ opacity: 0, y: -4 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    className="mt-2 pl-1 text-xs font-bold text-emerald-700"
+                                                >
+                                                    {appliedReferral.discountPct}% referral discount applied via {appliedReferral.partnerName}.
                                                 </motion.p>
                                             )}
                                         </AnimatePresence>
@@ -764,6 +842,12 @@ export default function CheckoutPage() {
                                 <span>Subtotal</span>
                                 <span>₹{cartTotal.toLocaleString("en-IN")}</span>
                             </div>
+                            {appliedReferral && (
+                                <div className="flex justify-between items-center text-[14px] font-bold text-emerald-700">
+                                    <span>Referral discount ({appliedReferral.code})</span>
+                                    <span>-₹{referralDiscount.toLocaleString("en-IN")}</span>
+                                </div>
+                            )}
                             <div className="flex justify-between items-center text-[14px] font-medium text-[oklch(0.2475_0.0661_146.79)]/60">
                                 <span>Cloud Sync & Support</span>
                                 <span className="text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded text-[11px] uppercase tracking-widest border border-emerald-600/10">Included</span>
@@ -774,7 +858,7 @@ export default function CheckoutPage() {
                             </div>
                             <div className="flex justify-between items-end pt-5 mt-5 border-t border-dashed border-[oklch(0.2475_0.0661_146.79)]/15">
                                 <span className="font-bold text-[15px] text-[oklch(0.2475_0.0661_146.79)]">Total Due</span>
-                                <span className="font-erode font-semibold text-3xl tabular-nums text-[oklch(0.2475_0.0661_146.79)] leading-none tracking-tight">₹{cartTotal.toLocaleString("en-IN")}</span>
+                                <span className="font-erode font-semibold text-3xl tabular-nums text-[oklch(0.2475_0.0661_146.79)] leading-none tracking-tight">₹{totalDue.toLocaleString("en-IN")}</span>
                             </div>
                         </div>
 

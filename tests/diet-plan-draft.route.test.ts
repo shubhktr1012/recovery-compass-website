@@ -122,7 +122,7 @@ describe("PUT /api/diet-plan/draft", () => {
     expect(updateQuery.update).toHaveBeenCalledWith({
       email: "shubh@example.com",
       name: "Shubh",
-      questionnaire_data: { name: "Shubh", programs: ["Deep Sleep Reset"] },
+      questionnaire_data: { name: "Shubh", programs: ["Deep Sleep Reset Program"] },
     });
     expect(updateQuery.eq).toHaveBeenCalledWith("id", "00000000-0000-4000-8000-000000000000");
     expect(updateQuery.in).toHaveBeenCalledWith("status", ["awaiting_questionnaire", "failed"]);
@@ -162,9 +162,9 @@ describe("PUT /api/diet-plan/draft", () => {
     expect(updateQuery.update).toHaveBeenCalledWith({
       questionnaire_data: {
         programs: [
-          "Deep Sleep Reset",
-          "Energy Restore",
-          "Age Well",
+          "Deep Sleep Reset Program",
+          "Energy Restore Program",
+          "Age Reversal Program",
         ],
       },
     });

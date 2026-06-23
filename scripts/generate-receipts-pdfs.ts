@@ -18,7 +18,7 @@ type ReceiptSeed = {
 const receipts: ReceiptSeed[] = [
     {
         customerName: "James",
-        programName: "Deep Sleep Reset",
+        programName: "Deep Sleep Reset Program",
         amountFormatted: "₹2,599.00",
         orderId: "RC-INV-202601-001",
         receiptDate: "2026-01-21T10:00:00Z",
@@ -32,7 +32,7 @@ const receipts: ReceiptSeed[] = [
     },
     {
         customerName: "Tejas",
-        programName: "Energy Restore",
+        programName: "Energy Restore Program",
         amountFormatted: "₹1,499.00",
         orderId: "RC-INV-202602-003",
         receiptDate: "2026-02-18T10:00:00Z",
@@ -46,7 +46,7 @@ const receipts: ReceiptSeed[] = [
     },
     {
         customerName: "Vineeth",
-        programName: "Energy Restore",
+        programName: "Energy Restore Program",
         amountFormatted: "₹1,499.00",
         orderId: "RC-INV-202603-005",
         receiptDate: "2026-03-20T10:00:00Z",
@@ -60,14 +60,14 @@ const receipts: ReceiptSeed[] = [
     },
     {
         customerName: "Shubh Khatri",
-        programName: "Deep Sleep Reset",
+        programName: "Deep Sleep Reset Program",
         amountFormatted: "₹2,599.00",
         orderId: "RC-INV-202604-007",
         receiptDate: "2026-04-15T10:00:00Z",
     },
     {
         customerName: "Dev",
-        programName: "Men’s Vitality Reset",
+        programName: "Men’s Vitality Reset Program",
         amountFormatted: "₹4,999.00",
         orderId: "RC-INV-202604-008",
         receiptDate: "2026-04-18",

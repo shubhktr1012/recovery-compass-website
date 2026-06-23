@@ -143,9 +143,9 @@ export const WelcomeReceiptEmail = ({
                     {detoxPdfUrl ? (
                         <Section style={bonusBlock}>
                             <Text style={ctaEyebrow}>Included Bonus</Text>
-                            <Text style={ctaTitle}>Free 14-day Detox Program PDF</Text>
+                            <Text style={ctaTitle}>Free Detox Program PDF</Text>
                             <Text style={ctaText}>
-                                Your purchase includes a simple 14-day detox guide you can keep and revisit alongside your app program.
+                                Your purchase includes a simple detox guide you can keep and revisit alongside your app program.
                             </Text>
                             <Button href={detoxPdfUrl} style={bonusBtn}>
                                 Open Detox PDF

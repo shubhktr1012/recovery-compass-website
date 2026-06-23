@@ -122,9 +122,9 @@ export default function AppPurchaseWelcomeEmail({
                     {detoxPdfUrl ? (
                         <Section style={bonusCard}>
                             <Text style={eyebrow}>Included Bonus</Text>
-                            <Text style={cardTitle}>Free 14-day Detox Program PDF</Text>
+                            <Text style={cardTitle}>Free Detox Program PDF</Text>
                             <Text style={cardText}>
-                                Your purchase includes a simple 14-day detox guide you can keep and revisit alongside your app program.
+                                Your purchase includes a simple detox guide you can keep and revisit alongside your app program.
                             </Text>
                             <Button href={detoxPdfUrl} style={secondaryButton}>
                                 Open Detox PDF

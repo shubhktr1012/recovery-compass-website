@@ -15,6 +15,7 @@ import {
     type DietPlanCheckoutSlug,
 } from "@/lib/diet-plan-product";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { markReferralRedemptionRefunded, recordReferralRedemption } from "@/lib/referrals";
 export { supabaseAdmin };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -35,6 +36,7 @@ export interface CreateTransactionParams {
     amount: number; // in paise
     currency: string;
     items: TransactionItem[];
+    metadata?: Record<string, unknown>;
 }
 
 export interface MarkPaidParams {
@@ -163,6 +165,7 @@ export async function createTransaction(params: CreateTransactionParams) {
             items: normalizedItems,
             payment_status: "created",
             fulfillment_status: "pending",
+            metadata: params.metadata ?? null,
         })
         .select()
         .single();
@@ -268,6 +271,39 @@ export async function markTransactionFailed(providerOrderId: string, metadata?: 
         .eq("provider_order_id", providerOrderId);
 
     if (error) throw new Error(`Failed to mark transaction failed: ${error.message}`);
+}
+
+export async function markTransactionRefunded({
+    providerOrderId,
+    providerPaymentId,
+}: {
+    providerOrderId?: string | null;
+    providerPaymentId?: string | null;
+}) {
+    let query = supabaseAdmin
+        .from("transactions")
+        .select("id")
+        .eq("payment_status", "paid");
+
+    if (providerOrderId) {
+        query = query.eq("provider_order_id", providerOrderId);
+    } else if (providerPaymentId) {
+        query = query.eq("provider_payment_id", providerPaymentId);
+    } else {
+        throw new Error("A provider order or payment id is required for a refund.");
+    }
+
+    const { data: transaction, error: transactionError } = await query.maybeSingle();
+    if (transactionError) throw new Error(`Failed to resolve refunded transaction: ${transactionError.message}`);
+    if (!transaction) return;
+
+    const { error: refundError } = await supabaseAdmin
+        .from("transactions")
+        .update({ payment_status: "refunded" })
+        .eq("id", transaction.id);
+
+    if (refundError) throw new Error(`Failed to mark transaction refunded: ${refundError.message}`);
+    await markReferralRedemptionRefunded(transaction.id);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -507,6 +543,11 @@ async function attemptFulfillment(transactionId: string, source: FulfillmentSour
                 : {};
 
         if (txn.fulfillment_status === "fulfilled") {
+            await recordReferralRedemption({
+                metadata: txn.metadata,
+                transactionId,
+                userId: txn.user_id,
+            });
             return { transactionId, succeeded: true };
         }
 
@@ -648,7 +689,15 @@ async function attemptFulfillment(transactionId: string, source: FulfillmentSour
             console.error(`[Mail] Non-blocking failure sending welcome email for txn ${transactionId}:`, emailErr);
         }
 
-        // 4. Mark transaction as fully fulfilled
+        // 4. Record referral commission before final fulfillment so a ledger
+        // failure remains visible and retryable instead of losing attribution.
+        await recordReferralRedemption({
+            metadata: txn.metadata,
+            transactionId,
+            userId: txn.user_id,
+        });
+
+        // 5. Mark transaction as fully fulfilled
         const { error: fulfillmentError } = await supabaseAdmin
             .from("transactions")
             .update({

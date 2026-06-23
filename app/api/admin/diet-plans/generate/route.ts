@@ -8,16 +8,20 @@ import {
 } from "@/lib/admin/diet-plan-actions";
 import { recordAdminAuditLog } from "@/lib/admin/audit";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { isDietPlanGenerationStale } from "@/lib/diet-plan-generation-state";
 
 type DietPlanOrder = {
   email: string | null;
   id: string;
   manual_payment_confirmed_at: string | null;
+  claimed_at: string | null;
   source: string | null;
   status: string | null;
+  updated_at: string | null;
 };
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 300;
 
 function getErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : "Invalid request.";
@@ -53,7 +57,7 @@ export async function POST(request: NextRequest) {
   try {
     const { data: order, error } = await supabaseAdmin
       .from("diet_plan_orders")
-      .select("id,email,status,source,manual_payment_confirmed_at")
+      .select("id,email,status,source,manual_payment_confirmed_at,claimed_at,updated_at")
       .eq("id", parsed.orderId)
       .maybeSingle();
 
@@ -66,7 +70,13 @@ export async function POST(request: NextRequest) {
     }
 
     const dietOrder = order as DietPlanOrder;
-    if (!["pending", "failed"].includes(dietOrder.status ?? "")) {
+    const isStaleGeneration = isDietPlanGenerationStale({
+      claimedAt: dietOrder.claimed_at,
+      status: dietOrder.status,
+      updatedAt: dietOrder.updated_at,
+    });
+
+    if (!["pending", "failed"].includes(dietOrder.status ?? "") && !isStaleGeneration) {
       return NextResponse.json(
         { message: `Order is not ready for generation. Current status: ${dietOrder.status ?? "unknown"}.` },
         { status: 409 }
@@ -88,6 +98,7 @@ export async function POST(request: NextRequest) {
         orderId: parsed.orderId,
         source: dietOrder.source,
         status: dietOrder.status,
+        recoveredStaleAttempt: isStaleGeneration,
       },
       reason: parsed.reason,
       targetEmail: dietOrder.email,

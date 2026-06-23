@@ -9,7 +9,9 @@ import {
 import { MAX_CART_ITEMS } from "@/lib/program-commerce-policy";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { isDietPlanCheckoutSlug } from "@/lib/diet-plan-product";
-import type { CanonicalProgramSlug } from "@/lib/public-programs";
+import { DIET_PLAN_ADDON_PRICE_INR } from "@/lib/diet-plan-product";
+import { checkoutPrograms, type CanonicalProgramSlug } from "@/lib/public-programs";
+import { calculateReferralDiscount, validateReferralForCheckout } from "@/lib/referrals";
 
 function getErrorMessage(error: unknown) {
     if (error instanceof Error) {
@@ -77,6 +79,31 @@ function normalizeProgramOrder(
     };
 }
 
+function applyAuthoritativePrices(items: TransactionItem[]) {
+    return items.map((item) => {
+        if (isDietPlanCheckoutSlug(item.program_slug)) {
+            return {
+                ...item,
+                title: "Custom Diet Plan",
+                price_inr: DIET_PLAN_ADDON_PRICE_INR,
+                quantity: 1,
+            };
+        }
+
+        const program = checkoutPrograms.find((candidate) => candidate.dbSlug === item.program_slug);
+        if (!program?.priceInr) {
+            throw new Error(`No checkout price configured for ${item.program_slug}.`);
+        }
+
+        return {
+            ...item,
+            title: program.title,
+            price_inr: program.priceInr,
+            quantity: 1,
+        };
+    });
+}
+
 export async function POST(req: NextRequest) {
     const razorpayKeyId = process.env.RAZORPAY_KEY_ID;
     const razorpayKeySecret = process.env.RAZORPAY_KEY_SECRET;
@@ -94,7 +121,7 @@ export async function POST(req: NextRequest) {
     });
 
     try {
-        const { amount, items, userId, programOrder } = await req.json();
+        const { items, userId, programOrder, referralCode } = await req.json();
 
         const supabase = await createSupabaseServerClient();
         const {
@@ -104,10 +131,6 @@ export async function POST(req: NextRequest) {
 
         if (userError || !user) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-        }
-
-        if (!amount || amount <= 0) {
-            return NextResponse.json({ message: "Invalid amount" }, { status: 400 });
         }
 
         if (userId && userId !== user.id) {
@@ -132,8 +155,9 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: "No valid checkout items were found." }, { status: 400 });
         }
 
+        const pricedItems = applyAuthoritativePrices(normalizedItems);
         const { rankedItems, error: programOrderError } = normalizeProgramOrder(
-            normalizedItems,
+            pricedItems,
             programOrder
         );
 
@@ -141,8 +165,52 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: programOrderError }, { status: 400 });
         }
 
-        // Razorpay expects amount in paise (multiply by 100)
-        const amountInPaise = amount * 100;
+        const originalAmountInPaise = rankedItems.reduce(
+            (total, item) => total + item.price_inr * item.quantity * 100,
+            0
+        );
+        const programSubtotalInPaise = rankedItems
+            .filter((item) => !isDietPlanCheckoutSlug(item.program_slug))
+            .reduce((total, item) => total + item.price_inr * item.quantity * 100, 0);
+
+        let discountAmountInPaise = 0;
+        let referralMetadata: Record<string, unknown> | null = null;
+
+        if (referralCode) {
+            if (programSubtotalInPaise <= 0) {
+                return NextResponse.json(
+                    { message: "Referral codes apply to program purchases only." },
+                    { status: 400 }
+                );
+            }
+
+            const referral = await validateReferralForCheckout({
+                code: referralCode,
+                userEmail: user.email,
+                userId: canonicalUserId,
+            });
+
+            if (!referral.valid) {
+                return NextResponse.json({ message: referral.reason }, { status: 400 });
+            }
+
+            discountAmountInPaise = calculateReferralDiscount(
+                programSubtotalInPaise,
+                referral.discountPct
+            );
+            referralMetadata = {
+                partnerId: referral.partnerId,
+                partnerName: referral.partnerName,
+                code: referral.code,
+                discountPct: referral.discountPct,
+                commissionPct: referral.commissionPct,
+                originalAmountPaise: originalAmountInPaise,
+                discountAmountPaise: discountAmountInPaise,
+                finalAmountPaise: originalAmountInPaise - discountAmountInPaise,
+            };
+        }
+
+        const amountInPaise = originalAmountInPaise - discountAmountInPaise;
 
         const order = await razorpay.orders.create({
             amount: amountInPaise,
@@ -151,6 +219,7 @@ export async function POST(req: NextRequest) {
             notes: {
                 payment_source: "web_checkout",
                 user_id: canonicalUserId,
+                ...(referralMetadata ? { referral_code: String(referralMetadata.code) } : {}),
             },
         });
 
@@ -161,11 +230,17 @@ export async function POST(req: NextRequest) {
             amount: amountInPaise,
             currency: "INR",
             items: rankedItems,
+            metadata: referralMetadata ? { referral: referralMetadata } : undefined,
         });
 
         return NextResponse.json({
             ...order,
             keyId: razorpayKeyId,
+            pricing: {
+                subtotal: originalAmountInPaise,
+                discount: discountAmountInPaise,
+                total: amountInPaise,
+            },
         });
     } catch (error: unknown) {
         console.error("Razorpay Order Creation Error:", error);
