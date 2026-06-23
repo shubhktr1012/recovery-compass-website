@@ -9,6 +9,7 @@ const cleanAdminRoutes = new Set([
   "/overview",
   "/programs",
   "/purchases",
+  "/referrals",
   "/sign-in",
   "/users",
 ]);
