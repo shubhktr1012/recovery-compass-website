@@ -54,10 +54,5 @@ documents/
 .agent/
 .agents/
 
-# Graphify local metadata
-graphify-out/manifest.json
-graphify-out/cost.json
-
-# Optional: Ignore the cache to keep the repo size small
-# (Re-building will take a few seconds longer for others)
-graphify-out/cache/
+# Graphify lives at workspace root (recovery-compass/graphify-out/), not in this repo
+graphify-out/
