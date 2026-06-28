@@ -4,6 +4,7 @@ import { DataTable } from "@/components/admin/DataTable";
 import { KpiGrid } from "@/components/admin/KpiCard";
 import { ProgramGrantPanel } from "@/components/admin/ProgramGrantPanel";
 import { SupportWorkflowPanel } from "@/components/admin/SupportWorkflowPanel";
+import { UserAiSummaryPanel } from "@/components/admin/UserAiSummaryPanel";
 import { getAdminUserDetail } from "@/lib/admin/data";
 import { formatDateTime } from "@/lib/admin/format";
 import { canGrantPrograms, getAdminAccess } from "@/lib/admin/auth";
@@ -71,6 +72,7 @@ export default async function AdminUserDetailPage({
           },
         ]}
       />
+      <UserAiSummaryPanel userId={user.profile.id} />
       <SupportWorkflowPanel
         snippets={supportSnippets}
         tableLinks={tableLinks}
