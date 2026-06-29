@@ -2,12 +2,15 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Loader2, RefreshCw, Sparkles } from "lucide-react";
+import { SummarySnapshotSection } from "@/components/admin/SummarySnapshotSection";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { CopySupportButton } from "@/components/admin/CopySupportButton";
-import { cn } from "@/lib/utils";
-import type { AdminUserSummary, AdminUserSummarySection } from "@/lib/admin/user-summary-schema";
-import { getSectionDisplayFacts } from "@/lib/admin/user-summary-schema";
+import type { AdminUserSummary } from "@/lib/admin/user-summary-schema";
+import { isAdminUserSummaryV3 } from "@/lib/admin/user-summary-schema";
 
 type SummaryPayload = {
   cached: boolean;
@@ -18,97 +21,22 @@ type SummaryPayload = {
   model: string;
   plainText: string;
   stale?: boolean;
-  summary: AdminUserSummary;
+  summary: AdminUserSummary | Record<string, unknown>;
 };
 
-const NARRATIVE_SECTIONS = new Set<keyof AdminUserSummary>([
-  "salesAndOutreach",
-  "risksAndOpenIssues",
-]);
-
-const SECTION_LABELS: Record<keyof AdminUserSummary | "nextBestAction", string> = {
-  appUsageAndActivity: "App usage & activity",
-  communication: "Communication",
-  dietAndAddOns: "Diet & add-ons",
-  headline: "Headline",
-  nextBestAction: "Next best action",
-  overview: "Overview",
-  profileAndIntent: "Profile & intent",
-  programOwnership: "Program ownership",
-  purchasesAndRevenue: "Purchases & revenue",
-  risksAndOpenIssues: "Risks & open issues",
-  salesAndOutreach: "Sales & outreach",
-};
-
-function SummarySectionCard({
-  highlight,
-  label,
-  narrative,
-  section,
-}: {
+const SNAPSHOT_SECTIONS: Array<{
   highlight?: boolean;
-  label: string;
-  narrative?: boolean;
-  section: AdminUserSummarySection;
-}) {
-  const facts = getSectionDisplayFacts(section);
-  const showSummary = Boolean(section.summary.trim());
-  const showBullets = narrative && section.bullets.length > 0;
-
-  return (
-    <Card
-      className={cn(
-        "border-white/10 bg-black/15 text-white shadow-none",
-        highlight
-          ? "border-teal-200/20 bg-teal-300/[0.08]"
-          : "border-white/10 bg-black/15"
-      )}
-    >
-      <CardContent className="p-4">
-      <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-white/45">
-        {label}
-      </h3>
-
-      {showSummary ? (
-        <p className="mt-3 text-sm leading-6 text-white/72">{section.summary}</p>
-      ) : null}
-
-      {facts.length > 0 ? (
-        <dl
-          className={cn(
-            "space-y-2.5",
-            showSummary ? "mt-3" : "mt-3"
-          )}
-        >
-          {facts.map((fact) => (
-            <div className="grid gap-1 sm:grid-cols-[minmax(7rem,34%)_1fr] sm:gap-3" key={`${fact.label}-${fact.value}`}>
-              <dt className="text-xs font-medium uppercase tracking-[0.12em] text-white/42">
-                {fact.label}
-              </dt>
-              <dd className="text-sm leading-6 text-white/82">{fact.value}</dd>
-            </div>
-          ))}
-        </dl>
-      ) : null}
-
-      {showBullets ? (
-        <ul className="mt-3 space-y-2 text-sm leading-6 text-white/66">
-          {section.bullets.map((bullet) => (
-            <li className="flex gap-2" key={bullet}>
-              <span className="text-white/30">•</span>
-              <span>{bullet}</span>
-            </li>
-          ))}
-        </ul>
-      ) : null}
-
-      {!showSummary && facts.length === 0 && !showBullets ? (
-        <p className="mt-3 text-sm text-white/45">No data for this section.</p>
-      ) : null}
-      </CardContent>
-    </Card>
-  );
-}
+  key: keyof AdminUserSummary["snapshot"];
+  title: string;
+}> = [
+  { key: "overview", title: "Overview" },
+  { key: "programOwnership", title: "Program ownership" },
+  { key: "appUsageAndActivity", highlight: true, title: "App usage & activity" },
+  { key: "purchasesAndRevenue", title: "Purchases & revenue" },
+  { key: "dietAndAddOns", title: "Diet & add-ons" },
+  { key: "profileAndIntent", title: "Profile & intent" },
+  { key: "communication", title: "Communication" },
+];
 
 export function UserAiSummaryPanel({ userId }: { userId: string }) {
   const [payload, setPayload] = useState<SummaryPayload | null>(null);
@@ -204,44 +132,26 @@ export function UserAiSummaryPanel({ userId }: { userId: string }) {
     return () => controller.abort();
   }, [loadSummary]);
 
-  const sectionEntries = useMemo(() => {
-    if (!payload?.summary) {
-      return [];
+  const summary = useMemo(() => {
+    if (!payload?.summary || !isAdminUserSummaryV3(payload.summary)) {
+      return null;
     }
 
-    return (
-      [
-        ["overview", payload.summary.overview],
-        ["programOwnership", payload.summary.programOwnership],
-        ["appUsageAndActivity", payload.summary.appUsageAndActivity],
-        ["purchasesAndRevenue", payload.summary.purchasesAndRevenue],
-        ["dietAndAddOns", payload.summary.dietAndAddOns],
-        ["profileAndIntent", payload.summary.profileAndIntent],
-        ["communication", payload.summary.communication],
-        ["salesAndOutreach", payload.summary.salesAndOutreach],
-        ["risksAndOpenIssues", payload.summary.risksAndOpenIssues],
-      ] as Array<[keyof AdminUserSummary, AdminUserSummarySection]>
-    ).map(([key, section]) => ({
-      highlight: key === "appUsageAndActivity" || key === "salesAndOutreach",
-      key,
-      label: SECTION_LABELS[key],
-      narrative: NARRATIVE_SECTIONS.has(key),
-      section,
-    }));
+    return payload.summary;
   }, [payload]);
 
   return (
-    <section className="overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_0%_0%,rgba(167,139,250,0.14),transparent_34%),rgba(255,255,255,0.045)]">
-      <div className="border-b border-white/10 p-5">
+    <Card className="overflow-hidden border-white/10 bg-[radial-gradient(circle_at_0%_0%,rgba(167,139,250,0.14),transparent_34%),rgba(255,255,255,0.045)] text-white shadow-none">
+      <CardHeader className="border-b border-white/10">
         <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div>
             <div className="flex items-center gap-2 text-violet-100">
               <Sparkles className="size-5" />
-              <h2 className="text-lg font-semibold">AI user summary</h2>
+              <CardTitle className="text-lg font-semibold text-white">AI user summary</CardTitle>
             </div>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-white/58">
-              Gemini-generated snapshot for support and sales outreach. Cached until you
-              regenerate.
+              Fixed snapshot rows from Supabase, plus Gemini insights for outreach. Cached until
+              you regenerate.
             </p>
           </div>
 
@@ -273,9 +183,9 @@ export function UserAiSummaryPanel({ userId }: { userId: string }) {
             </Button>
           </div>
         </div>
-      </div>
+      </CardHeader>
 
-      <div className="space-y-4 p-5">
+      <CardContent className="space-y-4 p-5">
         {isLoading ? (
           <div className="flex items-center gap-3 rounded-[1.35rem] border border-white/10 bg-black/15 px-4 py-6 text-sm text-white/60">
             <Loader2 className="size-4 animate-spin" />
@@ -284,50 +194,104 @@ export function UserAiSummaryPanel({ userId }: { userId: string }) {
         ) : null}
 
         {error ? (
-          <div className="rounded-[1.35rem] border border-rose-200/15 bg-rose-300/10 px-4 py-3 text-sm text-rose-50">
-            {error}
-          </div>
+          <Alert className="border-rose-200/15 bg-rose-300/10 text-rose-50">
+            <AlertTitle>Summary failed</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
         ) : null}
 
-        {payload?.summary ? (
+        {summary ? (
           <>
-            <div className="rounded-[1.35rem] border border-violet-200/15 bg-violet-300/10 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-100/70">
-                Headline
-              </p>
-              <p className="mt-2 text-base font-medium leading-7 text-white">
-                {payload.summary.headline}
-              </p>
-              <p className="mt-3 text-xs text-white/45">
-                Generated {new Date(payload.generatedAt).toLocaleString("en-IN")} by{" "}
-                {payload.generatedByAdminEmail} · {payload.model}
-                {payload.cached ? " · cached" : " · fresh"}
-              </p>
-            </div>
+            <Card className="border-violet-200/15 bg-violet-300/10 text-white shadow-none">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-100/70">
+                  Headline
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-base font-medium leading-7 text-white">
+                  {summary.insights.headline}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <Badge className="bg-white/10 text-white hover:bg-white/10" variant="outline">
+                    {payload?.model}
+                  </Badge>
+                  <Badge className="bg-white/10 text-white hover:bg-white/10" variant="outline">
+                    {payload?.cached ? "Cached" : "Fresh"}
+                  </Badge>
+                  {payload?.generatedAt ? (
+                    <Badge className="bg-white/10 text-white hover:bg-white/10" variant="outline">
+                      {new Date(payload.generatedAt).toLocaleString("en-IN")}
+                    </Badge>
+                  ) : null}
+                </div>
+              </CardContent>
+            </Card>
 
             <div className="grid gap-4 xl:grid-cols-2">
-              {sectionEntries.map((entry) => (
-                <SummarySectionCard
-                  highlight={entry.highlight}
-                  key={entry.key}
-                  label={entry.label}
-                  narrative={entry.narrative}
-                  section={entry.section}
+              {SNAPSHOT_SECTIONS.map((section) => (
+                <SummarySnapshotSection
+                  highlight={section.highlight}
+                  key={section.key}
+                  rows={summary.snapshot[section.key]}
+                  title={section.title}
                 />
               ))}
             </div>
 
-            <article className="rounded-[1.35rem] border border-teal-200/20 bg-teal-300/[0.08] p-4">
-              <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-100/75">
-                {SECTION_LABELS.nextBestAction}
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-white/82">
-                {payload.summary.nextBestAction}
-              </p>
-            </article>
+            <Separator className="bg-white/10" />
 
-            {payload.context ? (
-              <div className="rounded-[1.35rem] border border-white/10 bg-black/15">
+            <Card className="border-teal-200/20 bg-teal-300/[0.08] text-white shadow-none">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-100/75">
+                  Sales & outreach
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <p className="text-sm text-white/70">
+                  <span className="font-medium text-white/45">Tone: </span>
+                  {summary.insights.recommendedTone}
+                </p>
+                <ul className="space-y-2 text-sm leading-6 text-white/82">
+                  {summary.insights.salesTalkingPoints.map((point) => (
+                    <li className="flex gap-2" key={point}>
+                      <span className="text-white/30">•</span>
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+
+            {summary.insights.risks.length > 0 ? (
+              <div className="space-y-2">
+                {summary.insights.risks.map((risk) => (
+                  <Alert
+                    className="border-amber-200/15 bg-amber-300/10 text-amber-50"
+                    key={risk}
+                  >
+                    <AlertTitle className="text-amber-100">Risk</AlertTitle>
+                    <AlertDescription className="text-amber-50/90">{risk}</AlertDescription>
+                  </Alert>
+                ))}
+              </div>
+            ) : null}
+
+            <Card className="border-teal-200/20 bg-teal-300/[0.08] text-white shadow-none">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-100/75">
+                  Next best action
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm leading-6 text-white/82">
+                  {summary.insights.nextBestAction}
+                </p>
+              </CardContent>
+            </Card>
+
+            {payload?.context ? (
+              <Card className="border-white/10 bg-black/15 text-white shadow-none">
                 <button
                   className="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium text-white/70"
                   onClick={() => setShowSources((current) => !current)}
@@ -337,15 +301,24 @@ export function UserAiSummaryPanel({ userId }: { userId: string }) {
                   <span className="text-xs text-white/40">{showSources ? "Hide" : "Show"}</span>
                 </button>
                 {showSources ? (
-                  <pre className="max-h-80 overflow-auto border-t border-white/10 px-4 py-3 text-xs leading-5 text-white/55">
-                    {JSON.stringify(payload.context, null, 2)}
-                  </pre>
+                  <CardContent className="border-t border-white/10 px-0 pb-0 pt-0">
+                    <pre className="max-h-80 overflow-auto px-4 py-3 text-xs leading-5 text-white/55">
+                      {JSON.stringify(payload.context, null, 2)}
+                    </pre>
+                  </CardContent>
                 ) : null}
-              </div>
+              </Card>
             ) : null}
           </>
+        ) : payload && !summary ? (
+          <Alert className="border-amber-200/15 bg-amber-300/10 text-amber-50">
+            <AlertTitle>Summary format outdated</AlertTitle>
+            <AlertDescription>
+              Tap Regenerate to rebuild this summary in the new fixed-row format.
+            </AlertDescription>
+          </Alert>
         ) : null}
-      </div>
-    </section>
+      </CardContent>
+    </Card>
   );
 }

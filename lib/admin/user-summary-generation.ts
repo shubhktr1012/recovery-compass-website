@@ -1,9 +1,14 @@
+import type { AdminUserSummaryContext } from "@/lib/admin/user-summary-context";
 import {
-  ADMIN_USER_SUMMARY_RESPONSE_SCHEMA,
-  validateAdminUserSummaryJson,
+  ADMIN_USER_SUMMARY_INSIGHTS_SCHEMA,
+  validateAdminUserSummaryInsights,
   type AdminUserSummary,
+  type AdminUserSummaryInsights,
 } from "@/lib/admin/user-summary-schema";
-import { dedupeAdminUserSummaryBullets } from "@/lib/admin/user-summary-dedupe";
+import {
+  ADMIN_USER_SUMMARY_SCHEMA_VERSION,
+  buildAdminUserSummarySnapshot,
+} from "@/lib/admin/user-summary-snapshot";
 
 function resolveGeminiProvider(): { provider: "gemini" } | { error: string } {
   const requestedProvider = process.env.DIET_PLAN_AI_PROVIDER?.trim().toLowerCase();
@@ -23,7 +28,7 @@ function resolveGeminiProvider(): { provider: "gemini" } | { error: string } {
 
 const DEFAULT_ADMIN_USER_SUMMARY_MODEL = "gemini-3.5-flash";
 const DEFAULT_GEMINI_FALLBACK_MODEL = "gemini-2.5-flash";
-const DEFAULT_MAX_OUTPUT_TOKENS = 8192;
+const DEFAULT_MAX_OUTPUT_TOKENS = 4096;
 const MAX_TOKENS_RETRY_MULTIPLIER = 2;
 const RETRYABLE_GEMINI_STATUSES = new Set([429, 500, 502, 503]);
 const GEMINI_RETRY_DELAYS_MS = [1000, 2500];
@@ -82,35 +87,19 @@ function parseGeminiApiStatus(message: string) {
   return match ? Number.parseInt(match[1] ?? "", 10) : null;
 }
 
-export const ADMIN_USER_SUMMARY_SYSTEM_PROMPT = `You are Recovery Compass's internal admin assistant. You write factual, categorized user summaries for support and sales teams (Anjan and ops).
+export const ADMIN_USER_SUMMARY_SYSTEM_PROMPT = `You are Recovery Compass's internal admin assistant for support and sales (Anjan and ops).
+
+The user snapshot is already computed server-side and shown in the admin UI. Your job is insights only.
 
 Rules:
-- Use ONLY facts present in the provided JSON context. Label inferences clearly when unavoidable.
-- No medical advice. Do not diagnose or prescribe.
-- Distinguish paid program owners, Free Detox-only users, and prospects with no app activity.
-- When the user has program access but no web transactions, note likely app-store purchase.
-- When data is missing, say so briefly in the relevant section instead of inventing details.
-- Keep bullets concise and actionable (max 4 per section).
-- Prefer scannable data points over paragraphs. Use the facts array with short label and value strings (e.g. {"label":"Engagement","value":"Active"}, {"label":"Free Detox","value":"Day 2 of 6"}).
-- For factual sections (overview, profileAndIntent, programOwnership, appUsageAndActivity, purchasesAndRevenue, dietAndAddOns, communication): put almost everything in facts; leave summary empty unless one short interpretive note is needed.
-- For narrative sections (salesAndOutreach, risksAndOpenIssues): use facts for concrete items, one short summary sentence if helpful, and bullets only for talking points or risk items that do not fit label-value form.
-- Keep summary to at most one short sentence when used. Never write multi-sentence paragraphs.
-- Write for an Indian wellness product context.
-- Do not repeat the same fact in more than one section. If a fact fits multiple sections, put it in the most specific section only.
-- The admin page already shows email, program count, transaction count, onboarding, and preference KPIs plus detail tables below — do not restate raw counts unless you add interpretation (e.g. "only 1 of 5 programs active").
-
-Section ownership (each fact belongs in ONE section only):
-- headline: One-line persona snapshot. No detail bullets.
-- overview: Account type bucket (prospect / Free Detox / paid owner), signup recency, onboarding yes/no. No program day detail, no spend, no questionnaire answers.
-- profileAndIntent: Questionnaire answers, primary concern, web leads, stated goals. No program progress or engagement.
-- programOwnership: Which programs are owned, queue rank, paused/completed/scheduled state. No day/card engagement metrics.
-- appUsageAndActivity: Engagement level, last activity, day/card progress, Free Detox progress (day X of 6), journal/check-ins, recent events. Do not re-list owned program names or purchase history.
-- purchasesAndRevenue: Web transactions, spend, referral redemptions. No diet-plan order detail.
-- dietAndAddOns: Diet plan orders and delivery status only.
-- communication: Email delivery, push/WhatsApp consent, notification settings. No sales angles.
-- salesAndOutreach: Pitch framing, talking points, and recommended tone for WhatsApp/call. Reference facts by implication; do not re-copy bullets from other sections.
-- risksAndOpenIssues: Blockers and open issues not already covered elsewhere (stuck orders, delivery failures, long inactivity).
-- nextBestAction: One concrete action for the admin. No section recap.`;
+- Use ONLY facts from the provided snapshot and data gaps. No medical advice.
+- Do NOT restate snapshot rows, counts, program names, spend, or engagement metrics.
+- headline: one-line persona for this user.
+- salesTalkingPoints: 1-3 concrete WhatsApp/call angles (not generic).
+- recommendedTone: short tone guidance (e.g. warm, direct, celebratory).
+- risks: 0-3 blockers or follow-up flags; use empty array if none.
+- nextBestAction: one specific action for the admin now.
+- Write for an Indian wellness product context. Be brief.`;
 
 function getErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : "Unknown user summary generation error";
@@ -136,26 +125,26 @@ function extractJsonObject(text: string) {
   return clean.slice(firstBrace, lastBrace + 1);
 }
 
-function parseSummaryJson(rawText: string): Record<string, unknown> {
+function parseInsightsJson(rawText: string): Record<string, unknown> {
   const cleanJson = extractJsonObject(rawText);
   const parsed = JSON.parse(cleanJson);
 
   if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-    throw new Error("User summary response was not a JSON object");
+    throw new Error("User summary insights response was not a JSON object");
   }
 
   return parsed as Record<string, unknown>;
 }
 
-function parseAndValidateSummaryJson(rawText: string): AdminUserSummary {
-  const parsed = parseSummaryJson(rawText);
-  const validation = validateAdminUserSummaryJson(parsed);
+function parseAndValidateInsightsJson(rawText: string): AdminUserSummaryInsights {
+  const parsed = parseInsightsJson(rawText);
+  const validation = validateAdminUserSummaryInsights(parsed);
 
   if (!validation.success) {
-    throw new Error(`User summary JSON failed validation: ${validation.errors.slice(0, 8).join("; ")}`);
+    throw new Error(`User summary insights failed validation: ${validation.errors.slice(0, 8).join("; ")}`);
   }
 
-  return dedupeAdminUserSummaryBullets(validation.data);
+  return validation.data;
 }
 
 function buildRepairPrompt(prompt: string, validationError: string) {
@@ -165,18 +154,22 @@ VALIDATION RETRY
 The previous response failed validation:
 ${validationError}
 
-Return the complete summary JSON again. Raw JSON only.`;
+Return the complete insights JSON again. Raw JSON only.`;
 }
 
-export function buildAdminUserSummaryPrompt(contextJson: Record<string, unknown>) {
-  return `Create an admin user summary from this Recovery Compass user context JSON.
+export function buildAdminUserSummaryInsightsPrompt(args: {
+  dataGaps: string[];
+  snapshot: AdminUserSummary["snapshot"];
+}) {
+  return `Write admin user summary insights from this Recovery Compass snapshot.
 
-Return JSON matching the required schema with all sections populated. Use empty-state copy when a section has no data.
-Use facts (label + value pairs) as the primary format. Leave summary empty when facts are enough.
-Be concise: at most 6 facts per section, at most 4 bullets, and at most one short summary sentence when needed.
+The snapshot is already visible to the admin — do not repeat its values.
 
-USER CONTEXT:
-${JSON.stringify(contextJson, null, 2)}`;
+DATA GAPS:
+${args.dataGaps.length > 0 ? args.dataGaps.map((gap) => `- ${gap}`).join("\n") : "- None"}
+
+USER SNAPSHOT:
+${JSON.stringify(args.snapshot, null, 2)}`;
 }
 
 async function callGeminiModelOnce({
@@ -191,7 +184,7 @@ async function callGeminiModelOnce({
   const generationConfig: Record<string, unknown> = {
     maxOutputTokens,
     responseMimeType: "application/json",
-    responseJsonSchema: ADMIN_USER_SUMMARY_RESPONSE_SCHEMA,
+    responseJsonSchema: ADMIN_USER_SUMMARY_INSIGHTS_SCHEMA,
   };
 
   if (!model.startsWith("gemini-3.")) {
@@ -244,7 +237,7 @@ async function callGeminiModelOnce({
   return rawText;
 }
 
-async function callGeminiForUserSummary(
+async function callGeminiForUserSummaryInsights(
   prompt: string,
   options: { maxOutputTokens?: number } = {}
 ) {
@@ -306,7 +299,7 @@ async function callGeminiForUserSummary(
 }
 
 export async function generateAdminUserSummary(
-  contextJson: Record<string, unknown>
+  context: AdminUserSummaryContext
 ): Promise<{ model: string; summary: AdminUserSummary }> {
   const provider = resolveGeminiProvider();
   if ("error" in provider) {
@@ -317,17 +310,31 @@ export async function generateAdminUserSummary(
     throw new Error("Admin user summaries currently require Gemini (set DIET_PLAN_AI_PROVIDER=gemini).");
   }
 
-  const prompt = buildAdminUserSummaryPrompt(contextJson);
-  const first = await callGeminiForUserSummary(prompt);
+  const snapshot = buildAdminUserSummarySnapshot(context);
+  const prompt = buildAdminUserSummaryInsightsPrompt({
+    dataGaps: context.dataGaps,
+    snapshot,
+  });
+  const first = await callGeminiForUserSummaryInsights(prompt);
 
+  let insights: AdminUserSummaryInsights;
   try {
-    return { model: first.model, summary: parseAndValidateSummaryJson(first.rawText) };
+    insights = parseAndValidateInsightsJson(first.rawText);
   } catch (error) {
     const validationError = getErrorMessage(error);
-    console.warn("[AdminUserSummary] Validation failed, retrying once.", validationError);
-    const retry = await callGeminiForUserSummary(buildRepairPrompt(prompt, validationError));
-    return { model: retry.model, summary: parseAndValidateSummaryJson(retry.rawText) };
+    console.warn("[AdminUserSummary] Insights validation failed, retrying once.", validationError);
+    const retry = await callGeminiForUserSummaryInsights(buildRepairPrompt(prompt, validationError));
+    insights = parseAndValidateInsightsJson(retry.rawText);
   }
+
+  return {
+    model: first.model,
+    summary: {
+      schemaVersion: ADMIN_USER_SUMMARY_SCHEMA_VERSION,
+      snapshot,
+      insights,
+    },
+  };
 }
 
 export function resolveAdminUserSummaryModel() {
@@ -336,4 +343,14 @@ export function resolveAdminUserSummaryModel() {
     process.env.GEMINI_MODEL ||
     DEFAULT_ADMIN_USER_SUMMARY_MODEL
   );
+}
+
+// Backward-compatible export for tests that referenced the old prompt builder name.
+export function buildAdminUserSummaryPrompt(contextJson: Record<string, unknown>) {
+  return buildAdminUserSummaryInsightsPrompt({
+    dataGaps: Array.isArray(contextJson.dataGaps)
+      ? contextJson.dataGaps.filter((gap): gap is string => typeof gap === "string")
+      : [],
+    snapshot: contextJson.snapshot as AdminUserSummary["snapshot"],
+  });
 }

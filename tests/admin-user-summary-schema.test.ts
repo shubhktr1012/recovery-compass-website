@@ -3,95 +3,111 @@ import { describe, expect, it } from "vitest";
 import { buildAppUsageSnapshot } from "@/lib/admin/user-app-usage";
 import {
   formatAdminUserSummaryPlainText,
-  getSectionDisplayFacts,
-  validateAdminUserSummaryJson,
+  isAdminUserSummaryV3,
+  validateAdminUserSummaryInsights,
 } from "@/lib/admin/user-summary-schema";
+import { buildAdminUserSummarySnapshot } from "@/lib/admin/user-summary-snapshot";
+import type { AdminUserSummaryContext } from "@/lib/admin/user-summary-context";
 
-describe("admin user summary schema", () => {
-  const validSummary = {
-    headline: "Active Free Detox user exploring paid programs",
-    overview: {
-      summary: "",
-      facts: [
-        { label: "Account type", value: "Free Detox user" },
-        { label: "Onboarding", value: "Complete" },
-      ],
-      bullets: [],
-    },
-    programOwnership: {
-      summary: "",
-      facts: [{ label: "Free Detox", value: "Activated" }],
-      bullets: [],
-    },
-    appUsageAndActivity: {
-      summary: "",
-      facts: [
-        { label: "Free Detox", value: "Day 2 of 6" },
-        { label: "Last active", value: "Yesterday" },
-      ],
-      bullets: [],
-    },
-    purchasesAndRevenue: {
-      summary: "",
-      facts: [{ label: "Web purchases", value: "None" }],
-      bullets: [],
-    },
-    dietAndAddOns: {
-      summary: "",
-      facts: [{ label: "Diet plans", value: "None" }],
-      bullets: [],
-    },
-    profileAndIntent: {
-      summary: "",
-      facts: [{ label: "Primary concern", value: "Smoking" }],
-      bullets: [],
-    },
-    communication: {
-      summary: "",
-      facts: [{ label: "Push opt-in", value: "Enabled" }],
-      bullets: [],
-    },
-    salesAndOutreach: {
-      summary: "Pitch Smoking Reset while momentum is high.",
-      facts: [{ label: "Tone", value: "Warm and encouraging" }],
-      bullets: ["Reference Free Detox progress"],
-    },
-    risksAndOpenIssues: {
-      summary: "",
-      facts: [{ label: "Open issues", value: "None" }],
-      bullets: [],
-    },
-    nextBestAction: "Send a WhatsApp check-in about day 2 progress.",
-  };
+const sampleInsights = {
+  headline: "Active Free Detox user exploring paid programs",
+  salesTalkingPoints: ["Reference Free Detox progress", "Offer Smoking Reset trial"],
+  recommendedTone: "Warm and encouraging",
+  risks: ["No paid purchase yet"],
+  nextBestAction: "Send a WhatsApp check-in about day 2 progress.",
+};
 
-  it("validates a complete summary payload", () => {
-    const result = validateAdminUserSummaryJson(validSummary);
+function minimalContext(): AdminUserSummaryContext {
+  return {
+    appUsage: buildAppUsageSnapshot({
+      activity: [],
+      dayStates: [],
+      eventCountsLast30Days: {},
+      freeDetoxProgress: {
+        completedAt: null,
+        completedDays: [1],
+        currentDay: 2,
+        partialDays: [],
+        updatedAt: "2026-06-20T12:00:00.000Z",
+      },
+      freeTierActivatedAt: "2026-06-18T10:00:00.000Z",
+      journalCount: 1,
+      journalLastEntryDate: "2026-06-19",
+      programs: [],
+      reflectionCount: 0,
+      reflectionLast: null,
+      routineCheckinCount: 0,
+      routineCheckinLastAt: null,
+    }),
+    contextVersion: 3,
+    dataGaps: [],
+    detail: {
+      dayStates: [],
+      dietOrders: [],
+      emails: [],
+      preference: null,
+      profile: {
+        createdAt: "2026-01-15T10:00:00.000Z",
+        email: "user@example.com",
+        id: "user-1",
+        onboardingComplete: true,
+        recommendedProgram: "Smoking Reset",
+      },
+      programs: [],
+      transactions: [],
+    },
+    extras: {
+      consecutiveAbsentDays: 0,
+      detoxLeads: [],
+      consultationLeads: [],
+      notificationsEnabled: true,
+      onboardingCompletedAt: "2026-01-16T10:00:00.000Z",
+      phoneNumber: null,
+      phoneVerifiedAt: null,
+      primaryConcern: "Smoking",
+      pushOptIn: true,
+      questionnaireAnswersSummary: {},
+      questionnaireRuns: [],
+      referralRedemptions: [],
+      timezone: "Asia/Kolkata",
+      totalWebSpendInr: "₹0",
+      whatsappMarketingConsentAt: null,
+      whatsappServiceConsentAt: null,
+    },
+    generatedForRole: "ops",
+  } as AdminUserSummaryContext;
+}
+
+describe("admin user summary schema v3", () => {
+  it("validates insights payload", () => {
+    const result = validateAdminUserSummaryInsights(sampleInsights);
     expect(result.success).toBe(true);
   });
 
-  it("formats plain text for copy/export", () => {
-    const result = validateAdminUserSummaryJson(validSummary);
-    if (!result.success) {
-      throw new Error("Expected valid summary");
-    }
+  it("rejects invalid insights array lengths", () => {
+    const result = validateAdminUserSummaryInsights({
+      ...sampleInsights,
+      salesTalkingPoints: [],
+    });
+    expect(result.success).toBe(false);
+  });
 
-    const text = formatAdminUserSummaryPlainText(result.data);
-    expect(text).toContain("Active Free Detox user");
+  it("formats plain text from snapshot + insights", () => {
+    const snapshot = buildAdminUserSummarySnapshot(minimalContext());
+    const summary = {
+      schemaVersion: 3 as const,
+      snapshot,
+      insights: sampleInsights,
+    };
+
+    expect(isAdminUserSummaryV3(summary)).toBe(true);
+
+    const text = formatAdminUserSummaryPlainText(summary);
+    expect(text).toContain("Active Free Detox user exploring paid programs");
     expect(text).toContain("Account type: Free Detox user");
     expect(text).toContain("## Sales & outreach");
     expect(text).toContain("Next best action");
-  });
-
-  it("parses legacy label-value bullets for display", () => {
-    const facts = getSectionDisplayFacts({
-      summary: "Legacy summary.",
-      bullets: ["Engagement: Active", "Free Detox day 2"],
-    });
-
-    expect(facts).toEqual([
-      { label: "Engagement", value: "Active" },
-      { label: "Note", value: "Free Detox day 2" },
-    ]);
+    expect(text).not.toContain("Note:");
   });
 });
 

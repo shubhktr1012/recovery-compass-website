@@ -136,9 +136,9 @@ async function generateAndPersistSummaryWork(
     return NextResponse.json({ message: "User not found" }, { status: 404 });
   }
 
-  const promptContext = buildUserSummaryPromptContext(context);
-  const { model, summary } = await generateAdminUserSummary(promptContext);
+  const { model, summary } = await generateAdminUserSummary(context);
   const generatedAt = new Date().toISOString();
+  const promptContext = buildUserSummaryPromptContext(context);
 
   const { error: upsertError } = await supabaseAdmin.from("admin_user_ai_summaries").upsert(
     {

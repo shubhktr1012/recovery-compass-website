@@ -25,13 +25,15 @@ vi.mock("@/lib/admin/audit", () => ({
 }));
 
 vi.mock("@/lib/admin/user-summary-context", () => ({
-  ADMIN_USER_SUMMARY_CONTEXT_VERSION: 1,
+  ADMIN_USER_SUMMARY_CONTEXT_VERSION: 3,
   buildAdminUserSummaryContext: mocks.buildAdminUserSummaryContext,
   buildUserSummaryPromptContext: mocks.buildUserSummaryPromptContext,
 }));
 
 vi.mock("@/lib/admin/user-summary-generation", () => ({
   generateAdminUserSummary: mocks.generateAdminUserSummary,
+  formatAdminUserSummaryError: (error: unknown) =>
+    error instanceof Error ? error.message : "User summary generation failed",
   resolveAdminUserSummaryModel: () => "gemini-3.5-flash",
 }));
 
@@ -58,17 +60,23 @@ const admin = {
 };
 
 const sampleSummary = {
-  headline: "Test user",
-  overview: { summary: "Overview", bullets: [] },
-  programOwnership: { summary: "Programs", bullets: [] },
-  appUsageAndActivity: { summary: "Usage", bullets: [] },
-  purchasesAndRevenue: { summary: "Purchases", bullets: [] },
-  dietAndAddOns: { summary: "Diet", bullets: [] },
-  profileAndIntent: { summary: "Intent", bullets: [] },
-  communication: { summary: "Comms", bullets: [] },
-  salesAndOutreach: { summary: "Sales", bullets: [] },
-  risksAndOpenIssues: { summary: "Risks", bullets: [] },
-  nextBestAction: "Follow up",
+  schemaVersion: 3,
+  snapshot: {
+    overview: [{ key: "accountType", label: "Account type", value: "Free Detox user" }],
+    programOwnership: [],
+    appUsageAndActivity: [],
+    purchasesAndRevenue: [],
+    dietAndAddOns: [],
+    profileAndIntent: [],
+    communication: [],
+  },
+  insights: {
+    headline: "Test user",
+    salesTalkingPoints: ["Follow up on Free Detox"],
+    recommendedTone: "Warm",
+    risks: [],
+    nextBestAction: "Follow up",
+  },
 };
 
 describe("admin user summary route", () => {
@@ -76,7 +84,7 @@ describe("admin user summary route", () => {
     mocks.requireAdminApi.mockResolvedValueOnce({ admin });
     mocks.readCachedSummary.mockResolvedValueOnce({
       data: {
-        context_version: 1,
+        context_version: 3,
         generated_at: "2026-06-27T10:00:00.000Z",
         generated_by_admin_email: "ops@example.com",
         model: "gemini-3.5-flash",
@@ -94,7 +102,7 @@ describe("admin user summary route", () => {
 
     expect(response.status).toBe(200);
     const body = await response.json();
-    expect(body.summary.summary.headline).toBe("Test user");
+    expect(body.summary.summary.insights.headline).toBe("Test user");
     expect(mocks.recordAdminAuditLog).toHaveBeenCalledWith(
       expect.objectContaining({ action: "user_ai_summary_viewed" })
     );
@@ -121,7 +129,7 @@ describe("admin user summary route", () => {
 
     expect(response.status).toBe(200);
     const body = await response.json();
-    expect(body.summary.summary.headline).toBe("Test user");
+    expect(body.summary.summary.insights.headline).toBe("Test user");
     expect(mocks.generateAdminUserSummary).toHaveBeenCalled();
     expect(mocks.recordAdminAuditLog).toHaveBeenCalledWith(
       expect.objectContaining({ action: "user_ai_summary_generated" })

@@ -5,17 +5,75 @@ import {
   formatAdminUserSummaryError,
   isRetryableGeminiApiStatus,
 } from "@/lib/admin/user-summary-generation";
+import { buildAdminUserSummarySnapshot } from "@/lib/admin/user-summary-snapshot";
+import { buildAppUsageSnapshot } from "@/lib/admin/user-app-usage";
+import type { AdminUserSummaryContext } from "@/lib/admin/user-summary-context";
 
 describe("admin user summary generation prompt", () => {
-  it("includes the serialized user context in the prompt", () => {
+  it("includes the snapshot in the insights prompt", () => {
+    const context = {
+      appUsage: buildAppUsageSnapshot({
+        activity: [],
+        dayStates: [],
+        eventCountsLast30Days: {},
+        freeDetoxProgress: null,
+        freeTierActivatedAt: null,
+        journalCount: 0,
+        journalLastEntryDate: null,
+        programs: [],
+        reflectionCount: 0,
+        reflectionLast: null,
+        routineCheckinCount: 0,
+        routineCheckinLastAt: null,
+      }),
+      contextVersion: 3,
+      dataGaps: ["No questionnaire run"],
+      detail: {
+        dayStates: [],
+        dietOrders: [],
+        emails: [],
+        preference: null,
+        profile: {
+          createdAt: "2026-01-15T10:00:00.000Z",
+          email: "pankaj@example.com",
+          id: "user-1",
+          onboardingComplete: true,
+          recommendedProgram: "Smoking Reset",
+        },
+        programs: [],
+        transactions: [],
+      },
+      extras: {
+        consecutiveAbsentDays: 0,
+        detoxLeads: [],
+        consultationLeads: [],
+        notificationsEnabled: false,
+        onboardingCompletedAt: null,
+        phoneNumber: null,
+        phoneVerifiedAt: null,
+        primaryConcern: "Smoking",
+        pushOptIn: false,
+        questionnaireAnswersSummary: {},
+        questionnaireRuns: [],
+        referralRedemptions: [],
+        timezone: null,
+        totalWebSpendInr: "₹0",
+        whatsappMarketingConsentAt: null,
+        whatsappServiceConsentAt: null,
+      },
+      generatedForRole: "ops",
+    } as AdminUserSummaryContext;
+
+    const snapshot = buildAdminUserSummarySnapshot(context);
     const prompt = buildAdminUserSummaryPrompt({
-      account: { displayName: "Pankaj Yadav" },
-      appUsage: { engagementLevel: "active" },
+      dataGaps: context.dataGaps,
+      snapshot,
     });
 
-    expect(prompt).toContain("Pankaj Yadav");
-    expect(prompt).toContain("appUsage");
-    expect(prompt).toContain("USER CONTEXT");
+    expect(prompt).toContain("USER SNAPSHOT");
+    expect(prompt).toContain("Account type");
+    expect(prompt).toContain("No questionnaire run");
+    expect(prompt).toContain("do not repeat its values");
   });
 });
 
