@@ -28,16 +28,29 @@ const KPI_ACCENTS = [
 export function KpiCard({ index = 0, kpi }: { index?: number; kpi: AdminKpi }) {
   const accent = KPI_ACCENTS[index % KPI_ACCENTS.length];
 
+  const isTextValue = kpi.valueTone === "text";
+
   return (
-    <Card className={cn("border-white/10 bg-white/[0.06] text-white shadow-none", accent.background)}>
+    <Card
+      className={cn(
+        "min-w-0 border-white/10 bg-white/[0.06] text-white shadow-none",
+        accent.background
+      )}
+    >
       <CardHeader className="gap-1 pb-2">
         <CardTitle className="flex items-center gap-2 text-sm font-medium text-white/65">
           <span className={cn("size-2 rounded-full", accent.dot)} />
           {kpi.label}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-2">
-        <div className={cn("text-3xl font-semibold tracking-tight", accent.value)}>
+      <CardContent className="min-w-0 space-y-2">
+        <div
+          className={cn(
+            "font-semibold tracking-tight",
+            isTextValue ? "break-words text-sm leading-6" : "text-3xl",
+            accent.value
+          )}
+        >
           {kpi.value}
         </div>
         {kpi.detail ? (

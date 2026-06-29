@@ -54,12 +54,12 @@ export default async function AdminUserDetailPage({
     <div className="space-y-6">
       <PageHeader
         description="Full user detail is limited to this drilldown. Owner and ops can make audited program grants; viewers remain read-only."
+        meta={user.profile.email ?? "No email on file"}
         title={user.profile.displayName}
         withDateRange={false}
       />
       <KpiGrid
         items={[
-          { label: "Email", value: user.profile.email ?? "No email" },
           { label: "Programs", value: user.programs.length.toLocaleString("en-IN") },
           { label: "Transactions", value: user.transactions.length.toLocaleString("en-IN") },
           { label: "Onboarded", value: user.profile.onboardingComplete ? "Yes" : "No" },

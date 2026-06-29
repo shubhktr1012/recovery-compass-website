@@ -3,6 +3,7 @@ import {
   validateAdminUserSummaryJson,
   type AdminUserSummary,
 } from "@/lib/admin/user-summary-schema";
+import { dedupeAdminUserSummaryBullets } from "@/lib/admin/user-summary-dedupe";
 
 function resolveGeminiProvider(): { provider: "gemini" } | { error: string } {
   const requestedProvider = process.env.DIET_PLAN_AI_PROVIDER?.trim().toLowerCase();
@@ -87,13 +88,26 @@ Rules:
 - Use ONLY facts present in the provided JSON context. Label inferences clearly when unavoidable.
 - No medical advice. Do not diagnose or prescribe.
 - Distinguish paid program owners, Free Detox-only users, and prospects with no app activity.
-- The appUsageAndActivity section is critical: describe engagement level, last activity, day/card progress, Free Detox progress (day X of 6), journal/check-in usage, and recent events when available.
-- salesAndOutreach must include concrete talking points and a recommended tone for WhatsApp/call outreach.
 - When the user has program access but no web transactions, note likely app-store purchase.
 - When data is missing, say so briefly in the relevant section instead of inventing details.
 - Keep bullets concise and actionable (max 4 per section).
 - Keep each section summary to 1-2 sentences. Brevity is required — do not write long paragraphs.
-- Write for an Indian wellness product context.`;
+- Write for an Indian wellness product context.
+- Do not repeat the same fact in more than one section. If a fact fits multiple sections, put it in the most specific section only.
+- The admin page already shows email, program count, transaction count, onboarding, and preference KPIs plus detail tables below — do not restate raw counts unless you add interpretation (e.g. "only 1 of 5 programs active").
+
+Section ownership (each fact belongs in ONE section only):
+- headline: One-line persona snapshot. No detail bullets.
+- overview: Account type bucket (prospect / Free Detox / paid owner), signup recency, onboarding yes/no. No program day detail, no spend, no questionnaire answers.
+- profileAndIntent: Questionnaire answers, primary concern, web leads, stated goals. No program progress or engagement.
+- programOwnership: Which programs are owned, queue rank, paused/completed/scheduled state. No day/card engagement metrics.
+- appUsageAndActivity: Engagement level, last activity, day/card progress, Free Detox progress (day X of 6), journal/check-ins, recent events. Do not re-list owned program names or purchase history.
+- purchasesAndRevenue: Web transactions, spend, referral redemptions. No diet-plan order detail.
+- dietAndAddOns: Diet plan orders and delivery status only.
+- communication: Email delivery, push/WhatsApp consent, notification settings. No sales angles.
+- salesAndOutreach: Pitch framing, talking points, and recommended tone for WhatsApp/call. Reference facts by implication; do not re-copy bullets from other sections.
+- risksAndOpenIssues: Blockers and open issues not already covered elsewhere (stuck orders, delivery failures, long inactivity).
+- nextBestAction: One concrete action for the admin. No section recap.`;
 
 function getErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : "Unknown user summary generation error";
@@ -138,7 +152,7 @@ function parseAndValidateSummaryJson(rawText: string): AdminUserSummary {
     throw new Error(`User summary JSON failed validation: ${validation.errors.slice(0, 8).join("; ")}`);
   }
 
-  return validation.data;
+  return dedupeAdminUserSummaryBullets(validation.data);
 }
 
 function buildRepairPrompt(prompt: string, validationError: string) {

@@ -35,6 +35,7 @@ export type AdminKpi = {
   value: string;
   detail?: string;
   technical?: string;
+  valueTone?: "metric" | "text";
 };
 
 export type AdminTrendPoint = {
