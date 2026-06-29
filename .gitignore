@@ -18,6 +18,8 @@
 /.next/
 /out/
 /generated/
+/questionnaires/local/*
+!/questionnaires/local/.gitkeep
 
 # production
 /build

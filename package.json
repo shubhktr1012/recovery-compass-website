@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "receipts:pdf": "node ./scripts/export-email-receipts.mjs",
+    "diet-plan:generate-local": "tsx --env-file=.env.local ./scripts/generate-diet-plan-local.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "ops:reconcile": "bash ./scripts/reconcile-fulfillment.sh",
