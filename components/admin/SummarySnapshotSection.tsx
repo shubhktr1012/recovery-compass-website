@@ -18,6 +18,9 @@ const BADGE_TONES = {
   violet: "bg-violet-300/12 text-violet-100 ring-violet-200/20",
 };
 
+const ADMIN_INNER_CARD =
+  "gap-0 rounded-[1.35rem] border-white/10 bg-white/[0.05] py-0 text-white shadow-none";
+
 function SnapshotValue({ row }: { row: SummaryRow }) {
   const isEmpty = row.value === EMPTY_SUMMARY_VALUE;
 
@@ -51,27 +54,27 @@ export function SummarySnapshotSection({
   return (
     <Card
       className={cn(
-        "border-white/10 bg-black/15 text-white shadow-none",
+        ADMIN_INNER_CARD,
         highlight && "border-teal-200/20 bg-teal-300/[0.08]"
       )}
     >
-      <CardHeader className="pb-2">
+      <CardHeader className="border-b border-white/10 px-4 py-3">
         <CardTitle className="text-xs font-semibold uppercase tracking-[0.18em] text-white/45">
           {title}
         </CardTitle>
       </CardHeader>
-      <CardContent className="px-0 pb-4 pt-0">
+      <CardContent className="px-0 pb-0 pt-0">
         <Table>
           <TableBody>
             {rows.map((row) => (
               <TableRow
-                className="border-white/10 hover:bg-white/[0.03]"
+                className="border-white/10 hover:bg-white/[0.04] data-[state=selected]:bg-white/[0.04]"
                 key={row.key}
               >
                 <TableCell className="w-[38%] align-top px-4 py-2.5 text-xs font-medium uppercase tracking-[0.12em] text-white/42">
                   {row.label}
                 </TableCell>
-                <TableCell className="align-top px-4 py-2.5">
+                <TableCell className="align-top px-4 py-2.5 whitespace-normal">
                   <SnapshotValue row={row} />
                 </TableCell>
               </TableRow>
