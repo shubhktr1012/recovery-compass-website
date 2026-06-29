@@ -125,7 +125,6 @@ export function AboutPageContent() {
 
             {/* ── Our Story ────────────────────────────── */}
             <section className="relative bg-[#FAFAFA] py-24 md:py-32 overflow-hidden">
-                <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/asfalt-dark.png")` }} />
                 <div className="max-w-[1200px] mx-auto px-6 md:px-12 relative z-10">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-start">
 
