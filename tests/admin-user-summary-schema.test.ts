@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { buildAppUsageSnapshot } from "@/lib/admin/user-app-usage";
 import {
   formatAdminUserSummaryPlainText,
+  getSectionDisplayFacts,
   validateAdminUserSummaryJson,
 } from "@/lib/admin/user-summary-schema";
 
@@ -10,39 +11,54 @@ describe("admin user summary schema", () => {
   const validSummary = {
     headline: "Active Free Detox user exploring paid programs",
     overview: {
-      summary: "Signed up recently and completed onboarding.",
-      bullets: ["Recommended Smoking Reset"],
+      summary: "",
+      facts: [
+        { label: "Account type", value: "Free Detox user" },
+        { label: "Onboarding", value: "Complete" },
+      ],
+      bullets: [],
     },
     programOwnership: {
-      summary: "No paid programs yet.",
-      bullets: ["Free Detox activated"],
+      summary: "",
+      facts: [{ label: "Free Detox", value: "Activated" }],
+      bullets: [],
     },
     appUsageAndActivity: {
-      summary: "Working through Free Detox day 2.",
-      bullets: ["Last active yesterday"],
+      summary: "",
+      facts: [
+        { label: "Free Detox", value: "Day 2 of 6" },
+        { label: "Last active", value: "Yesterday" },
+      ],
+      bullets: [],
     },
     purchasesAndRevenue: {
-      summary: "No web purchases.",
+      summary: "",
+      facts: [{ label: "Web purchases", value: "None" }],
       bullets: [],
     },
     dietAndAddOns: {
-      summary: "No diet plan orders.",
+      summary: "",
+      facts: [{ label: "Diet plans", value: "None" }],
       bullets: [],
     },
     profileAndIntent: {
-      summary: "Primary concern is smoking.",
+      summary: "",
+      facts: [{ label: "Primary concern", value: "Smoking" }],
       bullets: [],
     },
     communication: {
-      summary: "Push opt-in enabled.",
+      summary: "",
+      facts: [{ label: "Push opt-in", value: "Enabled" }],
       bullets: [],
     },
     salesAndOutreach: {
       summary: "Pitch Smoking Reset while momentum is high.",
+      facts: [{ label: "Tone", value: "Warm and encouraging" }],
       bullets: ["Reference Free Detox progress"],
     },
     risksAndOpenIssues: {
-      summary: "No open delivery issues.",
+      summary: "",
+      facts: [{ label: "Open issues", value: "None" }],
       bullets: [],
     },
     nextBestAction: "Send a WhatsApp check-in about day 2 progress.",
@@ -61,8 +77,21 @@ describe("admin user summary schema", () => {
 
     const text = formatAdminUserSummaryPlainText(result.data);
     expect(text).toContain("Active Free Detox user");
+    expect(text).toContain("Account type: Free Detox user");
     expect(text).toContain("## Sales & outreach");
     expect(text).toContain("Next best action");
+  });
+
+  it("parses legacy label-value bullets for display", () => {
+    const facts = getSectionDisplayFacts({
+      summary: "Legacy summary.",
+      bullets: ["Engagement: Active", "Free Detox day 2"],
+    });
+
+    expect(facts).toEqual([
+      { label: "Engagement", value: "Active" },
+      { label: "Note", value: "Free Detox day 2" },
+    ]);
   });
 });
 

@@ -5,11 +5,11 @@ import type { AdminUserSummary } from "@/lib/admin/user-summary-schema";
 import { ADMIN_USER_SUMMARY_SYSTEM_PROMPT } from "@/lib/admin/user-summary-generation";
 
 function buildSummary(overrides: Partial<AdminUserSummary> = {}): AdminUserSummary {
-  const emptySection = { summary: "Section summary.", bullets: [] as string[] };
+  const emptySection = { summary: "Section summary.", facts: [], bullets: [] as string[] };
 
   return {
     headline: "Test user headline",
-    overview: { summary: "Overview.", bullets: [] },
+    overview: { summary: "Overview.", facts: [], bullets: [] },
     programOwnership: emptySection,
     appUsageAndActivity: emptySection,
     purchasesAndRevenue: emptySection,
@@ -28,14 +28,17 @@ describe("dedupeAdminUserSummaryBullets", () => {
     const summary = buildSummary({
       overview: {
         summary: "Free Detox user.",
+        facts: [],
         bullets: ["Completed onboarding"],
       },
       profileAndIntent: {
         summary: "Smoking focus.",
+        facts: [],
         bullets: ["Completed onboarding", "Primary concern: smoking"],
       },
       salesAndOutreach: {
         summary: "Warm outreach.",
+        facts: [],
         bullets: ["Completed onboarding"],
       },
     });
@@ -47,14 +50,41 @@ describe("dedupeAdminUserSummaryBullets", () => {
     expect(deduped.salesAndOutreach.bullets).toEqual([]);
   });
 
+  it("removes identical facts from later sections", () => {
+    const summary = buildSummary({
+      overview: {
+        summary: "",
+        facts: [{ label: "Onboarding", value: "Complete" }],
+        bullets: [],
+      },
+      profileAndIntent: {
+        summary: "",
+        facts: [
+          { label: "Onboarding", value: "Complete" },
+          { label: "Primary concern", value: "Smoking" },
+        ],
+        bullets: [],
+      },
+    });
+
+    const deduped = dedupeAdminUserSummaryBullets(summary);
+
+    expect(deduped.overview.facts).toEqual([{ label: "Onboarding", value: "Complete" }]);
+    expect(deduped.profileAndIntent.facts).toEqual([
+      { label: "Primary concern", value: "Smoking" },
+    ]);
+  });
+
   it("treats punctuation-only differences as duplicates", () => {
     const summary = buildSummary({
       overview: {
         summary: "Overview.",
+        facts: [],
         bullets: ["5 programs owned."],
       },
       programOwnership: {
         summary: "Programs.",
+        facts: [],
         bullets: ["5 programs owned"],
       },
     });
@@ -67,9 +97,10 @@ describe("dedupeAdminUserSummaryBullets", () => {
 
   it("keeps unique bullets in each section", () => {
     const summary = buildSummary({
-      overview: { summary: "Overview.", bullets: ["Onboarded"] },
+      overview: { summary: "Overview.", facts: [], bullets: ["Onboarded"] },
       appUsageAndActivity: {
         summary: "Active.",
+        facts: [],
         bullets: ["Last active yesterday"],
       },
     });
@@ -87,5 +118,6 @@ describe("admin user summary anti-redundancy prompt", () => {
     expect(ADMIN_USER_SUMMARY_SYSTEM_PROMPT).toContain("Section ownership");
     expect(ADMIN_USER_SUMMARY_SYSTEM_PROMPT).toContain("profileAndIntent");
     expect(ADMIN_USER_SUMMARY_SYSTEM_PROMPT).toContain("do not restate raw counts");
+    expect(ADMIN_USER_SUMMARY_SYSTEM_PROMPT).toContain("facts array");
   });
 });

@@ -91,7 +91,10 @@ Rules:
 - When the user has program access but no web transactions, note likely app-store purchase.
 - When data is missing, say so briefly in the relevant section instead of inventing details.
 - Keep bullets concise and actionable (max 4 per section).
-- Keep each section summary to 1-2 sentences. Brevity is required — do not write long paragraphs.
+- Prefer scannable data points over paragraphs. Use the facts array with short label and value strings (e.g. {"label":"Engagement","value":"Active"}, {"label":"Free Detox","value":"Day 2 of 6"}).
+- For factual sections (overview, profileAndIntent, programOwnership, appUsageAndActivity, purchasesAndRevenue, dietAndAddOns, communication): put almost everything in facts; leave summary empty unless one short interpretive note is needed.
+- For narrative sections (salesAndOutreach, risksAndOpenIssues): use facts for concrete items, one short summary sentence if helpful, and bullets only for talking points or risk items that do not fit label-value form.
+- Keep summary to at most one short sentence when used. Never write multi-sentence paragraphs.
 - Write for an Indian wellness product context.
 - Do not repeat the same fact in more than one section. If a fact fits multiple sections, put it in the most specific section only.
 - The admin page already shows email, program count, transaction count, onboarding, and preference KPIs plus detail tables below — do not restate raw counts unless you add interpretation (e.g. "only 1 of 5 programs active").
@@ -169,7 +172,8 @@ export function buildAdminUserSummaryPrompt(contextJson: Record<string, unknown>
   return `Create an admin user summary from this Recovery Compass user context JSON.
 
 Return JSON matching the required schema with all sections populated. Use empty-state copy when a section has no data.
-Be concise: each section summary should be 1-2 sentences with at most 4 bullets.
+Use facts (label + value pairs) as the primary format. Leave summary empty when facts are enough.
+Be concise: at most 6 facts per section, at most 4 bullets, and at most one short summary sentence when needed.
 
 USER CONTEXT:
 ${JSON.stringify(contextJson, null, 2)}`;

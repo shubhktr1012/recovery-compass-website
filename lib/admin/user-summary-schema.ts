@@ -10,15 +10,37 @@ function stringArraySchema(minItems = 0): JsonSchema {
   };
 }
 
+const factSchema: JsonSchema = {
+  type: "object",
+  properties: {
+    label: stringSchema,
+    value: stringSchema,
+  },
+  required: ["label", "value"],
+  additionalProperties: false,
+};
+
 function sectionSchema(description: string): JsonSchema {
   return {
     type: "object",
     description,
     properties: {
-      summary: stringSchema,
-      bullets: stringArraySchema(0),
+      summary: {
+        type: "string",
+        description:
+          "Optional one-line note for interpretation only. Leave empty when facts are sufficient.",
+      },
+      facts: {
+        type: "array",
+        description: "Scannable label-value data points. Prefer facts over prose.",
+        items: factSchema,
+      },
+      bullets: {
+        ...stringArraySchema(0),
+        description: "Short list items for sales talking points or risks only.",
+      },
     },
-    required: ["summary", "bullets"],
+    required: ["summary", "facts", "bullets"],
     additionalProperties: false,
   };
 }
@@ -58,8 +80,14 @@ export const ADMIN_USER_SUMMARY_RESPONSE_SCHEMA: JsonSchema = {
   additionalProperties: false,
 };
 
+export type AdminUserSummaryFact = {
+  label: string;
+  value: string;
+};
+
 export type AdminUserSummarySection = {
   bullets: string[];
+  facts?: AdminUserSummaryFact[];
   summary: string;
 };
 
@@ -85,18 +113,77 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value && typeof value === "object" && !Array.isArray(value));
 }
 
+function parseLegacyBulletAsFact(bullet: string): AdminUserSummaryFact | null {
+  const trimmed = bullet.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  const colonIndex = trimmed.indexOf(":");
+  if (colonIndex > 0 && colonIndex < trimmed.length - 1) {
+    return {
+      label: trimmed.slice(0, colonIndex).trim(),
+      value: trimmed.slice(colonIndex + 1).trim(),
+    };
+  }
+
+  return { label: "Note", value: trimmed };
+}
+
+export function getSectionDisplayFacts(section: AdminUserSummarySection): AdminUserSummaryFact[] {
+  if (section.facts?.length) {
+    return section.facts;
+  }
+
+  return section.bullets
+    .map(parseLegacyBulletAsFact)
+    .filter((fact): fact is AdminUserSummaryFact => fact !== null);
+}
+
+export function sectionHasNarrativeContent(section: AdminUserSummarySection) {
+  return Boolean(section.summary.trim() || section.bullets.length > 0);
+}
+
 function validateSection(value: unknown, path: string, errors: string[]) {
   if (!isRecord(value)) {
     errors.push(`${path} must be an object`);
     return;
   }
 
-  if (typeof value.summary !== "string" || !value.summary.trim()) {
+  if (typeof value.summary !== "string") {
     errors.push(`${path}.summary is required`);
   }
 
-  if (!Array.isArray(value.bullets) || !value.bullets.every((item) => typeof item === "string")) {
+  const facts = Array.isArray(value.facts) ? value.facts : undefined;
+  const bullets = Array.isArray(value.bullets) ? value.bullets : undefined;
+
+  if (facts) {
+    for (const [index, fact] of facts.entries()) {
+      if (!isRecord(fact)) {
+        errors.push(`${path}.facts[${index}] must be an object`);
+        continue;
+      }
+
+      if (typeof fact.label !== "string" || !fact.label.trim()) {
+        errors.push(`${path}.facts[${index}].label is required`);
+      }
+
+      if (typeof fact.value !== "string" || !fact.value.trim()) {
+        errors.push(`${path}.facts[${index}].value is required`);
+      }
+    }
+  }
+
+  if (!bullets || !bullets.every((item) => typeof item === "string")) {
     errors.push(`${path}.bullets must be a string array`);
+  }
+
+  const hasFacts = Boolean(facts?.length);
+  const hasBullets = Boolean(bullets?.length);
+  const hasSummary = typeof value.summary === "string" && value.summary.trim().length > 0;
+
+  if (!hasSummary && !hasFacts && !hasBullets) {
+    errors.push(`${path} needs a summary, fact, or bullet`);
   }
 }
 
@@ -136,6 +223,29 @@ export function validateAdminUserSummaryJson(value: unknown): ValidationResult {
     : { success: true, data: value as AdminUserSummary };
 }
 
+function formatSectionPlainText(section: AdminUserSummarySection) {
+  const lines: string[] = [];
+  const facts = getSectionDisplayFacts(section);
+
+  if (section.summary.trim()) {
+    lines.push(section.summary.trim());
+  }
+
+  for (const fact of facts) {
+    lines.push(`${fact.label}: ${fact.value}`);
+  }
+
+  for (const bullet of section.bullets) {
+    if (!section.facts?.length && facts.some((fact) => fact.value === bullet)) {
+      continue;
+    }
+
+    lines.push(`- ${bullet}`);
+  }
+
+  return lines;
+}
+
 export function formatAdminUserSummaryPlainText(summary: AdminUserSummary) {
   const sections: Array<[string, AdminUserSummarySection]> = [
     ["Overview", summary.overview],
@@ -152,11 +262,7 @@ export function formatAdminUserSummaryPlainText(summary: AdminUserSummary) {
   const lines = [summary.headline, ""];
 
   for (const [title, section] of sections) {
-    lines.push(`## ${title}`, section.summary);
-    for (const bullet of section.bullets) {
-      lines.push(`- ${bullet}`);
-    }
-    lines.push("");
+    lines.push(`## ${title}`, ...formatSectionPlainText(section), "");
   }
 
   lines.push("## Next best action", summary.nextBestAction);

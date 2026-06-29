@@ -8,7 +8,7 @@ import {
 } from "@/lib/admin/user-app-usage";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
-export const ADMIN_USER_SUMMARY_CONTEXT_VERSION = 1;
+export const ADMIN_USER_SUMMARY_CONTEXT_VERSION = 2;
 
 type QuestionnaireRunRow = {
   completed_at: string;

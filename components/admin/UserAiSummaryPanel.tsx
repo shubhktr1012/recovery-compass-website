@@ -3,9 +3,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Loader2, RefreshCw, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { CopySupportButton } from "@/components/admin/CopySupportButton";
 import { cn } from "@/lib/utils";
 import type { AdminUserSummary, AdminUserSummarySection } from "@/lib/admin/user-summary-schema";
+import { getSectionDisplayFacts } from "@/lib/admin/user-summary-schema";
 
 type SummaryPayload = {
   cached: boolean;
@@ -19,10 +21,9 @@ type SummaryPayload = {
   summary: AdminUserSummary;
 };
 
-const HIGHLIGHT_SECTIONS = new Set([
-  "appUsageAndActivity",
+const NARRATIVE_SECTIONS = new Set<keyof AdminUserSummary>([
   "salesAndOutreach",
-  "nextBestAction",
+  "risksAndOpenIssues",
 ]);
 
 const SECTION_LABELS: Record<keyof AdminUserSummary | "nextBestAction", string> = {
@@ -42,26 +43,55 @@ const SECTION_LABELS: Record<keyof AdminUserSummary | "nextBestAction", string> 
 function SummarySectionCard({
   highlight,
   label,
+  narrative,
   section,
 }: {
   highlight?: boolean;
   label: string;
+  narrative?: boolean;
   section: AdminUserSummarySection;
 }) {
+  const facts = getSectionDisplayFacts(section);
+  const showSummary = Boolean(section.summary.trim());
+  const showBullets = narrative && section.bullets.length > 0;
+
   return (
-    <article
+    <Card
       className={cn(
-        "rounded-[1.35rem] border p-4",
+        "border-white/10 bg-black/15 text-white shadow-none",
         highlight
           ? "border-teal-200/20 bg-teal-300/[0.08]"
           : "border-white/10 bg-black/15"
       )}
     >
+      <CardContent className="p-4">
       <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-white/45">
         {label}
       </h3>
-      <p className="mt-3 text-sm leading-6 text-white/78">{section.summary}</p>
-      {section.bullets.length > 0 ? (
+
+      {showSummary ? (
+        <p className="mt-3 text-sm leading-6 text-white/72">{section.summary}</p>
+      ) : null}
+
+      {facts.length > 0 ? (
+        <dl
+          className={cn(
+            "space-y-2.5",
+            showSummary ? "mt-3" : "mt-3"
+          )}
+        >
+          {facts.map((fact) => (
+            <div className="grid gap-1 sm:grid-cols-[minmax(7rem,34%)_1fr] sm:gap-3" key={`${fact.label}-${fact.value}`}>
+              <dt className="text-xs font-medium uppercase tracking-[0.12em] text-white/42">
+                {fact.label}
+              </dt>
+              <dd className="text-sm leading-6 text-white/82">{fact.value}</dd>
+            </div>
+          ))}
+        </dl>
+      ) : null}
+
+      {showBullets ? (
         <ul className="mt-3 space-y-2 text-sm leading-6 text-white/66">
           {section.bullets.map((bullet) => (
             <li className="flex gap-2" key={bullet}>
@@ -71,7 +101,12 @@ function SummarySectionCard({
           ))}
         </ul>
       ) : null}
-    </article>
+
+      {!showSummary && facts.length === 0 && !showBullets ? (
+        <p className="mt-3 text-sm text-white/45">No data for this section.</p>
+      ) : null}
+      </CardContent>
+    </Card>
   );
 }
 
@@ -187,9 +222,10 @@ export function UserAiSummaryPanel({ userId }: { userId: string }) {
         ["risksAndOpenIssues", payload.summary.risksAndOpenIssues],
       ] as Array<[keyof AdminUserSummary, AdminUserSummarySection]>
     ).map(([key, section]) => ({
-      highlight: HIGHLIGHT_SECTIONS.has(key),
+      highlight: key === "appUsageAndActivity" || key === "salesAndOutreach",
       key,
       label: SECTION_LABELS[key],
+      narrative: NARRATIVE_SECTIONS.has(key),
       section,
     }));
   }, [payload]);
@@ -275,6 +311,7 @@ export function UserAiSummaryPanel({ userId }: { userId: string }) {
                   highlight={entry.highlight}
                   key={entry.key}
                   label={entry.label}
+                  narrative={entry.narrative}
                   section={entry.section}
                 />
               ))}

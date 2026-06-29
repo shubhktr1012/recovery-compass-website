@@ -8,6 +8,8 @@ import {
 } from "@tanstack/react-table";
 import Link from "next/link";
 import { EmptyState } from "@/components/admin/EmptyState";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import type { AdminTableColumn } from "@/lib/admin/types";
 
@@ -120,14 +122,9 @@ export function DataTable({
 
       if (tone) {
         return (
-          <span
-            className={cn(
-              "inline-flex rounded-full px-2.5 py-1 text-xs font-semibold capitalize ring-1",
-              tone
-            )}
-          >
+          <Badge className={cn("capitalize hover:bg-transparent", tone)} variant="outline">
             {humanizeValue(displayText)}
-          </span>
+          </Badge>
         );
       }
 
@@ -149,7 +146,7 @@ export function DataTable({
   }
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.05]">
+    <Card className="overflow-hidden border-white/10 bg-white/[0.05] py-0 text-white shadow-none">
       <div className="overflow-x-auto">
         <table className="min-w-full text-left text-sm">
           <thead className="bg-white/[0.06] text-xs uppercase tracking-[0.18em] text-white/45">
@@ -184,6 +181,6 @@ export function DataTable({
           </tbody>
         </table>
       </div>
-    </div>
+    </Card>
   );
 }

@@ -1,4 +1,6 @@
 import { AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Card, CardContent } from "@/components/ui/card";
 
 export function EmptyState({
   description,
@@ -8,12 +10,16 @@ export function EmptyState({
   title?: string;
 }) {
   return (
-    <div className="flex min-h-48 flex-col items-center justify-center rounded-3xl border border-dashed border-white/15 bg-white/[0.03] p-8 text-center">
-      <div className="mb-4 rounded-full bg-amber-300/12 p-3 text-amber-100">
-        <AlertCircle className="size-5" />
-      </div>
-      <h3 className="text-base font-semibold text-white">{title}</h3>
-      <p className="mt-2 max-w-sm text-sm leading-6 text-white/55">{description}</p>
-    </div>
+    <Card className="border-dashed border-white/15 bg-white/[0.03] text-white shadow-none">
+      <CardContent className="flex min-h-48 flex-col items-center justify-center p-8 text-center">
+        <Alert className="max-w-sm border-none bg-transparent p-0 text-center shadow-none">
+          <AlertCircle className="mx-auto mb-4 size-5 text-amber-100" />
+          <AlertTitle className="text-base font-semibold text-white">{title}</AlertTitle>
+          <AlertDescription className="mt-2 text-sm leading-6 text-white/55">
+            {description}
+          </AlertDescription>
+        </Alert>
+      </CardContent>
+    </Card>
   );
 }
