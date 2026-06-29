@@ -86,6 +86,7 @@ type BuildAppUsageSnapshotInput = {
     programSlug: string | null;
     programState: string;
     purchaseState: string;
+    pausedAt?: string | null;
     scheduledStartDate: string | null;
     startedAt: string | null;
   }>;

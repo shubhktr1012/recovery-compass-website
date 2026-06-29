@@ -673,6 +673,7 @@ export async function getAdminUserDetail(userId: string, role: AdminRole = "view
       programSlug: row.owned_program,
       programState: row.program_state ?? "unknown",
       purchaseState: row.purchase_state ?? "unknown",
+      pausedAt: row.paused_at,
       scheduledStartDate: row.scheduled_start_date,
       startedAt: row.started_at,
     })),
